@@ -1,5 +1,6 @@
 #include <memory.h>
 #include <ec_mgr.h>
+#include <so/so_external_value_accesser.h>
 #include "gr_qbert.h"
 #include <OSError.h>
 
@@ -13,18 +14,29 @@ grQbert* grQbert::create(int mdlIndex, char* tgtNodeName, char* taskName){
 }
 
 void grQbert::update(float frameDiff){
-    if (this->numFightersOn > this->prevNumFightersOn) {
-        this->colourState++;
-        if (this->colourState >= 5) {
-            this->colourState = 0;
+    for (int team = 0; team < NUM_TEAMS; team++) {
+        if (this->numMembersOnTeamLanded[team] > this->prevNumMembersOnTeamLanded[team]) {
+            this->setMotionDetails(0, 0, team, 0, 0);
         }
-        this->setMotionDetails(0, 0, this->colourState, 0, 0);
+        this->prevNumMembersOnTeamLanded[team] = this->numMembersOnTeamLanded[team];
+        this->numMembersOnTeamLanded[team] = 0;
     }
 
-    this->prevNumFightersOn = this->numFightersOn;
-    this->numFightersOn = 0;
+    //
 }
 
 void grQbert::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
-    this->numFightersOn++;
+    gfTask* stageObject = gfTask::getTask(collStatus->taskId);
+    int teamNumber = soExternalValueAccesser::getTeamNo((StageObject*)stageObject);
+    if (teamNumber >= 0 || teamNumber < NUM_TEAMS - 1) {
+        teamNumber++;
+    }
+    else {
+        teamNumber = 0;
+    }
+    this->numMembersOnTeamLanded[teamNumber]++;
+
+
 }
+
+// TODO: Hit qbert to change him into your colour

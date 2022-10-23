@@ -2,17 +2,19 @@
 
 #include <gr/gr_madein.h>
 
+#define NUM_TEAMS 5
+
 class grQbert : public grMadein
 {
     protected:
-        char prevNumFightersOn;
-        char numFightersOn;
-        char colourState;
+        char numMembersOnTeamLanded[NUM_TEAMS];
+        char prevNumMembersOnTeamLanded[NUM_TEAMS];
     public:
         grQbert(char* taskName) : grMadein(taskName) {
-            prevNumFightersOn = 0;
-            numFightersOn = 0;
-            colourState = 0;
+            for (int team = 0; team < NUM_TEAMS; team++) {
+                numMembersOnTeamLanded[team] = 0;
+                prevNumMembersOnTeamLanded[team] = 0;
+            }
         };
         virtual void update(float frameDiff);
         virtual ~grQbert() { };
