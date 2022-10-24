@@ -1,6 +1,7 @@
 #include <memory.h>
 #include <st/st_class_info.h>
 #include "st_qbert.h"
+#include <gf/gf_camera.h>
 #include <OSError.h>
 
 static stClassInfoImpl<2, stQbert> classInfo = stClassInfoImpl<2, stQbert>();
@@ -10,10 +11,11 @@ stQbert* stQbert::create() {
     return stage;
 }
 bool stQbert::loading(){
-   return true;
+    return true;
 }
 void stQbert::update(float frameDiff){
-   return;
+
+    return;
 }
 
 void stQbert::createObj() {
@@ -26,15 +28,6 @@ void stQbert::createObj() {
     for (int cubeIndex = 2; cubeIndex <= 29; cubeIndex++) {
         this->createObjCube(cubeIndex, cubeIndex);
     }
-
-
-//    grAdventureDoor* door = grAdventureDoor::create(102, 0x28000204, "grAdventureDoor");
-//    if(door != NULL){
-//        addGround(door);
-//        door->setGimmickData(&this->doorData);
-//        door->startup(fileData,0,0);
-//        createCollision(fileData, 2, door);
-//    }
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -52,6 +45,15 @@ void stQbert::createObj() {
     registSceneAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(fileData, 0x65, "PokeTrainer00", this->unk, 0x0);
+
+    // setup orthogonal camera
+    gfCameraManager* cameraManager = gfCameraManager::getManager();
+    gfCamera* camera = &cameraManager->cameras[0];
+    camera->cameraPerspective = 0;
+    camera->top = ORTHOGONAL_CAMERA_ZOOM/2;
+    camera->bottom = -ORTHOGONAL_CAMERA_ZOOM/2;
+    camera->left = -(4.0/3.0)*ORTHOGONAL_CAMERA_ZOOM/2.0;
+    camera->right = (4.0/3.0)*ORTHOGONAL_CAMERA_ZOOM/2.0;
 }
 
 void stQbert::createObjBg(int mdlIndex) {

@@ -10,6 +10,8 @@ const float BGM_VOLUME = 1.0f;
 const float SCROLL_DIR = 0.0f;
 const float POKETRAINER_Z = 0.0f;
 
+#define ORTHOGONAL_CAMERA_ZOOM 150.0
+
 class stQbert : public stMelee {
     public:
         stQbert(int stageID) : stMelee("stQbert", stageID) {};
