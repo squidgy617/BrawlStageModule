@@ -1,5 +1,6 @@
 #include <memory.h>
 #include <ec_mgr.h>
+#include <snd/snd_system.h>
 #include <so/so_external_value_accesser.h>
 #include "gr_qbert_cube.h"
 #include <OSError.h>
@@ -17,6 +18,7 @@ void grQbertCube::update(float frameDiff){
     for (int team = 0; team < NUM_TEAMS; team++) {
         if (this->numMembersOnTeamLanded[team] > this->prevNumMembersOnTeamLanded[team]) {
             this->setMotionDetails(0, 0, team, 0, 0);
+            g_sndSystem->playSE((SndID)0x1ce9, 0x0, 0x0, 0x0, 0xffffffff);
         }
         this->prevNumMembersOnTeamLanded[team] = this->numMembersOnTeamLanded[team];
         this->numMembersOnTeamLanded[team] = 0;
