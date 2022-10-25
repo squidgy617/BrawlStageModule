@@ -1,11 +1,12 @@
 #pragma once
 
+#include <st/st_melee.h>
 #include <gr/gr_madein.h>
 
 class grQbertAlien : public grMadein
 {
     protected:
-
+        stMelee* stage;
     public:
         grQbertAlien(char* taskName) : grMadein(taskName) {
 
@@ -13,7 +14,9 @@ class grQbertAlien : public grMadein
         virtual void update(float frameDiff);
         virtual ~grQbertAlien() { };
 
-        static grQbertAlien* create(int mdlIndex, char* tgtNodeName, char* taskName);
+        virtual void setupHitPoint();
+
+        static grQbertAlien* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
 
 };
 

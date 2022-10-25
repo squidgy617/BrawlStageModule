@@ -20,15 +20,15 @@ void stQbert::update(float frameDiff){
 
 void stQbert::createObj() {
 
-    testStageParamInit(fileData, 0x10A);
-    testStageDataInit(fileData, 0x114, 1);
+    testStageParamInit(fileData, 210);
+    testStageDataInit(fileData, 220, 1);
 
     this->createObjBg(1);
 
     for (int cubeIndex = 2; cubeIndex <= 29; cubeIndex++) {
         this->createObjCube(cubeIndex, cubeIndex);
     }
-    this->createObjAlien(30);
+    this->createObjAlien(31);
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -41,7 +41,7 @@ void stQbert::createObj() {
       createStagePositions(&posData);
     }
     createWind2ndOnly();
-    loadStageAttrParam(fileData, 0x1E);
+    loadStageAttrParam(fileData, 230);
     void* scnData = fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
     registSceneAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
@@ -82,14 +82,15 @@ void stQbert::createObjCube(int mdlIndex, int collIndex) {
 }
 
 void stQbert::createObjAlien(int mdlIndex) {
-//    grQbertAlien* alien = grQbertAlien::create(mdlIndex, "", "grQbertAlien");
-//    if(alien != NULL){
-//        addGround(alien);
-//        alien->startup(fileData,0,0);
-//        alien->setStageData(stageData);
-//        alien->initializeEntity();
-//        alien->startEntity();
-//    }
+    grQbertAlien* alien = grQbertAlien::create(mdlIndex, "", "grQbertAlien", this);
+    if(alien != NULL){
+        addGround(alien);
+        alien->startup(fileData,0,0);
+        alien->setStageData(stageData);
+        //alien->initializeEntity();
+        //alien->startEntity();
+        //alien->setMotion(0);
+    }
 }
 
 

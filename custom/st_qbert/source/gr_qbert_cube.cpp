@@ -22,7 +22,6 @@ void grQbertCube::update(float frameDiff){
         this->numMembersOnTeamLanded[team] = 0;
     }
 
-    //
 }
 
 void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
