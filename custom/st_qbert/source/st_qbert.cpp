@@ -28,6 +28,7 @@ void stQbert::createObj() {
     for (int cubeIndex = 2; cubeIndex <= 29; cubeIndex++) {
         this->createObjCube(cubeIndex, cubeIndex);
     }
+    this->createObjAlien(30);
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -49,11 +50,11 @@ void stQbert::createObj() {
     // setup orthogonal camera
     gfCameraManager* cameraManager = gfCameraManager::getManager();
     gfCamera* camera = &cameraManager->cameras[0];
-    camera->cameraPerspective = 0;
-    camera->top = ORTHOGONAL_CAMERA_ZOOM/2;
-    camera->bottom = -ORTHOGONAL_CAMERA_ZOOM/2;
-    camera->left = -(4.0/3.0)*ORTHOGONAL_CAMERA_ZOOM/2.0;
-    camera->right = (4.0/3.0)*ORTHOGONAL_CAMERA_ZOOM/2.0;
+    camera->projection = Camera_Projection_Orthogonal;
+    camera->ortho.top = ORTHOGONAL_CAMERA_ZOOM/2;
+    camera->ortho.bottom = -ORTHOGONAL_CAMERA_ZOOM/2;
+    camera->ortho.left = -(4.0/3.0)*ORTHOGONAL_CAMERA_ZOOM/2.0;
+    camera->ortho.right = (4.0/3.0)*ORTHOGONAL_CAMERA_ZOOM/2.0;
 }
 
 void stQbert::createObjBg(int mdlIndex) {
@@ -68,7 +69,7 @@ void stQbert::createObjBg(int mdlIndex) {
 }
 
 void stQbert::createObjCube(int mdlIndex, int collIndex) {
-    grQbert* cube = grQbert::create(mdlIndex, "", "grCube");
+    grQbertCube* cube = grQbertCube::create(mdlIndex, "", "grQbertCube");
     if(cube != NULL){
         addGround(cube);
         cube->startup(fileData,0,0);
@@ -79,6 +80,18 @@ void stQbert::createObjCube(int mdlIndex, int collIndex) {
         createCollision(fileData, collIndex, cube);
     }
 }
+
+void stQbert::createObjAlien(int mdlIndex) {
+//    grQbertAlien* alien = grQbertAlien::create(mdlIndex, "", "grQbertAlien");
+//    if(alien != NULL){
+//        addGround(alien);
+//        alien->startup(fileData,0,0);
+//        alien->setStageData(stageData);
+//        alien->initializeEntity();
+//        alien->startEntity();
+//    }
+}
+
 
 void Ground::setStageData(float* stageData) {
    this->stageData = stageData;

@@ -1,11 +1,11 @@
 #include <memory.h>
 #include <ec_mgr.h>
 #include <so/so_external_value_accesser.h>
-#include "gr_qbert.h"
+#include "gr_qbert_cube.h"
 #include <OSError.h>
 
-grQbert* grQbert::create(int mdlIndex, char* tgtNodeName, char* taskName){
-    grQbert* ground = new(StageInstance) grQbert(taskName);
+grQbertCube* grQbertCube::create(int mdlIndex, char* tgtNodeName, char* taskName){
+    grQbertCube* ground = new(StageInstance) grQbertCube(taskName);
     ground->setMdlIndex(mdlIndex);
     ground->heapType = StageInstance;
     ground->makeCalcuCallback(1, StageInstance);
@@ -13,7 +13,7 @@ grQbert* grQbert::create(int mdlIndex, char* tgtNodeName, char* taskName){
     return ground;
 }
 
-void grQbert::update(float frameDiff){
+void grQbertCube::update(float frameDiff){
     for (int team = 0; team < NUM_TEAMS; team++) {
         if (this->numMembersOnTeamLanded[team] > this->prevNumMembersOnTeamLanded[team]) {
             this->setMotionDetails(0, 0, team, 0, 0);
@@ -25,7 +25,7 @@ void grQbert::update(float frameDiff){
     //
 }
 
-void grQbert::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
+void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
     gfTask* stageObject = gfTask::getTask(collStatus->taskId);
     int teamNumber = soExternalValueAccesser::getTeamNo((StageObject*)stageObject);
     if (teamNumber >= 0 || teamNumber < NUM_TEAMS - 1) {

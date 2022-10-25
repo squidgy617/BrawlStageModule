@@ -3,7 +3,8 @@
 #include <types.h>
 #include <st/st_melee.h>
 #include "gr_final.h"
-#include "gr_qbert.h"
+#include "gr_qbert_cube.h"
+#include "gr_qbert_alien.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -57,4 +58,5 @@ class stQbert : public stMelee {
 
         void createObjBg(int mdlIndex);
         void createObjCube(int mdlIndex, int collIndex);
+        void createObjAlien(int mdlIndex);
 };
