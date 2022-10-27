@@ -4,6 +4,7 @@
 #include "gr_qbert_alien.h"
 #include <OS/OSError.h>
 #include <mt/mt_spline.h>
+#include <hk/hk_math.h>
 
 grQbertAlien* grQbertAlien::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage){
     grQbertAlien* alien = new(StageInstance) grQbertAlien(taskName);
@@ -37,10 +38,11 @@ void grQbertAlien::update(float frameDelta) {
 
     if (jumpCompletion <= 1.0) {
         Vec3f pos;
+        Vec3f midpointPos = {(this->prevPos.x + this->targetPos.x)/2, hkMath::max2f(this->prevPos.y, this->targetPos.y) + 5, (this->prevPos.z + this->targetPos.z)/2};
         Vec3f points[4] = {
                 this->prevPos,
-                this->prevPos,
-                this->targetPos,
+                midpointPos,
+                midpointPos,
                 this->targetPos
         };
         mtBezierCurve(jumpCompletion, points, &pos);
@@ -49,7 +51,6 @@ void grQbertAlien::update(float frameDelta) {
     else {
         this->setTargetPos();
     }
-
 
     grMadein::update(frameDelta);
 }
@@ -61,10 +62,8 @@ void grQbertAlien::setTargetPos() {
     // get next cube target based on nodes
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
     this->targetIndex = cube->getNextJumpCubeIndex() - STARTING_CUBE_INDEX;
-    OSReport("Test Next Index: %d \n", this->targetIndex);
     cube = (grQbertCube*)stage->getGround(this->targetIndex);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
-    OSReport("x: %f y: %f z: %f \n", this->targetPos.x, this->targetPos.y, this->targetPos.z);
 
     Vec3f deltaPos = this->targetPos - this->prevPos;
 
