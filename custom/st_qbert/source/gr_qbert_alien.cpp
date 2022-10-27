@@ -2,7 +2,7 @@
 #include <ec_mgr.h>
 #include <so/so_external_value_accesser.h>
 #include "gr_qbert_alien.h"
-#include <OSError.h>
+#include <OS/OSError.h>
 
 grQbertAlien* grQbertAlien::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage){
     grQbertAlien* alien = new(StageInstance) grQbertAlien(taskName);

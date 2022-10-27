@@ -2,7 +2,7 @@
 #include <st/st_class_info.h>
 #include "st_qbert.h"
 #include <gf/gf_camera.h>
-#include <OSError.h>
+#include <OS/OSError.h>
 
 static stClassInfoImpl<2, stQbert> classInfo = stClassInfoImpl<2, stQbert>();
 

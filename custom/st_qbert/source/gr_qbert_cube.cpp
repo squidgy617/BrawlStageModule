@@ -3,7 +3,7 @@
 #include <so/so_external_value_accesser.h>
 #include "gr_qbert_cube.h"
 #include <mt/mt_prng.h>
-#include <OSError.h>
+#include <OS/OSError.h>
 
 grQbertCube* grQbertCube::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grQbertCube* ground = new(StageInstance) grQbertCube(taskName);
