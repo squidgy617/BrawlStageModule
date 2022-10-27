@@ -89,7 +89,7 @@ void stQbert::createObjAlien(int mdlIndex) {
         alien->setStageData(stageData);
         alien->initializeEntity();
         alien->startEntity();
-        alien->setMotion(0);
+        alien->setStartPos();
     }
 }
 

@@ -10,11 +10,12 @@ class grQbertAlien : public grMadein
 {
     protected:
         stMelee* stage;
-        u32 targetIndex;
         Vec3f prevPos;
         Vec3f targetPos;
+        u8 targetIndex;
 
-    public:
+
+public:
         grQbertAlien(char* taskName) : grMadein(taskName) {
         };
         virtual void update(float frameDiff);
