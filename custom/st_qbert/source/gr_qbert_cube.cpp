@@ -2,6 +2,7 @@
 #include <ec_mgr.h>
 #include <so/so_external_value_accesser.h>
 #include "gr_qbert_cube.h"
+#include <mt/mt_prng.h>
 #include <OSError.h>
 
 grQbertCube* grQbertCube::create(int mdlIndex, char* tgtNodeName, char* taskName){
@@ -38,4 +39,12 @@ void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJo
 
 }
 
-// TODO: Hit qbert to change him into your colour
+u32 grQbertCube::getNextJumpCubeIndex() {
+    u32 numNodes = GetResNodeNumEntries(&this->sceneModels[0]->resMdl);
+    u32 jumpIndex = this->getNodeIndex(0, "Jumps");
+    u32 jumpNodeIndex = randi(numNodes - jumpIndex - 1) + jumpIndex + 1;
+    Vec3f scale;
+    this->getNodeScale(&scale, 0, jumpNodeIndex);
+    return scale.x; // use scale.x as index for next cube
+}
+

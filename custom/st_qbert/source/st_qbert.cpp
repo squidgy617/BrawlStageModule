@@ -87,9 +87,9 @@ void stQbert::createObjAlien(int mdlIndex) {
         addGround(alien);
         alien->startup(fileData,0,0);
         alien->setStageData(stageData);
-        //alien->initializeEntity();
-        //alien->startEntity();
-        //alien->setMotion(0);
+        alien->initializeEntity();
+        alien->startEntity();
+        alien->setMotion(0);
     }
 }
 

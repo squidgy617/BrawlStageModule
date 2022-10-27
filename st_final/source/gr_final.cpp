@@ -89,7 +89,7 @@ void grFinal::updateEff(){
                 g_ecMgr->setDrawPrio(1);
                 u32 unk = g_ecMgr->setEffect(0x330002);
                 g_ecMgr->setDrawPrio(0xffffffff);
-                g_ecMgr->setParent(unk, this->sceneModel[0],"spaceB",0); // sceneModel is actually supposed to be a wrapper of some kind
+                g_ecMgr->setParent(unk, this->sceneModels[0],"spaceB",0); // sceneModel is actually supposed to be a wrapper of some kind
                 step++;
             }
             break;
@@ -98,7 +98,7 @@ void grFinal::updateEff(){
                 g_ecMgr->setDrawPrio(1);
                 u32 unk = g_ecMgr->setEffect(0x330003);
                 g_ecMgr->setDrawPrio(0xffffffff);
-                g_ecMgr->setParent(unk, this->sceneModel[0],"spaceF",0); // sceneModel is actually supposed to be a wrapper of some kind
+                g_ecMgr->setParent(unk, this->sceneModels[0],"spaceF",0); // sceneModel is actually supposed to be a wrapper of some kind
                 step++;
             }
             break;

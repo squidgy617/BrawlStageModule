@@ -13,6 +13,7 @@ grQbertAlien* grQbertAlien::create(int mdlIndex, char* tgtNodeName, char* taskNa
     alien->stage = stage;
 
     alien->setupHitPoint();
+    alien->setStartPos();
 
     return alien;
 }
@@ -23,7 +24,29 @@ void grQbertAlien::setupHitPoint() {
     this->setHitPoint(7.0, &startOffsetPos, &endOffsetPos, 1, 1);
 }
 
-void grQbertAlien::update(float frameDiff){
+void grQbertAlien::setStartPos() {
+    grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
+    cube->getNodePosition(&this->targetPos, 0, "Jumps");
+    this->setTargetPos();
+}
 
+void grQbertAlien::update(float frameDelta) {
+
+    grMadein::update(frameDelta);
+}
+
+void grQbertAlien::setTargetPos() {
+    this->setPos(&this->targetPos);
+    this->prevPos = this->targetPos;
+    grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
+    this->targetIndex = cube->getNextJumpCubeIndex();
+    OSReport("Test Next Index: %d \n", this->targetIndex);
+    cube = (grQbertCube*)stage->getGround(this->targetIndex - STARTING_CUBE_INDEX);
+    cube->getNodePosition(&this->targetPos, 0, "Jumps");
+    Vec3f pos = this->targetPos - this->prevPos;
+    OSReport("Test: %f \n", pos.y);
+
+
+    // check direction
 }
 
