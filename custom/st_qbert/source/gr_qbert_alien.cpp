@@ -40,6 +40,7 @@ void grQbertAlien::update(float frameDelta) {
     float jumpCompletion = animFrames / animFrameCount;
 
     if (jumpCompletion <= 1.0) {
+        this->setNodeVisibility(false, 0, "SwearM", false, false);
         Vec3f pos;
         Vec3f midpointPos = {(this->prevPos.x + this->targetPos.x)/2, hkMath::max2f(this->prevPos.y, this->targetPos.y) + 5, (this->prevPos.z + this->targetPos.z)/2};
         Vec3f points[4] = {
@@ -56,18 +57,16 @@ void grQbertAlien::update(float frameDelta) {
         grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
         cube->setTeam(this->teamId);
     }
-    else if (animFrames - animFrameCount > JUMP_WAIT_FRAMES) {
-        this->setTargetPos();
-    }
-
-    if (this->swearTimer > 0) {
+    else if (this->swearTimer > 0) {
+        if (this->swearTimer == SWEAR_VISIBLE_FRAMES) {
+            this->soundGenerator.playSE((SndID)0x1CEE, 0x0, 0x0, 0xffffffff);
+        }
         this->swearTimer -= frameDelta;
         this->setNodeVisibility(true, 0, "SwearM", false, false);
     }
-    else {
-        this->setNodeVisibility(false, 0, "SwearM", false, false);
+    else if (animFrames - animFrameCount > JUMP_WAIT_FRAMES) {
+        this->setTargetPos();
     }
-
 
     grMadein::update(frameDelta);
 }
@@ -77,7 +76,6 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
         damage->totalDamage = 0;
         this->teamId = damage->teamId + 1;
         this->swearTimer = SWEAR_VISIBLE_FRAMES;
-        this->soundGenerator.playSE((SndID)0x1CEE, 0x0, 0x0, 0xffffffff);
     }
 }
 

@@ -27,6 +27,7 @@ public:
         grQbertAlien(char* taskName) : grMadein(taskName) {
             teamId = STARTING_TEAM_ID;
             lives = NUM_LIVES;
+            swearTimer = 0;
         };
         virtual void update(float frameDiff);
         virtual void onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo);
