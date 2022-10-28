@@ -29,6 +29,7 @@ void grQbertAlien::setStartPos() {
     this->targetIndex = STARTING_CUBE_INDEX;
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
+    cube->setTeam(this->teamId);
     this->setTargetPos();
 }
 
@@ -59,6 +60,15 @@ void grQbertAlien::update(float frameDelta) {
         this->setTargetPos();
     }
 
+    if (this->swearTimer > 0) {
+        this->swearTimer -= frameDelta;
+        this->setNodeVisibility(true, 0, "SwearM", false, false);
+    }
+    else {
+        this->setNodeVisibility(false, 0, "SwearM", false, false);
+    }
+
+
     grMadein::update(frameDelta);
 }
 
@@ -66,6 +76,8 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
     if (damage->totalDamage >= MIN_DAMAGE_TO_CHANGE) {
         damage->totalDamage = 0;
         this->teamId = damage->teamId + 1;
+        this->swearTimer = SWEAR_VISIBLE_FRAMES;
+        this->soundGenerator.playSE((SndID)0x1CEE, 0x0, 0x0, 0xffffffff);
     }
 }
 
