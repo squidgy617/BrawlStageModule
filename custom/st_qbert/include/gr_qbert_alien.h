@@ -6,6 +6,9 @@
 
 #define STARTING_CUBE_INDEX 1
 #define STARTING_TEAM_ID 6
+#define JUMP_WAIT_FRAMES 30.0
+#define MIN_DAMAGE_TO_CHANGE 10.0
+#define NUM_LIVES 3;
 
 class grQbertAlien : public grMadein
 {
@@ -15,12 +18,15 @@ class grQbertAlien : public grMadein
         Vec3f targetPos;
         u8 targetIndex;
         u8 teamId;
+        u8 lives;
 
 public:
         grQbertAlien(char* taskName) : grMadein(taskName) {
             teamId = STARTING_TEAM_ID;
+            lives = NUM_LIVES;
         };
         virtual void update(float frameDiff);
+        virtual void onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo);
         virtual ~grQbertAlien() { };
 
         virtual void setupHitPoint();

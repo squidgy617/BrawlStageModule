@@ -1,13 +1,15 @@
 #pragma once
 
 #include <gr/gr_madein.h>
+#include <snd/snd_3d_generator.h>
 
-#define NUM_TEAMS 5
+#define NUM_TEAMS 7
 #define DEFAULT_TEAM_ID 5
 
 class grQbertCube : public grMadein
 {
     protected:
+        snd3DGenerator soundGenerator;
         u8 numMembersOnTeamLanded[NUM_TEAMS];
         u8 prevNumMembersOnTeamLanded[NUM_TEAMS];
         u8 teamId;

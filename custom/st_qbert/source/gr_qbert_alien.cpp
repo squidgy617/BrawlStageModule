@@ -34,7 +34,9 @@ void grQbertAlien::setStartPos() {
 
 void grQbertAlien::update(float frameDelta) {
 
-    float jumpCompletion = this->modelAnims[0]->getFrame() / this->modelAnims[0]->getFrameCount();
+    float animFrames = this->modelAnims[0]->getFrame();
+    float animFrameCount = this->modelAnims[0]->getFrameCount();
+    float jumpCompletion = animFrames / animFrameCount;
 
     if (jumpCompletion <= 1.0) {
         Vec3f pos;
@@ -47,21 +49,31 @@ void grQbertAlien::update(float frameDelta) {
         };
         mtBezierCurve(jumpCompletion, points, &pos);
         this->setPos(&pos);
-    } // TODO: Make him wait a bit before getting new target
-    else {
+    }
+    else if (animFrames - animFrameCount <= 1.0) {
+        this->setPos(&this->targetPos);
+        grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
+        cube->setTeam(this->teamId);
+    }
+    else if (animFrames - animFrameCount > JUMP_WAIT_FRAMES) {
         this->setTargetPos();
     }
 
     grMadein::update(frameDelta);
 }
 
+void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
+    if (damage->totalDamage >= MIN_DAMAGE_TO_CHANGE) {
+        damage->totalDamage = 0;
+        this->teamId = damage->teamId + 1;
+    }
+}
+
 void grQbertAlien::setTargetPos() {
-    this->setPos(&this->targetPos);
     this->prevPos = this->targetPos;
 
     // get next cube target based on nodes
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
-    cube->setTeam(this->teamId);
     this->targetIndex = cube->getNextJumpCubeIndex() - STARTING_CUBE_INDEX;
     cube = (grQbertCube*)stage->getGround(this->targetIndex);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
@@ -81,10 +93,5 @@ void grQbertAlien::setTargetPos() {
     else if (deltaPos.x >= 0 && deltaPos.y < 0) {
         this->setMotion(2);
     }
-
-
-
-
-    // check direction
 }
 

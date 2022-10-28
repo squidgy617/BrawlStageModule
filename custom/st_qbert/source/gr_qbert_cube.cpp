@@ -27,7 +27,7 @@ void grQbertCube::update(float frameDiff){
 void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
     gfTask* stageObject = gfTask::getTask(collStatus->taskId);
     int teamNumber = soExternalValueAccesser::getTeamNo((StageObject*)stageObject);
-    if (teamNumber >= 0 || teamNumber < NUM_TEAMS - 1) {
+    if (teamNumber >= 0 && teamNumber < NUM_TEAMS - 1) {
         teamNumber++;
     }
     else {
@@ -48,9 +48,13 @@ u32 grQbertCube::getNextJumpCubeIndex() {
 }
 
 void grQbertCube::setTeam(u8 teamId) {
+    if (teamId < 0 || teamId >= NUM_TEAMS) {
+        teamId = DEFAULT_TEAM_ID;
+    }
+
     this->setMotionDetails(0, 0, teamId, 0, 0);
     if (this->teamId != teamId) {
-
+        this->soundGenerator.playSE((SndID)0x1ce9, 0x0, 0x0, 0xffffffff);
     }
     this->teamId = teamId;
 };
