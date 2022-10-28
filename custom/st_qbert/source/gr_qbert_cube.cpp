@@ -17,12 +17,11 @@ grQbertCube* grQbertCube::create(int mdlIndex, char* tgtNodeName, char* taskName
 void grQbertCube::update(float frameDiff){
     for (int team = 0; team < NUM_TEAMS; team++) {
         if (this->numMembersOnTeamLanded[team] > this->prevNumMembersOnTeamLanded[team]) {
-            this->setMotionDetails(0, 0, team, 0, 0);
+            this->setTeam(team);
         }
         this->prevNumMembersOnTeamLanded[team] = this->numMembersOnTeamLanded[team];
         this->numMembersOnTeamLanded[team] = 0;
     }
-
 }
 
 void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
@@ -32,7 +31,7 @@ void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJo
         teamNumber++;
     }
     else {
-        teamNumber = 0;
+        teamNumber = DEFAULT_TEAM_ID;
     }
     this->numMembersOnTeamLanded[teamNumber]++;
 
@@ -40,11 +39,19 @@ void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJo
 }
 
 u32 grQbertCube::getNextJumpCubeIndex() {
-    u32 numNodes = GetResNodeNumEntries(&this->sceneModels[0]->resMdl);
+    u32 numNodes = this->sceneModels[0]->resMdl.GetResNodeNumEntries();
     u32 jumpIndex = this->getNodeIndex(0, "Jumps");
     u32 jumpNodeIndex = randi(numNodes - jumpIndex - 1) + jumpIndex + 1;
     Vec3f scale;
     this->getNodeScale(&scale, 0, jumpNodeIndex);
     return scale.x; // use scale.x as index for next cube
 }
+
+void grQbertCube::setTeam(u8 teamId) {
+    this->setMotionDetails(0, 0, teamId, 0, 0);
+    if (this->teamId != teamId) {
+
+    }
+    this->teamId = teamId;
+};
 

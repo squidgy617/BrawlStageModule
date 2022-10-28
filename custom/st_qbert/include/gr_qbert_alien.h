@@ -5,6 +5,7 @@
 #include "gr_qbert_cube.h"
 
 #define STARTING_CUBE_INDEX 1
+#define STARTING_TEAM_ID 6
 
 class grQbertAlien : public grMadein
 {
@@ -13,10 +14,11 @@ class grQbertAlien : public grMadein
         Vec3f prevPos;
         Vec3f targetPos;
         u8 targetIndex;
-
+        u8 teamId;
 
 public:
         grQbertAlien(char* taskName) : grMadein(taskName) {
+            teamId = STARTING_TEAM_ID;
         };
         virtual void update(float frameDiff);
         virtual ~grQbertAlien() { };

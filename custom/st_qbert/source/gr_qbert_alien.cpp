@@ -47,7 +47,7 @@ void grQbertAlien::update(float frameDelta) {
         };
         mtBezierCurve(jumpCompletion, points, &pos);
         this->setPos(&pos);
-    }
+    } // TODO: Make him wait a bit before getting new target
     else {
         this->setTargetPos();
     }
@@ -61,6 +61,7 @@ void grQbertAlien::setTargetPos() {
 
     // get next cube target based on nodes
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
+    cube->setTeam(this->teamId);
     this->targetIndex = cube->getNextJumpCubeIndex() - STARTING_CUBE_INDEX;
     cube = (grQbertCube*)stage->getGround(this->targetIndex);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");

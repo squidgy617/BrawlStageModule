@@ -55,8 +55,8 @@ float* grFinal::getStageData() {
     return this->stageData;
 }
 int grFinal::getModelCount(){
-    if(this->resFile != NULL){
-       return nw4r::g3d::GetResMdlNumEntries(&this->resFile);
+    if(&this->resFile != NULL){
+       return this->resFile.GetResMdlNumEntries();
     }
     return 0;
 }
