@@ -1,5 +1,4 @@
 #include "gr_final.h"
-#include <OS/OSError.h>
 #include <ec_mgr.h>
 #include <memory.h>
 
@@ -69,9 +68,9 @@ float* grFinal::getStageData()
 }
 int grFinal::getModelCount()
 {
-    if (this->resFile != NULL)
+    if (resFile.IsValid())
     {
-        return nw4r::g3d::GetResMdlNumEntries(&this->resFile);
+        return resFile.GetResMdlNumEntries();
     }
     return 0;
 }

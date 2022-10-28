@@ -1,5 +1,4 @@
 #include "gr_village.h"
-#include <OS/OSError.h>
 #include <memory.h>
 
 grVillage* grVillage::create(int mdlIndex, char* tgtNodeName, char* taskName)
@@ -110,9 +109,9 @@ float* grVillage::getStageData()
 }
 int grVillage::getModelCount()
 {
-    if (this->resFile != NULL)
+    if (resFile.IsValid())
     {
-        return nw4r::g3d::GetResMdlNumEntries(&this->resFile);
+        return resFile.GetResMdlNumEntries();
     }
     return 0;
 }
