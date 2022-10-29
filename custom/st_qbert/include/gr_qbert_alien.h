@@ -11,6 +11,7 @@
 #define NUM_LIVES 3
 #define SWEAR_VISIBLE_FRAMES 180.0
 #define RESPAWN_FRAMES 600.0
+#define KNOCKOUT_FRAMES 300.0
 
 class grQbertAlien : public grMadein
 {
@@ -39,6 +40,7 @@ public:
         virtual void setupHitPoint();
         virtual void setStartPos();
         virtual void setTargetPos();
+        virtual void updateShake();
 
         static grQbertAlien* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
 

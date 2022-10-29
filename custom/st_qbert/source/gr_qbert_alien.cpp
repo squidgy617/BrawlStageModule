@@ -29,6 +29,7 @@ void grQbertAlien::setupHitPoint() {
 
 void grQbertAlien::setStartPos() {
     this->setSleepHit(false);
+    this->timer = 0;
     this->setNodeVisibility(true, 0, "QBertM", false, false);
     this->setRot(0, 0, 0);
     this->teamId = STARTING_TEAM_ID;
@@ -47,26 +48,37 @@ void grQbertAlien::update(float frameDelta) {
     float jumpCompletion = animFrames / animFrameCount;
 
     if (lives <= 0) { // Launched
+        this->timer += frameDelta;
         Vec3f pos = this->getPos();
         stRange range;
         this->stage->stagePositions->getDeadRange(&range);
         if (pos.x < range.left || pos.x > range.right || pos.y > range.top || pos.y < range.bottom) {
-            if (this->timer == RESPAWN_FRAMES) {
-                this->setNodeVisibility(false, 0, "QBertM", false, false);
-                cmReqQuake(1, &(Vec3f){0,0,0});
-            }
-            else if (this->timer <= 0) {
+            if (this->timer >= RESPAWN_FRAMES) {
                 this->setStartPos();
             }
-            this->timer -= frameDelta;
         }
         else {
-            pos.x += this->velocity * mtCosF(this->angle) * frameDelta;
-            pos.y += this->velocity * mtCosF(this->angle) * frameDelta;
-            this->setPos(&pos);
+//            pos.x += this->velocity * mtCosF(this->angle) * frameDelta;
+//            pos.y += this->velocity * mtCosF(this->angle) * frameDelta;
+//            this->setPos(&pos);
             Vec3f rot = this->getRot();
             rot.z += this->velocity * frameDelta;
             this->setRot(&rot);
+            Vec3f pos;
+            Vec3f midpointPos = {this->prevPos.x, 110, this->prevPos.z};
+            this->targetPos = (Vec3f){this->prevPos.x, range.bottom, -500};
+            Vec3f points[4] = {
+                    this->prevPos,
+                    midpointPos,
+                    midpointPos,
+                    this->targetPos
+            };
+            mtBezierCurve(this->timer / KNOCKOUT_FRAMES, points, &pos);
+            this->setPos(&pos);
+        }
+        if (this->timer == KNOCKOUT_FRAMES) {
+            this->setNodeVisibility(false, 0, "QBertM", false, false);
+            cmReqQuake(1, &(Vec3f){0,0,0});
         }
     }
     else if (jumpCompletion <= 1.0) { // Mid jump
@@ -117,7 +129,7 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->timer = SWEAR_VISIBLE_FRAMES;
         }
         else {
-            this->timer = RESPAWN_FRAMES;
+            this->prevPos = this->getPos();
         }
     }
 }
@@ -146,6 +158,10 @@ void grQbertAlien::setTargetPos() {
     else if (deltaPos.x >= 0 && deltaPos.y < 0) {
         this->setMotion(2);
     }
+}
+
+void grQbertAlien::updateShake() {
+
 }
 
 // TODO: Swear when he hurts you / when you hurt it (or some other noise), randomly pick swears
