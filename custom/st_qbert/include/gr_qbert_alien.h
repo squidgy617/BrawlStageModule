@@ -23,24 +23,37 @@ class grQbertAlien : public grMadein
         float timer;
         float angle;
         float velocity;
+        float shakeTimer;
+        Vec3f shakeOffset;
         u8 targetIndex;
         u8 teamId;
         u8 lives;
+        SndID swearSndIds[8];
 
-public:
+    public:
         grQbertAlien(char* taskName) : grMadein(taskName) {
             timer = 0;
             angle = 0;
             velocity = 0;
+            shakeOffset = (Vec3f){0, 0, 0};
+            swearSndIds[0] = snd_se_stage_Madein_05;
+            swearSndIds[1] = snd_se_stage_Madein_06;
+            swearSndIds[2] = snd_se_stage_Madein_photo;
+            swearSndIds[3] = snd_se_stage_Madein_good_01;
+            swearSndIds[4] = snd_se_stage_Madein_good_02;
+            swearSndIds[5] = snd_se_stage_Madein_good_04;
+            swearSndIds[6] = snd_se_stage_Madein_bad_01;
+            swearSndIds[7] = snd_se_stage_Madein_bad_03;
         };
-        virtual void update(float frameDiff);
+        virtual void update(float frameDelta);
         virtual void onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo);
         virtual ~grQbertAlien() { };
 
+        virtual void setupAttack();
         virtual void setupHitPoint();
         virtual void setStartPos();
         virtual void setTargetPos();
-        virtual void updateShake();
+        virtual void updateShake(float frameDelta);
 
         static grQbertAlien* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
 

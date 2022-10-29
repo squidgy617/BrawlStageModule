@@ -21,7 +21,7 @@ class grQbertCube : public grMadein
                 teamId = 0;
             }
         };
-        virtual void update(float frameDiff);
+        virtual void update(float frameDelta);
         virtual ~grQbertCube() { };
         virtual void receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3);
         virtual u32 getNextJumpCubeIndex();

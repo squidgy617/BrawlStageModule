@@ -2,6 +2,8 @@
 #include <st/st_class_info.h>
 #include "st_qbert.h"
 #include <gf/gf_camera.h>
+#include <snd/snd_system.h>
+#include <if/if_mngr.h>
 #include <OS/OSError.h>
 
 static stClassInfoImpl<2, stQbert> classInfo = stClassInfoImpl<2, stQbert>();
@@ -13,8 +15,18 @@ stQbert* stQbert::create() {
 bool stQbert::loading(){
     return true;
 }
-void stQbert::update(float frameDiff){
 
+void stQbert::renderPre() {
+    if (this->prevIsPaused != g_IfMngr->isPauseMenuActive) {
+        if (g_IfMngr->isPauseMenuActive) {
+            g_sndSystem->playSE(snd_se_stage_Madein_13, 0x0, 0x0, 0x0, 0xffffffff);
+        }
+    }
+    this->prevIsPaused = g_IfMngr->isPauseMenuActive;
+    Stage::renderPre();
+}
+
+void stQbert::update(float frameDiff){
     return;
 }
 
@@ -55,6 +67,8 @@ void stQbert::createObj() {
     camera->ortho.bottom = -ORTHOGONAL_CAMERA_ZOOM/2;
     camera->ortho.left = -(4.0/3.0)*ORTHOGONAL_CAMERA_ZOOM/2.0;
     camera->ortho.right = (4.0/3.0)*ORTHOGONAL_CAMERA_ZOOM/2.0;
+
+    this->soundGenerator.playSE(snd_se_stage_Madein_01, 0x0, 0x0, 0xffffffff);
 }
 
 void stQbert::createObjBg(int mdlIndex) {
@@ -92,7 +106,6 @@ void stQbert::createObjAlien(int mdlIndex) {
         alien->setStartPos();
     }
 }
-
 
 void Ground::setStageData(float* stageData) {
    this->stageData = stageData;

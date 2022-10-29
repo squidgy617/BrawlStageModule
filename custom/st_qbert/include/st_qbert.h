@@ -14,7 +14,10 @@ const float POKETRAINER_Z = 0.0f;
 #define ORTHOGONAL_CAMERA_ZOOM 150.0
 
 class stQbert : public stMelee {
-    public:
+    protected:
+        snd3DGenerator soundGenerator;
+        bool prevIsPaused;
+public:
         stQbert(int stageID) : stMelee("stQbert", stageID) {};
         static stQbert* create();
 
@@ -49,6 +52,7 @@ class stQbert : public stMelee {
         float getPokeTrainerPositionZ();
         void getPokeTrainerPointData(int * unk, int unk2);
 
+        virtual void renderPre();
         virtual void createObj();
         virtual bool loading();
         virtual void update(float frameDiff);
@@ -60,3 +64,5 @@ class stQbert : public stMelee {
         void createObjCube(int mdlIndex, int collIndex);
         void createObjAlien(int mdlIndex);
 };
+
+// TODO: Green bonus thing that temp freezes opponent

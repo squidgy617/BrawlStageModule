@@ -7,6 +7,7 @@
 #include <hk/hk_math.h>
 #include <mt/mt_trig.h>
 #include <cm/cm_quake.h>
+#include <mt/mt_prng.h>
 
 grQbertAlien* grQbertAlien::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage){
     grQbertAlien* alien = new(StageInstance) grQbertAlien(taskName);
@@ -16,9 +17,77 @@ grQbertAlien* grQbertAlien::create(int mdlIndex, char* tgtNodeName, char* taskNa
     alien->setCalcuCallbackRoot(7);
     alien->stage = stage;
 
+    alien->setupAttack();
     alien->setupHitPoint();
 
     return alien;
+}
+
+void grQbertAlien::setupAttack() {
+
+    float size = 1.0;
+    Vec3f offsetPos = {0.0, 0.0, 0.0};
+    this->setAttack(size, &offsetPos);
+    this->attackInfo->preset = 4;
+
+    soCollisionAttackData* overwriteAttackData = this->getOverwriteAttackData();
+    this->createAttackPointNormal(overwriteAttackData);
+    overwriteAttackData->reactionEffect = 0x100;
+    overwriteAttackData->reactionFix = 0;
+    overwriteAttackData->reactionAdd = 0;
+    overwriteAttackData->power = 3;
+    overwriteAttackData->vector = 90;
+    overwriteAttackData->size = size;
+    overwriteAttackData->offsetPos = offsetPos;
+    overwriteAttackData->hitstopMultiplier = 1.0;
+
+    overwriteAttackData->bits.nodeIndex = 0x1;
+
+    overwriteAttackData->bits.isCollisionCategory9 = true;
+    overwriteAttackData->bits.isCollisionCategory8 = true;
+    overwriteAttackData->bits.isCollisionCategory7 = true;
+    overwriteAttackData->bits.isCollisionCategory6 = false;
+    overwriteAttackData->bits.isCollisionCategory5 = true;
+    overwriteAttackData->bits.isCollisionCategory4 = true;
+    overwriteAttackData->bits.isCollisionCategory3 = true;
+    overwriteAttackData->bits.isCollisionCategory2 = true;
+    overwriteAttackData->bits.isCollisionCategory1 = true;
+    overwriteAttackData->bits.isCollisionCategory0 = true;
+
+    overwriteAttackData->bits.isCollisionSituationUnk = true;
+    overwriteAttackData->bits.isCollisionSituationAir = true;
+    overwriteAttackData->bits.isCollisionSituationGround = true;
+
+    overwriteAttackData->bits.field_0x30_3 = false;
+    overwriteAttackData->bits.isCollisionPartRegion3 = true;
+    overwriteAttackData->bits.isCollisionPartRegion2 = true;
+    overwriteAttackData->bits.isCollisionPartRegion1 = true;
+    overwriteAttackData->bits.isCollisionPartRegion0 = true;
+    overwriteAttackData->bits.elementType = Element_Type_Normal;
+
+    overwriteAttackData->bits.hitSoundLevel = Hit_Sound_Level_Small;
+    overwriteAttackData->bits.hitSoundType = Hit_Sound_Type_Paper;
+    overwriteAttackData->bits.isClankable = true;
+    overwriteAttackData->bits.field_0x34_3 = false;
+    overwriteAttackData->bits.field_0x34_4 = false;
+    overwriteAttackData->bits.isBlockable = true;
+    overwriteAttackData->bits.isReflectable = true;
+    overwriteAttackData->bits.isAbsorbable = false;
+    overwriteAttackData->bits.field_0x34_8 = 0;
+
+    overwriteAttackData->bits.detectionRate = 0x3c;
+    overwriteAttackData->bits.field_0x38_1 = false;
+    overwriteAttackData->bits.ignoreInvincibility = false;
+    overwriteAttackData->bits.ignoreIntangibility = false;
+    overwriteAttackData->bits.facingRestriction = Facing_Restriction_Normal;
+    overwriteAttackData->bits.field_0x38_5 = false;
+    overwriteAttackData->bits.enableFriendlyFire = false;
+    overwriteAttackData->bits.disableHitstop = false;
+    overwriteAttackData->bits.disableHitGfx = false;
+    overwriteAttackData->bits.disableFlinch = false;
+    overwriteAttackData->bits.addedShieldDamage = 0;
+
+    overwriteAttackData->bits.isShapeCapsule = false;
 }
 
 void grQbertAlien::setupHitPoint() {
@@ -29,6 +98,7 @@ void grQbertAlien::setupHitPoint() {
 
 void grQbertAlien::setStartPos() {
     this->setSleepHit(false);
+    this->setSleepAttack(false);
     this->timer = 0;
     this->setNodeVisibility(true, 0, "QBertM", false, false);
     this->setRot(0, 0, 0);
@@ -43,6 +113,8 @@ void grQbertAlien::setStartPos() {
 
 void grQbertAlien::update(float frameDelta) {
 
+    this->updateShake(frameDelta);
+
     float animFrames = this->modelAnims[0]->getFrame();
     float animFrameCount = this->modelAnims[0]->getFrameCount();
     float jumpCompletion = animFrames / animFrameCount;
@@ -50,10 +122,10 @@ void grQbertAlien::update(float frameDelta) {
     if (lives <= 0) { // Launched
         this->timer += frameDelta;
         Vec3f pos = this->getPos();
-        stRange range;
-        this->stage->stagePositions->getDeadRange(&range);
-        if (pos.x < range.left || pos.x > range.right || pos.y > range.top || pos.y < range.bottom) {
+        stRange* range = &this->stage->deadRange;
+        if (pos.x < range->left || pos.x > range->right || pos.y > range->top || pos.y < range->bottom) {
             if (this->timer >= RESPAWN_FRAMES) {
+                this->soundGenerator.playSE(snd_se_stage_Madein_Arrow, 0x0, 0x0, 0xffffffff);
                 this->setStartPos();
             }
         }
@@ -66,7 +138,6 @@ void grQbertAlien::update(float frameDelta) {
             this->setRot(&rot);
             Vec3f pos;
             Vec3f midpointPos = {this->prevPos.x, 110, this->prevPos.z};
-            this->targetPos = (Vec3f){this->prevPos.x, range.bottom, -500};
             Vec3f points[4] = {
                     this->prevPos,
                     midpointPos,
@@ -78,6 +149,7 @@ void grQbertAlien::update(float frameDelta) {
         }
         if (this->timer == KNOCKOUT_FRAMES) {
             this->setNodeVisibility(false, 0, "QBertM", false, false);
+            this->soundGenerator.playSE(snd_se_stage_Madein_08, 0x0, 0x0, 0xffffffff);
             cmReqQuake(1, &(Vec3f){0,0,0});
         }
     }
@@ -92,33 +164,40 @@ void grQbertAlien::update(float frameDelta) {
                 this->targetPos
         };
         mtBezierCurve(jumpCompletion, points, &pos);
+        pos = pos + this->shakeOffset;
         this->setPos(&pos);
     }
     else if (animFrames - animFrameCount <= 1.0) { // Landed
-        this->setPos(&this->targetPos);
+        Vec3f pos = this->targetPos + this->shakeOffset;
+        this->setPos(&pos);
         grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
         cube->setTeam(this->teamId);
     }
     else if (this->timer > 0) { // Swearing
         if (this->timer == SWEAR_VISIBLE_FRAMES) {
-            this->soundGenerator.playSE((SndID)0x1CEE, 0x0, 0x0, 0xffffffff);
+            this->soundGenerator.playSE(this->swearSndIds[randi(8)], 0x0, 0x0, 0xffffffff);
         }
         this->timer -= frameDelta;
         this->setNodeVisibility(true, 0, "SwearM", false, false);
     }
     else if (animFrames - animFrameCount > JUMP_WAIT_FRAMES) { // Pick new target
-        this->setSleepHit(false);
         this->setTargetPos();
+    }
+    else {
+        Vec3f pos = this->targetPos + this->shakeOffset;
+        this->setPos(&pos);
     }
 
     grMadein::update(frameDelta);
 }
 
 void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
-    if (damage->totalDamage >= MIN_DAMAGE_TO_CHANGE) {
+    if (this->timer > 0) {
+        damage->totalDamage = 0;
+    }
+    else if (damage->totalDamage >= MIN_DAMAGE_TO_CHANGE) {
         damage->totalDamage = 0;
         this->teamId = damage->teamId + 1;
-        this->setSleepHit(true);
         this->lives--;
         this->angle = damage->vector;
         if (damage->side == -1) {
@@ -129,8 +208,15 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->timer = SWEAR_VISIBLE_FRAMES;
         }
         else {
+            this->setSleepAttack(true);
+            this->setSleepHit(true);
             this->prevPos = this->getPos();
+            this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, -500};
+            this->soundGenerator.playSE(snd_se_stage_Madein_04, 0x0, 0x0, 0xffffffff);
         }
+    }
+    else {
+        this->shakeTimer = 2.5 + 2.5*randf();
     }
 }
 
@@ -160,9 +246,19 @@ void grQbertAlien::setTargetPos() {
     }
 }
 
-void grQbertAlien::updateShake() {
-
+void grQbertAlien::updateShake(float frameDelta) {
+    this->shakeTimer -= frameDelta;
+    if (this->shakeTimer <= 0) {
+        this->shakeTimer = 0;
+        this->shakeOffset = (Vec3f){0, 0, 0};
+    }
+    else {
+        if ((u32)this->shakeTimer % 3 == 0) {
+            float x;
+            float y;
+            mtSinCosf(0, &y, &x);
+            float shakeMul = 0.5 + 0.8*randf();
+            this->shakeOffset = (Vec3f){shakeMul*x, shakeMul*y, 0};
+        }
+    }
 }
-
-// TODO: Swear when he hurts you / when you hurt it (or some other noise), randomly pick swears
-

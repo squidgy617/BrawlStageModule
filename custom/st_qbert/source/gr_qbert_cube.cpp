@@ -14,7 +14,7 @@ grQbertCube* grQbertCube::create(int mdlIndex, char* tgtNodeName, char* taskName
     return ground;
 }
 
-void grQbertCube::update(float frameDiff){
+void grQbertCube::update(float frameDelta){
     for (int team = 0; team < NUM_TEAMS; team++) {
         if (this->numMembersOnTeamLanded[team] > this->prevNumMembersOnTeamLanded[team]) {
             this->setTeam(team);
@@ -54,7 +54,7 @@ void grQbertCube::setTeam(u8 teamId) {
 
     this->setMotionDetails(0, 0, teamId, 0, 0);
     if (this->teamId != teamId) {
-        this->soundGenerator.playSE((SndID)0x1ce9, 0x0, 0x0, 0xffffffff);
+        this->soundGenerator.playSE(snd_se_stage_Madein_10, 0x0, 0x0, 0xffffffff);
     }
     this->teamId = teamId;
 };
