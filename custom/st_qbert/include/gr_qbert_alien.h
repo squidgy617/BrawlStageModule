@@ -10,6 +10,7 @@
 #define MIN_DAMAGE_TO_CHANGE 10.0
 #define NUM_LIVES 3
 #define SWEAR_VISIBLE_FRAMES 180.0
+#define RESPAWN_FRAMES 600.0
 
 class grQbertAlien : public grMadein
 {
@@ -18,16 +19,18 @@ class grQbertAlien : public grMadein
         snd3DGenerator soundGenerator;
         Vec3f prevPos;
         Vec3f targetPos;
-        float swearTimer;
+        float timer;
+        float angle;
+        float velocity;
         u8 targetIndex;
         u8 teamId;
         u8 lives;
 
 public:
         grQbertAlien(char* taskName) : grMadein(taskName) {
-            teamId = STARTING_TEAM_ID;
-            lives = NUM_LIVES;
-            swearTimer = 0;
+            timer = 0;
+            angle = 0;
+            velocity = 0;
         };
         virtual void update(float frameDiff);
         virtual void onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo);
