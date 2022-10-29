@@ -6,6 +6,7 @@
 #include <mt/mt_spline.h>
 #include <hk/hk_math.h>
 #include <mt/mt_trig.h>
+#include <cm/cm_quake.h>
 
 grQbertAlien* grQbertAlien::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage){
     grQbertAlien* alien = new(StageInstance) grQbertAlien(taskName);
@@ -45,13 +46,14 @@ void grQbertAlien::update(float frameDelta) {
     float animFrameCount = this->modelAnims[0]->getFrameCount();
     float jumpCompletion = animFrames / animFrameCount;
 
-    if (lives <= 0) {
+    if (lives <= 0) { // Launched
         Vec3f pos = this->getPos();
         stRange range;
         this->stage->stagePositions->getDeadRange(&range);
         if (pos.x < range.left || pos.x > range.right || pos.y > range.top || pos.y < range.bottom) {
             if (this->timer == RESPAWN_FRAMES) {
                 this->setNodeVisibility(false, 0, "QBertM", false, false);
+                cmReqQuake(1, &(Vec3f){0,0,0});
             }
             else if (this->timer <= 0) {
                 this->setStartPos();
@@ -67,7 +69,7 @@ void grQbertAlien::update(float frameDelta) {
             this->setRot(&rot);
         }
     }
-    else if (jumpCompletion <= 1.0) {
+    else if (jumpCompletion <= 1.0) { // Mid jump
         this->setNodeVisibility(false, 0, "SwearM", false, false);
         Vec3f pos;
         Vec3f midpointPos = {(this->prevPos.x + this->targetPos.x)/2, hkMath::max2f(this->prevPos.y, this->targetPos.y) + 5, (this->prevPos.z + this->targetPos.z)/2};
@@ -80,19 +82,19 @@ void grQbertAlien::update(float frameDelta) {
         mtBezierCurve(jumpCompletion, points, &pos);
         this->setPos(&pos);
     }
-    else if (animFrames - animFrameCount <= 1.0) {
+    else if (animFrames - animFrameCount <= 1.0) { // Landed
         this->setPos(&this->targetPos);
         grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
         cube->setTeam(this->teamId);
     }
-    else if (this->timer > 0) {
+    else if (this->timer > 0) { // Swearing
         if (this->timer == SWEAR_VISIBLE_FRAMES) {
             this->soundGenerator.playSE((SndID)0x1CEE, 0x0, 0x0, 0xffffffff);
         }
         this->timer -= frameDelta;
         this->setNodeVisibility(true, 0, "SwearM", false, false);
     }
-    else if (animFrames - animFrameCount > JUMP_WAIT_FRAMES) {
+    else if (animFrames - animFrameCount > JUMP_WAIT_FRAMES) { // Pick new target
         this->setSleepHit(false);
         this->setTargetPos();
     }
