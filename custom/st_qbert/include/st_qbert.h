@@ -12,12 +12,19 @@ const float SCROLL_DIR = 0.0f;
 const float POKETRAINER_Z = 0.0f;
 
 #define ORTHOGONAL_CAMERA_ZOOM 150.0
+#define NUM_BLOCKS 28
 
 class stQbert : public stMelee {
     protected:
         snd3DGenerator soundGenerator;
+        u8 numBlocksPerTeam[NUM_TEAMS];
 public:
-        stQbert(int stageID) : stMelee("stQbert", stageID) {};
+        stQbert(int stageID) : stMelee("stQbert", stageID) {
+            numBlocksPerTeam[0] = NUM_BLOCKS;
+            for (u8 team = 0; team < NUM_TEAMS; team++) {
+                numBlocksPerTeam[team] = 0;
+            }
+        };
         static stQbert* create();
 
         int getWind2ndOnlyData();

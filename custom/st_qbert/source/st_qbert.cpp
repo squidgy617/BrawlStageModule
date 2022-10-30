@@ -21,7 +21,15 @@ void stQbert::notifyEventInfoGo() {
 }
 
 void stQbert::update(float frameDiff){
-    return;
+    for (u8 team = 1; team < NUM_TEAMS; team++) {
+        if (this->numBlocksPerTeam[team] >= NUM_BLOCKS) {
+            this->soundGenerator.playSE(snd_se_stage_Madein_bad_04, 0x0, 0x0, 0xffffffff);
+            for (u8 blockNum = 0; blockNum < NUM_BLOCKS; blockNum++) {
+                grQbertCube* cube = (grQbertCube*)this->getGround(blockNum + 1);
+                cube->setWin();
+            }
+        }
+    }
 }
 
 void stQbert::createObj() {
@@ -31,7 +39,7 @@ void stQbert::createObj() {
 
     this->createObjBg(1);
 
-    for (int cubeIndex = 2; cubeIndex <= 29; cubeIndex++) {
+    for (int cubeIndex = 2; cubeIndex <= NUM_BLOCKS + 1; cubeIndex++) {
         this->createObjCube(cubeIndex, cubeIndex);
     }
     this->createObjAlien(31);
@@ -85,6 +93,7 @@ void stQbert::createObjCube(int mdlIndex, int collIndex) {
         cube->setDontMoveGround();
         cube->initializeEntity();
         cube->startEntity();
+        cube->setNumBlocksPerTeamWork(this->numBlocksPerTeam);
         createCollision(fileData, collIndex, cube);
     }
 }

@@ -120,9 +120,6 @@ void grQbertAlien::setStart() {
 }
 
 void grQbertAlien::renderPre() {
-
-    // TODO: Also spawn qbert after game start
-    // TODO: Check if qbert is alive, move to alien class
     if (this->prevIsPaused != g_IfMngr->isPauseMenuActive) {
         if (g_IfMngr->isPauseMenuActive) {
             if (this->lives > 0) {

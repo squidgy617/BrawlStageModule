@@ -22,20 +22,31 @@ void grQbertCube::update(float frameDelta){
         this->prevNumMembersOnTeamLanded[team] = this->numMembersOnTeamLanded[team];
         this->numMembersOnTeamLanded[team] = 0;
     }
+
+    if (this->timer > 0) {
+        if (this->timer - frameDelta <= 0) {
+            this->timer = 0;
+            this->setTeam(0);
+        }
+        else {
+            this->timer -= frameDelta;
+        }
+    }
+
 }
 
 void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
-    gfTask* stageObject = gfTask::getTask(collStatus->taskId);
-    int teamNumber = soExternalValueAccesser::getTeamNo((StageObject*)stageObject);
-    if (teamNumber >= 0 && teamNumber < NUM_TEAMS - 1) {
-        teamNumber++;
+    if (this->timer <= 0) {
+        gfTask* stageObject = gfTask::getTask(collStatus->taskId);
+        int teamNumber = soExternalValueAccesser::getTeamNo((StageObject*)stageObject);
+        if (teamNumber >= 0 && teamNumber < NUM_TEAMS - 1) {
+            teamNumber++;
+        }
+        else {
+            teamNumber = DEFAULT_TEAM_ID;
+        }
+        this->numMembersOnTeamLanded[teamNumber]++;
     }
-    else {
-        teamNumber = DEFAULT_TEAM_ID;
-    }
-    this->numMembersOnTeamLanded[teamNumber]++;
-
-
 }
 
 u32 grQbertCube::getNextJumpCubeIndex() {
@@ -47,15 +58,31 @@ u32 grQbertCube::getNextJumpCubeIndex() {
     return scale.x; // use scale.x as index for next cube
 }
 
-void grQbertCube::setTeam(u8 teamId) {
-    if (teamId < 0 || teamId >= NUM_TEAMS) {
-        teamId = DEFAULT_TEAM_ID;
-    }
+void grQbertCube::setNumBlocksPerTeamWork(u8* numBlocksPerTeam) {
+    this->numBlocksPerTeam = numBlocksPerTeam;
+}
 
-    this->setMotionDetails(0, 0, teamId, 0, 0);
-    if (this->teamId != teamId) {
-        this->soundGenerator.playSE(snd_se_stage_Madein_10, 0x0, 0x0, 0xffffffff);
+void grQbertCube::setTeam(u8 teamId) {
+    if (this->timer <= 0) {
+        if (teamId < 0 || teamId >= NUM_TEAMS) {
+            teamId = DEFAULT_TEAM_ID;
+        }
+
+        this->setMotionDetails(0, 0, teamId, 0, 0);
+        if (this->teamId != teamId) {
+            this->numBlocksPerTeam[this->teamId]--;
+            this->numBlocksPerTeam[teamId]++;
+            if (teamId > 0) {
+                this->soundGenerator.playSE(snd_se_stage_Madein_10, 0x0, 0x0, 0xffffffff);
+            }
+        }
+        this->teamId = teamId;
     }
-    this->teamId = teamId;
 };
+
+void grQbertCube::setWin() {
+    this->setTeam(0);
+    this->setMotionDetails(0, 0, NUM_TEAMS, 0, 0);
+    this->timer = WIN_FRAMES;
+}
 
