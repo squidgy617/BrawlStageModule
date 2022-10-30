@@ -3,7 +3,6 @@
 #include "st_qbert.h"
 #include <gf/gf_camera.h>
 #include <snd/snd_system.h>
-#include <if/if_mngr.h>
 #include <OS/OSError.h>
 
 static stClassInfoImpl<2, stQbert> classInfo = stClassInfoImpl<2, stQbert>();
@@ -16,14 +15,9 @@ bool stQbert::loading(){
     return true;
 }
 
-void stQbert::renderPre() {
-    if (this->prevIsPaused != g_IfMngr->isPauseMenuActive) {
-        if (g_IfMngr->isPauseMenuActive) {
-            g_sndSystem->playSE(snd_se_stage_Madein_13, 0x0, 0x0, 0x0, 0xffffffff);
-        }
-    }
-    this->prevIsPaused = g_IfMngr->isPauseMenuActive;
-    Stage::renderPre();
+void stQbert::notifyEventInfoGo() {
+    grQbertAlien* alien = (grQbertAlien*)this->getGround(29);
+    alien->setStart();
 }
 
 void stQbert::update(float frameDiff){

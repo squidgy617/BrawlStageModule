@@ -16,7 +16,6 @@ const float POKETRAINER_Z = 0.0f;
 class stQbert : public stMelee {
     protected:
         snd3DGenerator soundGenerator;
-        bool prevIsPaused;
 public:
         stQbert(int stageID) : stMelee("stQbert", stageID) {};
         static stQbert* create();
@@ -52,13 +51,13 @@ public:
         float getPokeTrainerPositionZ();
         void getPokeTrainerPointData(int * unk, int unk2);
 
-        virtual void renderPre();
         virtual void createObj();
         virtual bool loading();
         virtual void update(float frameDiff);
         virtual int getFinalTechniqColor();
         virtual bool isBamperVector();
         virtual ~stQbert() {this->releaseArchive(); };
+        virtual void notifyEventInfoGo();
 
         void createObjBg(int mdlIndex);
         void createObjCube(int mdlIndex, int collIndex);

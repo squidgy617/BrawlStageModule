@@ -7,6 +7,8 @@
 #include <hk/hk_math.h>
 #include <mt/mt_trig.h>
 #include <cm/cm_quake.h>
+#include <if/if_mngr.h>
+#include <snd/snd_system.h>
 #include <mt/mt_prng.h>
 
 grQbertAlien* grQbertAlien::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage){
@@ -107,8 +109,29 @@ void grQbertAlien::setStartPos() {
     this->targetIndex = STARTING_CUBE_INDEX;
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
+    this->setPos(&this->targetPos);
     cube->setTeam(this->teamId);
     this->setTargetPos();
+}
+
+void grQbertAlien::setStart() {
+    this->isStart = true;
+    this->setStartPos();
+}
+
+void grQbertAlien::renderPre() {
+
+    // TODO: Also spawn qbert after game start
+    // TODO: Check if qbert is alive, move to alien class
+    if (this->prevIsPaused != g_IfMngr->isPauseMenuActive) {
+        if (g_IfMngr->isPauseMenuActive) {
+            if (this->lives > 0) {
+                g_sndSystem->playSE(snd_se_stage_Madein_13, 0x0, 0x0, 0x0, 0xffffffff);
+            }
+        }
+    }
+    this->prevIsPaused = g_IfMngr->isPauseMenuActive;
+    Ground::renderPre();
 }
 
 void grQbertAlien::update(float frameDelta) {
@@ -119,7 +142,10 @@ void grQbertAlien::update(float frameDelta) {
     float animFrameCount = this->modelAnims[0]->getFrameCount();
     float jumpCompletion = animFrames / animFrameCount;
 
-    if (lives <= 0) { // Launched
+    if (!this->isStart) {
+
+    }
+    else if (lives <= 0) { // Launched
         this->timer += frameDelta;
         Vec3f pos = this->getPos();
         stRange* range = &this->stage->deadRange;

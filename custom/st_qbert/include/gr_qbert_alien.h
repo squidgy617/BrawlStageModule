@@ -28,6 +28,8 @@ class grQbertAlien : public grMadein
         u8 targetIndex;
         u8 teamId;
         u8 lives;
+        bool prevIsPaused;
+        bool isStart;
         SndID swearSndIds[8];
 
     public:
@@ -44,7 +46,9 @@ class grQbertAlien : public grMadein
             swearSndIds[5] = snd_se_stage_Madein_good_04;
             swearSndIds[6] = snd_se_stage_Madein_bad_01;
             swearSndIds[7] = snd_se_stage_Madein_bad_03;
+            isStart = false;
         };
+        virtual void renderPre();
         virtual void update(float frameDelta);
         virtual void onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo);
         virtual ~grQbertAlien() { };
@@ -54,6 +58,7 @@ class grQbertAlien : public grMadein
         virtual void setStartPos();
         virtual void setTargetPos();
         virtual void updateShake(float frameDelta);
+        virtual void setStart();
 
         static grQbertAlien* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
 
