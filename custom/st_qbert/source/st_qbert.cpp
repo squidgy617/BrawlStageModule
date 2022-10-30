@@ -3,6 +3,8 @@
 #include "st_qbert.h"
 #include <gf/gf_camera.h>
 #include <snd/snd_system.h>
+#include <ft/ft_manager.h>
+#include <so/so_external_value_accesser.h>
 #include <OS/OSError.h>
 
 static stClassInfoImpl<2, stQbert> classInfo = stClassInfoImpl<2, stQbert>();
@@ -18,18 +20,6 @@ bool stQbert::loading(){
 void stQbert::notifyEventInfoGo() {
     grQbertAlien* alien = (grQbertAlien*)this->getGround(29);
     alien->setStart();
-}
-
-void stQbert::update(float frameDiff){
-    for (u8 team = 1; team < NUM_TEAMS; team++) {
-        if (this->numBlocksPerTeam[team] >= NUM_BLOCKS) {
-            this->soundGenerator.playSE(snd_se_stage_Madein_bad_04, 0x0, 0x0, 0xffffffff);
-            for (u8 blockNum = 0; blockNum < NUM_BLOCKS; blockNum++) {
-                grQbertCube* cube = (grQbertCube*)this->getGround(blockNum + 1);
-                cube->setWin();
-            }
-        }
-    }
 }
 
 void stQbert::createObj() {
@@ -107,6 +97,26 @@ void stQbert::createObjAlien(int mdlIndex) {
         alien->initializeEntity();
         alien->startEntity();
         alien->setStartPos();
+    }
+}
+
+void stQbert::update(float frameDiff){
+    for (u8 team = 1; team < NUM_TEAMS; team++) {
+        if (this->numBlocksPerTeam[team] >= NUM_BLOCKS) {
+            this->soundGenerator.playSE(snd_se_stage_Madein_bad_04, 0x0, 0x0, 0xffffffff);
+            for (u8 blockNum = 0; blockNum < NUM_BLOCKS; blockNum++) {
+                grQbertCube* cube = (grQbertCube*)this->getGround(blockNum + 1);
+                cube->setWin();
+            }
+            for (u8 i = 0; i < g_ftManager->getEntryCount(); i++) {
+                // set reward for team
+                Fighter* fighter = g_ftManager->getFighter(g_ftManager->getEntryIdFromIndex(i), 0);
+                int teamNumber = soExternalValueAccesser::getTeamNo((StageObject*)fighter) + 1;
+                if (teamNumber == team || team > 5) {
+                    fighter->setCurry(true, -1);
+                }
+            }
+        }
     }
 }
 
