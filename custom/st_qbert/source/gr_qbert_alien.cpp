@@ -99,12 +99,6 @@ void grQbertAlien::setupHitPoint() {
 }
 
 void grQbertAlien::setStartPos() {
-    this->setSleepHit(false);
-    this->setSleepAttack(false);
-    this->timer = 0;
-    this->setNodeVisibility(true, 0, "EnemyM", false, false);
-    this->modelAnims[0]->setUpdateRate(1.0);
-    this->setRot(0, 0, 0);
     this->targetIndex = STARTING_CUBE_INDEX;
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
@@ -117,8 +111,8 @@ void grQbertAlien::setStart() {
     this->lives = NUM_LIVES;
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
     cube->setTeam(this->teamId);
-    this->isStart = true;
-    this->setStartPos();
+    grQbertEnemy::setStart();
+
 }
 
 void grQbertAlien::renderPre() {
