@@ -49,13 +49,18 @@ void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJo
     }
 }
 
-u32 grQbertCube::getNextJumpCubeIndex() {
+u32 grQbertCube::getNumNextJumpCubes() {
+    return this->sceneModels[0]->resMdl.GetResNodeNumEntries() - this->getNodeIndex(0, "Jumps") - 1;
+}
+
+void grQbertCube::getNextJumpCubes(u32* cubeIndices) {
     u32 numNodes = this->sceneModels[0]->resMdl.GetResNodeNumEntries();
-    u32 jumpIndex = this->getNodeIndex(0, "Jumps");
-    u32 jumpNodeIndex = randi(numNodes - jumpIndex - 1) + jumpIndex + 1;
-    Vec3f scale;
-    this->getNodeScale(&scale, 0, jumpNodeIndex);
-    return scale.x; // use scale.x as index for next cube
+    u32 startJumpNodeIndex = this->getNodeIndex(0, "Jumps") + 1;
+    for (u32 i = startJumpNodeIndex; i < numNodes; i++) {
+        Vec3f scale;
+        this->getNodeScale(&scale, 0, i);
+        cubeIndices[i - startJumpNodeIndex] = scale.x; // use scale.x as index for next cube
+    }
 }
 
 void grQbertCube::setNumBlocksPerTeamWork(u8* numBlocksPerTeam) {

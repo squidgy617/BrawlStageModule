@@ -34,7 +34,7 @@ void grQbertAlien::setupAttack() {
 
     soCollisionAttackData* overwriteAttackData = this->getOverwriteAttackData();
     this->createAttackPointNormal(overwriteAttackData);
-    overwriteAttackData->reactionEffect = 0x100;
+    overwriteAttackData->reactionEffect = 0x59;
     overwriteAttackData->reactionFix = 0;
     overwriteAttackData->reactionAdd = 0;
     overwriteAttackData->power = 3;
@@ -48,7 +48,7 @@ void grQbertAlien::setupAttack() {
     overwriteAttackData->bits.isCollisionCategory9 = true;
     overwriteAttackData->bits.isCollisionCategory8 = true;
     overwriteAttackData->bits.isCollisionCategory7 = true;
-    overwriteAttackData->bits.isCollisionCategory6 = false;
+    overwriteAttackData->bits.isCollisionCategory6 = true;
     overwriteAttackData->bits.isCollisionCategory5 = true;
     overwriteAttackData->bits.isCollisionCategory4 = true;
     overwriteAttackData->bits.isCollisionCategory3 = true;
@@ -68,7 +68,7 @@ void grQbertAlien::setupAttack() {
     overwriteAttackData->bits.elementType = Element_Type_Normal;
 
     overwriteAttackData->bits.hitSoundLevel = Hit_Sound_Level_Small;
-    overwriteAttackData->bits.hitSoundType = Hit_Sound_Type_Paper;
+    overwriteAttackData->bits.hitSoundType = Hit_Sound_Type_Slash;
     overwriteAttackData->bits.isClankable = true;
     overwriteAttackData->bits.field_0x34_3 = false;
     overwriteAttackData->bits.field_0x34_4 = false;
@@ -151,7 +151,6 @@ void grQbertAlien::updateMove(float frameDelta) {
             rot.z += this->velocity * frameDelta;
             this->setRot(&rot);
             Vec3f pos;
-            Vec3f midpointPos = {this->prevPos.x, 110, this->prevPos.z};
             Vec3f points[4] = {
                     this->prevPos,
                     midpointPos,
@@ -170,11 +169,10 @@ void grQbertAlien::updateMove(float frameDelta) {
     else if (jumpCompletion <= 1.0) { // Mid jump
         this->setNodeVisibility(false, 0, "SwearM", false, false);
         Vec3f pos;
-        Vec3f midpointPos = {(this->prevPos.x + this->targetPos.x)/2, hkMath::max2f(this->prevPos.y, this->targetPos.y) + 5, (this->prevPos.z + this->targetPos.z)/2};
         Vec3f points[4] = {
                 this->prevPos,
-                midpointPos,
-                midpointPos,
+                this->midpointPos,
+                this->midpointPos,
                 this->targetPos
         };
         mtBezierCurve(jumpCompletion, points, &pos);
@@ -201,8 +199,6 @@ void grQbertAlien::updateMove(float frameDelta) {
         Vec3f pos = this->targetPos + this->shakeOffset;
         this->setPos(&pos);
     }
-
-    grMadein::update(frameDelta);
 }
 
 void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
@@ -226,6 +222,7 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->setSleepHit(true);
             this->prevPos = this->getPos();
             this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, -500};
+            this->midpointPos = (Vec3f){this->prevPos.x, 110, this->prevPos.z};
             this->soundGenerator.playSE(snd_se_stage_Madein_04, 0x0, 0x0, 0xffffffff);
             this->modelAnims[0]->setUpdateRate(0.0);
         }
@@ -240,9 +237,14 @@ void grQbertAlien::setTargetPos() {
 
     // get next cube target based on nodes
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
-    this->targetIndex = cube->getNextJumpCubeIndex() - STARTING_CUBE_INDEX;
+    u32 numJumps = cube->getNumNextJumpCubes();
+    u32 cubeIndices[MAX_JUMPS];
+    cube->getNextJumpCubes(cubeIndices);
+    this->targetIndex = cubeIndices[randi(numJumps)] - STARTING_CUBE_INDEX;
+
     cube = (grQbertCube*)stage->getGround(this->targetIndex);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
+    this->midpointPos = (Vec3f){(this->prevPos.x + this->targetPos.x)/2, hkMath::max2f(this->prevPos.y, this->targetPos.y) + 5, (this->prevPos.z + this->targetPos.z)/2};
 
     this->setAnim();
 }

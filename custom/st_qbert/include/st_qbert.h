@@ -5,6 +5,7 @@
 #include "gr_final.h"
 #include "gr_qbert_cube.h"
 #include "gr_qbert_alien.h"
+#include "gr_qbert_coily.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -69,6 +70,7 @@ public:
         void createObjBg(int mdlIndex);
         void createObjCube(int mdlIndex, int collIndex);
         void createObjAlien(int mdlIndex);
+        void createObjCoily(int mdlIndex);
 };
 
 // TODO: Green bonus thing that temp freezes opponent

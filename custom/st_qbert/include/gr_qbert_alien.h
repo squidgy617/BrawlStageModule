@@ -4,9 +4,7 @@
 #include "gr_qbert_enemy.h"
 #include "gr_qbert_cube.h"
 
-#define STARTING_CUBE_INDEX 1
 #define STARTING_TEAM_ID 6
-#define JUMP_WAIT_FRAMES 30.0
 #define MIN_DAMAGE_TO_CHANGE 10.0
 #define NUM_LIVES 3
 #define SWEAR_VISIBLE_FRAMES 180.0

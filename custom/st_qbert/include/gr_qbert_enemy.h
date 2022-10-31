@@ -4,6 +4,9 @@
 #include <gr/gr_madein.h>
 #include "gr_qbert_cube.h"
 
+#define JUMP_WAIT_FRAMES 30.0
+#define STARTING_CUBE_INDEX 1
+
 class grQbertEnemy : public grMadein
 {
 protected:
@@ -11,6 +14,7 @@ protected:
     snd3DGenerator soundGenerator;
     Vec3f prevPos;
     Vec3f targetPos;
+    Vec3f midpointPos;
     float timer;
     float angle;
     float velocity;

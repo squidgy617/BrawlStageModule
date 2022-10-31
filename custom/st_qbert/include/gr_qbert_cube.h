@@ -6,6 +6,7 @@
 #define NUM_TEAMS 7
 #define DEFAULT_TEAM_ID 5
 #define WIN_FRAMES 150.0
+#define MAX_JUMPS 4
 
 class grQbertCube : public grMadein
 {
@@ -28,7 +29,8 @@ class grQbertCube : public grMadein
         virtual void update(float frameDelta);
         virtual ~grQbertCube() { };
         virtual void receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3);
-        virtual u32 getNextJumpCubeIndex();
+        virtual u32 getNumNextJumpCubes();
+        virtual void getNextJumpCubes(u32* cubeIndices);
         virtual void setNumBlocksPerTeamWork(u8 numBlocksPerTeam[NUM_TEAMS]);
         virtual void setTeam(u8 teamId);
         virtual void setWin();

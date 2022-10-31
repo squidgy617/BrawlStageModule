@@ -20,6 +20,7 @@ void grQbertEnemy::update(float frameDelta) {
         this->updateShake(frameDelta);
         this->updateMove(frameDelta);
     }
+    grMadein::update(frameDelta);
 }
 
 void grQbertEnemy::updateShake(float frameDelta) {
