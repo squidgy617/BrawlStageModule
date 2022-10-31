@@ -1,5 +1,6 @@
 #pragma once
 
+#include <StaticAssert.h>
 #include <st/st_melee.h>
 #include <types.h>
 
@@ -10,7 +11,7 @@ const float POKETRAINER_Z = 0.0f;
 
 class stFinal : public stMelee {
 public:
-    stFinal(int stageID) : stMelee("stFinal", stageID){};
+    stFinal() : stMelee("stFinal", 0x02){};
     static stFinal* create();
     int getWind2ndOnlyData();
     bool isReStartSamePoint();
@@ -49,4 +50,6 @@ public:
     virtual int getFinalTechniqColor();
     virtual bool isBamperVector();
     virtual ~stFinal() { this->releaseArchive(); };
+
+    STATIC_CHECK(sizeof(stFinal) == 0x1D8)
 };
