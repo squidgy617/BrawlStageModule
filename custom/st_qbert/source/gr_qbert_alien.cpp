@@ -102,19 +102,20 @@ void grQbertAlien::setStartPos() {
     this->setSleepHit(false);
     this->setSleepAttack(false);
     this->timer = 0;
-    this->setNodeVisibility(true, 0, "QBertM", false, false);
+    this->setNodeVisibility(true, 0, "EnemyM", false, false);
     this->setRot(0, 0, 0);
-    this->teamId = STARTING_TEAM_ID;
-    this->lives = NUM_LIVES;
     this->targetIndex = STARTING_CUBE_INDEX;
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
     this->setPos(&this->targetPos);
-    cube->setTeam(this->teamId);
     this->setTargetPos();
 }
 
 void grQbertAlien::setStart() {
+    this->teamId = STARTING_TEAM_ID;
+    this->lives = NUM_LIVES;
+    grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
+    cube->setTeam(this->teamId);
     this->isStart = true;
     this->setStartPos();
 }
@@ -131,25 +132,20 @@ void grQbertAlien::renderPre() {
     Ground::renderPre();
 }
 
-void grQbertAlien::update(float frameDelta) {
-
-    this->updateShake(frameDelta);
+void grQbertAlien::updateMove(float frameDelta) {
 
     float animFrames = this->modelAnims[0]->getFrame();
     float animFrameCount = this->modelAnims[0]->getFrameCount();
     float jumpCompletion = animFrames / animFrameCount;
 
-    if (!this->isStart) {
-
-    }
-    else if (lives <= 0) { // Launched
+    if (lives <= 0) { // Launched
         this->timer += frameDelta;
         Vec3f pos = this->getPos();
         stRange* range = &this->stage->deadRange;
         if (pos.x < range->left || pos.x > range->right || pos.y > range->top || pos.y < range->bottom) {
             if (this->timer >= RESPAWN_FRAMES) {
                 this->soundGenerator.playSE(snd_se_stage_Madein_Arrow, 0x0, 0x0, 0xffffffff);
-                this->setStartPos();
+                this->setStart();
             }
         }
         else {
@@ -252,36 +248,5 @@ void grQbertAlien::setTargetPos() {
     cube = (grQbertCube*)stage->getGround(this->targetIndex);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
 
-    Vec3f deltaPos = this->targetPos - this->prevPos;
-
-    // pick jump animation based on direction
-    if (deltaPos.x >= 0 && deltaPos.y >= 0) {
-        this->setMotion(6);
-    }
-    else if (deltaPos.x < 0 && deltaPos.y >= 0) {
-        this->setMotion(4);
-    }
-    else if (deltaPos.x < 0 && deltaPos.y < 0) {
-        this->setMotion(0);
-    }
-    else if (deltaPos.x >= 0 && deltaPos.y < 0) {
-        this->setMotion(2);
-    }
-}
-
-void grQbertAlien::updateShake(float frameDelta) {
-    this->shakeTimer -= frameDelta;
-    if (this->shakeTimer <= 0) {
-        this->shakeTimer = 0;
-        this->shakeOffset = (Vec3f){0, 0, 0};
-    }
-    else {
-        if ((u32)this->shakeTimer % 3 == 0) {
-            float x;
-            float y;
-            mtSinCosf(0, &y, &x);
-            float shakeMul = 0.5 + 0.8*randf();
-            this->shakeOffset = (Vec3f){shakeMul*x, shakeMul*y, 0};
-        }
-    }
+    this->setAnim();
 }
