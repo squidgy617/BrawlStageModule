@@ -10,7 +10,7 @@
 static stClassInfoImpl<2, stQbert> classInfo = stClassInfoImpl<2, stQbert>();
 
 stQbert* stQbert::create() {
-    stQbert* stage = new(StageInstance) stQbert(0x2);
+    stQbert* stage = new(Heaps::StageInstance) stQbert(0x2);
     return stage;
 }
 bool stQbert::loading(){
@@ -227,7 +227,7 @@ int stQbert::getFinalTechniqColor() {
 
 template<int I, typename T>
 T* stClassInfoImpl<I, T>::create(){
-    T* stage = new(StageInstance) T(I);
+    T* stage = new(Heaps::StageInstance) T(I);
     return stage;
 }
 

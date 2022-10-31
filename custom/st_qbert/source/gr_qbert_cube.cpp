@@ -6,10 +6,10 @@
 #include <OS/OSError.h>
 
 grQbertCube* grQbertCube::create(int mdlIndex, char* tgtNodeName, char* taskName){
-    grQbertCube* ground = new(StageInstance) grQbertCube(taskName);
+    grQbertCube* ground = new(Heaps::StageInstance) grQbertCube(taskName);
     ground->setMdlIndex(mdlIndex);
-    ground->heapType = StageInstance;
-    ground->makeCalcuCallback(1, StageInstance);
+    ground->heapType = Heaps::StageInstance;
+    ground->makeCalcuCallback(1, Heaps::StageInstance);
     ground->setCalcuCallbackRoot(7);
     return ground;
 }

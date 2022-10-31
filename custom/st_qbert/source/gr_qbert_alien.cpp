@@ -12,10 +12,10 @@
 #include <mt/mt_prng.h>
 
 grQbertAlien* grQbertAlien::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage){
-    grQbertAlien* alien = new(StageInstance) grQbertAlien(taskName);
+    grQbertAlien* alien = new(Heaps::StageInstance) grQbertAlien(taskName);
     alien->setMdlIndex(mdlIndex);
-    alien->heapType = StageInstance;
-    alien->makeCalcuCallback(1, StageInstance);
+    alien->heapType = Heaps::StageInstance;
+    alien->makeCalcuCallback(1, Heaps::StageInstance);
     alien->setCalcuCallbackRoot(7);
     alien->stage = stage;
 
