@@ -103,6 +103,7 @@ void grQbertAlien::setStartPos() {
     this->setSleepAttack(false);
     this->timer = 0;
     this->setNodeVisibility(true, 0, "EnemyM", false, false);
+    this->modelAnims[0]->setUpdateRate(1.0);
     this->setRot(0, 0, 0);
     this->targetIndex = STARTING_CUBE_INDEX;
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
@@ -232,6 +233,7 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->prevPos = this->getPos();
             this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, -500};
             this->soundGenerator.playSE(snd_se_stage_Madein_04, 0x0, 0x0, 0xffffffff);
+            this->modelAnims[0]->setUpdateRate(0.0);
         }
     }
     else {

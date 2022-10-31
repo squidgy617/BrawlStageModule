@@ -38,15 +38,15 @@ void grQbertEnemy::setAnim() {
 
     // pick jump animation based on direction
     if (deltaPos.x >= 0 && deltaPos.y >= 0) {
-        this->setMotion(6);
+        this->setMotion(3);
     }
     else if (deltaPos.x < 0 && deltaPos.y >= 0) {
-        this->setMotion(4);
+        this->setMotion(2);
     }
     else if (deltaPos.x < 0 && deltaPos.y < 0) {
         this->setMotion(0);
     }
     else if (deltaPos.x >= 0 && deltaPos.y < 0) {
-        this->setMotion(2);
+        this->setMotion(1);
     }
 }
