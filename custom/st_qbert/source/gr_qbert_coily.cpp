@@ -71,7 +71,7 @@ void grQbertCoily::setupAttack() {
 
     overwriteAttackData->bits.hitSoundLevel = Hit_Sound_Level_Small;
     overwriteAttackData->bits.hitSoundType = Hit_Sound_Type_Paper;
-    overwriteAttackData->bits.isClankable = true;
+    overwriteAttackData->bits.isClankable = false;
     overwriteAttackData->bits.field_0x34_3 = false;
     overwriteAttackData->bits.field_0x34_4 = false;
     overwriteAttackData->bits.isBlockable = true;
@@ -110,8 +110,12 @@ void grQbertCoily::setStartPos() {
 }
 
 void grQbertCoily::setStart() {
+    this->timer = randf()*(MAX_RESPAWN_TIME - MIN_RESPAWN_TIME) + MIN_RESPAWN_TIME;
     this->yakumono->setTeam(15);
+    this->isDead = false;
+    this->isHatched = false;
     this->setMotion(4);
+    this->damage = 0;
     grQbertEnemy::setStart();
 }
 
@@ -120,7 +124,36 @@ void grQbertCoily::updateMove(float frameDelta) {
     float animFrameCount = this->modelAnims[0]->getFrameCount();
     float jumpCompletion = animFrames / animFrameCount;
 
-    if (this->timer > 0) {
+    if (this->isDead) {
+        this->timer += frameDelta;
+        if (this->timer == KNOCKOUT_FRAMES) {
+            this->setNodeVisibility(false, 0, "EnemyM", false, false);
+            this->soundGenerator.playSE(snd_se_stage_Madein_08, 0x0, 0x0, 0xffffffff);
+            cmReqQuake(1, &(Vec3f){0,0,0});
+        }
+        Vec3f pos = this->getPos();
+        stRange* range = &this->stage->deadRange;
+        if (pos.x < range->left || pos.x > range->right || pos.y > range->top || pos.y < range->bottom) {
+            if (this->timer > KNOCKOUT_FRAMES) {
+                this->setStart();
+            }
+        }
+        else {
+            Vec3f rot = this->getRot();
+            rot.z += this->velocity * frameDelta;
+            this->setRot(&rot);
+            Vec3f pos;
+            Vec3f points[4] = {
+                    this->prevPos,
+                    midpointPos,
+                    midpointPos,
+                    this->targetPos
+            };
+            mtBezierCurve(this->timer / KNOCKOUT_FRAMES, points, &pos);
+            this->setPos(&pos);
+        }
+    }
+    else if (this->timer > 0) {
         this->timer -= frameDelta;
         if (this->timer <= 0) {
             this->setAnim();
@@ -143,8 +176,31 @@ void grQbertCoily::updateMove(float frameDelta) {
     }
 }
 
-void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
+void grQbertCoily::onInflictEach(soCollisionLog* collisionLog, float power) {
+    if (this->isHatched) {
+        this->setStart();
+    }
+}
 
+void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
+    damage->totalDamage = 0;
+    this->damage += damage->damage;
+    if ((!isHatched && this->damage > COILY_EGG_HP) || (isHatched && this->damage > COILY_SNAKE_HP)) {
+        this->timer = 0;
+        this->setSleepAttack(true);
+        this->setSleepHit(true);
+        this->isDead = true;
+        this->prevPos = this->getPos();
+        this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, -500};
+        this->midpointPos = (Vec3f){this->prevPos.x, 110, this->prevPos.z};
+        //this->soundGenerator.playSE(snd_se_stage_Madein_04, 0x0, 0x0, 0xffffffff);
+        this->modelAnims[0]->setUpdateRate(0.0);
+        this->angle = damage->vector;
+        if (damage->side == -1) {
+            this->angle = 180 - damage->vector;
+        }
+        this->velocity = damage->reaction / 60;
+    }
 }
 
 void grQbertCoily::setTargetPos() {

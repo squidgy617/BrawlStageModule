@@ -107,6 +107,7 @@ void grQbertAlien::setStartPos() {
 }
 
 void grQbertAlien::setStart() {
+    this->timer = 0;
     this->teamId = STARTING_TEAM_ID;
     this->lives = NUM_LIVES;
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
@@ -134,6 +135,11 @@ void grQbertAlien::updateMove(float frameDelta) {
 
     if (lives <= 0) { // Launched
         this->timer += frameDelta;
+        if (this->timer == KNOCKOUT_FRAMES) {
+            this->setNodeVisibility(false, 0, "EnemyM", false, false);
+            this->soundGenerator.playSE(snd_se_stage_Madein_08, 0x0, 0x0, 0xffffffff);
+            cmReqQuake(1, &(Vec3f){0,0,0});
+        }
         Vec3f pos = this->getPos();
         stRange* range = &this->stage->deadRange;
         if (pos.x < range->left || pos.x > range->right || pos.y > range->top || pos.y < range->bottom) {
@@ -143,26 +149,18 @@ void grQbertAlien::updateMove(float frameDelta) {
             }
         }
         else {
-//            pos.x += this->velocity * mtCosF(this->angle) * frameDelta;
-//            pos.y += this->velocity * mtCosF(this->angle) * frameDelta;
-//            this->setPos(&pos);
             Vec3f rot = this->getRot();
             rot.z += this->velocity * frameDelta;
             this->setRot(&rot);
             Vec3f pos;
             Vec3f points[4] = {
                     this->prevPos,
-                    midpointPos,
-                    midpointPos,
+                    this->midpointPos,
+                    this->midpointPos,
                     this->targetPos
             };
             mtBezierCurve(this->timer / KNOCKOUT_FRAMES, points, &pos);
             this->setPos(&pos);
-        }
-        if (this->timer == KNOCKOUT_FRAMES) {
-            this->setNodeVisibility(false, 0, "QBertM", false, false);
-            this->soundGenerator.playSE(snd_se_stage_Madein_08, 0x0, 0x0, 0xffffffff);
-            cmReqQuake(1, &(Vec3f){0,0,0});
         }
     }
     else if (jumpCompletion <= 1.0) { // Mid jump
@@ -217,6 +215,7 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->timer = SWEAR_VISIBLE_FRAMES;
         }
         else {
+            this->timer = 0;
             this->setSleepAttack(true);
             this->setSleepHit(true);
             this->prevPos = this->getPos();
@@ -235,7 +234,6 @@ void grQbertAlien::setTargetPos() {
     this->prevPos = this->targetPos;
 
     // get next cube target based on nodes
-    // TODO: Pick from cubes coloured different colour first
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
     u32 numJumps = cube->getNumNextJumpCubes();
     u32 cubeIndices[MAX_JUMPS];
@@ -256,7 +254,6 @@ void grQbertAlien::setTargetPos() {
             this->targetIndex = diffColouredCubeIndices[randi(numDiffColouredCubes)] - STARTING_CUBE_INDEX;
         }
     }
-
 
     cube = (grQbertCube*)stage->getGround(this->targetIndex);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");

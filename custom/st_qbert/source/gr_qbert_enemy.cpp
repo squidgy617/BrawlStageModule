@@ -15,7 +15,6 @@ float distance(Vec3f* p1, Vec3f* p2) {
 void grQbertEnemy::setStart() {
     this->setSleepHit(false);
     this->setSleepAttack(false);
-    this->timer = 0;
     this->setNodeVisibility(true, 0, "EnemyM", false, false);
     this->modelAnims[0]->setUpdateRate(1.0);
     this->setRot(0, 0, 0);

@@ -9,7 +9,6 @@
 #define NUM_LIVES 3
 #define SWEAR_VISIBLE_FRAMES 180.0
 #define RESPAWN_FRAMES 600.0
-#define KNOCKOUT_FRAMES 300.0
 
 class grQbertAlien : public grQbertEnemy
 {
