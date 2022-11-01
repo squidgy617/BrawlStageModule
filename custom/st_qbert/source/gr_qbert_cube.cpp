@@ -67,6 +67,10 @@ void grQbertCube::setNumBlocksPerTeamWork(u8* numBlocksPerTeam) {
     this->numBlocksPerTeam = numBlocksPerTeam;
 }
 
+u8 grQbertCube::getTeam() {
+    return this->teamId;
+}
+
 void grQbertCube::setTeam(u8 teamId) {
     if (this->timer <= 0) {
         if (teamId < 0 || teamId >= NUM_TEAMS) {

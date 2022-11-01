@@ -32,6 +32,7 @@ class grQbertCube : public grMadein
         virtual u32 getNumNextJumpCubes();
         virtual void getNextJumpCubes(u32* cubeIndices);
         virtual void setNumBlocksPerTeamWork(u8 numBlocksPerTeam[NUM_TEAMS]);
+        virtual u8 getTeam();
         virtual void setTeam(u8 teamId);
         virtual void setWin();
 

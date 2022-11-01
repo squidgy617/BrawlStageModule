@@ -241,6 +241,22 @@ void grQbertAlien::setTargetPos() {
     u32 cubeIndices[MAX_JUMPS];
     cube->getNextJumpCubes(cubeIndices);
     this->targetIndex = cubeIndices[randi(numJumps)] - STARTING_CUBE_INDEX;
+    if (this->teamId <= 0 || this->teamId >= 5) {
+        // For teams not belonging to players, look for blocks coloured a different colour
+        u32 diffColouredCubeIndices[MAX_JUMPS];
+        u32 numDiffColouredCubes = 0;
+        for (u32 i = 0; i < numJumps; i++) {
+            cube = (grQbertCube*)stage->getGround(cubeIndices[i] - STARTING_CUBE_INDEX);
+            if (this->teamId != cube->getTeam()) {
+                diffColouredCubeIndices[numDiffColouredCubes] = cubeIndices[i];
+                numDiffColouredCubes++;
+            }
+        }
+        if (numDiffColouredCubes > 0) {
+            this->targetIndex = diffColouredCubeIndices[randi(numDiffColouredCubes)] - STARTING_CUBE_INDEX;
+        }
+    }
+
 
     cube = (grQbertCube*)stage->getGround(this->targetIndex);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
