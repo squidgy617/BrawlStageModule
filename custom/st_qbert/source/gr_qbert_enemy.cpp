@@ -3,6 +3,14 @@
 #include <OS/OSError.h>
 #include <mt/mt_prng.h>
 #include <mt/mt_trig.h>
+#include <mt/mt_common.h>
+
+float distance(Vec3f* p1, Vec3f* p2) {
+    float deltaX = p2->x - p1->x;
+    float deltaY = p2->y - p1->y;
+    float deltaZ = p2->z - p1->z;
+    return mtSqrtf(deltaX*deltaX + deltaY*deltaY + deltaZ*deltaZ);
+}
 
 void grQbertEnemy::setStart() {
     this->setSleepHit(false);

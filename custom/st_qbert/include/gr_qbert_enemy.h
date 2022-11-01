@@ -7,14 +7,13 @@
 #define JUMP_WAIT_FRAMES 30.0
 #define STARTING_CUBE_INDEX 1
 
+float distance(Vec3f* p1, Vec3f* p2);
+
 class grQbertEnemy : public grMadein
 {
 protected:
     stMelee* stage;
     snd3DGenerator soundGenerator;
-    Vec3f prevPos;
-    Vec3f targetPos;
-    Vec3f midpointPos;
     float timer;
     float angle;
     float velocity;
@@ -24,6 +23,10 @@ protected:
     bool isStart;
 
 public:
+    Vec3f prevPos;
+    Vec3f targetPos;
+    Vec3f midpointPos;
+
     grQbertEnemy(char* taskName) : grMadein(taskName) {
         timer = 0;
         angle = 0;
@@ -43,5 +46,4 @@ public:
     virtual void setAnim();
     virtual void updateMove(float frameDelta) {};
     virtual void updateShake(float frameDelta);
-
 };

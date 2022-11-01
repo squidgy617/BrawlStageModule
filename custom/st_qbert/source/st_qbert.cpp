@@ -18,8 +18,11 @@ bool stQbert::loading(){
 }
 
 void stQbert::notifyEventInfoGo() {
-    grQbertAlien* alien = (grQbertAlien*)this->getGround(29);
-    alien->setStart();
+    grQbertEnemy* enemy;
+    for (u8 i = 29; i <= 30; i++) {
+        enemy = (grQbertEnemy*)this->getGround(i);
+        enemy->setStart();
+    }
 }
 
 void stQbert::createObj() {
@@ -32,7 +35,8 @@ void stQbert::createObj() {
     for (int cubeIndex = 2; cubeIndex <= NUM_BLOCKS + 1; cubeIndex++) {
         this->createObjCube(cubeIndex, cubeIndex);
     }
-    this->createObjAlien(31);
+    grQbertAlien* alien = this->createObjAlien(31);
+    this->createObjCoily(32, alien);
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -88,7 +92,7 @@ void stQbert::createObjCube(int mdlIndex, int collIndex) {
     }
 }
 
-void stQbert::createObjAlien(int mdlIndex) {
+grQbertAlien* stQbert::createObjAlien(int mdlIndex) {
     grQbertAlien* alien = grQbertAlien::create(mdlIndex, "", "grQbertAlien", this);
     if(alien != NULL){
         addGround(alien);
@@ -97,6 +101,19 @@ void stQbert::createObjAlien(int mdlIndex) {
         alien->initializeEntity();
         alien->startEntity();
         alien->setStartPos();
+    }
+    return alien;
+}
+
+void stQbert::createObjCoily(int mdlIndex, grQbertAlien* enemyTarget) {
+    grQbertCoily* coily = grQbertCoily::create(mdlIndex, "", "grQbertCoily", this, enemyTarget);
+    if(coily != NULL){
+        addGround(coily);
+        coily->startup(fileData,0,0);
+        coily->setStageData(stageData);
+        coily->initializeEntity();
+        coily->startEntity();
+        coily->setStartPos();
     }
 }
 

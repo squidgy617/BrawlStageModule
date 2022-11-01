@@ -69,8 +69,8 @@ public:
 
         void createObjBg(int mdlIndex);
         void createObjCube(int mdlIndex, int collIndex);
-        void createObjAlien(int mdlIndex);
-        void createObjCoily(int mdlIndex);
+        grQbertAlien* createObjAlien(int mdlIndex);
+        void createObjCoily(int mdlIndex, grQbertAlien* enemyTarget);
 };
 
 // TODO: Green bonus thing that temp freezes opponent

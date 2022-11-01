@@ -34,7 +34,7 @@ void grQbertAlien::setupAttack() {
 
     soCollisionAttackData* overwriteAttackData = this->getOverwriteAttackData();
     this->createAttackPointNormal(overwriteAttackData);
-    overwriteAttackData->reactionEffect = 0x59;
+    overwriteAttackData->reactionEffect = 0x100;
     overwriteAttackData->reactionFix = 0;
     overwriteAttackData->reactionAdd = 0;
     overwriteAttackData->power = 3;
@@ -48,7 +48,7 @@ void grQbertAlien::setupAttack() {
     overwriteAttackData->bits.isCollisionCategory9 = true;
     overwriteAttackData->bits.isCollisionCategory8 = true;
     overwriteAttackData->bits.isCollisionCategory7 = true;
-    overwriteAttackData->bits.isCollisionCategory6 = true;
+    overwriteAttackData->bits.isCollisionCategory6 = false;
     overwriteAttackData->bits.isCollisionCategory5 = true;
     overwriteAttackData->bits.isCollisionCategory4 = true;
     overwriteAttackData->bits.isCollisionCategory3 = true;
@@ -112,7 +112,6 @@ void grQbertAlien::setStart() {
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
     cube->setTeam(this->teamId);
     grQbertEnemy::setStart();
-
 }
 
 void grQbertAlien::renderPre() {
@@ -236,6 +235,7 @@ void grQbertAlien::setTargetPos() {
     this->prevPos = this->targetPos;
 
     // get next cube target based on nodes
+    // TODO: Pick from cubes coloured different colour first
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
     u32 numJumps = cube->getNumNextJumpCubes();
     u32 cubeIndices[MAX_JUMPS];
@@ -247,4 +247,8 @@ void grQbertAlien::setTargetPos() {
     this->midpointPos = (Vec3f){(this->prevPos.x + this->targetPos.x)/2, hkMath::max2f(this->prevPos.y, this->targetPos.y) + 5, (this->prevPos.z + this->targetPos.z)/2};
 
     this->setAnim();
+}
+
+int grQbertAlien::getLives() {
+    return this->lives;
 }
