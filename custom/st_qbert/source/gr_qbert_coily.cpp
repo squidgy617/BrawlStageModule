@@ -11,6 +11,7 @@
 #include <mt/mt_prng.h>
 #include <mt/mt_common.h>
 #include <ft/ft_manager.h>
+#include <string.h>
 
 grQbertCoily* grQbertCoily::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage, grQbertAlien* enemyTarget){
     grQbertCoily* coily = new(Heaps::StageInstance) grQbertCoily(taskName);
@@ -71,7 +72,7 @@ void grQbertCoily::setupAttack() {
 
     overwriteAttackData->bits.hitSoundLevel = Hit_Sound_Level_Small;
     overwriteAttackData->bits.hitSoundType = Hit_Sound_Type_Paper;
-    overwriteAttackData->bits.isClankable = false;
+    overwriteAttackData->bits.isClankable = true;
     overwriteAttackData->bits.field_0x34_3 = false;
     overwriteAttackData->bits.field_0x34_4 = false;
     overwriteAttackData->bits.isBlockable = true;
@@ -178,7 +179,10 @@ void grQbertCoily::updateMove(float frameDelta) {
 
 void grQbertCoily::onInflictEach(soCollisionLog* collisionLog, float power) {
     if (this->isHatched) {
-        this->setStart();
+        // Check if Coily hit QBert
+        if (strcmp(gfTask::getTask(collisionLog->taskId)->taskName, "ykNormal") == 0) {
+            this->setStart();
+        }
     }
 }
 

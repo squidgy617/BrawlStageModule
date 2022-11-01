@@ -204,7 +204,12 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
     }
     else if (damage->totalDamage >= MIN_DAMAGE_TO_CHANGE) {
         damage->totalDamage = 0;
-        this->teamId = damage->teamId + 1;
+        if (damage->teamId  >= 0 && damage->teamId < NUM_TEAMS - 1) {
+            this->teamId = damage->teamId + 1;
+        }
+        else {
+            this->teamId = DEFAULT_TEAM_ID;
+        }
         this->lives--;
         this->angle = damage->vector;
         if (damage->side == -1) {
