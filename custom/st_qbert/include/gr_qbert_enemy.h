@@ -5,6 +5,7 @@
 #include "gr_qbert_cube.h"
 
 #define KNOCKOUT_FRAMES 300.0
+#define DROP_FRAMES 100.0
 #define JUMP_WAIT_FRAMES 30.0
 #define STARTING_CUBE_INDEX 1
 

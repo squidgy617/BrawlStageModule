@@ -68,7 +68,7 @@ void grQbertAlien::setupAttack() {
     overwriteAttackData->bits.elementType = Element_Type_Normal;
 
     overwriteAttackData->bits.hitSoundLevel = Hit_Sound_Level_Small;
-    overwriteAttackData->bits.hitSoundType = Hit_Sound_Type_Slash;
+    overwriteAttackData->bits.hitSoundType = Hit_Sound_Type_Paper;
     overwriteAttackData->bits.isClankable = true;
     overwriteAttackData->bits.field_0x34_3 = false;
     overwriteAttackData->bits.field_0x34_4 = false;
@@ -142,7 +142,7 @@ void grQbertAlien::updateMove(float frameDelta) {
         }
         Vec3f pos = this->getPos();
         stRange* range = &this->stage->deadRange;
-        if (pos.x < range->left || pos.x > range->right || pos.y > range->top || pos.y < range->bottom) {
+        if (pos.x <= range->left || pos.x >= range->right || pos.y >= range->top || pos.y <= range->bottom) {
             if (this->timer >= RESPAWN_FRAMES) {
                 this->soundGenerator.playSE(snd_se_stage_Madein_Arrow, 0x0, 0x0, 0xffffffff);
                 this->setStart();

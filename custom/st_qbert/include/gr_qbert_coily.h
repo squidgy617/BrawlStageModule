@@ -5,8 +5,8 @@
 #include "gr_qbert_cube.h"
 
 #define HATCH_FRAMES 30.0
-#define MIN_RESPAWN_TIME 600.0
-#define MAX_RESPAWN_TIME 1200.0
+#define COILY_MIN_RESPAWN_TIME 600.0
+#define COILY_MAX_RESPAWN_TIME 1200.0
 #define COILY_EGG_HP 10.0
 #define COILY_SNAKE_HP 20.0
 
