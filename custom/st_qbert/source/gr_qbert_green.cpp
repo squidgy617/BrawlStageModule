@@ -46,15 +46,15 @@ void grQbertGreen::setupAttack() {
 
     overwriteAttackData->bits.nodeIndex = 0x1;
 
-    overwriteAttackData->bits.isCollisionCategory9 = true;
-    overwriteAttackData->bits.isCollisionCategory8 = true;
-    overwriteAttackData->bits.isCollisionCategory7 = true;
+    overwriteAttackData->bits.isCollisionCategory9 = false;
+    overwriteAttackData->bits.isCollisionCategory8 = false;
+    overwriteAttackData->bits.isCollisionCategory7 = false;
     overwriteAttackData->bits.isCollisionCategory6 = true;
-    overwriteAttackData->bits.isCollisionCategory5 = true;
-    overwriteAttackData->bits.isCollisionCategory4 = true;
-    overwriteAttackData->bits.isCollisionCategory3 = true;
-    overwriteAttackData->bits.isCollisionCategory2 = true;
-    overwriteAttackData->bits.isCollisionCategory1 = true;
+    overwriteAttackData->bits.isCollisionCategory5 = false;
+    overwriteAttackData->bits.isCollisionCategory4 = false;
+    overwriteAttackData->bits.isCollisionCategory3 = false;
+    overwriteAttackData->bits.isCollisionCategory2 = false;
+    overwriteAttackData->bits.isCollisionCategory1 = false;
     overwriteAttackData->bits.isCollisionCategory0 = true;
 
     overwriteAttackData->bits.isCollisionSituationUnk = true;
@@ -134,9 +134,14 @@ void grQbertGreen::updateMove(float frameDelta) {
         this->setPos(&pos);
     }
     else if (animFrames - animFrameCount <= 1.0) { // Landed
-        Vec3f pos = this->targetPos + this->shakeOffset;
-        this->setPos(&pos);
-        this->soundGenerator.playSE(snd_se_stage_Madein_07, 0x0, 0x0, 0xffffffff);
+        if (this->targetPos.y <= this->stage->deadRange.bottom) {
+            this->setStart();
+        }
+        else {
+            Vec3f pos = this->targetPos + this->shakeOffset;
+            this->setPos(&pos);
+            this->soundGenerator.playSE(snd_se_stage_Madein_07, 0x0, 0x0, 0xffffffff);
+        }
     }
     else if (animFrames - animFrameCount > JUMP_WAIT_FRAMES) { // Pick new target
         this->setTargetPos();
@@ -160,11 +165,10 @@ void grQbertGreen::onInflictEach(soCollisionLog* collisionLog, float power) {
             this->setStart();
         }
     }
-
-
 }
 
 void grQbertGreen::setTargetPos() {
+    Vec3f deltaPos = this->targetPos - this->prevPos;
     this->prevPos = this->targetPos;
 
     // get next cube target based on nodes
@@ -186,12 +190,16 @@ void grQbertGreen::setTargetPos() {
     }
     if (numValidJumps > 0) {
         this->targetIndex = validCubeIndices[randi(numValidJumps)] - STARTING_CUBE_INDEX;
+        cube = (grQbertCube*)stage->getGround(this->targetIndex);
+        cube->getNodePosition(&this->targetPos, 0, "Jumps");
+    }
+    else {
+        // fall off
+        this->targetPos = this->prevPos + deltaPos;
+        this->targetPos.y = this->stage->deadRange.bottom;
     }
 
-    cube = (grQbertCube*)stage->getGround(this->targetIndex);
-    cube->getNodePosition(&this->targetPos, 0, "Jumps");
     this->midpointPos = (Vec3f){(this->prevPos.x + this->targetPos.x)/2, hkMath::max2f(this->prevPos.y, this->targetPos.y) + 5, (this->prevPos.z + this->targetPos.z)/2};
-
     this->setAnim();
 }
 

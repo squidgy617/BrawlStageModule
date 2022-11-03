@@ -200,9 +200,11 @@ void grQbertCoily::updateMove(float frameDelta) {
 }
 
 void grQbertCoily::onInflictEach(soCollisionLog* collisionLog, float power) {
+    // TODO: Play biting sound (and play not biting sound as a ball) (remove slash sfx)
     if (this->isHatched) {
         // Check if Coily hit QBert
         if (strcmp(gfTask::getTask(collisionLog->taskId)->taskName, "ykNormal") == 0) {
+
             this->setStart();
         }
     }
