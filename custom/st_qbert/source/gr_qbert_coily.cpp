@@ -105,7 +105,7 @@ void grQbertCoily::setStartPos() {
     this->targetIndex = STARTING_CUBE_INDEX + 1 + randi(2);
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
-    this->prevPos = this->targetPos + (Vec3f){0, this->stage->deadRange.top, 0};
+    this->prevPos = this->targetPos + (Vec3f){0, this->stage->deadRange.top + 10, 0};
     this->midpointPos = this->prevPos;
     this->setPos(&this->prevPos);
 }
@@ -113,7 +113,6 @@ void grQbertCoily::setStartPos() {
 void grQbertCoily::setStart() {
     this->timer = randf()*(COILY_MAX_RESPAWN_TIME - COILY_MIN_RESPAWN_TIME) + COILY_MIN_RESPAWN_TIME;
     this->yakumono->setTeam(15);
-    this->isDead = false;
     this->isHatched = false;
     this->setMotion(4);
     this->damage = 0;
@@ -268,7 +267,7 @@ void grQbertCoily::setTargetPos() {
     }
     if (this->isHatched) {
         Vec3f targetPos = {0, 0, 0};
-        if (this->enemyTarget->getLives() > 0) {
+        if (!this->enemyTarget->isDead) {
             // Pursue QBert
             targetPos = this->enemyTarget->targetPos;
         }

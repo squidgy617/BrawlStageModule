@@ -127,6 +127,7 @@ void stQbert::createObjGreen(int mdlIndex) {
         green->initializeEntity();
         green->startEntity();
         green->setStartPos();
+        green->setIsImmobilizeWork(&this->isImmobilize);
     }
 }
 
@@ -148,6 +149,17 @@ void stQbert::update(float frameDiff){
             }
         }
     }
+
+    if (this->isImmobilize) {
+        this->isImmobilize = false;
+        grQbertEnemy* enemy;
+        for (u8 i = 29; i <= 31; i++) {
+            enemy = (grQbertEnemy*)this->getGround(i);
+            enemy->setImmobilize(IMMOBILIZE_DURATION);
+        }
+    }
+
+
 }
 
 void Ground::setStageData(float* stageData) {

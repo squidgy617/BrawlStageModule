@@ -16,11 +16,9 @@ class grQbertCoily : public grQbertEnemy
         grQbertAlien* enemyTarget;
         float damage;
         bool isHatched;
-        bool isDead;
     public:
         grQbertCoily(char* taskName) : grQbertEnemy(taskName) {
             isHatched = false;
-            isDead = false;
             damage = 0;
         };
         virtual void onInflictEach(soCollisionLog* collisionLog, float power);

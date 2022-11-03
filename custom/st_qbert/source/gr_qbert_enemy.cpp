@@ -19,15 +19,28 @@ void grQbertEnemy::setStart() {
     this->modelAnims[0]->setUpdateRate(1.0);
     this->setRot(0, 0, 0);
     this->isStart = true;
+    this->isDead = false;
     this->setStartPos();
 }
 
 void grQbertEnemy::update(float frameDelta) {
-    if (this->isStart) {
-        this->updateShake(frameDelta);
-        this->updateMove(frameDelta);
+    if (this->immobilizeTimer > 0) {
+        this->immobilizeTimer -= frameDelta;
+        this->modelAnims[0]->setFrame(this->animFrameBeforeImmobilize);
+        if (this->immobilizeTimer <= 0) {
+            if (!this->isDead) {
+                this->setSleepHit(false);
+                this->setSleepAttack(false);
+            }
+        }
     }
-    grMadein::update(frameDelta);
+    else {
+        if (this->isStart) {
+            this->updateShake(frameDelta);
+            this->updateMove(frameDelta);
+        }
+        grMadein::update(frameDelta);
+    }
 }
 
 void grQbertEnemy::updateShake(float frameDelta) {
@@ -63,4 +76,11 @@ void grQbertEnemy::setAnim() {
     else if (deltaPos.x >= 0 && deltaPos.y < 0) {
         this->setMotion(1);
     }
+}
+
+void grQbertEnemy::setImmobilize(float immobilizeDuration) {
+    this->immobilizeTimer = immobilizeDuration;
+    this->animFrameBeforeImmobilize = this->modelAnims[0]->getFrame();
+    this->setSleepHit(true);
+    this->setSleepAttack(true);
 }

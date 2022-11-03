@@ -97,7 +97,7 @@ void grQbertGreen::setStartPos() {
     this->targetIndex = STARTING_CUBE_INDEX + 1 + randi(2);
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
-    this->prevPos = this->targetPos + (Vec3f){0, this->stage->deadRange.top, 0};
+    this->prevPos = this->targetPos + (Vec3f){0, this->stage->deadRange.top + 10, 0};
     this->midpointPos = this->prevPos;
     this->setPos(&this->prevPos);
 }
@@ -105,7 +105,6 @@ void grQbertGreen::setStartPos() {
 void grQbertGreen::setStart() {
     this->timer = randf()*(GREEN_MAX_RESPAWN_TIME - GREEN_MIN_RESPAWN_TIME) + GREEN_MIN_RESPAWN_TIME;
     this->yakumono->setTeam(15);
-    this->isDead = false;
     this->setMotion(0);
     grQbertEnemy::setStart();
 }
@@ -156,12 +155,14 @@ void grQbertGreen::onInflictEach(soCollisionLog* collisionLog, float power) {
     int entryId = g_ftManager->getEntryIdFromTaskId(collisionLog->taskId, NULL);
     if (entryId != -1) {
         int team = g_ftManager->getTeam(entryId, true, true);
-        g_ftManager->setSlow(team, true, 10, FREEZE_DURATION);
+        g_ftManager->setSlow(team, true, 10, IMMOBILIZE_DURATION);
+        *this->isImmobilizeWork = true;
         this->setStart();
     }
     else {
         if (strcmp(gfTask::getTask(collisionLog->taskId)->taskName, "ykNormal") == 0) {
-            g_ftManager->setSlow(-1, true, 5, FREEZE_DURATION);
+            g_ftManager->setSlow(-1, true, 5, IMMOBILIZE_DURATION);
+            *this->isImmobilizeWork = true;
             this->setStart();
         }
     }
@@ -205,4 +206,8 @@ void grQbertGreen::setTargetPos() {
 
 void grQbertGreen::setAnim() {
     this->setMotion(1);
+}
+
+void grQbertGreen::setIsImmobilizeWork(bool* isImmobilizeWork) {
+    this->isImmobilizeWork = isImmobilizeWork;
 }

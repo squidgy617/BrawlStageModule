@@ -41,8 +41,6 @@ class grQbertAlien : public grQbertEnemy
         virtual void setStart();
         virtual void updateMove(float frameDelta);
 
-        virtual int getLives();
-
         static grQbertAlien* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
 
 };

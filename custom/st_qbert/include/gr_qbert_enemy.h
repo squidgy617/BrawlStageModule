@@ -23,11 +23,14 @@ protected:
     Vec3f shakeOffset;
     u8 targetIndex;
     bool isStart;
+    float immobilizeTimer;
+    float animFrameBeforeImmobilize;
 
 public:
     Vec3f prevPos;
     Vec3f targetPos;
     Vec3f midpointPos;
+    bool isDead;
 
     grQbertEnemy(char* taskName) : grMadein(taskName) {
         timer = 0;
@@ -36,6 +39,9 @@ public:
         shakeTimer = 0;
         shakeOffset = (Vec3f){0, 0, 0};
         isStart = false;
+        immobilizeTimer = 0;
+        animFrameBeforeImmobilize = 0;
+        isDead = false;
     };
     virtual ~grQbertEnemy() { };
     virtual void update(float frameDelta);
@@ -48,4 +54,5 @@ public:
     virtual void setAnim();
     virtual void updateMove(float frameDelta) {};
     virtual void updateShake(float frameDelta);
+    virtual void setImmobilize(float immobilizeDuration);
 };

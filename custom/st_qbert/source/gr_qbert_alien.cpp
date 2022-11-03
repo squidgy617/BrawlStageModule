@@ -118,7 +118,7 @@ void grQbertAlien::setStart() {
 void grQbertAlien::renderPre() {
     if (this->prevIsPaused != g_IfMngr->isPauseMenuActive) {
         if (g_IfMngr->isPauseMenuActive) {
-            if (this->lives > 0) {
+            if (!this->isDead) {
                 g_sndSystem->playSE(snd_se_stage_Madein_13, 0x0, 0x0, 0x0, 0xffffffff);
             }
         }
@@ -133,7 +133,7 @@ void grQbertAlien::updateMove(float frameDelta) {
     float animFrameCount = this->modelAnims[0]->getFrameCount();
     float jumpCompletion = animFrames / animFrameCount;
 
-    if (lives <= 0) { // Launched
+    if (this->isDead) { // Launched
         this->timer += frameDelta;
         if (this->timer == KNOCKOUT_FRAMES) {
             this->setNodeVisibility(false, 0, "EnemyM", false, false);
@@ -220,6 +220,7 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->timer = SWEAR_VISIBLE_FRAMES;
         }
         else {
+            this->isDead = true;
             this->timer = 0;
             this->setSleepAttack(true);
             this->setSleepHit(true);
@@ -267,6 +268,3 @@ void grQbertAlien::setTargetPos() {
     this->setAnim();
 }
 
-int grQbertAlien::getLives() {
-    return this->lives;
-}
