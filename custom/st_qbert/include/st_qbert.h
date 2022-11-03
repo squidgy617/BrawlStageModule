@@ -20,14 +20,14 @@ class stQbert : public stMelee {
     protected:
         snd3DGenerator soundGenerator;
         u8 numBlocksPerTeam[NUM_TEAMS];
-        bool isImmobilize;
+        ImmobilizeState immobilizeState;
 public:
         stQbert(int stageID) : stMelee("stQbert", stageID) {
             numBlocksPerTeam[0] = NUM_BLOCKS;
             for (u8 team = 0; team < NUM_TEAMS; team++) {
                 numBlocksPerTeam[team] = 0;
             }
-            isImmobilize = false;
+            immobilizeState = Immobilize_None;
         };
         static stQbert* create();
 

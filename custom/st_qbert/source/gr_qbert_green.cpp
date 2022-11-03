@@ -156,13 +156,13 @@ void grQbertGreen::onInflictEach(soCollisionLog* collisionLog, float power) {
     if (entryId != -1) {
         int team = g_ftManager->getTeam(entryId, true, true);
         g_ftManager->setSlow(team, true, 10, IMMOBILIZE_DURATION);
-        *this->isImmobilizeWork = true;
+        *this->immobilizeStateWork = Immobilize_All;
         this->setStart();
     }
     else {
         if (strcmp(gfTask::getTask(collisionLog->taskId)->taskName, "ykNormal") == 0) {
             g_ftManager->setSlow(-1, true, 5, IMMOBILIZE_DURATION);
-            *this->isImmobilizeWork = true;
+            *this->immobilizeStateWork = Immobilize_Enemies;
             this->setStart();
         }
     }
@@ -208,6 +208,6 @@ void grQbertGreen::setAnim() {
     this->setMotion(1);
 }
 
-void grQbertGreen::setIsImmobilizeWork(bool* isImmobilizeWork) {
-    this->isImmobilizeWork = isImmobilizeWork;
+void grQbertGreen::setImmobilizeStateWork(ImmobilizeState* immobilizeStateWork) {
+    this->immobilizeStateWork = immobilizeStateWork;
 }

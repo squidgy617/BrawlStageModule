@@ -8,10 +8,16 @@
 #define GREEN_MAX_RESPAWN_TIME 1200.0
 #define IMMOBILIZE_DURATION 300.0
 
+enum ImmobilizeState {
+    Immobilize_None = 0x0,
+    Immobilize_All = 0x1,
+    Immobilize_Enemies = 0x2,
+};
+
 class grQbertGreen : public grQbertEnemy
 {
     protected:
-        bool* isImmobilizeWork;
+        ImmobilizeState* immobilizeStateWork;
     public:
         grQbertGreen(char* taskName) : grQbertEnemy(taskName) {
         };
@@ -24,7 +30,7 @@ class grQbertGreen : public grQbertEnemy
         virtual void setStart();
         virtual void updateMove(float frameDelta);
         virtual void setAnim();
-        virtual void setIsImmobilizeWork(bool* isImmobilizeWork);
+        virtual void setImmobilizeStateWork(ImmobilizeState* immobilizeStateWork);
 
         static grQbertGreen* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
 
