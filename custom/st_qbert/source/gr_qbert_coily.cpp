@@ -2,7 +2,7 @@
 #include <ec_mgr.h>
 #include "gr_qbert_coily.h"
 #include <OS/OSError.h>
-#include <so/so_external_value_accesser.h>
+#include <ft/ft_external_value_accesser.h>
 #include <mt/mt_spline.h>
 #include <hk/hk_math.h>
 #include <mt/mt_trig.h>
@@ -162,7 +162,7 @@ void grQbertCoily::updateMove(float frameDelta) {
             this->setPos(&pos);
         }
     }
-    else if (this->timer > 0) {
+    else if (this->timer > 0) { // Respawning
         this->timer -= frameDelta;
         if (this->timer <= 0) {
             this->setAnim();
@@ -274,16 +274,11 @@ void grQbertCoily::setTargetPos() {
             // Pursue closest player
 
             // Find closest player pos to snake's current pos
-            float minDist = 100000000000000;
-            for (u8 i = 0; i < g_ftManager->getEntryCount(); i++) {
-                Fighter* fighter = g_ftManager->getFighter(g_ftManager->getEntryIdFromIndex(i), 0);
-                Vec3f fighterPos = soExternalValueAccesser::getPos((StageObject*)fighter);
-                float dist = distance(&fighterPos, &this->prevPos);
-                if (dist < minDist) {
-                    minDist = dist;
-                    targetPos = fighterPos;
-                }
+            Fighter* fighter = g_ftManager->searchNearFighter(0.0, -1.0, &this->prevPos, -1, false);
+            if (fighter != NULL) {
+                targetPos = ftExternalValueAccesser::getHipPos(fighter);
             }
+
         }
 
         // Find block that will lead to getting closest to the target

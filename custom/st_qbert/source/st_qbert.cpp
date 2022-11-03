@@ -19,7 +19,7 @@ bool stQbert::loading(){
 
 void stQbert::notifyEventInfoGo() {
     grQbertEnemy* enemy;
-    for (u8 i = 29; i <= 30; i++) {
+    for (u8 i = 29; i <= 31; i++) {
         enemy = (grQbertEnemy*)this->getGround(i);
         enemy->setStart();
     }
@@ -37,6 +37,7 @@ void stQbert::createObj() {
     }
     grQbertAlien* alien = this->createObjAlien(31);
     this->createObjCoily(32, alien);
+    this->createObjGreen(33);
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -117,6 +118,18 @@ void stQbert::createObjCoily(int mdlIndex, grQbertAlien* enemyTarget) {
     }
 }
 
+void stQbert::createObjGreen(int mdlIndex) {
+    grQbertGreen* green = grQbertGreen::create(mdlIndex, "", "grQbertGreen", this);
+    if(green != NULL){
+        addGround(green);
+        green->startup(fileData,0,0);
+        green->setStageData(stageData);
+        green->initializeEntity();
+        green->startEntity();
+        green->setStartPos();
+    }
+}
+
 void stQbert::update(float frameDiff){
     for (u8 team = 1; team < NUM_TEAMS; team++) {
         if (this->numBlocksPerTeam[team] >= NUM_BLOCKS) {
@@ -127,10 +140,10 @@ void stQbert::update(float frameDiff){
             }
             for (u8 i = 0; i < g_ftManager->getEntryCount(); i++) {
                 // set reward for team
-                Fighter* fighter = g_ftManager->getFighter(g_ftManager->getEntryIdFromIndex(i), 0);
-                int teamNumber = soExternalValueAccesser::getTeamNo((StageObject*)fighter) + 1;
+                int entryId = g_ftManager->getEntryIdFromIndex(i);
+                int teamNumber = g_ftManager->getTeam(entryId, true, true) + 1;
                 if (teamNumber == team || team > 5) {
-                    fighter->setCurry(true, -1);
+                    g_ftManager->setCurry(entryId);
                 }
             }
         }

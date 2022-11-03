@@ -22,7 +22,7 @@ class grQbertAlien : public grQbertEnemy
         grQbertAlien(char* taskName) : grQbertEnemy(taskName) {
             swearSndIds[0] = snd_se_stage_Madein_05;
             swearSndIds[1] = snd_se_stage_Madein_06;
-            swearSndIds[2] = snd_se_stage_Madein_09;
+            swearSndIds[2] = snd_se_stage_Madein_good_07;
             swearSndIds[3] = snd_se_stage_Madein_good_01;
             swearSndIds[4] = snd_se_stage_Madein_good_02;
             swearSndIds[5] = snd_se_stage_Madein_good_04;
