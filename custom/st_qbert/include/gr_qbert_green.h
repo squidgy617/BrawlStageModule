@@ -10,9 +10,8 @@
 
 enum ImmobilizeState {
     Immobilize_None = 0x0,
-    Immobilize_Active = 0x1,
-    Immobilize_All = 0x2,
-    Immobilize_Enemies = 0x3,
+    Immobilize_All = 0x1,
+    Immobilize_Enemies = 0x2,
 };
 
 class grQbertGreen : public grQbertEnemy

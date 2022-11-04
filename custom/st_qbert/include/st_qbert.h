@@ -2,7 +2,7 @@
 
 #include <types.h>
 #include <st/st_melee.h>
-#include "gr_final.h"
+#include "gr_qbert_background.h"
 #include "gr_qbert_cube.h"
 #include "gr_qbert_alien.h"
 #include "gr_qbert_coily.h"
@@ -21,6 +21,7 @@ class stQbert : public stMelee {
         snd3DGenerator soundGenerator;
         u8 numBlocksPerTeam[NUM_TEAMS];
         ImmobilizeState immobilizeState;
+        float immobilizeTimer;
 public:
         stQbert(int stageID) : stMelee("stQbert", stageID) {
             numBlocksPerTeam[0] = NUM_BLOCKS;
@@ -28,6 +29,7 @@ public:
                 numBlocksPerTeam[team] = 0;
             }
             immobilizeState = Immobilize_None;
+            immobilizeTimer = 0;
         };
         static stQbert* create();
 

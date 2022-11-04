@@ -7,7 +7,7 @@
 #define KNOCKOUT_FRAMES 300.0
 #define DROP_FRAMES 100.0
 #define JUMP_WAIT_FRAMES 30.0
-#define STARTING_CUBE_INDEX 1
+#define STARTING_CUBE_INDEX 2
 
 float distance(Vec3f* p1, Vec3f* p2);
 

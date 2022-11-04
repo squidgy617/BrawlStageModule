@@ -253,7 +253,7 @@ void grQbertCoily::setTargetPos() {
         u32 numValidJumps = 0;
         for (u32 i = 0; i < numJumps; i++) {
             Vec3f pos;
-            cube = (grQbertCube*)stage->getGround(cubeIndices[i] - STARTING_CUBE_INDEX);
+            cube = (grQbertCube*)stage->getGround(cubeIndices[i]);
             cube->getNodePosition(&pos, 0, "Jumps");
             if (pos.y < this->prevPos.y) {
                 validCubeIndices[numValidJumps] = cubeIndices[i];
@@ -261,7 +261,7 @@ void grQbertCoily::setTargetPos() {
             }
         }
         if (numValidJumps > 0) {
-            this->targetIndex = validCubeIndices[randi(numValidJumps)] - STARTING_CUBE_INDEX;
+            this->targetIndex = validCubeIndices[randi(numValidJumps)];
         }
         else {
             this->timer = HATCH_FRAMES;
@@ -289,7 +289,7 @@ void grQbertCoily::setTargetPos() {
         float minDistToTarget = 100000000000000;
         for (u32 i = 0; i < numJumps; i++) {
             Vec3f pos;
-            u32 cubeIndex = cubeIndices[i] - STARTING_CUBE_INDEX;
+            u32 cubeIndex = cubeIndices[i];
             cube = (grQbertCube*)stage->getGround(cubeIndex);
             cube->getNodePosition(&pos, 0, "Jumps");
             float dist = distance(&pos, &targetPos);

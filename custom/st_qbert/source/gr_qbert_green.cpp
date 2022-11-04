@@ -184,7 +184,7 @@ void grQbertGreen::setTargetPos() {
     // check for potential jumps lower than current position
     for (u32 i = 0; i < numJumps; i++) {
         Vec3f pos;
-        cube = (grQbertCube*)stage->getGround(cubeIndices[i] - STARTING_CUBE_INDEX);
+        cube = (grQbertCube*)stage->getGround(cubeIndices[i]);
         cube->getNodePosition(&pos, 0, "Jumps");
         if (pos.y < this->prevPos.y) {
             validCubeIndices[numValidJumps] = cubeIndices[i];
@@ -192,7 +192,7 @@ void grQbertGreen::setTargetPos() {
         }
     }
     if (numValidJumps > 0) {
-        this->targetIndex = validCubeIndices[randi(numValidJumps)] - STARTING_CUBE_INDEX;
+        this->targetIndex = validCubeIndices[randi(numValidJumps)];
         cube = (grQbertCube*)stage->getGround(this->targetIndex);
         cube->getNodePosition(&this->targetPos, 0, "Jumps");
     }

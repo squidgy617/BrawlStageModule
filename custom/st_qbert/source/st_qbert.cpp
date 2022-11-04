@@ -19,7 +19,7 @@ bool stQbert::loading(){
 
 void stQbert::notifyEventInfoGo() {
     grQbertEnemy* enemy;
-    for (u8 i = 29; i <= 31; i++) {
+    for (u8 i = 30; i <= 32; i++) {
         enemy = (grQbertEnemy*)this->getGround(i);
         enemy->setStart();
     }
@@ -30,8 +30,8 @@ void stQbert::createObj() {
     testStageParamInit(fileData, 210);
     testStageDataInit(fileData, 220, 1);
 
+    this->createObjBg(0);
     this->createObjBg(1);
-
     for (int cubeIndex = 2; cubeIndex <= NUM_BLOCKS + 1; cubeIndex++) {
         this->createObjCube(cubeIndex, cubeIndex);
     }
@@ -69,12 +69,11 @@ void stQbert::createObj() {
 }
 
 void stQbert::createObjBg(int mdlIndex) {
-    grFinal* ground = grFinal::create(mdlIndex, "", "grFinalMainBg");
+    grQbertBackground* ground = grQbertBackground::create(mdlIndex, "", "grQbertMainBg");
     if(ground != NULL){
         addGround(ground);
         ground->startup(fileData,0,0);
         ground->setStageData(stageData);
-        ground->setType(0);
         ground->setDontMoveGround();
     }
 }
@@ -136,7 +135,7 @@ void stQbert::update(float frameDiff){
         if (this->numBlocksPerTeam[team] >= NUM_BLOCKS) {
             this->soundGenerator.playSE(snd_se_stage_Madein_bad_04, 0x0, 0x0, 0xffffffff);
             for (u8 blockNum = 0; blockNum < NUM_BLOCKS; blockNum++) {
-                grQbertCube* cube = (grQbertCube*)this->getGround(blockNum + 1);
+                grQbertCube* cube = (grQbertCube*)this->getGround(blockNum + 2);
                 cube->setWin();
             }
             for (u8 i = 0; i < g_ftManager->getEntryCount(); i++) {
@@ -153,9 +152,10 @@ void stQbert::update(float frameDiff){
     if (this->immobilizeState > 0) {
         //g_sndSystem->setBGMVol(true, 0);
         this->soundGenerator.playSE(snd_se_stage_Madein_good_06, 0x0, 0x0, 0xffffffff);
-        grQbertEnemy* enemy;
-        for (u8 i = 28 + this->immobilizeState; i <= 31; i++) {
-            enemy = (grQbertEnemy*)this->getGround(i);
+        grQbertBackground* background = (grQbertBackground*)this->getGround(0);
+        background->setImmobilize(IMMOBILIZE_DURATION);
+        for (u8 i = 29 + this->immobilizeState; i <= 32; i++) {
+            grQbertEnemy* enemy = (grQbertEnemy*)this->getGround(i);
             enemy->setImmobilize(IMMOBILIZE_DURATION);
         }
         this->immobilizeState = Immobilize_None;
