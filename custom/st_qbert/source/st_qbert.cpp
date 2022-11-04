@@ -151,6 +151,8 @@ void stQbert::update(float frameDiff){
     }
 
     if (this->immobilizeState > 0) {
+        //g_sndSystem->setBGMVol(true, 0);
+        this->soundGenerator.playSE(snd_se_stage_Madein_good_06, 0x0, 0x0, 0xffffffff);
         grQbertEnemy* enemy;
         for (u8 i = 28 + this->immobilizeState; i <= 31; i++) {
             enemy = (grQbertEnemy*)this->getGround(i);
@@ -158,11 +160,9 @@ void stQbert::update(float frameDiff){
         }
         this->immobilizeState = Immobilize_None;
     }
-
-
 }
 
-void Ground::setStageData(float* stageData) {
+void Ground::setStageData(void* stageData) {
    this->stageData = stageData;
 }
 void stQbert::startFighterEvent() {

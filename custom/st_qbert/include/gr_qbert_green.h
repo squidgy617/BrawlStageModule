@@ -6,12 +6,13 @@
 
 #define GREEN_MIN_RESPAWN_TIME 600.0
 #define GREEN_MAX_RESPAWN_TIME 1200.0
-#define IMMOBILIZE_DURATION 300.0
+#define IMMOBILIZE_DURATION 210.0
 
 enum ImmobilizeState {
     Immobilize_None = 0x0,
-    Immobilize_All = 0x1,
-    Immobilize_Enemies = 0x2,
+    Immobilize_Active = 0x1,
+    Immobilize_All = 0x2,
+    Immobilize_Enemies = 0x3,
 };
 
 class grQbertGreen : public grQbertEnemy

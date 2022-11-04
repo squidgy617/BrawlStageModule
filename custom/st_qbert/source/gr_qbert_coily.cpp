@@ -71,7 +71,7 @@ void grQbertCoily::setupAttack() {
     overwriteAttackData->bits.elementType = Element_Type_Normal;
 
     overwriteAttackData->bits.hitSoundLevel = Hit_Sound_Level_Small;
-    overwriteAttackData->bits.hitSoundType = Hit_Sound_Type_Slash;
+    overwriteAttackData->bits.hitSoundType = Hit_Sound_Type_NoneUnique;
     overwriteAttackData->bits.isClankable = true;
     overwriteAttackData->bits.field_0x34_3 = false;
     overwriteAttackData->bits.field_0x34_4 = false;
@@ -201,11 +201,14 @@ void grQbertCoily::updateMove(float frameDelta) {
 void grQbertCoily::onInflictEach(soCollisionLog* collisionLog, float power) {
     // TODO: Play biting sound (and play not biting sound as a ball) (remove slash sfx)
     if (this->isHatched) {
+        this->soundGenerator.playSE(snd_se_stage_Madein_02, 0x0, 0x0, 0xffffffff);
         // Check if Coily hit QBert
         if (strcmp(gfTask::getTask(collisionLog->taskId)->taskName, "ykNormal") == 0) {
-
             this->setStart();
         }
+    }
+    else {
+        this->soundGenerator.playSE(snd_se_stage_Madein_17, 0x0, 0x0, 0xffffffff);
     }
 }
 

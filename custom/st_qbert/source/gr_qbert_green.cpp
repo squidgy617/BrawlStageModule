@@ -160,6 +160,7 @@ void grQbertGreen::onInflictEach(soCollisionLog* collisionLog, float power) {
         this->setStart();
     }
     else {
+        // Check if QBert touched the orb
         if (strcmp(gfTask::getTask(collisionLog->taskId)->taskName, "ykNormal") == 0) {
             g_ftManager->setSlow(-1, true, 5, IMMOBILIZE_DURATION);
             *this->immobilizeStateWork = Immobilize_Enemies;
@@ -180,6 +181,7 @@ void grQbertGreen::setTargetPos() {
 
     u32 validCubeIndices[MAX_JUMPS];
     u32 numValidJumps = 0;
+    // check for potential jumps lower than current position
     for (u32 i = 0; i < numJumps; i++) {
         Vec3f pos;
         cube = (grQbertCube*)stage->getGround(cubeIndices[i] - STARTING_CUBE_INDEX);
