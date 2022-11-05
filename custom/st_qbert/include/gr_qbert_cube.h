@@ -22,9 +22,9 @@ class grQbertCube : public grMadein
             for (u8 team = 0; team < NUM_TEAMS; team++) {
                 numMembersOnTeamLanded[team] = 0;
                 prevNumMembersOnTeamLanded[team] = 0;
-                teamId = 0;
-                timer = 0;
             }
+            teamId = 0;
+            timer = 0;
         };
         virtual void update(float frameDelta);
         virtual ~grQbertCube() { };

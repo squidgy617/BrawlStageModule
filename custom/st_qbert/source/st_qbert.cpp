@@ -6,6 +6,7 @@
 #include <ft/ft_manager.h>
 #include <so/so_external_value_accesser.h>
 #include <OS/OSError.h>
+#include <hk/hk_math.h>
 
 static stClassInfoImpl<2, stQbert> classInfo = stClassInfoImpl<2, stQbert>();
 
@@ -19,7 +20,7 @@ bool stQbert::loading(){
 
 void stQbert::notifyEventInfoGo() {
     grQbertEnemy* enemy;
-    for (u8 i = 30; i <= 32; i++) {
+    for (u8 i = 44; i < NUM_ENEMIES + 44; i++) {
         enemy = (grQbertEnemy*)this->getGround(i);
         enemy->setStart();
     }
@@ -32,12 +33,16 @@ void stQbert::createObj() {
 
     this->createObjBg(0);
     this->createObjBg(1);
-    for (int cubeIndex = 2; cubeIndex <= NUM_BLOCKS + 1; cubeIndex++) {
+    for (int cubeIndex = 2; cubeIndex < NUM_BLOCKS + 2; cubeIndex++) {
         this->createObjCube(cubeIndex, cubeIndex);
     }
-    grQbertAlien* alien = this->createObjAlien(31);
-    this->createObjCoily(32, alien);
-    this->createObjGreen(33);
+    for (int diskIndex = 30; diskIndex < NUM_DISKS + 30; diskIndex++) {
+        this->createObjDisk(diskIndex, diskIndex, diskIndex - 30);
+    }
+
+    grQbertAlien* alien = this->createObjAlien(44);
+    this->createObjCoily(45, alien);
+    this->createObjGreen(46);
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -92,6 +97,21 @@ void stQbert::createObjCube(int mdlIndex, int collIndex) {
     }
 }
 
+void stQbert::createObjDisk(int mdlIndex, int collIndex, int diskIndex) {
+    grQbertDisk* disk = grQbertDisk::create(mdlIndex, "", "grQbertDisk");
+    if(disk != NULL){
+        addGround(disk);
+        disk->startup(fileData,0,0);
+        disk->setStageData(stageData);
+        disk->initializeEntity();
+        disk->startEntity();
+        disk->setIsActiveWork(&this->disksActive[diskIndex]);
+        disk->setMotion(0);
+        createCollision(fileData, collIndex, disk);
+        disk->setEnableCollisionStatus(false);
+    }
+}
+
 grQbertAlien* stQbert::createObjAlien(int mdlIndex) {
     grQbertAlien* alien = grQbertAlien::create(mdlIndex, "", "grQbertAlien", this);
     if(alien != NULL){
@@ -130,9 +150,18 @@ void stQbert::createObjGreen(int mdlIndex) {
     }
 }
 
-void stQbert::update(float frameDiff){
+void stQbert::update(float frameDelta){
+    this->updateCubes(frameDelta);
+    this->updateDisks(frameDelta);
+    this->updateEnemies(frameDelta);
+    this->updateBgm(frameDelta);
+}
+
+void stQbert::updateCubes(float frameDelta) {
+    // Check if all blocks have been coloured by a team
     for (u8 team = 1; team < NUM_TEAMS; team++) {
         if (this->numBlocksPerTeam[team] >= NUM_BLOCKS) {
+            g_sndSystem->setBGMVol(true, 0);
             this->soundGenerator.playSE(snd_se_stage_Madein_bad_04, 0x0, 0x0, 0xffffffff);
             for (u8 blockNum = 0; blockNum < NUM_BLOCKS; blockNum++) {
                 grQbertCube* cube = (grQbertCube*)this->getGround(blockNum + 2);
@@ -146,19 +175,57 @@ void stQbert::update(float frameDiff){
                     g_ftManager->setCurry(entryId);
                 }
             }
+            this->bgmTimer = hkMath::max2f(this->bgmTimer, WIN_FRAMES);
+        }
+    }
+}
+
+void stQbert::updateDisks(float frameDelta) {
+    // Check if disks should be activated
+    u8 inactiveDiskIndices[NUM_DISKS];
+    u8 numInactiveDisks = 0;
+    for (u8 diskIndex = 0; diskIndex < NUM_DISKS; diskIndex++) {
+        if (!this->disksActive[diskIndex]) {
+            inactiveDiskIndices[numInactiveDisks] = diskIndex;
+            numInactiveDisks++;
+        }
+    }
+    if (numInactiveDisks > 0 && NUM_DISKS - numInactiveDisks < MAX_DISKS_ACTIVE) {
+        this->diskTimer -= frameDelta;
+        if (this->diskTimer <= 0) {
+            int diskIndex = inactiveDiskIndices[randi(numInactiveDisks)];
+            this->disksActive[diskIndex] = true;
+            this->diskTimer = randf()*(DISK_MAX_RESPAWN_TIME - DISK_MIN_RESPAWN_TIME) + DISK_MIN_RESPAWN_TIME;
         }
     }
 
+
+
+}
+
+void stQbert::updateEnemies(float frameDelta) {
+    // Check if green orb was collected
     if (this->immobilizeState > 0) {
-        //g_sndSystem->setBGMVol(true, 0);
+        g_sndSystem->setBGMVol(true, 0);
         this->soundGenerator.playSE(snd_se_stage_Madein_good_06, 0x0, 0x0, 0xffffffff);
         grQbertBackground* background = (grQbertBackground*)this->getGround(0);
         background->setImmobilize(IMMOBILIZE_DURATION);
-        for (u8 i = 29 + this->immobilizeState; i <= 32; i++) {
+        for (u8 i = 43 + this->immobilizeState; i < NUM_ENEMIES + 44; i++) {
             grQbertEnemy* enemy = (grQbertEnemy*)this->getGround(i);
             enemy->setImmobilize(IMMOBILIZE_DURATION);
         }
         this->immobilizeState = Immobilize_None;
+        this->bgmTimer = hkMath::max2f(this->bgmTimer, IMMOBILIZE_DURATION);
+    }
+}
+
+void stQbert::updateBgm(float frameDelta) {
+    // Check if time to restore music to full volume
+    if (this->bgmTimer > 0) {
+        this->bgmTimer -= frameDelta;
+        if (this->bgmTimer <= 0) {
+            g_sndSystem->setBGMVol(true, this->m_stageParam->m_bgmVolume);
+        }
     }
 }
 
