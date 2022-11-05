@@ -8,6 +8,7 @@
 #include "gr_qbert_alien.h"
 #include "gr_qbert_coily.h"
 #include "gr_qbert_green.h"
+#include "gr_qbert_red.h"
 #include <mt/mt_prng.h>
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
@@ -19,7 +20,7 @@ const float POKETRAINER_Z = 0.0f;
 #define NUM_BLOCKS 28
 #define NUM_DISKS 14
 #define MAX_DISKS_ACTIVE 2
-#define NUM_ENEMIES 3
+#define NUM_ENEMIES 4
 
 class stQbert : public stMelee {
     protected:
@@ -89,6 +90,7 @@ public:
         grQbertAlien* createObjAlien(int mdlIndex);
         void createObjCoily(int mdlIndex, grQbertAlien* enemyTarget);
         void createObjGreen(int mdlIndex);
+        void createObjRed(int mdlIndex);
         void updateCubes(float frameDelta);
         void updateDisks(float frameDelta);
         void updateEnemies(float frameDelta);

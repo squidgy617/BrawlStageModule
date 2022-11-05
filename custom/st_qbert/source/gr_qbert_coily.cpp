@@ -199,7 +199,6 @@ void grQbertCoily::updateMove(float frameDelta) {
 }
 
 void grQbertCoily::onInflictEach(soCollisionLog* collisionLog, float power) {
-    // TODO: Play biting sound (and play not biting sound as a ball) (remove slash sfx)
     if (this->isHatched) {
         this->soundGenerator.playSE(snd_se_stage_Madein_02, 0x0, 0x0, 0xffffffff);
         // Check if Coily hit QBert
@@ -282,7 +281,6 @@ void grQbertCoily::setTargetPos() {
             if (fighter != NULL) {
                 targetPos = ftExternalValueAccesser::getHipPos(fighter);
             }
-
         }
 
         // Find block that will lead to getting closest to the target

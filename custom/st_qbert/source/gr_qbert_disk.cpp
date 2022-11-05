@@ -35,7 +35,7 @@ void grQbertDisk::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJo
         if (this->isCollisionStatusOwnerTask(collStatus, &unk)) {
             this->setMotionDetails(1, 1, 0, 0, 0);
             this->soundGenerator.playSE(snd_se_stage_Madein_good_05, 0x0, 0x0, 0xffffffff);
-            isMoving = true;
+            this->isMoving = true;
         }
     }
 }

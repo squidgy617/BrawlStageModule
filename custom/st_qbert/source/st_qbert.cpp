@@ -43,6 +43,7 @@ void stQbert::createObj() {
     grQbertAlien* alien = this->createObjAlien(44);
     this->createObjCoily(45, alien);
     this->createObjGreen(46);
+    this->createObjRed(47);
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -147,6 +148,18 @@ void stQbert::createObjGreen(int mdlIndex) {
         green->startEntity();
         green->setStartPos();
         green->setImmobilizeStateWork(&this->immobilizeState);
+    }
+}
+
+void stQbert::createObjRed(int mdlIndex) {
+    grQbertRed* red = grQbertRed::create(mdlIndex, "", "grQbertRed", this);
+    if(red != NULL){
+        addGround(red);
+        red->startup(fileData,0,0);
+        red->setStageData(stageData);
+        red->initializeEntity();
+        red->startEntity();
+        red->setStartPos();
     }
 }
 
