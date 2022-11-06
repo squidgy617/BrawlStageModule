@@ -107,9 +107,10 @@ void grQbertAlien::setStartPos() {
 }
 
 void grQbertAlien::setStart() {
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     this->timer = 0;
     this->teamId = STARTING_TEAM_ID;
-    this->lives = NUM_LIVES;
+    this->lives = qbertStageData->qbertNumLives;
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
     cube->setTeam(this->teamId);
     grQbertEnemy::setStart();
@@ -129,13 +130,14 @@ void grQbertAlien::renderPre() {
 
 void grQbertAlien::updateMove(float frameDelta) {
 
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     float animFrames = this->modelAnims[0]->getFrame();
     float animFrameCount = this->modelAnims[0]->getFrameCount();
     float jumpCompletion = animFrames / animFrameCount;
 
     if (this->isDead) { // Launched
         this->timer += frameDelta;
-        if (this->timer == KNOCKOUT_FRAMES) {
+        if (this->timer == qbertStageData->knockoutFrames) {
             this->setNodeVisibility(false, 0, "EnemyM", false, false);
             this->soundGenerator.playSE(snd_se_stage_Madein_08, 0x0, 0x0, 0xffffffff);
             cmReqQuake(1, &(Vec3f){0,0,0});
@@ -143,7 +145,7 @@ void grQbertAlien::updateMove(float frameDelta) {
         Vec3f pos = this->getPos();
         stRange* range = &this->stage->deadRange;
         if (pos.x <= range->left || pos.x >= range->right || pos.y >= range->top || pos.y <= range->bottom) {
-            if (this->timer >= RESPAWN_FRAMES) {
+            if (this->timer >= qbertStageData->qbertRespawnFrames) {
                 this->soundGenerator.playSE(snd_se_stage_Madein_Arrow, 0x0, 0x0, 0xffffffff);
                 this->setStart();
             }
@@ -159,7 +161,7 @@ void grQbertAlien::updateMove(float frameDelta) {
                     this->midpointPos,
                     this->targetPos
             };
-            mtBezierCurve(this->timer / KNOCKOUT_FRAMES, points, &pos);
+            mtBezierCurve(this->timer / qbertStageData->knockoutFrames, points, &pos);
             this->setPos(&pos);
         }
     }
@@ -183,13 +185,13 @@ void grQbertAlien::updateMove(float frameDelta) {
         cube->setTeam(this->teamId);
     }
     else if (this->timer > 0) { // Swearing
-        if (this->timer == SWEAR_VISIBLE_FRAMES) {
+        if (this->timer == qbertStageData->qbertSwearFrames) {
             this->soundGenerator.playSE(this->swearSndIds[randi(8)], 0x0, 0x0, 0xffffffff);
         }
         this->timer -= frameDelta;
         this->setNodeVisibility(true, 0, "SwearM", false, false);
     }
-    else if (animFrames - animFrameCount > JUMP_WAIT_FRAMES) { // Pick new target
+    else if (animFrames - animFrameCount > qbertStageData->jumpWaitFrames) { // Pick new target
         this->setTargetPos();
     }
     else {
@@ -199,10 +201,11 @@ void grQbertAlien::updateMove(float frameDelta) {
 }
 
 void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     if (this->timer > 0) {
         damage->totalDamage = 0;
     }
-    else if (damage->totalDamage >= MIN_DAMAGE_TO_CHANGE) {
+    else if (damage->totalDamage >= qbertStageData->qbertHPPerLife) {
         damage->totalDamage = 0;
         if (damage->teamId  >= 0 && damage->teamId < NUM_TEAMS - 1) {
             this->teamId = damage->teamId + 1;
@@ -217,7 +220,7 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
         }
         this->velocity = damage->reaction / 60;
         if (this->lives > 0) {
-            this->timer = SWEAR_VISIBLE_FRAMES;
+            this->timer = qbertStageData->qbertSwearFrames;
         }
         else {
             this->isDead = true;

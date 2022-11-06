@@ -1,14 +1,11 @@
 #pragma once
 
 #include <st/st_melee.h>
+#include "st_qbert_stage_data.h"
 #include "gr_qbert_enemy.h"
 #include "gr_qbert_cube.h"
 
 #define STARTING_TEAM_ID 6
-#define MIN_DAMAGE_TO_CHANGE 10.0
-#define NUM_LIVES 3
-#define SWEAR_VISIBLE_FRAMES 180.0
-#define RESPAWN_FRAMES 600.0
 
 class grQbertAlien : public grQbertEnemy
 {
@@ -28,7 +25,6 @@ class grQbertAlien : public grQbertEnemy
             swearSndIds[5] = snd_se_stage_Madein_good_04;
             swearSndIds[6] = snd_se_stage_Madein_bad_01;
             swearSndIds[7] = snd_se_stage_Madein_bad_03;
-            lives = NUM_LIVES;
         };
         virtual void renderPre();
         virtual void onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo);

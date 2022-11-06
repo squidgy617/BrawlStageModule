@@ -2,9 +2,7 @@
 
 #include <gr/gr_madein.h>
 #include <snd/snd_3d_generator.h>
-
-#define DISK_MIN_RESPAWN_TIME 600.0
-#define DISK_MAX_RESPAWN_TIME 1200.0
+#include "st_qbert_stage_data.h"
 
 class grQbertDisk : public grMadein
 {

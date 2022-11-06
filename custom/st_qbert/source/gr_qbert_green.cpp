@@ -94,13 +94,15 @@ void grQbertGreen::setupAttack() {
 }
 
 void grQbertGreen::setStart() {
-    this->timer = randf()*(GREEN_MAX_RESPAWN_TIME - GREEN_MIN_RESPAWN_TIME) + GREEN_MIN_RESPAWN_TIME;
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
+    this->timer = randf()*(qbertStageData->greenMaxRespawnFrames - qbertStageData->greenMinRespawnFrames) + qbertStageData->greenMinRespawnFrames;
     this->yakumono->setTeam(15);
     this->setMotion(0);
     grQbertEnemy::setStart();
 }
 
 void grQbertGreen::updateMove(float frameDelta) {
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     float animFrames = this->modelAnims[0]->getFrame();
     float animFrameCount = this->modelAnims[0]->getFrameCount();
     float jumpCompletion = animFrames / animFrameCount;
@@ -133,7 +135,7 @@ void grQbertGreen::updateMove(float frameDelta) {
             this->soundGenerator.playSE(snd_se_stage_Madein_07, 0x0, 0x0, 0xffffffff);
         }
     }
-    else if (animFrames - animFrameCount > JUMP_WAIT_FRAMES) { // Pick new target
+    else if (animFrames - animFrameCount > qbertStageData->jumpWaitFrames) { // Pick new target
         this->setTargetPos();
     }
     else {
@@ -143,17 +145,18 @@ void grQbertGreen::updateMove(float frameDelta) {
 }
 
 void grQbertGreen::onInflictEach(soCollisionLog* collisionLog, float power) {
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     int entryId = g_ftManager->getEntryIdFromTaskId(collisionLog->taskId, NULL);
     if (entryId != -1) {
         int team = g_ftManager->getTeam(entryId, true, true);
-        g_ftManager->setSlow(team, true, 10, IMMOBILIZE_DURATION);
+        g_ftManager->setSlow(team, true, 10, qbertStageData->immobilizeFrames);
         *this->immobilizeStateWork = Immobilize_All;
         this->setStart();
     }
     else {
         // Check if QBert touched the orb
         if (strcmp(gfTask::getTask(collisionLog->taskId)->taskName, "ykNormal") == 0) {
-            g_ftManager->setSlow(-1, true, 5, IMMOBILIZE_DURATION);
+            g_ftManager->setSlow(-1, true, 5, qbertStageData->immobilizeFrames);
             *this->immobilizeStateWork = Immobilize_Enemies;
             this->setStart();
         }

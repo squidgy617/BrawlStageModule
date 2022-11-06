@@ -62,14 +62,17 @@ void stQbert::createObj() {
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(fileData, 0x65, "PokeTrainer00", this->unk, 0x0);
 
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
+    this->diskTimer = randf()*(qbertStageData->diskMaxRespawnFrames - qbertStageData->diskMinRespawnFrames) + qbertStageData->diskMinRespawnFrames;
+
     // setup orthogonal camera
     gfCameraManager* cameraManager = gfCameraManager::getManager();
     gfCamera* camera = &cameraManager->cameras[0];
     camera->projection = Camera_Projection_Orthogonal;
-    camera->ortho.top = ORTHOGONAL_CAMERA_ZOOM/2;
-    camera->ortho.bottom = -ORTHOGONAL_CAMERA_ZOOM/2;
-    camera->ortho.left = -(4.0/3.0)*ORTHOGONAL_CAMERA_ZOOM/2.0;
-    camera->ortho.right = (4.0/3.0)*ORTHOGONAL_CAMERA_ZOOM/2.0;
+    camera->ortho.top = qbertStageData->orthogonalCameraZoom/2;
+    camera->ortho.bottom = -qbertStageData->orthogonalCameraZoom/2;
+    camera->ortho.left = -(4.0/3.0)*qbertStageData->orthogonalCameraZoom/2.0;
+    camera->ortho.right = (4.0/3.0)*qbertStageData->orthogonalCameraZoom/2.0;
 
     this->soundGenerator.playSE(snd_se_stage_Madein_01, 0x0, 0x0, 0xffffffff);
 }
@@ -172,6 +175,7 @@ void stQbert::update(float frameDelta){
 
 void stQbert::updateCubes(float frameDelta) {
     // Check if all blocks have been coloured by a team
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
     for (u8 team = 1; team < NUM_TEAMS; team++) {
         if (this->numBlocksPerTeam[team] >= NUM_BLOCKS) {
             g_sndSystem->setBGMVol(true, 0);
@@ -188,7 +192,7 @@ void stQbert::updateCubes(float frameDelta) {
                     g_ftManager->setCurry(entryId);
                 }
             }
-            this->bgmTimer = hkMath::max2f(this->bgmTimer, WIN_FRAMES);
+            this->bgmTimer = hkMath::max2f(this->bgmTimer, qbertStageData->winFrames);
         }
     }
 }
@@ -203,32 +207,31 @@ void stQbert::updateDisks(float frameDelta) {
             numInactiveDisks++;
         }
     }
-    if (numInactiveDisks > 0 && NUM_DISKS - numInactiveDisks < MAX_DISKS_ACTIVE) {
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
+    if (numInactiveDisks > 0 && NUM_DISKS - numInactiveDisks < qbertStageData->maxDisksActive) {
         this->diskTimer -= frameDelta;
         if (this->diskTimer <= 0) {
             int diskIndex = inactiveDiskIndices[randi(numInactiveDisks)];
             this->disksActive[diskIndex] = true;
-            this->diskTimer = randf()*(DISK_MAX_RESPAWN_TIME - DISK_MIN_RESPAWN_TIME) + DISK_MIN_RESPAWN_TIME;
+            this->diskTimer = randf()*(qbertStageData->diskMaxRespawnFrames - qbertStageData->diskMinRespawnFrames) + qbertStageData->diskMinRespawnFrames;
         }
     }
-
-
-
 }
 
 void stQbert::updateEnemies(float frameDelta) {
     // Check if green orb was collected
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
     if (this->immobilizeState > 0) {
         g_sndSystem->setBGMVol(true, 0);
         this->soundGenerator.playSE(snd_se_stage_Madein_good_06, 0x0, 0x0, 0xffffffff);
         grQbertBackground* background = (grQbertBackground*)this->getGround(0);
-        background->setImmobilize(IMMOBILIZE_DURATION);
+        background->setImmobilize(qbertStageData->immobilizeFrames);
         for (u8 i = 43 + this->immobilizeState; i < NUM_ENEMIES + 44; i++) {
             grQbertEnemy* enemy = (grQbertEnemy*)this->getGround(i);
-            enemy->setImmobilize(IMMOBILIZE_DURATION);
+            enemy->setImmobilize(qbertStageData->immobilizeFrames);
         }
         this->immobilizeState = Immobilize_None;
-        this->bgmTimer = hkMath::max2f(this->bgmTimer, IMMOBILIZE_DURATION);
+        this->bgmTimer = hkMath::max2f(this->bgmTimer, qbertStageData->immobilizeFrames);
     }
 }
 

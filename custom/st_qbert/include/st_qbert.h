@@ -2,6 +2,7 @@
 
 #include <types.h>
 #include <st/st_melee.h>
+#include "st_qbert_stage_data.h"
 #include "gr_qbert_background.h"
 #include "gr_qbert_cube.h"
 #include "gr_qbert_disk.h"
@@ -16,10 +17,8 @@ const float BGM_VOLUME = 1.0f;
 const float SCROLL_DIR = 0.0f;
 const float POKETRAINER_Z = 0.0f;
 
-#define ORTHOGONAL_CAMERA_ZOOM 150.0
 #define NUM_BLOCKS 28
 #define NUM_DISKS 14
-#define MAX_DISKS_ACTIVE 2
 #define NUM_ENEMIES 4
 
 class stQbert : public stMelee {
@@ -41,7 +40,6 @@ public:
             }
             immobilizeState = Immobilize_None;
             bgmTimer = 0;
-            this->diskTimer = randf()*(DISK_MAX_RESPAWN_TIME - DISK_MIN_RESPAWN_TIME) + DISK_MIN_RESPAWN_TIME;
         };
         static stQbert* create();
 

@@ -1,0 +1,114 @@
+orthogonalCameraZoom
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+maxDisksActive
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+diskMinRespawnFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+diskMaxRespawnFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+winFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+knockoutFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+dropFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+jumpWaitFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+qbertHPPerLife
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+qbertNumLives
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+qbertSwearFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+qbertRespawnFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+redHP
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+redMinRespawnFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+redMaxRespawnFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+immobilizeFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+greenMinRespawnFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+greenMaxRespawnFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+coilyEggHP
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+coilySnakeHP
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+colyMinRespawnFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+coilyMaxRespawnFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+coilyHatchFrames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0

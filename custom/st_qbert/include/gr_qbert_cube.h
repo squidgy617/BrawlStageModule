@@ -2,10 +2,10 @@
 
 #include <gr/gr_madein.h>
 #include <snd/snd_3d_generator.h>
+#include "st_qbert_stage_data.h"
 
 #define NUM_TEAMS 7
 #define DEFAULT_TEAM_ID 5
-#define WIN_FRAMES 150.0
 #define MAX_JUMPS 4
 
 class grQbertCube : public grMadein

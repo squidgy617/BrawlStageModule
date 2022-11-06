@@ -92,6 +92,7 @@ void grQbertCube::setTeam(u8 teamId) {
 void grQbertCube::setWin() {
     this->setTeam(0);
     this->setMotionDetails(0, 0, NUM_TEAMS, 0, 0);
-    this->timer = WIN_FRAMES;
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
+    this->timer = qbertStageData->winFrames;
 }
 

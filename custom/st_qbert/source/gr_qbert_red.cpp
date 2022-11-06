@@ -101,7 +101,8 @@ void grQbertRed::setupHitPoint() {
 }
 
 void grQbertRed::setStart() {
-    this->timer = randf()*(RED_MAX_RESPAWN_TIME - RED_MIN_RESPAWN_TIME) + RED_MIN_RESPAWN_TIME;
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
+    this->timer = randf()*(qbertStageData->redMaxRespawnFrames - qbertStageData->redMinRespawnFrames) + qbertStageData->redMinRespawnFrames;
     this->yakumono->setTeam(15);
     this->setMotion(0);
     this->damage = 0;
@@ -109,6 +110,7 @@ void grQbertRed::setStart() {
 }
 
 void grQbertRed::updateMove(float frameDelta) {
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     float animFrames = this->modelAnims[0]->getFrame();
     float animFrameCount = this->modelAnims[0]->getFrameCount();
     float jumpCompletion = animFrames / animFrameCount;
@@ -118,7 +120,7 @@ void grQbertRed::updateMove(float frameDelta) {
         Vec3f pos = this->getPos();
         stRange* range = &this->stage->deadRange;
         if (pos.y <= range->bottom) {
-            if (this->timer >= DROP_FRAMES) {
+            if (this->timer >= qbertStageData->dropFrames) {
                 this->setStart();
             }
         }
@@ -133,7 +135,7 @@ void grQbertRed::updateMove(float frameDelta) {
                     this->targetPos,
                     this->targetPos
             };
-            float completion = this->timer / DROP_FRAMES;
+            float completion = this->timer / qbertStageData->dropFrames;
             mtBezierCurve(completion, points, &pos);
             this->setPos(&pos);
         }
@@ -166,7 +168,7 @@ void grQbertRed::updateMove(float frameDelta) {
             this->soundGenerator.playSE(snd_se_stage_Madein_07, 0x0, 0x0, 0xffffffff);
         }
     }
-    else if (animFrames - animFrameCount > JUMP_WAIT_FRAMES) { // Pick new target
+    else if (animFrames - animFrameCount > qbertStageData->jumpWaitFrames) { // Pick new target
         this->setTargetPos();
     }
     else {
@@ -180,9 +182,10 @@ void grQbertRed::onInflictEach(soCollisionLog* collisionLog, float power) {
 }
 
 void grQbertRed::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     damage->totalDamage = 0;
     this->damage += damage->damage;
-    if (this->damage > RED_HP) {
+    if (this->damage > qbertStageData->redHP) {
         this->timer = 0;
         this->setSleepAttack(true);
         this->setSleepHit(true);

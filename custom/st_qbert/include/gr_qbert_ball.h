@@ -1,8 +1,8 @@
 #pragma once
 
-#include <st/st_melee.h>
 #include "gr_qbert_enemy.h"
 #include "gr_qbert_cube.h"
+#include "st_qbert_stage_data.h"
 
 class grQbertBall : public grQbertEnemy
 {

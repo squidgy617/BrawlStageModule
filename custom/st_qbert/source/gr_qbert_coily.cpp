@@ -111,7 +111,8 @@ void grQbertCoily::setStartPos() {
 }
 
 void grQbertCoily::setStart() {
-    this->timer = randf()*(COILY_MAX_RESPAWN_TIME - COILY_MIN_RESPAWN_TIME) + COILY_MIN_RESPAWN_TIME;
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
+    this->timer = randf()*(qbertStageData->coilyMaxRespawnFrames - qbertStageData->coilyMinRespawnFrames) + qbertStageData->coilyMinRespawnFrames;
     this->yakumono->setTeam(15);
     this->isHatched = false;
     this->setMotion(4);
@@ -120,23 +121,24 @@ void grQbertCoily::setStart() {
 }
 
 void grQbertCoily::updateMove(float frameDelta) {
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     float animFrames = this->modelAnims[0]->getFrame();
     float animFrameCount = this->modelAnims[0]->getFrameCount();
     float jumpCompletion = animFrames / animFrameCount;
 
     if (this->isDead) { // Launched
         this->timer += frameDelta;
-        if (this->timer == KNOCKOUT_FRAMES) {
+        if (this->timer == qbertStageData->knockoutFrames) {
             this->soundGenerator.playSE(snd_se_stage_Madein_08, 0x0, 0x0, 0xffffffff);
             cmReqQuake(1, &(Vec3f){0,0,0});
         }
         Vec3f pos = this->getPos();
         stRange* range = &this->stage->deadRange;
         if (pos.x <= range->left || pos.x >= range->right || pos.y >= range->top || pos.y <= range->bottom) {
-            if (this->isHatched && this->timer >= KNOCKOUT_FRAMES) {
+            if (this->isHatched && this->timer >= qbertStageData->knockoutFrames) {
                 this->setStart();
             }
-            else if (!this->isHatched && this->timer >= DROP_FRAMES) {
+            else if (!this->isHatched && this->timer >= qbertStageData->dropFrames) {
                 this->setStart();
             }
         }
@@ -151,11 +153,11 @@ void grQbertCoily::updateMove(float frameDelta) {
                     this->midpointPos,
                     this->targetPos
             };
-            float completion = this->timer / KNOCKOUT_FRAMES;
+            float completion = this->timer / qbertStageData->knockoutFrames;
             if (!this->isHatched) {
                     points[1] = this->prevPos;
                     points[2] = this->targetPos;
-                    completion = this->timer / DROP_FRAMES;
+                    completion = this->timer / qbertStageData->dropFrames;
             }
             mtBezierCurve(completion, points, &pos);
             this->setPos(&pos);
@@ -186,7 +188,7 @@ void grQbertCoily::updateMove(float frameDelta) {
             this->soundGenerator.playSE(snd_se_stage_Madein_03, 0x0, 0x0, 0xffffffff);
         }
     }
-    else if (animFrames - animFrameCount > JUMP_WAIT_FRAMES) { // Pick new target
+    else if (animFrames - animFrameCount > qbertStageData->jumpWaitFrames) { // Pick new target
         if (this->isHatched) {
             this->soundGenerator.playSE(snd_se_stage_Madein_09, 0x0, 0x0, 0xffffffff);
         }
@@ -212,9 +214,10 @@ void grQbertCoily::onInflictEach(soCollisionLog* collisionLog, float power) {
 }
 
 void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     damage->totalDamage = 0;
     this->damage += damage->damage;
-    if ((!this->isHatched && this->damage > COILY_EGG_HP) || (this->isHatched && this->damage > COILY_SNAKE_HP)) {
+    if ((!this->isHatched && this->damage > qbertStageData->coilyEggHP) || (this->isHatched && this->damage > qbertStageData->coilySnakeHP)) {
         this->timer = 0;
         this->setSleepAttack(true);
         this->setSleepHit(true);
@@ -239,6 +242,7 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
 }
 
 void grQbertCoily::setTargetPos() {
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     this->prevPos = this->targetPos;
 
     // get next cube target based on nodes
@@ -263,7 +267,7 @@ void grQbertCoily::setTargetPos() {
             this->targetIndex = validCubeIndices[randi(numValidJumps)];
         }
         else {
-            this->timer = HATCH_FRAMES;
+            this->timer = qbertStageData->coilyHatchFrames;
             this->isHatched = true;
         }
     }

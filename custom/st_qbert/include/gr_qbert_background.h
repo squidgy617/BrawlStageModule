@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gr/gr_madein.h>
+#include "st_qbert_stage_data.h"
 
 class grQbertBackground : public grMadein
 {

@@ -3,10 +3,7 @@
 #include <st/st_melee.h>
 #include "gr_qbert_ball.h"
 #include "gr_qbert_cube.h"
-
-#define GREEN_MIN_RESPAWN_TIME 600.0
-#define GREEN_MAX_RESPAWN_TIME 1200.0
-#define IMMOBILIZE_DURATION 210.0
+#include "st_qbert_stage_data.h"
 
 enum ImmobilizeState {
     Immobilize_None = 0x0,
