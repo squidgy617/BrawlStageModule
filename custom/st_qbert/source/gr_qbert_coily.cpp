@@ -80,7 +80,7 @@ void grQbertCoily::setupAttack() {
     overwriteAttackData->bits.isAbsorbable = false;
     overwriteAttackData->bits.field_0x34_8 = 0;
 
-    overwriteAttackData->bits.detectionRate = 0x3c;
+    overwriteAttackData->bits.detectionRate = 120;
     overwriteAttackData->bits.field_0x38_1 = false;
     overwriteAttackData->bits.ignoreInvincibility = false;
     overwriteAttackData->bits.ignoreIntangibility = false;
