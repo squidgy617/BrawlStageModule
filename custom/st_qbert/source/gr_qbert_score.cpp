@@ -2,6 +2,7 @@
 #include "gr_qbert_score.h"
 #include <OS/OSError.h>
 #include <hk/hk_math.h>
+#include <string.h>
 
 grQbertScore* grQbertScore::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grQbertScore* ground = new(Heaps::StageInstance) grQbertScore(taskName);
@@ -41,7 +42,6 @@ void grQbertScore::updateScaleBase(float frameDelta) {
 
 }
 
-
 void grQbertScore::updateCallback(float frameDelta) {
     grCalcWorldCallBack* calcWorldCallBack = &this->calcWorldCallBack;
     nw4r::g3d::ScnMdl* scnMdl = this->sceneModels[0];
@@ -63,12 +63,83 @@ void grQbertScore::updateCallback(float frameDelta) {
 
 
 void grQbertScore::updateNumber(float frameDelta) {
-    if (*this->sceneWork != this->prevScore) {
+    if (*this->scoreWork != this->prevScore) {
         this->prevScore = *this->scoreWork;
+        u8 digit = 0;
+        String digitStr = '\0\0';
+        String scoreStr = String::to_string<64>(*this->scoreWork);
+        int length = scoreStr.length();
+        if (length >= this->type) {
+            digitStr = scoreStr[length - this->type];
+            digit = digitStr.stoi();
+        }
 
+        if (digit == 0) {
+            this->setMotionFrame(9.0, 0);
+        }
+        else {
+            this->setMotionFrame(digit, 0);
+        }
     }
-
 }
+
+//void grQbertScore::updateNumber(float frameDelta) {
+//    if (*this->scoreWork != this->prevScore) {
+//        this->prevScore = *this->scoreWork;
+//        u8 digit = 0;
+//        char digitStr[2] = "";
+//        char scoreStr[10];
+//        itoa(*this->scoreWork, scoreStr, 10);
+//        int length = strlen(scoreStr);
+//        switch(this->type) {
+//            case 2:
+//                if (length > 0) {
+//                    strncpy(digitStr, &scoreStr[length + 5], 1);
+//                    digit = atoi(digitStr);
+//                }
+//                break;
+//            case 3:
+//                if (length > 1) {
+//                    strncpy(digitStr, &scoreStr[length + 4], 1);
+//                    digit = atoi(digitStr);
+//                }
+//                break;
+//            case 4:
+//                if (length > 2) {
+//                    strncpy(digitStr, &scoreStr[length + 3], 1);
+//                    digit = atoi(digitStr);
+//                }
+//                break;
+//            case 5:
+//                if (length > 3) {
+//                    strncpy(digitStr, &scoreStr[length + 2], 1);
+//                    digit = atoi(digitStr);
+//                }
+//                break;
+//            case 6:
+//                if (length > 4) {
+//                    strncpy(digitStr, &scoreStr[length + 1], 1);
+//                    digit = atoi(digitStr);
+//                }
+//                break;
+//            case 7:
+//                if (length > 5) {
+//                    strncpy(digitStr, &scoreStr[length], 1);
+//                    digit = atoi(digitStr);
+//                }
+//                break;
+//            default:
+//                break;
+//        }
+//        if (digit == 0) {
+//            this->setMotionFrame(9.0, 0);
+//        }
+//        else {
+//            this->setMotionFrame(digit, 0);
+//        }
+//    }
+//
+//}
 
 
 

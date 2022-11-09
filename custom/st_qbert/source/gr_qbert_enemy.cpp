@@ -26,7 +26,7 @@ void grQbertEnemy::setStart() {
 void grQbertEnemy::update(float frameDelta) {
     if (this->immobilizeTimer > 0) {
         this->immobilizeTimer -= frameDelta;
-        this->modelAnims[0]->setFrame(this->animFrameBeforeImmobilize);
+        this->modelAnims[0]->setFrame(this->animFrameBeforeImmobilize); // TODO: Use setMotionFrame instead
         if (this->immobilizeTimer <= 0) {
             if (!this->isDead) {
                 this->setSleepHit(false);

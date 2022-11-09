@@ -222,7 +222,7 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
         this->setSleepAttack(true);
         this->setSleepHit(true);
         this->isDead = true;
-        this->modelAnims[0]->setUpdateRate(0.0);
+        this->modelAnims[0]->setUpdateRate(0.0); // TODO: Try motionRatio
         this->angle = damage->vector;
         if (damage->side == -1) {
             this->angle = 180 - damage->vector;

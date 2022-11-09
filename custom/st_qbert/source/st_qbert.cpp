@@ -32,7 +32,7 @@ void stQbert::createObj() {
     testStageDataInit(fileData, 220, 1);
 
     this->createObjBg(0);
-    this->createObjBg(1);
+    this->createObjHud(1);
     for (int cubeIndex = 2; cubeIndex < NUM_BLOCKS + 2; cubeIndex++) {
         this->createObjCube(cubeIndex, cubeIndex);
     }
@@ -44,6 +44,7 @@ void stQbert::createObj() {
     this->createObjCoily(45, alien);
     this->createObjGreen(46);
     this->createObjRed(47);
+    this->createObjScore(48, 0, 0);
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -84,6 +85,18 @@ void stQbert::createObjBg(int mdlIndex) {
         ground->startup(fileData,0,0);
         ground->setStageData(stageData);
         ground->setDontMoveGround();
+    }
+}
+
+void stQbert::createObjHud(int mdlIndex) {
+    grQbertHud* hud = grQbertHud::create(mdlIndex, "", "grQbertHud");
+    if(hud != NULL){
+        addGround(hud);
+        hud->startup(fileData,0,0);
+        hud->setStageData(stageData);
+        hud->initializeEntity();
+        hud->startEntityAutoLoop();
+        hud->setScorePosWork(this->scorePositions);
     }
 }
 
@@ -163,6 +176,18 @@ void stQbert::createObjRed(int mdlIndex) {
         red->initializeEntity();
         red->startEntity();
         red->setStartPos();
+    }
+}
+
+void stQbert::createObjScore(int mdlIndex, int player, int type) {
+    grQbertScore* score = grQbertScore::create(mdlIndex, "StgDonkey_Suuji", "grQbertScore");
+    if(score != NULL){
+        addGround(score);
+        score->startup(fileData,0,0);
+        score->setStageData(stageData);
+        score->setType(type);
+        score->setPosWork(&this->scorePositions[player*type]);
+        score->setScoreWork(&this->teamScores[player]);
     }
 }
 

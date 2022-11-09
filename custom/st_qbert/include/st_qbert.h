@@ -1,15 +1,18 @@
 #pragma once
 
+#include <memory.h>
 #include <types.h>
 #include <st/st_melee.h>
 #include "st_qbert_stage_data.h"
 #include "gr_qbert_background.h"
+#include "gr_qbert_hud.h"
 #include "gr_qbert_cube.h"
 #include "gr_qbert_disk.h"
 #include "gr_qbert_alien.h"
 #include "gr_qbert_coily.h"
 #include "gr_qbert_green.h"
 #include "gr_qbert_red.h"
+#include "gr_qbert_score.h"
 #include <mt/mt_prng.h>
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
@@ -29,17 +32,20 @@ class stQbert : public stMelee {
         ImmobilizeState immobilizeState;
         float bgmTimer;
         float diskTimer;
+        Vec3f scorePositions[6*4];
+        u32 teamScores[4];
 public:
         stQbert(int stageID) : stMelee("stQbert", stageID) {
             numBlocksPerTeam[0] = NUM_BLOCKS;
             for (u8 team = 0; team < NUM_TEAMS; team++) {
                 numBlocksPerTeam[team] = 0;
             }
-            for (u8 disk = 0; disk < NUM_DISKS; disk++) {
-                disksActive[disk] = false;
-            }
+            __memfill(disksActive, false, NUM_DISKS);
             immobilizeState = Immobilize_None;
             bgmTimer = 0;
+            __memfill(scorePositions, 0, 6*4*12);
+            __memfill(teamScores, 0, 4*4);
+
         };
         static stQbert* create();
 
@@ -83,16 +89,16 @@ public:
         virtual void notifyEventInfoGo();
 
         void createObjBg(int mdlIndex);
+        void createObjHud(int mdlIndex);
         void createObjCube(int mdlIndex, int collIndex);
         void createObjDisk(int mdlIndex, int collIndex, int diskIndex);
         grQbertAlien* createObjAlien(int mdlIndex);
         void createObjCoily(int mdlIndex, grQbertAlien* enemyTarget);
         void createObjGreen(int mdlIndex);
         void createObjRed(int mdlIndex);
+        void createObjScore(int mdlIndex, int player, int type);
         void updateCubes(float frameDelta);
         void updateDisks(float frameDelta);
         void updateEnemies(float frameDelta);
         void updateBgm(float frameDelta);
 };
-
-// TODO: Green bonus thing that temp freezes opponent

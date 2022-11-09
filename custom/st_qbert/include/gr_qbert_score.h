@@ -15,7 +15,17 @@ class grQbertScore : public grYakumono
         grQbertScore(char* taskName) : grYakumono(taskName) {
             prevScore = 999999;
             motionRatio = 0.0;
-            calcWorldCallBack.nodeCallbackDataArray[0].m_flag1 = true;
+            scaleBase.x = 0.0;
+            scaleBase.y = 0.0;
+            scaleBase.z = 0.0;
+            if (&calcWorldCallBack != NULL) {
+                calcWorldCallBack.m_numNodeCallbackData = 1;
+                calcWorldCallBack.initialize(false, Heaps::StageInstance);
+                calcWorldCallBack.nodeCallbackDataArray[0].m_flag1 = true;
+                calcWorldCallBack.nodeCallbackDataArray[0].m_flag3 = true;
+                this->setupMelee();
+            }
+
         };
         virtual void update(float frameDelta);
         virtual ~grQbertScore() { };
