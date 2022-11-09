@@ -5,6 +5,8 @@
 #include "gr_qbert_cube.h"
 #include "st_qbert_stage_data.h"
 
+#define COILY_POINTS 500
+
 class grQbertCoily : public grQbertEnemy
 {
     protected:

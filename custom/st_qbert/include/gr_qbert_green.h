@@ -5,6 +5,8 @@
 #include "gr_qbert_cube.h"
 #include "st_qbert_stage_data.h"
 
+#define GREEN_POINTS 100
+
 enum ImmobilizeState {
     Immobilize_None = 0x0,
     Immobilize_All = 0x1,

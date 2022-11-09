@@ -2,6 +2,10 @@
 
 #include <types.h>
 
+#define NUM_PLAYERS 4
+#define MIN_SCORE 0
+#define MAX_SCORE 999999
+
 struct stQbertStageData {
     float orthogonalCameraZoom;
     int maxDisksActive;

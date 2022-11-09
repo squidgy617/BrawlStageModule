@@ -5,6 +5,8 @@
 
 class grQbertHud : public grMadein
 {
+    #define NUM_DIGITS 6
+
     protected:
         Vec3f* positionsWork;
     public:

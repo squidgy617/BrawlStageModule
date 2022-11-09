@@ -7,6 +7,7 @@
 #define NUM_TEAMS 7
 #define DEFAULT_TEAM_ID 5
 #define MAX_JUMPS 4
+#define CUBE_POINTS 25
 
 class grQbertCube : public grMadein
 {
@@ -16,6 +17,7 @@ class grQbertCube : public grMadein
         float timer;
         u8 numMembersOnTeamLanded[NUM_TEAMS];
         u8 prevNumMembersOnTeamLanded[NUM_TEAMS];
+        u32* teamScoresWork;
         u8 teamId;
     public:
         grQbertCube(char* taskName) : grMadein(taskName) {
@@ -33,7 +35,8 @@ class grQbertCube : public grMadein
         virtual void getNextJumpCubes(u32* cubeIndices);
         virtual void setNumBlocksPerTeamWork(u8 numBlocksPerTeam[NUM_TEAMS]);
         virtual u8 getTeam();
-        virtual void setTeam(u8 teamId);
+        virtual void setTeam(u8 teamId, bool incrementScore);
+        virtual void setTeamScoresWork(u32* teamScoresWork);
         virtual void setWin();
 
         static grQbertCube* create(int mdlIndex, char* tgtNodeName, char* taskName);

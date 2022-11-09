@@ -12,6 +12,10 @@ float distance(Vec3f* p1, Vec3f* p2) {
     return mtSqrtf(deltaX*deltaX + deltaY*deltaY + deltaZ*deltaZ);
 }
 
+void grQbertEnemy::setTeamScoresWork(u32* teamScoresWork) {
+    this->teamScoresWork = teamScoresWork;
+}
+
 void grQbertEnemy::setStart() {
     this->setSleepHit(false);
     this->setSleepAttack(false);

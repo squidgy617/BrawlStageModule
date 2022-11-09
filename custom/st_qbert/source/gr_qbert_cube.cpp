@@ -17,7 +17,7 @@ grQbertCube* grQbertCube::create(int mdlIndex, char* tgtNodeName, char* taskName
 void grQbertCube::update(float frameDelta){
     for (int team = 0; team < NUM_TEAMS; team++) {
         if (this->numMembersOnTeamLanded[team] > this->prevNumMembersOnTeamLanded[team]) {
-            this->setTeam(team);
+            this->setTeam(team, true);
         }
         this->prevNumMembersOnTeamLanded[team] = this->numMembersOnTeamLanded[team];
         this->numMembersOnTeamLanded[team] = 0;
@@ -26,7 +26,7 @@ void grQbertCube::update(float frameDelta){
     if (this->timer > 0) {
         if (this->timer - frameDelta <= 0) {
             this->timer = 0;
-            this->setTeam(0);
+            this->setTeam(0, false);
         }
         else {
             this->timer -= frameDelta;
@@ -71,7 +71,7 @@ u8 grQbertCube::getTeam() {
     return this->teamId;
 }
 
-void grQbertCube::setTeam(u8 teamId) {
+void grQbertCube::setTeam(u8 teamId, bool incrementScore) {
     if (this->timer <= 0) {
         if (teamId < 0 || teamId >= NUM_TEAMS) {
             teamId = DEFAULT_TEAM_ID;
@@ -83,14 +83,21 @@ void grQbertCube::setTeam(u8 teamId) {
             this->numBlocksPerTeam[teamId]++;
             if (teamId > 0) {
                 this->soundGenerator.playSE(snd_se_stage_Madein_10, 0x0, 0x0, 0xffffffff);
+                if (teamId < NUM_PLAYERS + 1) {
+                    this->teamScoresWork[teamId - 1] += CUBE_POINTS;
+                }
             }
         }
         this->teamId = teamId;
     }
 };
 
+void grQbertCube::setTeamScoresWork(u32* teamScoresWork) {
+    this->teamScoresWork = teamScoresWork;
+}
+
 void grQbertCube::setWin() {
-    this->setTeam(0);
+    this->setTeam(0, false);
     this->setMotionDetails(0, 0, NUM_TEAMS, 0, 0);
     stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     this->timer = qbertStageData->winFrames;

@@ -112,7 +112,7 @@ void grQbertAlien::setStart() {
     this->teamId = STARTING_TEAM_ID;
     this->lives = qbertStageData->qbertNumLives;
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
-    cube->setTeam(this->teamId);
+    cube->setTeam(this->teamId, false);
     grQbertEnemy::setStart();
 }
 
@@ -182,7 +182,7 @@ void grQbertAlien::updateMove(float frameDelta) {
         Vec3f pos = this->targetPos + this->shakeOffset;
         this->setPos(&pos);
         grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
-        cube->setTeam(this->teamId);
+        cube->setTeam(this->teamId, false);
     }
     else if (this->timer > 0) { // Swearing
         if (this->timer == qbertStageData->qbertSwearFrames) {
@@ -232,6 +232,9 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->midpointPos = (Vec3f){this->prevPos.x, 110, this->prevPos.z};
             this->soundGenerator.playSE(snd_se_stage_Madein_04, 0x0, 0x0, 0xffffffff);
             this->modelAnims[0]->setUpdateRate(0.0);
+            if (damage->teamId < NUM_PLAYERS) {
+                this->teamScoresWork[damage->teamId] += ALIEN_POINTS;
+            }
         }
     }
     else {
@@ -270,4 +273,3 @@ void grQbertAlien::setTargetPos() {
 
     this->setAnim();
 }
-

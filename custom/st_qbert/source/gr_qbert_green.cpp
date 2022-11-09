@@ -152,6 +152,9 @@ void grQbertGreen::onInflictEach(soCollisionLog* collisionLog, float power) {
         g_ftManager->setSlow(team, true, 10, qbertStageData->immobilizeFrames);
         *this->immobilizeStateWork = Immobilize_All;
         this->setStart();
+        if (team < NUM_PLAYERS) {
+            this->teamScoresWork[team] += GREEN_POINTS;
+        }
     }
     else {
         // Check if QBert touched the orb

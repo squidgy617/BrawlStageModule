@@ -23,7 +23,7 @@ protected:
     bool isStart;
     float immobilizeTimer;
     float animFrameBeforeImmobilize;
-
+    u32* teamScoresWork;
 public:
     Vec3f prevPos;
     Vec3f targetPos;
@@ -48,6 +48,7 @@ public:
     virtual void setupHitPoint() {};
     virtual void setStartPos() {};
     virtual void setTargetPos() {};
+    virtual void setTeamScoresWork(u32* teamScoresWork);
     virtual void setStart();
     virtual void setAnim();
     virtual void updateMove(float frameDelta) {};

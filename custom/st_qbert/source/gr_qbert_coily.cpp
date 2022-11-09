@@ -234,6 +234,9 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, -500};
             this->midpointPos = (Vec3f){this->prevPos.x, 110, this->prevPos.z};
             this->soundGenerator.playSE(snd_se_stage_Madein_good_03, 0x0, 0x0, 0xffffffff);
+            if (damage->teamId < NUM_PLAYERS) {
+                this->teamScoresWork[damage->teamId] += COILY_POINTS;
+            }
         }
         else {
             this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, 0};

@@ -6,9 +6,11 @@
 #include "gr_qbert_cube.h"
 
 #define STARTING_TEAM_ID 6
+#define ALIEN_POINTS 0
 
 class grQbertAlien : public grQbertEnemy
 {
+
     protected:
         u8 teamId;
         u8 lives;

@@ -44,7 +44,11 @@ void stQbert::createObj() {
     this->createObjCoily(45, alien);
     this->createObjGreen(46);
     this->createObjRed(47);
-    this->createObjScore(48, 0, 0);
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        for (int j = 0; j < NUM_DIGITS; j++) {
+            this->createObjScore(48, i, j);
+        }
+    }
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -110,6 +114,7 @@ void stQbert::createObjCube(int mdlIndex, int collIndex) {
         cube->initializeEntity();
         cube->startEntity();
         cube->setNumBlocksPerTeamWork(this->numBlocksPerTeam);
+        cube->setTeamScoresWork(this->teamScores);
         createCollision(fileData, collIndex, cube);
     }
 }
@@ -138,6 +143,7 @@ grQbertAlien* stQbert::createObjAlien(int mdlIndex) {
         alien->initializeEntity();
         alien->startEntity();
         alien->setStartPos();
+        alien->setTeamScoresWork(this->teamScores);
     }
     return alien;
 }
@@ -151,6 +157,7 @@ void stQbert::createObjCoily(int mdlIndex, grQbertAlien* enemyTarget) {
         coily->initializeEntity();
         coily->startEntity();
         coily->setStartPos();
+        coily->setTeamScoresWork(this->teamScores);
     }
 }
 
@@ -164,6 +171,7 @@ void stQbert::createObjGreen(int mdlIndex) {
         green->startEntity();
         green->setStartPos();
         green->setImmobilizeStateWork(&this->immobilizeState);
+        green->setTeamScoresWork(this->teamScores);
     }
 }
 
@@ -176,6 +184,7 @@ void stQbert::createObjRed(int mdlIndex) {
         red->initializeEntity();
         red->startEntity();
         red->setStartPos();
+        red->setTeamScoresWork(this->teamScores);
     }
 }
 
@@ -186,7 +195,7 @@ void stQbert::createObjScore(int mdlIndex, int player, int type) {
         score->startup(fileData,0,0);
         score->setStageData(stageData);
         score->setType(type);
-        score->setPosWork(&this->scorePositions[player*type]);
+        score->setPosWork(&this->scorePositions[player*NUM_DIGITS + type]);
         score->setScoreWork(&this->teamScores[player]);
     }
 }
@@ -223,6 +232,9 @@ void stQbert::updateCubes(float frameDelta) {
 }
 
 void stQbert::updateDisks(float frameDelta) {
+    // TODO: Roll between max disks that can be active each round
+    // TODO: Clear disks upon round end
+
     // Check if disks should be activated
     u8 inactiveDiskIndices[NUM_DISKS];
     u8 numInactiveDisks = 0;

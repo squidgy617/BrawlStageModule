@@ -14,9 +14,11 @@ grQbertScore* grQbertScore::create(int mdlIndex, char* tgtNodeName, char* taskNa
 void grQbertScore::setPosWork(Vec3f* posWork) {
     this->posWork = posWork;
 }
+
 void grQbertScore::setScoreWork(u32* scoreWork) {
     this->scoreWork = scoreWork;
 }
+
 void grQbertScore::setType(u8 type) {
     this->type = type;
 }
@@ -61,16 +63,21 @@ void grQbertScore::updateCallback(float frameDelta) {
     calcWorldCallBack->nodeCallbackDataArray[0].m_scale = 1.85*this->scaleBase;
 }
 
-
 void grQbertScore::updateNumber(float frameDelta) {
     if (*this->scoreWork != this->prevScore) {
+        if (*this->scoreWork > MAX_SCORE) {
+            *this->scoreWork = MAX_SCORE;
+        }
+        else if (*this->scoreWork < MIN_SCORE) {
+            *this->scoreWork = MIN_SCORE;
+        }
         this->prevScore = *this->scoreWork;
         u8 digit = 0;
         String digitStr = '\0\0';
         String scoreStr = String::to_string<64>(*this->scoreWork);
         int length = scoreStr.length();
-        if (length >= this->type) {
-            digitStr = scoreStr[length - this->type];
+        if (length > this->type) {
+            digitStr = scoreStr[length - this->type - 1];
             digit = digitStr.stoi();
         }
 
@@ -78,7 +85,7 @@ void grQbertScore::updateNumber(float frameDelta) {
             this->setMotionFrame(9.0, 0);
         }
         else {
-            this->setMotionFrame(digit, 0);
+            this->setMotionFrame(digit - 1, 0);
         }
     }
 }
@@ -142,4 +149,4 @@ void grQbertScore::updateNumber(float frameDelta) {
 //}
 
 
-
+// TODO: Easter egg if all teams/one team has a certain score (show Bonus 1500)
