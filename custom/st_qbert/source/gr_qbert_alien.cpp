@@ -205,7 +205,7 @@ void grQbertAlien::updateMove(float frameDelta) {
 
 void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
     stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
-    if (this->timer > 0) {
+    if (this->timer > 0 && damage->teamId != 15) {
         damage->totalDamage = 0;
     }
     else if (damage->totalDamage >= qbertStageData->qbertHPPerLife) {
@@ -234,7 +234,7 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, -500};
             this->midpointPos = (Vec3f){this->prevPos.x, 110, this->prevPos.z};
             this->soundGenerator.playSE(snd_se_stage_Madein_04, 0x0, 0x0, 0xffffffff);
-            this->modelAnims[0]->setUpdateRate(0.0);
+            this->setMotionRatio(0.0);
         }
     }
     else {

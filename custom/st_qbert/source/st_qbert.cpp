@@ -45,10 +45,12 @@ void stQbert::createObj() {
     this->createObjGreen(46);
     this->createObjRed(47);
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        for (int j = 0; j < NUM_DIGITS; j++) {
+        for (int j = 0; j < NUM_SCORE_DIGITS; j++) {
             this->createObjScore(48, i, j);
         }
     }
+    this->createObjRound(48, 0);
+    this->createObjRound(48, 1);
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -196,8 +198,20 @@ void stQbert::createObjScore(int mdlIndex, int player, int type) {
         score->startup(fileData,0,0);
         score->setStageData(stageData);
         score->setType(type);
-        score->setPosWork(&this->scorePositions[player*NUM_DIGITS + type]);
+        score->setPosWork(&this->scorePositions[player*NUM_SCORE_DIGITS + type]);
         score->setScoreWork(&this->teamScores[player]);
+    }
+}
+
+void stQbert::createObjRound(int mdlIndex, int type) {
+    grQbertScore* score = grQbertScore::create(mdlIndex, "StgDonkey_Suuji", "grQbertRound");
+    if(score != NULL){
+        addGround(score);
+        score->startup(fileData,0,0);
+        score->setStageData(stageData);
+        score->setType(type);
+        score->setPosWork(&this->scorePositions[4*NUM_SCORE_DIGITS + type]);
+        score->setScoreWork(&this->round);
     }
 }
 
@@ -214,7 +228,7 @@ void stQbert::updateCubes(float frameDelta) {
     if (this->winTimer > 0) {
         this->winTimer -= frameDelta;
         if (this->winTimer <= 0) {
-            if (this->winningTeamId - 1 < NUM_PLAYERS) {
+            if (this->winningTeamId > 0 && this->winningTeamId - 1 < NUM_PLAYERS) {
                 this->teamScores[this->winningTeamId - 1] += STARTING_COMPLETION_POINTS
                         + ADDED_POINTS_PER_ROUND*this->round
                         + REMAINING_DISKS_POINTS*this->numDisksActive;
@@ -244,6 +258,9 @@ void stQbert::updateCubes(float frameDelta) {
             this->bgmTimer = hkMath::max2f(this->bgmTimer, qbertStageData->immobilizeFrames);
             this->winningTeamId = team;
             this->round++;
+            if (this->round > MAX_ROUNDS) {
+                this->round = MAX_ROUNDS;
+            }
             this->maxDisksActive = randi(maxDisksActive) + 1;
             grQbertAlien* alien = (grQbertAlien*)this->getGround(44);
             alien->setTeam(STARTING_TEAM_ID);
@@ -253,7 +270,6 @@ void stQbert::updateCubes(float frameDelta) {
 }
 
 void stQbert::updateDisks(float frameDelta) {
-    // TODO: Roll between max disks that can be active each round
 
     // Check if disks should be activated
     u8 inactiveDiskIndices[NUM_DISKS];
@@ -266,7 +282,7 @@ void stQbert::updateDisks(float frameDelta) {
     }
     this->numDisksActive = NUM_DISKS - numInactiveDisks;
     stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
-    if (numInactiveDisks > 0 && this->numDisksActive < qbertStageData->maxDisksActive) {
+    if (numInactiveDisks > 0 && this->numDisksActive < this->maxDisksActive) {
         this->diskTimer -= frameDelta;
         if (this->diskTimer <= 0) {
             int diskIndex = inactiveDiskIndices[randi(numInactiveDisks)];

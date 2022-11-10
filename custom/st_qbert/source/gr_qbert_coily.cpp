@@ -231,7 +231,6 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
         this->setSleepAttack(true);
         this->setSleepHit(true);
         this->isDead = true;
-        this->modelAnims[0]->setUpdateRate(0.0); // TODO: Try motionRatio
         this->angle = damage->vector;
         if (damage->side == -1) {
             this->angle = 180 - damage->vector;
@@ -240,6 +239,7 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
 
         this->prevPos = this->getPos();
         if (this->isHatched) {
+            this->setMotionRatio(0.0);
             this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, -500};
             this->midpointPos = (Vec3f){this->prevPos.x, 110, this->prevPos.z};
             this->soundGenerator.playSE(snd_se_stage_Madein_good_03, 0x0, 0x0, 0xffffffff);

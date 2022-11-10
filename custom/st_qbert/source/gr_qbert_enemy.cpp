@@ -20,7 +20,7 @@ void grQbertEnemy::setStart() {
     this->setSleepHit(false);
     this->setSleepAttack(false);
     this->setNodeVisibility(true, 0, "EnemyM", false, false);
-    this->modelAnims[0]->setUpdateRate(1.0);
+    this->setMotionRatio(1.0);
     this->setRot(0, 0, 0);
     this->isStart = true;
     this->isDead = false;
@@ -30,8 +30,8 @@ void grQbertEnemy::setStart() {
 void grQbertEnemy::update(float frameDelta) {
     if (this->immobilizeTimer > 0) {
         this->immobilizeTimer -= frameDelta;
-        this->modelAnims[0]->setFrame(this->animFrameBeforeImmobilize); // TODO: Use setMotionFrame instead
         if (this->immobilizeTimer <= 0) {
+            this->setMotionRatio(1.0);
             if (!this->isDead) {
                 this->setSleepHit(false);
                 this->setSleepAttack(false);
@@ -84,7 +84,7 @@ void grQbertEnemy::setAnim() {
 
 void grQbertEnemy::setImmobilize(float immobilizeDuration) {
     this->immobilizeTimer = immobilizeDuration;
-    this->animFrameBeforeImmobilize = this->modelAnims[0]->getFrame();
+    this->setMotionRatio(0.0);
     this->setSleepHit(true);
     this->setSleepAttack(true);
 }

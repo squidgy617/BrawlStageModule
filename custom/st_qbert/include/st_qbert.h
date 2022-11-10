@@ -23,9 +23,10 @@ const float POKETRAINER_Z = 0.0f;
 #define NUM_BLOCKS 28
 #define NUM_DISKS 14
 #define NUM_ENEMIES 4
-#define STARTING_COMPLETION_POINTS 1000
+#define STARTING_COMPLETION_POINTS 750
 #define ADDED_POINTS_PER_ROUND 250
 #define REMAINING_DISKS_POINTS 50
+#define MAX_ROUNDS 99
 
 class stQbert : public stMelee {
     protected:
@@ -36,7 +37,7 @@ class stQbert : public stMelee {
         float winTimer;
         float bgmTimer;
         float diskTimer;
-        Vec3f scorePositions[NUM_PLAYERS*NUM_DIGITS];
+        Vec3f scorePositions[NUM_PLAYERS*NUM_SCORE_DIGITS + NUM_ROUND_DIGITS];
         u32 teamScores[4];
         u32 round;
         u8 winningTeamId;
@@ -52,7 +53,7 @@ class stQbert : public stMelee {
             immobilizeState = Immobilize_None;
             winTimer = 0;
             bgmTimer = 0;
-            round = 0;
+            round = 1;
             winningTeamId = 0;
             numDisksActive = 0;
             __memfill(scorePositions, 0, 6*4*12);
@@ -109,10 +110,9 @@ class stQbert : public stMelee {
         void createObjGreen(int mdlIndex);
         void createObjRed(int mdlIndex);
         void createObjScore(int mdlIndex, int player, int type);
+        void createObjRound(int mdlIndex, int type);
         void updateCubes(float frameDelta);
         void updateDisks(float frameDelta);
         void updateEnemies(float frameDelta);
         void updateBgm(float frameDelta);
 };
-
-// TODO: Add option to make game slightly faster/harder after every round

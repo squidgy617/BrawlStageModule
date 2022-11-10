@@ -38,7 +38,6 @@ public:
         shakeOffset = (Vec3f){0, 0, 0};
         isStart = false;
         immobilizeTimer = 0;
-        animFrameBeforeImmobilize = 0;
         isDead = false;
     };
     virtual ~grQbertEnemy() { };

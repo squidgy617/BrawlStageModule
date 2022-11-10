@@ -83,7 +83,7 @@ void grQbertCube::setTeam(u8 teamId, bool incrementScore) {
             this->numBlocksPerTeam[teamId]++;
             if (teamId > 0) {
                 this->soundGenerator.playSE(snd_se_stage_Madein_10, 0x0, 0x0, 0xffffffff);
-                if (teamId - 1 < NUM_PLAYERS) {
+                if (teamId - 1 < NUM_PLAYERS && incrementScore) {
                     this->teamScoresWork[teamId - 1] += CUBE_POINTS;
                 }
             }
