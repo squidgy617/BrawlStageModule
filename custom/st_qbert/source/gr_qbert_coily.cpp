@@ -131,6 +131,9 @@ void grQbertCoily::updateMove(float frameDelta) {
         if (this->timer == qbertStageData->knockoutFrames) {
             this->soundGenerator.playSE(snd_se_stage_Madein_08, 0x0, 0x0, 0xffffffff);
             cmReqQuake(1, &(Vec3f){0,0,0});
+            if (this->teamId > 0 && this->teamId - 1 < NUM_PLAYERS) {
+                this->teamScoresWork[teamId - 1] += COILY_POINTS;
+            }
         }
         Vec3f pos = this->getPos();
         stRange* range = &this->stage->deadRange;
@@ -218,6 +221,12 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
     damage->totalDamage = 0;
     this->damage += damage->damage;
     if ((!this->isHatched && this->damage > qbertStageData->coilyEggHP) || (this->isHatched && this->damage > qbertStageData->coilySnakeHP)) {
+        if (damage->teamId >= 0 && damage->teamId < NUM_TEAMS - 1) {
+            this->teamId = damage->teamId + 1;
+        }
+        else {
+            this->teamId = DEFAULT_TEAM_ID;
+        }
         this->timer = 0;
         this->setSleepAttack(true);
         this->setSleepHit(true);
@@ -234,9 +243,6 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, -500};
             this->midpointPos = (Vec3f){this->prevPos.x, 110, this->prevPos.z};
             this->soundGenerator.playSE(snd_se_stage_Madein_good_03, 0x0, 0x0, 0xffffffff);
-            if (damage->teamId < NUM_PLAYERS) {
-                this->teamScoresWork[damage->teamId] += COILY_POINTS;
-            }
         }
         else {
             this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, 0};

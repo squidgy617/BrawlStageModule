@@ -5,6 +5,8 @@
 #include "gr_qbert_cube.h"
 #include "st_qbert_stage_data.h"
 
+#define RED_POINTS 0
+
 class grQbertRed : public grQbertBall
 {
     protected:

@@ -199,5 +199,8 @@ void grQbertRed::onDamage(int index, soDamage* damage, soDamageAttackerInfo* att
 
         this->prevPos = this->getPos();
         this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, 0};
+        if (damage->teamId < NUM_PLAYERS) {
+            this->teamScoresWork[damage->teamId] += RED_POINTS;
+        }
     }
 }

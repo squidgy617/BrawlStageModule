@@ -38,6 +38,7 @@ class grQbertAlien : public grQbertEnemy
         virtual void setTargetPos();
         virtual void setStart();
         virtual void updateMove(float frameDelta);
+        virtual void setTeam(u8 teamId);
 
         static grQbertAlien* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
 

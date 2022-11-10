@@ -68,6 +68,7 @@ void stQbert::createObj() {
     createObjPokeTrainer(fileData, 0x65, "PokeTrainer00", this->unk, 0x0);
 
     stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
+    this->maxDisksActive = randi(maxDisksActive) + 1;
     this->diskTimer = randf()*(qbertStageData->diskMaxRespawnFrames - qbertStageData->diskMinRespawnFrames) + qbertStageData->diskMinRespawnFrames;
 
     // setup orthogonal camera
@@ -208,6 +209,19 @@ void stQbert::update(float frameDelta){
 }
 
 void stQbert::updateCubes(float frameDelta) {
+
+    // Check if time to give score
+    if (this->winTimer > 0) {
+        this->winTimer -= frameDelta;
+        if (this->winTimer <= 0) {
+            if (this->winningTeamId - 1 < NUM_PLAYERS) {
+                this->teamScores[this->winningTeamId - 1] += STARTING_COMPLETION_POINTS
+                        + ADDED_POINTS_PER_ROUND*this->round
+                        + REMAINING_DISKS_POINTS*this->numDisksActive;
+            }
+        }
+    }
+
     // Check if all blocks have been coloured by a team
     stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
     for (u8 team = 1; team < NUM_TEAMS; team++) {
@@ -226,14 +240,20 @@ void stQbert::updateCubes(float frameDelta) {
                     g_ftManager->setCurry(entryId);
                 }
             }
-            this->bgmTimer = hkMath::max2f(this->bgmTimer, qbertStageData->winFrames);
+            this->winTimer = qbertStageData->winFrames;
+            this->bgmTimer = hkMath::max2f(this->bgmTimer, qbertStageData->immobilizeFrames);
+            this->winningTeamId = team;
+            this->round++;
+            this->maxDisksActive = randi(maxDisksActive) + 1;
+            grQbertAlien* alien = (grQbertAlien*)this->getGround(44);
+            alien->setTeam(STARTING_TEAM_ID);
+            break;
         }
     }
 }
 
 void stQbert::updateDisks(float frameDelta) {
     // TODO: Roll between max disks that can be active each round
-    // TODO: Clear disks upon round end
 
     // Check if disks should be activated
     u8 inactiveDiskIndices[NUM_DISKS];
@@ -244,8 +264,9 @@ void stQbert::updateDisks(float frameDelta) {
             numInactiveDisks++;
         }
     }
+    this->numDisksActive = NUM_DISKS - numInactiveDisks;
     stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
-    if (numInactiveDisks > 0 && NUM_DISKS - numInactiveDisks < qbertStageData->maxDisksActive) {
+    if (numInactiveDisks > 0 && this->numDisksActive < qbertStageData->maxDisksActive) {
         this->diskTimer -= frameDelta;
         if (this->diskTimer <= 0) {
             int diskIndex = inactiveDiskIndices[randi(numInactiveDisks)];

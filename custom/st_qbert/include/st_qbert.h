@@ -33,11 +33,16 @@ class stQbert : public stMelee {
         u8 numBlocksPerTeam[NUM_TEAMS];
         bool disksActive[NUM_DISKS];
         ImmobilizeState immobilizeState;
+        float winTimer;
         float bgmTimer;
         float diskTimer;
         Vec3f scorePositions[NUM_PLAYERS*NUM_DIGITS];
         u32 teamScores[4];
-public:
+        u32 round;
+        u8 winningTeamId;
+        u8 maxDisksActive;
+        u8 numDisksActive;
+    public:
         stQbert(int stageID) : stMelee("stQbert", stageID) {
             numBlocksPerTeam[0] = NUM_BLOCKS;
             for (u8 team = 0; team < NUM_TEAMS; team++) {
@@ -45,7 +50,11 @@ public:
             }
             __memfill(disksActive, false, NUM_DISKS);
             immobilizeState = Immobilize_None;
+            winTimer = 0;
             bgmTimer = 0;
+            round = 0;
+            winningTeamId = 0;
+            numDisksActive = 0;
             __memfill(scorePositions, 0, 6*4*12);
             __memfill(teamScores, 0, 4*4);
 

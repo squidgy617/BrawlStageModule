@@ -109,7 +109,7 @@ void grQbertAlien::setStartPos() {
 void grQbertAlien::setStart() {
     stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     this->timer = 0;
-    this->teamId = STARTING_TEAM_ID;
+    this->setTeam(STARTING_TEAM_ID);
     this->lives = qbertStageData->qbertNumLives;
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(STARTING_CUBE_INDEX);
     cube->setTeam(this->teamId, false);
@@ -141,6 +141,9 @@ void grQbertAlien::updateMove(float frameDelta) {
             this->setNodeVisibility(false, 0, "EnemyM", false, false);
             this->soundGenerator.playSE(snd_se_stage_Madein_08, 0x0, 0x0, 0xffffffff);
             cmReqQuake(1, &(Vec3f){0,0,0});
+            if (this->teamId > 0 && this->teamId - 1 < NUM_PLAYERS) {
+                this->teamScoresWork[teamId - 1] += ALIEN_POINTS;
+            }
         }
         Vec3f pos = this->getPos();
         stRange* range = &this->stage->deadRange;
@@ -207,11 +210,11 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
     }
     else if (damage->totalDamage >= qbertStageData->qbertHPPerLife) {
         damage->totalDamage = 0;
-        if (damage->teamId  >= 0 && damage->teamId < NUM_TEAMS - 1) {
-            this->teamId = damage->teamId + 1;
+        if (damage->teamId >= 0 && damage->teamId < NUM_TEAMS - 1) {
+            this->setTeam(damage->teamId + 1);
         }
         else {
-            this->teamId = DEFAULT_TEAM_ID;
+            this->setTeam(DEFAULT_TEAM_ID);
         }
         this->lives--;
         this->angle = damage->vector;
@@ -232,9 +235,6 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->midpointPos = (Vec3f){this->prevPos.x, 110, this->prevPos.z};
             this->soundGenerator.playSE(snd_se_stage_Madein_04, 0x0, 0x0, 0xffffffff);
             this->modelAnims[0]->setUpdateRate(0.0);
-            if (damage->teamId < NUM_PLAYERS) {
-                this->teamScoresWork[damage->teamId] += ALIEN_POINTS;
-            }
         }
     }
     else {
@@ -273,3 +273,7 @@ void grQbertAlien::setTargetPos() {
 
     this->setAnim();
 }
+
+void grQbertAlien::setTeam(u8 teamId) {
+    this->teamId = teamId;
+};
