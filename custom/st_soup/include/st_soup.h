@@ -5,6 +5,7 @@
 #include <st/st_melee.h>
 #include <mt/mt_prng.h>
 #include "gr_soup_background.h"
+#include "gr_soup_bridge.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -59,4 +60,5 @@ class stSoup : public stMelee {
         virtual ~stSoup() {this->releaseArchive(); };
 
         virtual void createObjBg(int mdlIndex);
+        virtual void createObjBridge(int mdlIndex, int collIndex);
 };
