@@ -91,7 +91,7 @@ protected:
     GimmickKind gimmickKind;
     soAreaData areaData;
     soAreaInit areaInit;
-    YakumonoAreaInfo areaInfo;
+    ykData areaInfo;
 
 public:
     grAdventureDoor(char* taskName) : grYakumono(taskName)
