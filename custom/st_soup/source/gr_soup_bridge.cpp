@@ -1,6 +1,8 @@
 #include <memory.h>
 #include "gr_soup_bridge.h"
 #include <OS/OSError.h>
+#include <mt/mt_prng.h>
+#include <mt/mt_trig.h>
 
 grSoupBridge* grSoupBridge::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grSoupBridge* bridge = new(Heaps::StageInstance) grSoupBridge(taskName);
@@ -26,9 +28,57 @@ void grSoupBridge::setHit() {
 }
 
 void grSoupBridge::update(float deltaFrame) {
+    this->updateBreak(deltaFrame);
+    this->updateShake(deltaFrame);
+}
 
+void grSoupBridge::updateBreak(float deltaFrame) {
+    if (this->breakTimer > 0) {
+        this->breakTimer -= deltaFrame;
+        if (this->breakTimer <= 0) {
+            switch(this->bridgeState) {
+                case BRIDGE_STATE_BROKE:
+                    this->bridgeState = BRIDGE_STATE_BUILD;
+                    this->breakTimer = REBUILD_FRAMES;
+                    this->setEnableCollisionStatus(true);
+                    this->setMotionDetails(0, 1, 0, 0, 0);
+                    break;
+                case BRIDGE_STATE_BUILD:
+                    this->setMotionDetails(0, 0, 0, 0, 0);
+                    this->setSleepHit(false);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+void grSoupBridge::updateShake(float frameDelta) {
+    Vec3f shakeOffset = {0, 0, 0};
+    this->shakeTimer -= frameDelta;
+    if (this->shakeTimer <= 0) {
+        this->shakeTimer = 0;
+    }
+    else {
+        if ((u32)this->shakeTimer % 3 == 0) {
+            float x;
+            float y;
+            mtSinCosf(0, &y, &x);
+            float shakeMul = 0.5 + 0.8*randf();
+            shakeOffset = (Vec3f){shakeMul*x, shakeMul*y, 0};
+        }
+    }
+    this->setPos(&shakeOffset);
 }
 
 void grSoupBridge::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
-
+    if (damage->totalDamage >= BRIDGE_HP) {
+        damage->totalDamage = 0;
+        this->setMotionDetails(1, 0, 0, 0, 0);
+        this->setEnableCollisionStatus(false);
+        this->setSleepHit(true);
+        this->breakTimer = BROKE_FRAMES;
+        this->bridgeState = BRIDGE_STATE_BROKE;
+    }
 }

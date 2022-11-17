@@ -62,7 +62,7 @@ void stSoup::createObjBridge(int mdlIndex, int collIndex) {
         bridge->startup(fileData,0,0);
         bridge->setStageData(stageData);
         bridge->initializeEntity();
-        bridge->startEntity();
+        bridge->startEntityAutoLoop();
         bridge->setHit();
         createCollision(fileData, collIndex, bridge);
     }
