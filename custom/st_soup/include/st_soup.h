@@ -6,6 +6,7 @@
 #include <mt/mt_prng.h>
 #include "gr_soup_background.h"
 #include "gr_soup_bridge.h"
+#include "gr_soup_rocket.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -61,4 +62,5 @@ class stSoup : public stMelee {
 
         virtual void createObjBg(int mdlIndex);
         virtual void createObjBridge(int mdlIndex, int collIndex);
+        virtual void createObjRocket(int mdlIndex, int collIndex);
 };

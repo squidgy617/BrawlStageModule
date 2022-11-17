@@ -14,6 +14,7 @@ enum BridgeState {
 class grSoupBridge : public grMadein
 {
     protected:
+        snd3DGenerator soundGenerator;
         ykData yakumonoData;
         float breakTimer;
         float shakeTimer;

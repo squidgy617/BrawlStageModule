@@ -25,6 +25,7 @@ void stSoup::createObj() {
     this->createObjBg(1);
     createCollision(fileData, 2, NULL);
     this->createObjBridge(2,3);
+    this->createObjRocket(5,4);
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -65,6 +66,18 @@ void stSoup::createObjBridge(int mdlIndex, int collIndex) {
         bridge->startEntityAutoLoop();
         bridge->setHit();
         createCollision(fileData, collIndex, bridge);
+    }
+}
+
+void stSoup::createObjRocket(int mdlIndex, int collIndex) {
+    grSoupRocket* rocket = grSoupRocket::create(mdlIndex, "", "grSoupRocket");
+    if(rocket != NULL){
+        addGround(rocket);
+        rocket->startup(fileData,0,0);
+        rocket->setStageData(stageData);
+        rocket->initializeEntity();
+        rocket->startEntity();
+        createCollision(fileData, collIndex, rocket);
     }
 }
 

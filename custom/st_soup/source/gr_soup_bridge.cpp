@@ -16,7 +16,7 @@ grSoupBridge* grSoupBridge::create(int mdlIndex, char* tgtNodeName, char* taskNa
 }
 
 void grSoupBridge::setupHitPoint() {
-    Vec3f startOffsetPos = {-25.0,0,0};
+    Vec3f startOffsetPos = {-20.0,0,0};
     Vec3f endOffsetPos = {25.0,0,0};
     this->setHitPoint(2.0, &startOffsetPos, &endOffsetPos, 1, 1);
 }
@@ -80,5 +80,6 @@ void grSoupBridge::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
         this->setSleepHit(true);
         this->breakTimer = BROKE_FRAMES;
         this->bridgeState = BRIDGE_STATE_BROKE;
+        this->soundGenerator.playSE(snd_se_stage_Greenhill_landslide, 0x0, 0x0, 0xffffffff);
     }
 }
