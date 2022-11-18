@@ -22,7 +22,6 @@ protected:
     u8 targetIndex;
     bool isStart;
     float immobilizeTimer;
-    float animFrameBeforeImmobilize;
     u32* teamScoresWork;
 public:
     Vec3f prevPos;
