@@ -2,6 +2,14 @@
 
 #include <gr/gr_yakumono.h>
 
+struct ConveyorGimmickData {
+    Vec2f pos;
+    float range;
+    float speed;
+    char _pad[3];
+    bool isRightDirection;
+};
+
 class grWarFactoryConveyor : public grYakumono {
 protected:
 

@@ -14,17 +14,16 @@ grWarFactoryConveyor* grWarFactoryConveyor::create(int mdlIndex, char* tgtNodeNa
 void grWarFactoryConveyor::startup(gfArchive* archive, u32 unk1, u32 unk2)
 {
     grYakumono::startup(archive, unk1, unk2);
+    ConveyorGimmickData* conveyorGimmickData = (ConveyorGimmickData*)this->getGimmickData();
     BeltConveyorGimmickAreaData beltConveyorGimmickData;
     __memfill(&beltConveyorGimmickData, 0, sizeof(BeltConveyorGimmickAreaData));
-    beltConveyorGimmickData.m_range = (Vec2f){41.4, 10.0};
-    beltConveyorGimmickData.m_speed = 0.9;
-    beltConveyorGimmickData.m_isRightDirection = true;
-    beltConveyorGimmickData.m_conveyorPos = (Vec3f){56.72957,25.9877,0};
+    beltConveyorGimmickData.m_range = (Vec2f){conveyorGimmickData->range, 10.0};
+    beltConveyorGimmickData.m_speed = conveyorGimmickData->speed;
+    beltConveyorGimmickData.m_isRightDirection = conveyorGimmickData->isRightDirection;
+    beltConveyorGimmickData.m_conveyorPos = (Vec3f){conveyorGimmickData->pos.x,conveyorGimmickData->pos.y,0};
 
     stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick_Kind_BeltConveyor,-1);
     trigger->setBeltConveyorTrigger(&beltConveyorGimmickData);
-
-
 }
 
 void grWarFactoryConveyor::update(float deltaFrame)

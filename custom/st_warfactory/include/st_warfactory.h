@@ -60,5 +60,5 @@ class stWarFactory : public stMelee {
         virtual ~stWarFactory() {this->releaseArchive(); };
 
         virtual void createObjWall(int mdlIndex);
-        virtual void createObjConveyor(int mdlIndex, int collIndex);
+        virtual void createObjConveyor(int mdlIndex, int collIndex, int conveyorIndex);
 };

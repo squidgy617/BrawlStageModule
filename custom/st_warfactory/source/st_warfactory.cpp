@@ -26,7 +26,10 @@ void stWarFactory::createObj() {
     createObjWall(1);
     createObjWall(2);
     createCollision(fileData, 2, NULL);
-    createObjConveyor(3, 3);
+    createObjConveyor(3, 3, 0);
+    createObjConveyor(4, 4, 1);
+    createObjConveyor(5, 5, 2);
+    createObjConveyor(6, 6, 3);
 
     initCameraParam();
     void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
@@ -57,11 +60,13 @@ void stWarFactory::createObjWall(int mdlIndex) {
     }
 }
 
-void stWarFactory::createObjConveyor(int mdlIndex, int collIndex) {
+void stWarFactory::createObjConveyor(int mdlIndex, int collIndex, int conveyorIndex) {
     grWarFactoryConveyor* conveyor = grWarFactoryConveyor::create(mdlIndex, "", "grWarFactoryConveyor");
     if (conveyor != NULL)
     {
         addGround(conveyor);
+        ConveyorGimmickData* conveyorGimmickDatas = (ConveyorGimmickData*)this->stageData;
+        conveyor->setGimmickData(&conveyorGimmickDatas[conveyorIndex]);
         conveyor->startup(fileData, 0, 0);
         conveyor->setStageData(stageData);
         conveyor->setDontMoveGround();
