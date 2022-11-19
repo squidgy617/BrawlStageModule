@@ -5,6 +5,7 @@
 #include <st/st_melee.h>
 #include <mt/mt_prng.h>
 #include "gr_warfactory_wall.h"
+#include "gr_warfactory_conveyor.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -59,4 +60,5 @@ class stWarFactory : public stMelee {
         virtual ~stWarFactory() {this->releaseArchive(); };
 
         virtual void createObjWall(int mdlIndex);
+        virtual void createObjConveyor(int mdlIndex, int collIndex);
 };
