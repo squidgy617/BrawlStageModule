@@ -43,10 +43,10 @@ struct grGimmickBarrelCannnonData {
     char _spacer5;
     unsigned short field_0xce;
     char _spacer6[8];
-    stTriggerData enterCannonTriggerData;
-    stTriggerData motionPathTriggerData;
-    stTriggerData isValidTriggerData;
-    grYakumonoAttackData attackData;
+    stTrigger::TriggerData enterCannonTriggerData;
+    stTrigger::TriggerData motionPathTriggerData;
+    stTrigger::TriggerData isValidTriggerData;
+    grYakumono::AttackData attackData;
     char _spacer7;
 };
 
@@ -72,9 +72,18 @@ struct grGimmickEventBarrelCannonInfo : soGimmickEventInfo {
     float shootStunTimerSpeed;
 };
 
+enum BarrelCannonPlayerState {
+    BarrelCannon_PlayerState_Invalid = 0x0,
+    BarrelCannon_PlayerState_Enter = 0x1,
+    BarrelCannon_PlayerState_Set = 0x2,
+    BarrelCannon_PlayerState_Fire = 0x3,
+    BarrelCannon_PlayerState_Path = 0x4
+};
+
+
 struct BarrelCannonPlayerInfo {
     bool isActive;
-    char state;
+    BarrelCannonPlayerState state : 8;
     char playerNumber;
     int sendID;
     float frame;

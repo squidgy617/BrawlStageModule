@@ -104,6 +104,7 @@ void grAdventureDoor::update(float deltaFrame)
 }
 
 // TODO: Figure out letting other players enter
+// Have to skip over check at 80860ff0 ftAreaGimmickTermDoor::isTerm
 
 void grAdventureDoor::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
 {
@@ -164,12 +165,12 @@ void grAdventureDoor::setInitializeFlag()
 {
     if (!g_stTriggerMng->getTriggerFlag(&this->doorData->isValidTriggerData, true))
     {
-        if (this->doorData->isValidTriggerData.isValidFlag)
+        if (this->doorData->isValidTriggerData.m_isValidFlag)
         {
             this->setValid(false);
         }
     }
-    else if (!this->doorData->isValidTriggerData.isValidFlag)
+    else if (!this->doorData->isValidTriggerData.m_isValidFlag)
     {
         this->setValid(false);
     }
