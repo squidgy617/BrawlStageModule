@@ -1,5 +1,5 @@
 #include "gr_warfactory_conveyor.h"
-#include <ec_mgr.h>
+#include <ec/ec_mgr.h>
 #include <memory.h>
 
 grWarFactoryConveyor* grWarFactoryConveyor::create(int mdlIndex, char* tgtNodeName, char* taskName)

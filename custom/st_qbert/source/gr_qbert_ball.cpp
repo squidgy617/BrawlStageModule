@@ -1,5 +1,5 @@
 #include <memory.h>
-#include <ec_mgr.h>
+#include <ec/ec_mgr.h>
 #include "gr_qbert_ball.h"
 #include <OS/OSError.h>
 #include <so/so_external_value_accesser.h>

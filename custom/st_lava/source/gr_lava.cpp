@@ -1,5 +1,5 @@
 #include "gr_lava.h"
-#include <ec_mgr.h>
+#include <ec/ec_mgr.h>
 #include <memory.h>
 
 grLava* grLava::create(int mdlIndex, char* tgtNodeName, char* taskName)

@@ -1,5 +1,5 @@
 #include <memory.h>
-#include <ec_mgr.h>
+#include <ec/ec_mgr.h>
 #include <so/so_external_value_accesser.h>
 #include "gr_qbert_alien.h"
 #include <OS/OSError.h>

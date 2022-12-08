@@ -1,5 +1,5 @@
 #include "gr_worldtournament_concrete.h"
-#include <ec_mgr.h>
+#include <ec/ec_mgr.h>
 #include <memory.h>
 
 grWorldTournamentConcrete* grWorldTournamentConcrete::create(int mdlIndex, char* tgtNodeName, char* taskName)

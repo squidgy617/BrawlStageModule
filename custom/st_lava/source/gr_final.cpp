@@ -1,5 +1,5 @@
 #include "gr_final.h"
-#include <ec_mgr.h>
+#include <ec/ec_mgr.h>
 #include <memory.h>
 
 grFinal* grFinal::create(int mdlIndex, char* tgtNodeName, char* taskName)

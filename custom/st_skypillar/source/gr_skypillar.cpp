@@ -1,5 +1,5 @@
 #include "gr_skypillar.h"
-#include <ec_mgr.h>
+#include <ec/ec_mgr.h>
 #include <memory.h>
 
 grSkyPillar* grSkyPillar::create(int mdlIndex, char* tgtNodeName, char* taskName)

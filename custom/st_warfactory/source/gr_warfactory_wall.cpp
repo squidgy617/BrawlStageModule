@@ -1,5 +1,5 @@
 #include "gr_warfactory_wall.h"
-#include <ec_mgr.h>
+#include <ec/ec_mgr.h>
 #include <memory.h>
 
 grWarFactoryWall* grWarFactoryWall::create(int mdlIndex, char* tgtNodeName, char* taskName)
