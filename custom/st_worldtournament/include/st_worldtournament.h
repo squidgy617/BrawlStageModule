@@ -17,7 +17,6 @@ class stWorldTournament : public stMelee {
 
     public:
         stWorldTournament(int stageID) : stMelee("stWorldTournament", stageID) {
-
         };
         static stWorldTournament* create();
 
@@ -46,7 +45,7 @@ class stWorldTournament : public stMelee {
         void appearanceFighterLocal();
         int getScrollDir(u32 unk1);
         int getDefaultLightSetIndex();
-        int getAIRange();
+        stRange* getAIRange();
         bool isAdventureStage();
         int getPokeTrainerDrawLayer();
         float getPokeTrainerPositionZ();

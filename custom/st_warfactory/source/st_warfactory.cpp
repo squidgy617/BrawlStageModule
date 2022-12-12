@@ -152,8 +152,8 @@ int stWarFactory::getScrollDir(u32 unk1) {
 int stWarFactory::getDefaultLightSetIndex(){
    return 0x14;
 }
-int stWarFactory::getAIRange() {
-   return (u32) &this->aiRange;
+stRange* stWarFactory::getAIRange() {
+    return &this->m_aiRange;
 }
 bool stWarFactory::isAdventureStage(){
    return false;

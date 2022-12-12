@@ -308,9 +308,9 @@ int stSkyPillar::getDefaultLightSetIndex()
 {
     return 0x14;
 }
-int stSkyPillar::getAIRange()
+stRange* stSkyPillar::getAIRange()
 {
-    return (u32) & this->aiRange;
+    return &this->m_aiRange;
 }
 bool stSkyPillar::isAdventureStage()
 {
