@@ -6,7 +6,7 @@ ifeq ($(strip $(DEVKITPRO)),)
 $(error "Please set DEVKITPRO in your environment. export DEVKITPRO=<path to>/devkitpro")
 endif
 
-all: st_final.rel st_village.rel st_qbert.rel st_warfactory.rel st_skypillar.rel st_lava.rel st_worldtournament.rel  st_soup.rel
+all: st_final.rel st_village.rel st_qbert.rel st_warfactory.rel st_skypillar.rel st_lava.rel st_worldtournament.rel st_soup.rel
 
 st_final.rel:
 	@cd st_final && make

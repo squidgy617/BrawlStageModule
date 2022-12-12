@@ -7,7 +7,7 @@
 grSoupBridge* grSoupBridge::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grSoupBridge* bridge = new(Heaps::StageInstance) grSoupBridge(taskName);
     bridge->setMdlIndex(mdlIndex);
-    bridge->heapType = Heaps::StageInstance;
+    bridge->m_heapType = Heaps::StageInstance;
     bridge->makeCalcuCallback(1, Heaps::StageInstance);
     bridge->setCalcuCallbackRoot(7);
 
@@ -23,8 +23,8 @@ void grSoupBridge::setupHitPoint() {
 
 void grSoupBridge::setHit() {
     // Done cause Brawl devs allocated ykData on the stack in grMadein::setupYakumonoClass leading to ykData being a garbage pointer so have to replace it in order to be able to change the HitSelfCategory
-    this->yakumono->m_data = &this->yakumonoData;
-    this->yakumono->setCollisionHitSelfCatagory(9); // Changed category so that projectiles like Mario fireball don't get absorbed by it
+    this->m_yakumono->m_data = &this->yakumonoData;
+    this->m_yakumono->setCollisionHitSelfCatagory(9); // Changed category so that projectiles like Mario fireball don't get absorbed by it
 }
 
 void grSoupBridge::update(float deltaFrame) {

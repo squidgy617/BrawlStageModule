@@ -7,7 +7,7 @@
 grSoupRocket* grSoupRocket::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grSoupRocket* rocket = new(Heaps::StageInstance) grSoupRocket(taskName);
     rocket->setMdlIndex(mdlIndex);
-    rocket->heapType = Heaps::StageInstance;
+    rocket->m_heapType = Heaps::StageInstance;
     rocket->makeCalcuCallback(1, Heaps::StageInstance);
     rocket->setCalcuCallbackRoot(7);
 
@@ -16,8 +16,8 @@ grSoupRocket* grSoupRocket::create(int mdlIndex, char* tgtNodeName, char* taskNa
 
 void grSoupRocket::update(float deltaFrame) {
     if (this->timer > 0) {
-        float animFrames = this->modelAnims[0]->getFrame();
-        float animFrameCount = this->modelAnims[0]->getFrameCount();
+        float animFrames = this->m_modelAnims[0]->getFrame();
+        float animFrameCount = this->m_modelAnims[0]->getFrameCount();
         if (animFrames >= animFrameCount) {
             this->timer -= deltaFrame;
             if (this->timer <= 0) {

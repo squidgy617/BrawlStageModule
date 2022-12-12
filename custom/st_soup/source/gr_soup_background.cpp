@@ -5,7 +5,7 @@
 grSoupBackground* grSoupBackground::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grSoupBackground* background = new(Heaps::StageInstance) grSoupBackground(taskName);
     background->setMdlIndex(mdlIndex);
-    background->heapType = Heaps::StageInstance;
+    background->m_heapType = Heaps::StageInstance;
     background->makeCalcuCallback(1, Heaps::StageInstance);
     background->setCalcuCallbackRoot(7);
     return background;

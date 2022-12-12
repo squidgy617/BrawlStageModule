@@ -21,8 +21,8 @@ class grSoupBridge : public grMadein
         BridgeState bridgeState;
     public:
         grSoupBridge(char* taskName) : grMadein(taskName) {
-            yakumonoData.numHitGroups = 1;
-            yakumonoData.hitGroupsInfo = NULL;
+            yakumonoData.m_numHitGroups = 1;
+            yakumonoData.m_hitGroupsInfo = NULL;
             breakTimer = 0;
             shakeTimer = 0;
             bridgeState = BRIDGE_STATE_BUILD;
