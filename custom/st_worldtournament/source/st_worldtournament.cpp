@@ -53,6 +53,7 @@ void stWorldTournament::createObj() {
     registSceneAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
+
 }
 
 void stWorldTournament::createObjConcrete(int mdlIndex) {
@@ -155,8 +156,8 @@ int stWorldTournament::getScrollDir(u32 unk1) {
 int stWorldTournament::getDefaultLightSetIndex(){
    return 0x14;
 }
-int stWorldTournament::getAIRange() {
-   return (u32) &this->aiRange;
+stRange* stWorldTournament::getAIRange() {
+   return &this->m_aiRange;
 }
 bool stWorldTournament::isAdventureStage(){
    return false;

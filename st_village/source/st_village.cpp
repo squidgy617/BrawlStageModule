@@ -358,9 +358,9 @@ int stVillage::getDefaultLightSetIndex()
 {
     return 0x14;
 }
-int stVillage::getAIRange()
+stRange* stVillage::getAIRange()
 {
-    return (u32) & this->aiRange;
+    return &this->aiRange;
 }
 bool stVillage::isAdventureStage()
 {

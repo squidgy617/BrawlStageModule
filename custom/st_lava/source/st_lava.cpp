@@ -149,8 +149,8 @@ int stLava::getScrollDir(u32 unk1) {
 int stLava::getDefaultLightSetIndex(){
    return 0x14;
 }
-int stLava::getAIRange() {
-   return (u32) &this->aiRange;
+stRange* stLava::getAIRange() {
+    return &this->m_aiRange;
 }
 bool stLava::isAdventureStage(){
    return false;
