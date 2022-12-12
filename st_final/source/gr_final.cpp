@@ -89,7 +89,6 @@ void grFinal::setGimmickData(void* gimmickData)
     this->gimmickData = gimmickData;
 }
 
-extern ecMgr* g_ecMgr;
 void grFinal::updateEff()
 {
     if (this->type == 0)
