@@ -16,7 +16,7 @@
 grQbertCoily* grQbertCoily::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage, grQbertAlien* enemyTarget){
     grQbertCoily* coily = new(Heaps::StageInstance) grQbertCoily(taskName);
     coily->setMdlIndex(mdlIndex);
-    coily->heapType = Heaps::StageInstance;
+    coily->m_heapType = Heaps::StageInstance;
     coily->makeCalcuCallback(1, Heaps::StageInstance);
     coily->setCalcuCallbackRoot(7);
     coily->stage = stage;
@@ -33,66 +33,66 @@ void grQbertCoily::setupAttack() {
     float size = 1.0;
     Vec3f offsetPos = {0.0, 0.0, 0.0};
     this->setAttack(size, &offsetPos);
-    this->attackInfo->preset = 4;
+    this->m_attackInfo->m_preset = 4;
 
     soCollisionAttackData* overwriteAttackData = this->getOverwriteAttackData();
     this->createAttackPointNormal(overwriteAttackData);
-    overwriteAttackData->reactionEffect = 0x40;
-    overwriteAttackData->reactionFix = 0;
-    overwriteAttackData->reactionAdd = 0;
-    overwriteAttackData->power = 20;
-    overwriteAttackData->vector = 90;
-    overwriteAttackData->size = size;
-    overwriteAttackData->offsetPos = offsetPos;
-    overwriteAttackData->hitstopMultiplier = 1.0;
+    overwriteAttackData->m_reactionEffect = 0x40;
+    overwriteAttackData->m_reactionFix = 0;
+    overwriteAttackData->m_reactionAdd = 0;
+    overwriteAttackData->m_power = 20;
+    overwriteAttackData->m_vector = 90;
+    overwriteAttackData->m_size = size;
+    overwriteAttackData->m_offsetPos = offsetPos;
+    overwriteAttackData->m_hitstopMultiplier = 1.0;
 
-    overwriteAttackData->bits.nodeIndex = 0x1;
+    overwriteAttackData->m_bits.nodeIndex = 0x1;
 
-    overwriteAttackData->bits.isCollisionCategory9 = true;
-    overwriteAttackData->bits.isCollisionCategory8 = true;
-    overwriteAttackData->bits.isCollisionCategory7 = true;
-    overwriteAttackData->bits.isCollisionCategory6 = true;
-    overwriteAttackData->bits.isCollisionCategory5 = true;
-    overwriteAttackData->bits.isCollisionCategory4 = true;
-    overwriteAttackData->bits.isCollisionCategory3 = true;
-    overwriteAttackData->bits.isCollisionCategory2 = true;
-    overwriteAttackData->bits.isCollisionCategory1 = true;
-    overwriteAttackData->bits.isCollisionCategory0 = true;
+    overwriteAttackData->m_bits.isCollisionCategory9 = true;
+    overwriteAttackData->m_bits.isCollisionCategory8 = true;
+    overwriteAttackData->m_bits.isCollisionCategory7 = true;
+    overwriteAttackData->m_bits.isCollisionCategory6 = true;
+    overwriteAttackData->m_bits.isCollisionCategory5 = true;
+    overwriteAttackData->m_bits.isCollisionCategory4 = true;
+    overwriteAttackData->m_bits.isCollisionCategory3 = true;
+    overwriteAttackData->m_bits.isCollisionCategory2 = true;
+    overwriteAttackData->m_bits.isCollisionCategory1 = true;
+    overwriteAttackData->m_bits.isCollisionCategory0 = true;
 
-    overwriteAttackData->bits.isCollisionSituationUnk = true;
-    overwriteAttackData->bits.isCollisionSituationAir = true;
-    overwriteAttackData->bits.isCollisionSituationGround = true;
+    overwriteAttackData->m_bits.isCollisionSituationUnk = true;
+    overwriteAttackData->m_bits.isCollisionSituationAir = true;
+    overwriteAttackData->m_bits.isCollisionSituationGround = true;
 
-    overwriteAttackData->bits.field_0x30_3 = false;
-    overwriteAttackData->bits.isCollisionPartRegion3 = true;
-    overwriteAttackData->bits.isCollisionPartRegion2 = true;
-    overwriteAttackData->bits.isCollisionPartRegion1 = true;
-    overwriteAttackData->bits.isCollisionPartRegion0 = true;
-    overwriteAttackData->bits.elementType = Element_Type_Normal;
+    overwriteAttackData->m_bits.field_0x30_3 = false;
+    overwriteAttackData->m_bits.isCollisionPartRegion3 = true;
+    overwriteAttackData->m_bits.isCollisionPartRegion2 = true;
+    overwriteAttackData->m_bits.isCollisionPartRegion1 = true;
+    overwriteAttackData->m_bits.isCollisionPartRegion0 = true;
+    overwriteAttackData->m_bits.elementType = Element_Type_Normal;
 
-    overwriteAttackData->bits.hitSoundLevel = Hit_Sound_Level_Small;
-    overwriteAttackData->bits.hitSoundType = Hit_Sound_Type_NoneUnique;
-    overwriteAttackData->bits.isClankable = true;
-    overwriteAttackData->bits.field_0x34_3 = false;
-    overwriteAttackData->bits.field_0x34_4 = false;
-    overwriteAttackData->bits.isBlockable = true;
-    overwriteAttackData->bits.isReflectable = true;
-    overwriteAttackData->bits.isAbsorbable = false;
-    overwriteAttackData->bits.field_0x34_8 = 0;
+    overwriteAttackData->m_bits.hitSoundLevel = Hit_Sound_Level_Small;
+    overwriteAttackData->m_bits.hitSoundType = Hit_Sound_Type_NoneUnique;
+    overwriteAttackData->m_bits.isClankable = true;
+    overwriteAttackData->m_bits.field_0x34_3 = false;
+    overwriteAttackData->m_bits.field_0x34_4 = false;
+    overwriteAttackData->m_bits.isBlockable = true;
+    overwriteAttackData->m_bits.isReflectable = true;
+    overwriteAttackData->m_bits.isAbsorbable = false;
+    overwriteAttackData->m_bits.field_0x34_8 = 0;
 
-    overwriteAttackData->bits.detectionRate = 120;
-    overwriteAttackData->bits.field_0x38_1 = false;
-    overwriteAttackData->bits.ignoreInvincibility = false;
-    overwriteAttackData->bits.ignoreIntangibility = false;
-    overwriteAttackData->bits.facingRestriction = Facing_Restriction_Normal;
-    overwriteAttackData->bits.field_0x38_5 = false;
-    overwriteAttackData->bits.enableFriendlyFire = false;
-    overwriteAttackData->bits.disableHitstop = false;
-    overwriteAttackData->bits.disableHitGfx = false;
-    overwriteAttackData->bits.disableFlinch = false;
-    overwriteAttackData->bits.addedShieldDamage = 0;
+    overwriteAttackData->m_bits.detectionRate = 120;
+    overwriteAttackData->m_bits.field_0x38_1 = false;
+    overwriteAttackData->m_bits.ignoreInvincibility = false;
+    overwriteAttackData->m_bits.ignoreIntangibility = false;
+    overwriteAttackData->m_bits.facingRestriction = Facing_Restriction_Normal;
+    overwriteAttackData->m_bits.field_0x38_5 = false;
+    overwriteAttackData->m_bits.enableFriendlyFire = false;
+    overwriteAttackData->m_bits.disableHitstop = false;
+    overwriteAttackData->m_bits.disableHitGfx = false;
+    overwriteAttackData->m_bits.disableFlinch = false;
+    overwriteAttackData->m_bits.addedShieldDamage = 0;
 
-    overwriteAttackData->bits.isShapeCapsule = false;
+    overwriteAttackData->m_bits.isShapeCapsule = false;
 }
 
 void grQbertCoily::setupHitPoint() {
@@ -105,7 +105,7 @@ void grQbertCoily::setStartPos() {
     this->targetIndex = STARTING_CUBE_INDEX + 1 + randi(2);
     grQbertCube* cube = (grQbertCube*)this->stage->getGround(this->targetIndex);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
-    this->prevPos = this->targetPos + (Vec3f){0, this->stage->deadRange.top + 10, 0};
+    this->prevPos = this->targetPos + (Vec3f){0, this->stage->m_deadRange.m_top + 10, 0};
     this->midpointPos = this->prevPos;
     this->setPos(&this->prevPos);
 }
@@ -113,7 +113,7 @@ void grQbertCoily::setStartPos() {
 void grQbertCoily::setStart() {
     stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     this->timer = randf()*(qbertStageData->coilyMaxRespawnFrames - qbertStageData->coilyMinRespawnFrames) + qbertStageData->coilyMinRespawnFrames;
-    this->yakumono->setTeam(15);
+    this->m_yakumono->setTeam(15);
     this->isHatched = false;
     this->setMotion(4);
     this->damage = 0;
@@ -122,8 +122,8 @@ void grQbertCoily::setStart() {
 
 void grQbertCoily::updateMove(float frameDelta) {
     stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
-    float animFrames = this->modelAnims[0]->getFrame();
-    float animFrameCount = this->modelAnims[0]->getFrameCount();
+    float animFrames = this->m_modelAnims[0]->getFrame();
+    float animFrameCount = this->m_modelAnims[0]->getFrameCount();
     float jumpCompletion = animFrames / animFrameCount;
 
     if (this->isDead) { // Launched
@@ -136,8 +136,8 @@ void grQbertCoily::updateMove(float frameDelta) {
             }
         }
         Vec3f pos = this->getPos();
-        stRange* range = &this->stage->deadRange;
-        if (pos.x <= range->left || pos.x >= range->right || pos.y >= range->top || pos.y <= range->bottom) {
+        stRange* range = &this->stage->m_deadRange;
+        if (pos.m_x <= range->m_left || pos.m_x >= range->m_right || pos.m_y >= range->m_top || pos.m_y <= range->m_bottom) {
             if (this->isHatched && this->timer >= qbertStageData->knockoutFrames) {
                 this->setStart();
             }
@@ -147,7 +147,7 @@ void grQbertCoily::updateMove(float frameDelta) {
         }
         else {
             Vec3f rot = this->getRot();
-            rot.z += this->velocity * frameDelta;
+            rot.m_z += this->velocity * frameDelta;
             this->setRot(&rot);
             Vec3f pos;
             Vec3f points[4] = {
@@ -207,7 +207,7 @@ void grQbertCoily::onInflictEach(soCollisionLog* collisionLog, float power) {
     if (this->isHatched) {
         this->soundGenerator.playSE(snd_se_stage_Madein_02, 0x0, 0x0, 0xffffffff);
         // Check if Coily hit QBert
-        if (strcmp(gfTask::getTask(collisionLog->taskId)->taskName, "ykNormal") == 0) {
+        if (strcmp(gfTask::getTask(collisionLog->m_taskId)->m_taskName, "ykNormal") == 0) {
             this->setStart();
         }
     }
@@ -240,12 +240,12 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
         this->prevPos = this->getPos();
         if (this->isHatched) {
             this->setMotionRatio(0.0);
-            this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, -500};
-            this->midpointPos = (Vec3f){this->prevPos.x, 110, this->prevPos.z};
+            this->targetPos = (Vec3f){this->prevPos.m_x, this->stage->m_deadRange.m_bottom, -500};
+            this->midpointPos = (Vec3f){this->prevPos.m_x, 110, this->prevPos.m_z};
             this->soundGenerator.playSE(snd_se_stage_Madein_good_03, 0x0, 0x0, 0xffffffff);
         }
         else {
-            this->targetPos = (Vec3f){this->prevPos.x, this->stage->deadRange.bottom, 0};
+            this->targetPos = (Vec3f){this->prevPos.m_x, this->stage->m_deadRange.m_bottom, 0};
         }
     }
 }
@@ -267,7 +267,7 @@ void grQbertCoily::setTargetPos() {
             Vec3f pos;
             cube = (grQbertCube*)stage->getGround(cubeIndices[i]);
             cube->getNodePosition(&pos, 0, "Jumps");
-            if (pos.y < this->prevPos.y) {
+            if (pos.m_y < this->prevPos.m_y) {
                 validCubeIndices[numValidJumps] = cubeIndices[i];
                 numValidJumps++;
             }
@@ -313,7 +313,7 @@ void grQbertCoily::setTargetPos() {
 
     cube = (grQbertCube*)stage->getGround(this->targetIndex);
     cube->getNodePosition(&this->targetPos, 0, "Jumps");
-    this->midpointPos = (Vec3f){(this->prevPos.x + this->targetPos.x)/2, hkMath::max2f(this->prevPos.y, this->targetPos.y) + 5, (this->prevPos.z + this->targetPos.z)/2};
+    this->midpointPos = (Vec3f){(this->prevPos.m_x + this->targetPos.m_x)/2, hkMath::max2f(this->prevPos.m_y, this->targetPos.m_y) + 5, (this->prevPos.m_z + this->targetPos.m_z)/2};
 
     this->setAnim();
 }

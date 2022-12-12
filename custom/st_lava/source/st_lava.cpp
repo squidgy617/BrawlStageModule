@@ -21,15 +21,15 @@ bool stLava::loading(){
 
 void stLava::createObj() {
 
-    testStageParamInit(fileData, 10);
-    testStageDataInit(fileData, 20, 1);
+    testStageParamInit(m_fileData, 10);
+    testStageDataInit(m_fileData, 20, 1);
 
     createObjGround(0);
     createObjLava(1);
-    createCollision(fileData, 2, NULL);
+    createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
-    void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
+    void* posData = m_fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
     if(posData == NULL){
       // if no stgPos model in pac, use defaults
       createStagePositions();
@@ -39,11 +39,11 @@ void stLava::createObj() {
       createStagePositions(&posData);
     }
     createWind2ndOnly();
-    loadStageAttrParam(fileData, 30);
-    void* scnData = fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
+    loadStageAttrParam(m_fileData, 30);
+    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
     registSceneAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
-    createObjPokeTrainer(fileData, 0x65, "PokeTrainer00", this->unk, 0x0);
+    createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 }
 
 void stLava::createObjGround(int mdlIndex) {
@@ -51,8 +51,8 @@ void stLava::createObjGround(int mdlIndex) {
     if (ground != NULL)
     {
         addGround(ground);
-        ground->startup(fileData, 0, 0);
-        ground->setStageData(stageData);
+        ground->startup(m_fileData, 0, 0);
+        ground->setStageData(m_stageData);
         ground->setDontMoveGround();
     }
 }
@@ -62,8 +62,8 @@ void stLava::createObjLava(int mdlIndex) {
     if (lava != NULL)
     {
         addGround(lava);
-        lava->startup(fileData, 0, 0);
-        lava->setStageData(stageData);
+        lava->startup(m_fileData, 0, 0);
+        lava->setStageData(m_stageData);
         lava->setupAttack();
         lava->initializeEntity();
         lava->startEntity();
@@ -76,7 +76,7 @@ void stLava::update(float frameDelta){
 }
 
 void Ground::setStageData(void* stageData) {
-   this->stageData = stageData;
+   this->m_stageData = stageData;
 }
 void stLava::startFighterEvent() {
    return;
@@ -100,10 +100,10 @@ void stLava::notifyTimmingGameStart(){
    return;
 }
 float stLava::getFrameRuleTime() {
-   return this->frameRuleTime;
+   return this->m_frameRuleTime;
 }
 void stLava::setFrameRuleTime(float newTime) {
-   this->frameRuleTime = newTime;
+   this->m_frameRuleTime = newTime;
 }
 bool stLava::isNextStepBgmEqualNowStepBgmFromFlag() {
    return false;
@@ -115,16 +115,16 @@ float stLava::getBgmVolume() {
    return BGM_VOLUME;
 }
 void stLava::setBgmChange(float unk, u32 unk1, u32 unk2) {
-   this->unk2 = unk1;
-   this->unk3 = unk2;
-   this->unk4 = unk;
+   this->m_unk2 = unk1;
+   this->m_unk3 = unk2;
+   this->m_unk4 = unk;
 }
 void stLava::getBgmChangeID(u32 unk1, float unk2) {
-   unk1 = this->unk3;
-   unk2 = this->unk4;
+   unk1 = this->m_unk3;
+   unk2 = this->m_unk4;
 }
 bool stLava::isBgmChange() {
-   return this->unk2;
+   return this->m_unk2;
 }
 int stLava::getBgmOptionID() {
    return 0;

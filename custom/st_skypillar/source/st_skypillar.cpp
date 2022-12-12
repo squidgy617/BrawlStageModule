@@ -65,19 +65,18 @@ void stSkyPillar::update(float frameDiff)
             create.m_difficultyLevel = 15;
             create.m_enemyID = Enemy_Kuribo;
             create.m_startingAction = 2;
-            create.m_spawnPos = (Vec2f) {70.0, 0.01};
-            create.m_24 = 0.0;
+            create.m_spawnPos = (Vec3f){70.0, 0.01, 0.0};
             create.m_facingDirection = -1.0; //1.0;
             create.m_32 = 1;
             create.m_36 = 0.0;
-            create.m_posX1 = -create.m_spawnPos.x;
-            create.m_posX2 = -create.m_spawnPos.x;
-            create.m_posY1 = -create.m_spawnPos.y;
-            create.m_posY1 = -create.m_spawnPos.y;
+            create.m_posX1 = -create.m_spawnPos.m_x;
+            create.m_posX2 = -create.m_spawnPos.m_x;
+            create.m_posY1 = -create.m_spawnPos.m_y;
+            create.m_posY1 = -create.m_spawnPos.m_y;
             create.m_connectedEnemyID = (EnemyID)0;
-            create.m_60 = NULL;
+            create.m_epbm = NULL;
             create.m_motionPath = NULL;
-            create.m_64 = 0;
+            create.m_epsp = NULL;
             create.m_72 = 0xFFFF;
             //OSReport("Preload archive count result: %d \n", enemyManager->getPreloadArchiveCountFromKind(Enemy_Kuribo));
             //int result = enemyManager->createEnemy(&create);
@@ -118,14 +117,14 @@ void stSkyPillar::createObj()
     gfModuleManager::LoadRequestResult requestResult;
     gfModuleManager::loadModuleRequest(&requestResult, moduleManager, "sora_enemy_rayquaza.rel", Heaps::OverlayStage, 1, 0);
 
-    testStageParamInit(fileData, 0xA);
-    testStageDataInit(fileData, 0x14, 1);
+    testStageParamInit(m_fileData, 0xA);
+    testStageDataInit(m_fileData, 0x14, 1);
 
     this->createObjGround(2);
 
-    createCollision(fileData, 2, NULL);
+    createCollision(m_fileData, 2, NULL);
     initCameraParam();
-    void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
+    void* posData = m_fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
     if (posData == NULL)
     {
         // if no stgPos model in pac, use defaults
@@ -137,11 +136,11 @@ void stSkyPillar::createObj()
         createStagePositions(&posData);
     }
     createWind2ndOnly();
-    loadStageAttrParam(fileData, 0x1E);
-    void* scnData = fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
+    loadStageAttrParam(m_fileData, 0x1E);
+    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
     registSceneAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
-    createObjPokeTrainer(fileData, 0x65, "PokeTrainer00", this->unk, 0x0);
+    createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 }
 
 void stSkyPillar::createObjGround(int mdlIndex) {
@@ -149,8 +148,8 @@ void stSkyPillar::createObjGround(int mdlIndex) {
     if (ground != NULL)
     {
         addGround(ground);
-        ground->startup(fileData, 0, 0);
-        ground->setStageData(stageData);
+        ground->startup(m_fileData, 0, 0);
+        ground->setStageData(m_stageData);
         ground->setDontMoveGround();
     }
 }
@@ -164,17 +163,17 @@ void stSkyPillar::getEnemyPac(gfArchive **brres, gfArchive **param, gfArchive **
     *enmCommon = NULL;
     *primFaceBrres = NULL;
 
-    void* brresData = this->secondaryFileData->getData(DATA_TYPE_MISC, fileIndex + 1, &nodeSize, (u32)0xfffe);
+    void* brresData = this->m_secondaryFileData->getData(DATA_TYPE_MISC, fileIndex + 1, &nodeSize, (u32)0xfffe);
     *brres = new (Heaps::StageInstance) gfArchive();
     (*brres)->setFileImage(brresData, nodeSize, Heaps::StageResource);
     this->enemyArchives[0] = *brres;
 
-    void* paramData = this->secondaryFileData->getData(DATA_TYPE_MISC, fileIndex, &nodeSize, (u32)0xfffe);
+    void* paramData = this->m_secondaryFileData->getData(DATA_TYPE_MISC, fileIndex, &nodeSize, (u32)0xfffe);
     *param = new (Heaps::StageInstance) gfArchive();
     (*param)->setFileImage(paramData, nodeSize, Heaps::StageResource);
     this->enemyArchives[1] = *param;
 
-    void* enmCommonData = this->secondaryFileData->getData(DATA_TYPE_MISC, 300, &nodeSize, (u32)0xfffe);
+    void* enmCommonData = this->m_secondaryFileData->getData(DATA_TYPE_MISC, 300, &nodeSize, (u32)0xfffe);
     *enmCommon = new (Heaps::StageInstance) gfArchive();
     (*enmCommon)->setFileImage(enmCommonData, nodeSize, Heaps::StageResource);
     this->enemyCommonArchive = *enmCommon;
@@ -214,7 +213,7 @@ void stSkyPillar::clearHeap() {
 
 void Ground::setStageData(void* stageData)
 {
-    this->stageData = stageData;
+    this->m_stageData = stageData;
 }
 void stSkyPillar::startFighterEvent()
 {
@@ -246,11 +245,11 @@ void stSkyPillar::notifyTimmingGameStart()
 }
 float stSkyPillar::getFrameRuleTime()
 {
-    return this->frameRuleTime;
+    return this->m_frameRuleTime;
 }
 void stSkyPillar::setFrameRuleTime(float newTime)
 {
-    this->frameRuleTime = newTime;
+    this->m_frameRuleTime = newTime;
 }
 bool stSkyPillar::isNextStepBgmEqualNowStepBgmFromFlag()
 {
@@ -266,18 +265,18 @@ float stSkyPillar::getBgmVolume()
 }
 void stSkyPillar::setBgmChange(float unk, u32 unk1, u32 unk2)
 {
-    this->unk2 = unk1;
-    this->unk3 = unk2;
-    this->unk4 = unk;
+    this->m_unk2 = unk1;
+    this->m_unk3 = unk2;
+    this->m_unk4 = unk;
 }
 void stSkyPillar::getBgmChangeID(u32 unk1, float unk2)
 {
-    unk1 = this->unk3;
-    unk2 = this->unk4;
+    unk1 = this->m_unk3;
+    unk2 = this->m_unk4;
 }
 bool stSkyPillar::isBgmChange()
 {
-    return this->unk2;
+    return this->m_unk2;
 }
 int stSkyPillar::getBgmOptionID()
 {

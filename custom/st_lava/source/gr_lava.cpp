@@ -6,7 +6,7 @@ grLava* grLava::create(int mdlIndex, char* tgtNodeName, char* taskName)
 {
     grLava* lava = new (Heaps::StageInstance) grLava(taskName);
     lava->setMdlIndex(mdlIndex);
-    lava->heapType = Heaps::StageInstance;
+    lava->m_heapType = Heaps::StageInstance;
     lava->makeCalcuCallback(1, Heaps::StageInstance);
     lava->setCalcuCallbackRoot(7);
     lava->setupMelee();
@@ -25,64 +25,64 @@ void grLava::setupAttack() {
     float size = 1.0;
     Vec3f offsetPos = {lavaData->width, 0.0, 0.0};
     this->setAttack(size, &offsetPos);
-    this->attackInfo->preset = 4;
+    this->m_attackInfo->m_preset = 4;
 
     soCollisionAttackData* overwriteAttackData = this->getOverwriteAttackData();
     this->createAttackPointNormal(overwriteAttackData);
-    overwriteAttackData->reactionEffect = lavaData->reactionEffect;
-    overwriteAttackData->reactionFix = lavaData->reactionFix;
-    overwriteAttackData->reactionAdd = lavaData->reactionAdd;
-    overwriteAttackData->power = lavaData->power;
-    overwriteAttackData->vector = 90;
-    overwriteAttackData->size = size;
-    overwriteAttackData->offsetPos = offsetPos;
-    overwriteAttackData->hitstopMultiplier = lavaData->hitstopMultiplier;
+    overwriteAttackData->m_reactionEffect = lavaData->reactionEffect;
+    overwriteAttackData->m_reactionFix = lavaData->reactionFix;
+    overwriteAttackData->m_reactionAdd = lavaData->reactionAdd;
+    overwriteAttackData->m_power = lavaData->power;
+    overwriteAttackData->m_vector = 90;
+    overwriteAttackData->m_size = size;
+    overwriteAttackData->m_offsetPos = offsetPos;
+    overwriteAttackData->m_hitstopMultiplier = lavaData->hitstopMultiplier;
 
-    overwriteAttackData->bits.nodeIndex = 0x1;
+    overwriteAttackData->m_bits.nodeIndex = 0x1;
 
-    overwriteAttackData->bits.isCollisionCategory9 = true;
-    overwriteAttackData->bits.isCollisionCategory8 = true;
-    overwriteAttackData->bits.isCollisionCategory7 = true;
-    overwriteAttackData->bits.isCollisionCategory6 = true;
-    overwriteAttackData->bits.isCollisionCategory5 = true;
-    overwriteAttackData->bits.isCollisionCategory4 = true;
-    overwriteAttackData->bits.isCollisionCategory3 = true;
-    overwriteAttackData->bits.isCollisionCategory2 = true;
-    overwriteAttackData->bits.isCollisionCategory1 = true;
-    overwriteAttackData->bits.isCollisionCategory0 = true;
+    overwriteAttackData->m_bits.isCollisionCategory9 = true;
+    overwriteAttackData->m_bits.isCollisionCategory8 = true;
+    overwriteAttackData->m_bits.isCollisionCategory7 = true;
+    overwriteAttackData->m_bits.isCollisionCategory6 = true;
+    overwriteAttackData->m_bits.isCollisionCategory5 = true;
+    overwriteAttackData->m_bits.isCollisionCategory4 = true;
+    overwriteAttackData->m_bits.isCollisionCategory3 = true;
+    overwriteAttackData->m_bits.isCollisionCategory2 = true;
+    overwriteAttackData->m_bits.isCollisionCategory1 = true;
+    overwriteAttackData->m_bits.isCollisionCategory0 = true;
 
-    overwriteAttackData->bits.isCollisionSituationUnk = true;
-    overwriteAttackData->bits.isCollisionSituationAir = true;
-    overwriteAttackData->bits.isCollisionSituationGround = true;
+    overwriteAttackData->m_bits.isCollisionSituationUnk = true;
+    overwriteAttackData->m_bits.isCollisionSituationAir = true;
+    overwriteAttackData->m_bits.isCollisionSituationGround = true;
 
-    overwriteAttackData->bits.field_0x30_3 = false;
-    overwriteAttackData->bits.isCollisionPartRegion3 = true;
-    overwriteAttackData->bits.isCollisionPartRegion2 = true;
-    overwriteAttackData->bits.isCollisionPartRegion1 = true;
-    overwriteAttackData->bits.isCollisionPartRegion0 = true;
-    overwriteAttackData->bits.elementType = Element_Type_Flame;
+    overwriteAttackData->m_bits.field_0x30_3 = false;
+    overwriteAttackData->m_bits.isCollisionPartRegion3 = true;
+    overwriteAttackData->m_bits.isCollisionPartRegion2 = true;
+    overwriteAttackData->m_bits.isCollisionPartRegion1 = true;
+    overwriteAttackData->m_bits.isCollisionPartRegion0 = true;
+    overwriteAttackData->m_bits.elementType = Element_Type_Flame;
 
-    overwriteAttackData->bits.hitSoundLevel = Hit_Sound_Level_Small;
-    overwriteAttackData->bits.hitSoundType = Hit_Sound_Type_Fire;
-    overwriteAttackData->bits.isClankable = false;
-    overwriteAttackData->bits.field_0x34_3 = false;
-    overwriteAttackData->bits.field_0x34_4 = false;
-    overwriteAttackData->bits.isBlockable = true;
-    overwriteAttackData->bits.isReflectable = false;
-    overwriteAttackData->bits.isAbsorbable = false;
-    overwriteAttackData->bits.field_0x34_8 = 0;
+    overwriteAttackData->m_bits.hitSoundLevel = Hit_Sound_Level_Small;
+    overwriteAttackData->m_bits.hitSoundType = Hit_Sound_Type_Fire;
+    overwriteAttackData->m_bits.isClankable = false;
+    overwriteAttackData->m_bits.field_0x34_3 = false;
+    overwriteAttackData->m_bits.field_0x34_4 = false;
+    overwriteAttackData->m_bits.isBlockable = true;
+    overwriteAttackData->m_bits.isReflectable = false;
+    overwriteAttackData->m_bits.isAbsorbable = false;
+    overwriteAttackData->m_bits.field_0x34_8 = 0;
 
-    overwriteAttackData->bits.detectionRate = lavaData->detectionRate;
-    overwriteAttackData->bits.field_0x38_1 = false;
-    overwriteAttackData->bits.ignoreInvincibility = false;
-    overwriteAttackData->bits.ignoreIntangibility = false;
-    overwriteAttackData->bits.facingRestriction = Facing_Restriction_Normal;
-    overwriteAttackData->bits.field_0x38_5 = false;
-    overwriteAttackData->bits.enableFriendlyFire = false;
-    overwriteAttackData->bits.disableHitstop = false;
-    overwriteAttackData->bits.disableHitGfx = false;
-    overwriteAttackData->bits.disableFlinch = false;
-    overwriteAttackData->bits.addedShieldDamage = 0;
+    overwriteAttackData->m_bits.detectionRate = lavaData->detectionRate;
+    overwriteAttackData->m_bits.field_0x38_1 = false;
+    overwriteAttackData->m_bits.ignoreInvincibility = false;
+    overwriteAttackData->m_bits.ignoreIntangibility = false;
+    overwriteAttackData->m_bits.facingRestriction = Facing_Restriction_Normal;
+    overwriteAttackData->m_bits.field_0x38_5 = false;
+    overwriteAttackData->m_bits.enableFriendlyFire = false;
+    overwriteAttackData->m_bits.disableHitstop = false;
+    overwriteAttackData->m_bits.disableHitGfx = false;
+    overwriteAttackData->m_bits.disableFlinch = false;
+    overwriteAttackData->m_bits.addedShieldDamage = 0;
 
-    overwriteAttackData->bits.isShapeCapsule = true;
+    overwriteAttackData->m_bits.isShapeCapsule = true;
 }

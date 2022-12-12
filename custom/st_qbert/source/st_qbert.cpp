@@ -28,8 +28,8 @@ void stQbert::notifyEventInfoGo() {
 
 void stQbert::createObj() {
 
-    testStageParamInit(fileData, 210);
-    testStageDataInit(fileData, 220, 1);
+    testStageParamInit(m_fileData, 210);
+    testStageDataInit(m_fileData, 220, 1);
 
     this->createObjBg(0);
     this->createObjHud(1);
@@ -53,7 +53,7 @@ void stQbert::createObj() {
     this->createObjRound(48, 1);
 
     initCameraParam();
-    void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
+    void* posData = m_fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
     if(posData == NULL){
       // if no stgPos model in pac, use defaults
       createStagePositions();
@@ -63,24 +63,24 @@ void stQbert::createObj() {
       createStagePositions(&posData);
     }
     createWind2ndOnly();
-    loadStageAttrParam(fileData, 230);
-    void* scnData = fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
+    loadStageAttrParam(m_fileData, 230);
+    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
     registSceneAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
-    createObjPokeTrainer(fileData, 0x65, "PokeTrainer00", this->unk, 0x0);
+    createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 
-    stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->m_stageData;
     this->maxDisksActive = randi(maxDisksActive) + 1;
     this->diskTimer = randf()*(qbertStageData->diskMaxRespawnFrames - qbertStageData->diskMinRespawnFrames) + qbertStageData->diskMinRespawnFrames;
 
     // setup orthogonal camera
     gfCameraManager* cameraManager = gfCameraManager::getManager();
-    gfCamera* camera = &cameraManager->cameras[0];
-    camera->projection = Camera_Projection_Orthogonal;
-    camera->ortho.top = qbertStageData->orthogonalCameraZoom/2;
-    camera->ortho.bottom = -qbertStageData->orthogonalCameraZoom/2;
-    camera->ortho.left = -(4.0/3.0)*qbertStageData->orthogonalCameraZoom/2.0;
-    camera->ortho.right = (4.0/3.0)*qbertStageData->orthogonalCameraZoom/2.0;
+    gfCamera* camera = &cameraManager->m_cameras[0];
+    camera->m_projection = Camera_Projection_Orthogonal;
+    camera->m_ortho.m_top = qbertStageData->orthogonalCameraZoom/2;
+    camera->m_ortho.m_bottom = -qbertStageData->orthogonalCameraZoom/2;
+    camera->m_ortho.m_left = -(4.0/3.0)*qbertStageData->orthogonalCameraZoom/2.0;
+    camera->m_ortho.m_right = (4.0/3.0)*qbertStageData->orthogonalCameraZoom/2.0;
 
     this->soundGenerator.playSE(snd_se_stage_Madein_01, 0x0, 0x0, 0xffffffff);
 }
@@ -89,8 +89,8 @@ void stQbert::createObjBg(int mdlIndex) {
     grQbertBackground* ground = grQbertBackground::create(mdlIndex, "", "grQbertMainBg");
     if(ground != NULL){
         addGround(ground);
-        ground->startup(fileData,0,0);
-        ground->setStageData(stageData);
+        ground->startup(m_fileData,0,0);
+        ground->setStageData(m_stageData);
         ground->setDontMoveGround();
     }
 }
@@ -99,8 +99,8 @@ void stQbert::createObjHud(int mdlIndex) {
     grQbertHud* hud = grQbertHud::create(mdlIndex, "", "grQbertHud");
     if(hud != NULL){
         addGround(hud);
-        hud->startup(fileData,0,0);
-        hud->setStageData(stageData);
+        hud->startup(m_fileData,0,0);
+        hud->setStageData(m_stageData);
         hud->initializeEntity();
         hud->startEntityAutoLoop();
         hud->setScorePosWork(this->scorePositions);
@@ -111,14 +111,14 @@ void stQbert::createObjCube(int mdlIndex, int collIndex) {
     grQbertCube* cube = grQbertCube::create(mdlIndex, "", "grQbertCube");
     if(cube != NULL){
         addGround(cube);
-        cube->startup(fileData,0,0);
-        cube->setStageData(stageData);
+        cube->startup(m_fileData,0,0);
+        cube->setStageData(m_stageData);
         cube->setDontMoveGround();
         cube->initializeEntity();
         cube->startEntity();
         cube->setNumBlocksPerTeamWork(this->numBlocksPerTeam);
         cube->setTeamScoresWork(this->teamScores);
-        createCollision(fileData, collIndex, cube);
+        createCollision(m_fileData, collIndex, cube);
     }
 }
 
@@ -126,13 +126,13 @@ void stQbert::createObjDisk(int mdlIndex, int collIndex, int diskIndex) {
     grQbertDisk* disk = grQbertDisk::create(mdlIndex, "", "grQbertDisk");
     if(disk != NULL){
         addGround(disk);
-        disk->startup(fileData,0,0);
-        disk->setStageData(stageData);
+        disk->startup(m_fileData,0,0);
+        disk->setStageData(m_stageData);
         disk->initializeEntity();
         disk->startEntity();
         disk->setIsActiveWork(&this->disksActive[diskIndex]);
         disk->setMotion(0);
-        createCollision(fileData, collIndex, disk);
+        createCollision(m_fileData, collIndex, disk);
         disk->setEnableCollisionStatus(false);
     }
 }
@@ -141,8 +141,8 @@ grQbertAlien* stQbert::createObjAlien(int mdlIndex) {
     grQbertAlien* alien = grQbertAlien::create(mdlIndex, "", "grQbertAlien", this);
     if(alien != NULL){
         addGround(alien);
-        alien->startup(fileData,0,0);
-        alien->setStageData(stageData);
+        alien->startup(m_fileData,0,0);
+        alien->setStageData(m_stageData);
         alien->initializeEntity();
         alien->startEntity();
         alien->setStartPos();
@@ -155,8 +155,8 @@ void stQbert::createObjCoily(int mdlIndex, grQbertAlien* enemyTarget) {
     grQbertCoily* coily = grQbertCoily::create(mdlIndex, "", "grQbertCoily", this, enemyTarget);
     if(coily != NULL){
         addGround(coily);
-        coily->startup(fileData,0,0);
-        coily->setStageData(stageData);
+        coily->startup(m_fileData,0,0);
+        coily->setStageData(m_stageData);
         coily->initializeEntity();
         coily->startEntity();
         coily->setStartPos();
@@ -168,8 +168,8 @@ void stQbert::createObjGreen(int mdlIndex) {
     grQbertGreen* green = grQbertGreen::create(mdlIndex, "", "grQbertGreen", this);
     if(green != NULL){
         addGround(green);
-        green->startup(fileData,0,0);
-        green->setStageData(stageData);
+        green->startup(m_fileData,0,0);
+        green->setStageData(m_stageData);
         green->initializeEntity();
         green->startEntity();
         green->setStartPos();
@@ -182,8 +182,8 @@ void stQbert::createObjRed(int mdlIndex) {
     grQbertRed* red = grQbertRed::create(mdlIndex, "", "grQbertRed", this);
     if(red != NULL){
         addGround(red);
-        red->startup(fileData,0,0);
-        red->setStageData(stageData);
+        red->startup(m_fileData,0,0);
+        red->setStageData(m_stageData);
         red->initializeEntity();
         red->startEntity();
         red->setStartPos();
@@ -195,8 +195,8 @@ void stQbert::createObjScore(int mdlIndex, int player, int type) {
     grQbertScore* score = grQbertScore::create(mdlIndex, "StgDonkey_Suuji", "grQbertScore");
     if(score != NULL){
         addGround(score);
-        score->startup(fileData,0,0);
-        score->setStageData(stageData);
+        score->startup(m_fileData,0,0);
+        score->setStageData(m_stageData);
         score->setType(type);
         score->setPosWork(&this->scorePositions[player*NUM_SCORE_DIGITS + type]);
         score->setScoreWork(&this->teamScores[player]);
@@ -207,8 +207,8 @@ void stQbert::createObjRound(int mdlIndex, int type) {
     grQbertScore* score = grQbertScore::create(mdlIndex, "StgDonkey_Suuji", "grQbertRound");
     if(score != NULL){
         addGround(score);
-        score->startup(fileData,0,0);
-        score->setStageData(stageData);
+        score->startup(m_fileData,0,0);
+        score->setStageData(m_stageData);
         score->setType(type);
         score->setPosWork(&this->scorePositions[4*NUM_SCORE_DIGITS + type]);
         score->setScoreWork(&this->round);
@@ -237,7 +237,7 @@ void stQbert::updateCubes(float frameDelta) {
     }
 
     // Check if all blocks have been coloured by a team
-    stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->m_stageData;
     for (u8 team = 1; team < NUM_TEAMS; team++) {
         if (this->numBlocksPerTeam[team] >= NUM_BLOCKS) {
             g_sndSystem->setBGMVol(true, 0);
@@ -281,7 +281,7 @@ void stQbert::updateDisks(float frameDelta) {
         }
     }
     this->numDisksActive = NUM_DISKS - numInactiveDisks;
-    stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->m_stageData;
     if (numInactiveDisks > 0 && this->numDisksActive < this->maxDisksActive) {
         this->diskTimer -= frameDelta;
         if (this->diskTimer <= 0) {
@@ -294,7 +294,7 @@ void stQbert::updateDisks(float frameDelta) {
 
 void stQbert::updateEnemies(float frameDelta) {
     // Check if green orb was collected
-    stQbertStageData* qbertStageData = (stQbertStageData*)this->stageData;
+    stQbertStageData* qbertStageData = (stQbertStageData*)this->m_stageData;
     if (this->immobilizeState > 0) {
         g_sndSystem->setBGMVol(true, 0);
         this->soundGenerator.playSE(snd_se_stage_Madein_good_06, 0x0, 0x0, 0xffffffff);
@@ -320,7 +320,7 @@ void stQbert::updateBgm(float frameDelta) {
 }
 
 void Ground::setStageData(void* stageData) {
-   this->stageData = stageData;
+   this->m_stageData = stageData;
 }
 void stQbert::startFighterEvent() {
    return;
@@ -344,10 +344,10 @@ void stQbert::notifyTimmingGameStart(){
    return;
 }
 float stQbert::getFrameRuleTime() {
-   return this->frameRuleTime;
+   return this->m_frameRuleTime;
 }
 void stQbert::setFrameRuleTime(float newTime) {
-   this->frameRuleTime = newTime;
+   this->m_frameRuleTime = newTime;
 }
 bool stQbert::isNextStepBgmEqualNowStepBgmFromFlag() {
    return false;
@@ -359,16 +359,16 @@ float stQbert::getBgmVolume() {
    return BGM_VOLUME;
 }
 void stQbert::setBgmChange(float unk, u32 unk1, u32 unk2) {
-   this->unk2 = unk1;
-   this->unk3 = unk2;
-   this->unk4 = unk;
+   this->m_unk2 = unk1;
+   this->m_unk3 = unk2;
+   this->m_unk4 = unk;
 }
 void stQbert::getBgmChangeID(u32 unk1, float unk2) {
-   unk1 = this->unk3;
-   unk2 = this->unk4;
+   unk1 = this->m_unk3;
+   unk2 = this->m_unk4;
 }
 bool stQbert::isBgmChange() {
-   return this->unk2;
+   return this->m_unk2;
 }
 int stQbert::getBgmOptionID() {
    return 0;

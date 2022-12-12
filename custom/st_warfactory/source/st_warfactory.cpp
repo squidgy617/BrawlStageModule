@@ -20,19 +20,19 @@ bool stWarFactory::loading(){
 
 void stWarFactory::createObj() {
 
-    testStageParamInit(fileData, 10);
-    testStageDataInit(fileData, 20, 1);
+    testStageParamInit(m_fileData, 10);
+    testStageDataInit(m_fileData, 20, 1);
 
     createObjWall(1);
     createObjWall(2);
-    createCollision(fileData, 2, NULL);
+    createCollision(m_fileData, 2, NULL);
     createObjConveyor(3, 3, 0);
     createObjConveyor(4, 4, 1);
     createObjConveyor(5, 5, 2);
     createObjConveyor(6, 6, 3);
 
     initCameraParam();
-    void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
+    void* posData = m_fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
     if(posData == NULL){
       // if no stgPos model in pac, use defaults
       createStagePositions();
@@ -42,11 +42,11 @@ void stWarFactory::createObj() {
       createStagePositions(&posData);
     }
     createWind2ndOnly();
-    loadStageAttrParam(fileData, 30);
-    void* scnData = fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
+    loadStageAttrParam(m_fileData, 30);
+    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
     registSceneAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
-    createObjPokeTrainer(fileData, 0x65, "PokeTrainer00", this->unk, 0x0);
+    createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 }
 
 void stWarFactory::createObjWall(int mdlIndex) {
@@ -54,8 +54,8 @@ void stWarFactory::createObjWall(int mdlIndex) {
     if (ground != NULL)
     {
         addGround(ground);
-        ground->startup(fileData, 0, 0);
-        ground->setStageData(stageData);
+        ground->startup(m_fileData, 0, 0);
+        ground->setStageData(m_stageData);
         ground->setDontMoveGround();
     }
 }
@@ -65,12 +65,12 @@ void stWarFactory::createObjConveyor(int mdlIndex, int collIndex, int conveyorIn
     if (conveyor != NULL)
     {
         addGround(conveyor);
-        ConveyorGimmickData* conveyorGimmickDatas = (ConveyorGimmickData*)this->stageData;
+        ConveyorGimmickData* conveyorGimmickDatas = (ConveyorGimmickData*)this->m_stageData;
         conveyor->setGimmickData(&conveyorGimmickDatas[conveyorIndex]);
-        conveyor->startup(fileData, 0, 0);
-        conveyor->setStageData(stageData);
+        conveyor->startup(m_fileData, 0, 0);
+        conveyor->setStageData(m_stageData);
         conveyor->setDontMoveGround();
-        createCollision(fileData, collIndex, conveyor);
+        createCollision(m_fileData, collIndex, conveyor);
     }
 }
 
@@ -79,7 +79,7 @@ void stWarFactory::update(float frameDelta){
 }
 
 void Ground::setStageData(void* stageData) {
-   this->stageData = stageData;
+   this->m_stageData = stageData;
 }
 void stWarFactory::startFighterEvent() {
    return;
@@ -103,10 +103,10 @@ void stWarFactory::notifyTimmingGameStart(){
    return;
 }
 float stWarFactory::getFrameRuleTime() {
-   return this->frameRuleTime;
+   return this->m_frameRuleTime;
 }
 void stWarFactory::setFrameRuleTime(float newTime) {
-   this->frameRuleTime = newTime;
+   this->m_frameRuleTime = newTime;
 }
 bool stWarFactory::isNextStepBgmEqualNowStepBgmFromFlag() {
    return false;
@@ -118,16 +118,16 @@ float stWarFactory::getBgmVolume() {
    return BGM_VOLUME;
 }
 void stWarFactory::setBgmChange(float unk, u32 unk1, u32 unk2) {
-   this->unk2 = unk1;
-   this->unk3 = unk2;
-   this->unk4 = unk;
+   this->m_unk2 = unk1;
+   this->m_unk3 = unk2;
+   this->m_unk4 = unk;
 }
 void stWarFactory::getBgmChangeID(u32 unk1, float unk2) {
-   unk1 = this->unk3;
-   unk2 = this->unk4;
+   unk1 = this->m_unk3;
+   unk2 = this->m_unk4;
 }
 bool stWarFactory::isBgmChange() {
-   return this->unk2;
+   return this->m_unk2;
 }
 int stWarFactory::getBgmOptionID() {
    return 0;

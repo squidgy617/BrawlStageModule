@@ -6,7 +6,7 @@
 grQbertDisk* grQbertDisk::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grQbertDisk* ground = new(Heaps::StageInstance) grQbertDisk(taskName);
     ground->setMdlIndex(mdlIndex);
-    ground->heapType = Heaps::StageInstance;
+    ground->m_heapType = Heaps::StageInstance;
     ground->makeCalcuCallback(1, Heaps::StageInstance);
     ground->setCalcuCallbackRoot(7);
     return ground;
@@ -18,7 +18,7 @@ void grQbertDisk::update(float frameDelta){
             this->setEnableCollisionStatus(true);
             this->setMotionDetails(0, 1, 0, 0, 0);
         }
-        else if (this->modelAnims[0]->getFrame() - this->modelAnims[0]->getFrameCount() >= 0) {
+        else if (this->m_modelAnims[0]->getFrame() - this->m_modelAnims[0]->getFrameCount() >= 0) {
             this->setEnableCollisionStatus(false);
             this->setMotionDetails(0, 0, 0, 0, 0);
             *this->isActiveWork = false;

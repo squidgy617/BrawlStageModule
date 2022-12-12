@@ -5,7 +5,7 @@
 grQbertHud* grQbertHud::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grQbertHud* hud = new(Heaps::StageInstance) grQbertHud(taskName);
     hud->setMdlIndex(mdlIndex);
-    hud->heapType = Heaps::StageInstance;
+    hud->m_heapType = Heaps::StageInstance;
     hud->makeCalcuCallback(1, Heaps::StageInstance);
     hud->setCalcuCallbackRoot(7);
     return hud;

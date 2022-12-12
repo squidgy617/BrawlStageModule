@@ -32,10 +32,10 @@ void grQbertScore::update(float frameDelta){
 }
 
 void grQbertScore::updateScaleBase(float frameDelta) {
-    if (hkMath::fabs(this->scaleBase.x) < 1e-05 && hkMath::fabs(this->scaleBase.y) < 1e-05 && hkMath::fabs(this->scaleBase.z) < 1e-05) {
-        nw4r::g3d::ScnMdl* scnMdl = this->sceneModels[0];
-        if (scnMdl != NULL && scnMdl->resMdl.ptr() != NULL) {
-            nw4r::g3d::ResNode resNode = scnMdl->resMdl.GetResNode(this->m_nodeIndex);
+    if (hkMath::fabs(this->scaleBase.m_x) < 1e-05 && hkMath::fabs(this->scaleBase.m_y) < 1e-05 && hkMath::fabs(this->scaleBase.m_z) < 1e-05) {
+        nw4r::g3d::ScnMdl* scnMdl = this->m_sceneModels[0];
+        if (scnMdl != NULL && scnMdl->m_resMdl.ptr() != NULL) {
+            nw4r::g3d::ResNode resNode = scnMdl->m_resMdl.GetResNode(this->m_nodeIndex);
             if (resNode.ptr() != NULL) {
                 this->scaleBase = resNode.ptr()->m_scale;
             }
@@ -45,22 +45,22 @@ void grQbertScore::updateScaleBase(float frameDelta) {
 }
 
 void grQbertScore::updateCallback(float frameDelta) {
-    grCalcWorldCallBack* calcWorldCallBack = &this->calcWorldCallBack;
-    nw4r::g3d::ScnMdl* scnMdl = this->sceneModels[0];
+    grCalcWorldCallBack* calcWorldCallBack = &this->m_calcWorldCallBack;
+    nw4r::g3d::ScnMdl* scnMdl = this->m_sceneModels[0];
     if (calcWorldCallBack != NULL && scnMdl != NULL) {
         if (scnMdl->m_calcWorldCallBack == NULL) {
             calcWorldCallBack->m_index = 0;
-            calcWorldCallBack->nodeCallbackDataArray[0].m_nodeIndex = this->m_nodeIndex;
+            calcWorldCallBack->m_nodeCallbackDataArray[0].m_nodeIndex = this->m_nodeIndex;
             scnMdl->m_calcWorldCallBack = calcWorldCallBack;
             scnMdl->EnableScnMdlCallbackTiming(1);
-            scnMdl->m_nodeIndex = calcWorldCallBack->nodeCallbackDataArray[0].m_nodeIndex;
+            scnMdl->m_nodeIndex = calcWorldCallBack->m_nodeCallbackDataArray[0].m_nodeIndex;
         }
     }
     if (this->posWork != NULL) {
-        calcWorldCallBack->nodeCallbackDataArray[0].m_pos = *this->posWork;
+        calcWorldCallBack->m_nodeCallbackDataArray[0].m_pos = *this->posWork;
     }
 
-    calcWorldCallBack->nodeCallbackDataArray[0].m_scale = 1.85*this->scaleBase;
+    calcWorldCallBack->m_nodeCallbackDataArray[0].m_scale = 1.85*this->scaleBase;
 }
 
 void grQbertScore::updateNumber(float frameDelta) {
