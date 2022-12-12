@@ -159,8 +159,8 @@ int stSoup::getScrollDir(u32 unk1) {
 int stSoup::getDefaultLightSetIndex(){
    return 0x14;
 }
-int stSoup::getAIRange() {
-   return (u32) &this->aiRange;
+stRange* stSoup::getAIRange() {
+   return &this->aiRange;
 }
 bool stSoup::isAdventureStage(){
    return false;
