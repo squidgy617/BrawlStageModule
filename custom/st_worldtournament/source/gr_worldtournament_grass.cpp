@@ -4,6 +4,7 @@
 #include <memory.h>
 #include <so/so_value_accesser.h>
 #include <ft/ft_audience_manager.h>
+#include <ai/ai_mgr.h>
 
 grWorldTournamentGrass* grWorldTournamentGrass::create(int mdlIndex, char* tgtNodeName, char* taskName)
 {
@@ -12,6 +13,10 @@ grWorldTournamentGrass* grWorldTournamentGrass::create(int mdlIndex, char* tgtNo
     ground->setMdlIndex(mdlIndex);
     ground->setTgtNode(tgtNodeName);
     return ground;
+}
+
+void grWorldTournamentGrass::startup(gfArchive* data, u32 unk1, u32 unk2) {
+    grYakumono::startup(data, unk1, unk2);
 }
 
 void grWorldTournamentGrass::update(float deltaFrame)
