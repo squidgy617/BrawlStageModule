@@ -14,15 +14,13 @@ class grQbertScore : public grYakumono
     public:
         grQbertScore(char* taskName) : grYakumono(taskName) {
             prevScore = 999999;
-            motionRatio = 0.0;
-            scaleBase.x = 0.0;
-            scaleBase.y = 0.0;
-            scaleBase.z = 0.0;
-            if (&calcWorldCallBack != NULL) {
-                calcWorldCallBack.m_numNodeCallbackData = 1;
-                calcWorldCallBack.initialize(false, Heaps::StageInstance);
-                calcWorldCallBack.nodeCallbackDataArray[0].m_flag1 = true;
-                calcWorldCallBack.nodeCallbackDataArray[0].m_flag3 = true;
+            m_motionRatio = 0.0;
+            scaleBase = (Vec3f){0.0, 0.0, 0.0};
+            if (&m_calcWorldCallBack != NULL) {
+                m_calcWorldCallBack.m_numNodeCallbackData = 1;
+                m_calcWorldCallBack.initialize(false, Heaps::StageInstance);
+                m_calcWorldCallBack.m_nodeCallbackDataArray[0].m_flag1 = true;
+                m_calcWorldCallBack.m_nodeCallbackDataArray[0].m_flag3 = true;
                 this->setupMelee();
             }
 

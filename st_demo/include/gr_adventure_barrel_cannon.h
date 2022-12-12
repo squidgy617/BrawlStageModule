@@ -43,10 +43,10 @@ struct grGimmickBarrelCannnonData {
     char _spacer5;
     unsigned short field_0xce;
     char _spacer6[8];
-    stTriggerData enterCannonTriggerData;
-    stTriggerData motionPathTriggerData;
-    stTriggerData isValidTriggerData;
-    grYakumonoAttackData attackData;
+    stTrigger::TriggerData enterCannonTriggerData;
+    stTrigger::TriggerData motionPathTriggerData;
+    stTrigger::TriggerData isValidTriggerData;
+    grYakumono::AttackData attackData;
     char _spacer7;
 };
 
@@ -61,20 +61,18 @@ struct grGimmickBarrelCannnonPathData : grGimmickBarrelCannnonData {
     grGimmickMotionPathData shootMotionPathData;
 };
 
-struct grGimmickEventBarrelCannonInfo : soGimmickEventInfo {
-    Vec3f pos;
-    unsigned int field_0x14;
-    soCollisionAttackData* attackData;
-    float shootSpeed;
-    float rot;
-    float shootTimerSpeed;
-    float shootAngleOffset;
-    float shootStunTimerSpeed;
+enum BarrelCannonPlayerState {
+    BarrelCannon_PlayerState_Invalid = 0x0,
+    BarrelCannon_PlayerState_Enter = 0x1,
+    BarrelCannon_PlayerState_Set = 0x2,
+    BarrelCannon_PlayerState_Fire = 0x3,
+    BarrelCannon_PlayerState_Path = 0x4
 };
+
 
 struct BarrelCannonPlayerInfo {
     bool isActive;
-    char state;
+    BarrelCannonPlayerState state : 8;
     char playerNumber;
     int sendID;
     float frame;
@@ -123,8 +121,8 @@ public:
         this->animFrame = 0.0;
         this->animSetLength = 60;
         this->animFireLength = 60;
-        this->areaInfo.numHitGroups = 0;
-        this->areaInfo.hitGroupsInfo = NULL;
+        this->areaInfo.m_numHitGroups = 0;
+        this->areaInfo.m_hitGroupsInfo = NULL;
 
     };
     virtual void processFixPosition();

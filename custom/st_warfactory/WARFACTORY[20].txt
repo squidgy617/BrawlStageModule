@@ -1,0 +1,99 @@
+conveyor1PosX
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor1PosY
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor1Range
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor1Speed
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor1IsRightDirection
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+conveyor2PosX
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor2PosY
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor2Range
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor2Speed
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor2IsRightDirection
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+conveyor3PosX
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor3PosY
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor3Range
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor3Speed
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor3IsRightDirection
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+conveyor4PosX
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor4PosY
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor4Range
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor4Speed
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+conveyor4IsRightDirection
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1

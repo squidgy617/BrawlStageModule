@@ -1,5 +1,5 @@
 #include <memory.h>
-#include <ec_mgr.h>
+#include <ec/ec_mgr.h>
 #include <so/so_external_value_accesser.h>
 #include "gr_qbert_cube.h"
 #include <mt/mt_prng.h>
@@ -8,7 +8,7 @@
 grQbertCube* grQbertCube::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grQbertCube* ground = new(Heaps::StageInstance) grQbertCube(taskName);
     ground->setMdlIndex(mdlIndex);
-    ground->heapType = Heaps::StageInstance;
+    ground->m_heapType = Heaps::StageInstance;
     ground->makeCalcuCallback(1, Heaps::StageInstance);
     ground->setCalcuCallbackRoot(7);
     return ground;
@@ -37,7 +37,7 @@ void grQbertCube::update(float frameDelta){
 
 void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
     if (this->timer <= 0) {
-        gfTask* stageObject = gfTask::getTask(collStatus->taskId);
+        gfTask* stageObject = gfTask::getTask(collStatus->m_taskId);
         int teamNumber = soExternalValueAccesser::getTeamNo((StageObject*)stageObject);
         if (teamNumber >= 0 && teamNumber < NUM_TEAMS - 1) {
             teamNumber++;
@@ -50,16 +50,16 @@ void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJo
 }
 
 u32 grQbertCube::getNumNextJumpCubes() {
-    return this->sceneModels[0]->resMdl.GetResNodeNumEntries() - this->getNodeIndex(0, "Jumps") - 1;
+    return this->m_sceneModels[0]->m_resMdl.GetResNodeNumEntries() - this->getNodeIndex(0, "Jumps") - 1;
 }
 
 void grQbertCube::getNextJumpCubes(u32* cubeIndices) {
-    u32 numNodes = this->sceneModels[0]->resMdl.GetResNodeNumEntries();
+    u32 numNodes = this->m_sceneModels[0]->m_resMdl.GetResNodeNumEntries();
     u32 startJumpNodeIndex = this->getNodeIndex(0, "Jumps") + 1;
     for (u32 i = startJumpNodeIndex; i < numNodes; i++) {
         Vec3f scale;
         this->getNodeScale(&scale, 0, i);
-        cubeIndices[i - startJumpNodeIndex] = scale.x; // use scale.x as index for next cube
+        cubeIndices[i - startJumpNodeIndex] = scale.m_x; // use scale.x as index for next cube
     }
 }
 

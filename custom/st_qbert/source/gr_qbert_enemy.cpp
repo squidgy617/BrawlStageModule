@@ -6,9 +6,9 @@
 #include <mt/mt_common.h>
 
 float distance(Vec3f* p1, Vec3f* p2) {
-    float deltaX = p2->x - p1->x;
-    float deltaY = p2->y - p1->y;
-    float deltaZ = p2->z - p1->z;
+    float deltaX = p2->m_x - p1->m_x;
+    float deltaY = p2->m_y - p1->m_y;
+    float deltaZ = p2->m_z - p1->m_z;
     return mtSqrtf(deltaX*deltaX + deltaY*deltaY + deltaZ*deltaZ);
 }
 
@@ -68,16 +68,16 @@ void grQbertEnemy::setAnim() {
     Vec3f deltaPos = this->targetPos - this->prevPos;
 
     // pick jump animation based on direction
-    if (deltaPos.x >= 0 && deltaPos.y >= 0) {
+    if (deltaPos.m_x >= 0 && deltaPos.m_y >= 0) {
         this->setMotion(3);
     }
-    else if (deltaPos.x < 0 && deltaPos.y >= 0) {
+    else if (deltaPos.m_x < 0 && deltaPos.m_y >= 0) {
         this->setMotion(2);
     }
-    else if (deltaPos.x < 0 && deltaPos.y < 0) {
+    else if (deltaPos.m_x < 0 && deltaPos.m_y < 0) {
         this->setMotion(0);
     }
-    else if (deltaPos.x >= 0 && deltaPos.y < 0) {
+    else if (deltaPos.m_x >= 0 && deltaPos.m_y < 0) {
         this->setMotion(1);
     }
 }
