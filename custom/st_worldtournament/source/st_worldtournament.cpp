@@ -21,8 +21,8 @@ bool stWorldTournament::loading(){
 
 void stWorldTournament::createObj() {
 
-    testStageParamInit(fileData, 10);
-    testStageDataInit(fileData, 20, 1);
+    testStageParamInit(m_fileData, 10);
+    testStageDataInit(m_fileData, 20, 1);
 
     createObjConcrete(1);
     createObjConcrete(2);
@@ -35,10 +35,10 @@ void stWorldTournament::createObj() {
     createObjConcrete(9);
     createObjGrass(10,3);
     createObjConcrete(11);
-    createCollision(fileData, 2, NULL);
+    createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
-    void* posData = fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
+    void* posData = m_fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
     if(posData == NULL){
       // if no stgPos model in pac, use defaults
       createStagePositions();
@@ -48,11 +48,11 @@ void stWorldTournament::createObj() {
       createStagePositions(&posData);
     }
     createWind2ndOnly();
-    loadStageAttrParam(fileData, 30);
-    void* scnData = fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
+    loadStageAttrParam(m_fileData, 30);
+    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
     registSceneAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
-    createObjPokeTrainer(fileData, 0x65, "PokeTrainer00", this->unk, 0x0);
+    createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 }
 
 void stWorldTournament::createObjConcrete(int mdlIndex) {
@@ -60,8 +60,8 @@ void stWorldTournament::createObjConcrete(int mdlIndex) {
     if (concrete != NULL)
     {
         addGround(concrete);
-        concrete->startup(fileData, 0, 0);
-        concrete->setStageData(stageData);
+        concrete->startup(m_fileData, 0, 0);
+        concrete->setStageData(m_stageData);
     }
 }
 
@@ -70,9 +70,9 @@ void stWorldTournament::createObjGrass(int mdlIndex, int collIndex) {
     if (grass != NULL)
     {
         addGround(grass);
-        grass->startup(fileData, 0, 0);
-        grass->setStageData(stageData);
-        createCollision(fileData, collIndex, grass);
+        grass->startup(m_fileData, 0, 0);
+        grass->setStageData(m_stageData);
+        createCollision(m_fileData, collIndex, grass);
     }
 }
 
@@ -81,7 +81,7 @@ void stWorldTournament::update(float frameDelta){
 }
 
 void Ground::setStageData(void* stageData) {
-   this->stageData = stageData;
+   this->m_stageData = stageData;
 }
 
 void stWorldTournament::startFighterEvent() {
@@ -106,10 +106,10 @@ void stWorldTournament::notifyTimmingGameStart(){
    return;
 }
 float stWorldTournament::getFrameRuleTime() {
-   return this->frameRuleTime;
+   return this->m_frameRuleTime;
 }
 void stWorldTournament::setFrameRuleTime(float newTime) {
-   this->frameRuleTime = newTime;
+   this->m_frameRuleTime = newTime;
 }
 bool stWorldTournament::isNextStepBgmEqualNowStepBgmFromFlag() {
    return false;
@@ -121,16 +121,16 @@ float stWorldTournament::getBgmVolume() {
    return BGM_VOLUME;
 }
 void stWorldTournament::setBgmChange(float unk, u32 unk1, u32 unk2) {
-   this->unk2 = unk1;
-   this->unk3 = unk2;
-   this->unk4 = unk;
+   this->m_unk2 = unk1;
+   this->m_unk3 = unk2;
+   this->m_unk4 = unk;
 }
 void stWorldTournament::getBgmChangeID(u32 unk1, float unk2) {
-   unk1 = this->unk3;
-   unk2 = this->unk4;
+   unk1 = this->m_unk3;
+   unk2 = this->m_unk4;
 }
 bool stWorldTournament::isBgmChange() {
-   return this->unk2;
+   return this->m_unk2;
 }
 int stWorldTournament::getBgmOptionID() {
    return 0;

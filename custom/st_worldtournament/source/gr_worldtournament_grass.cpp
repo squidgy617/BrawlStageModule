@@ -27,7 +27,7 @@ void grWorldTournamentGrass::update(float deltaFrame)
 void grWorldTournamentGrass::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
     int unk = 1;
     if (this->isCollisionStatusOwnerTask(collStatus, &unk)) {
-        Fighter* fighter = (Fighter*)gfTask::getTask(collStatus->taskId);
+        Fighter* fighter = (Fighter*)gfTask::getTask(collStatus->m_taskId);
         if (fighter != NULL) {
             if (!fighter->m_moduleAccesser->getWorkManageModule()->isFlag(0x12000018)) {
                 //fighter->toKnockOut();
