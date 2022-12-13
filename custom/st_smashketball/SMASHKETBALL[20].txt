@@ -1,0 +1,45 @@
+Pos X 1
+
+	/EndDescription
+0
+
+Pos Y 1
+
+	/EndDescription
+0
+
+Rot Angle 1
+
+	/EndDescription
+0
+
+Pos X 2
+
+	/EndDescription
+0
+
+Pos Y 2
+
+	/EndDescription
+0
+
+Rot Angle 2
+
+	/EndDescription
+0
+
+Shoot Speed
+Default: 5
+	/EndDescription
+0
+
+Shoot Time Speed
+Default: 0.075
+
+	/EndDescription
+0
+
+Shoot Stun Timer Speed
+Default: 0.25
+	/EndDescription
+0
