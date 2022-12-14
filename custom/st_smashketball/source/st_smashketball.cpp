@@ -7,6 +7,7 @@
 #include <so/so_external_value_accesser.h>
 #include <OS/OSError.h>
 #include <hk/hk_math.h>
+#include <ft/ft_manager.h>
 
 static stClassInfoImpl<2, stSmashketball> classInfo = stClassInfoImpl<2, stSmashketball>();
 
@@ -120,7 +121,17 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
 }
 
 void stSmashketball::update(float frameDelta){
-
+    stSmashketballData* smashketballData = (stSmashketballData*)this->m_stageData;
+    if (smashketballData->isDisableCollision) {
+        int entryCount = g_ftManager->getEntryCount();
+        for (int i = 0; i < entryCount; i++) {
+            int entryId = g_ftManager->getEntryIdFromIndex(i);
+            Fighter* fighter = g_ftManager->getFighter(entryId, 0);
+            if (fighter->m_moduleAccesser->getStatusModule()->getStatusKind() == 192) {
+                fighter->m_moduleAccesser->getGroundModule()->setCorrect(0,0);
+            };
+        }
+    }
 }
 
 void Ground::setStageData(void* stageData) {

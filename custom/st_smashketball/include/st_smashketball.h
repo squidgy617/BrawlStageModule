@@ -22,6 +22,8 @@ struct stSmashketballData {
     float shootSpeed;
     float shootTimerSpeed;
     float shootStunTimerSpeed;
+    char _pad[3];
+    bool isDisableCollision;
 };
 
 class stSmashketball : public stMelee {

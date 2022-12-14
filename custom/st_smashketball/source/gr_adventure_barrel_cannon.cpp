@@ -5,6 +5,7 @@
 #include <memory.h>
 #include <hk/hk_math.h>
 #include <gf/gf_heap_manager.h>
+#include <ft/fighter.h>
 
 grAdventureBarrelCannon* grAdventureBarrelCannon::create(int mdlIndex, BarrelCannonGimmickKind cannonKind, char* taskName)
 {
@@ -95,13 +96,13 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
         this->m_effects[0].m_0x24 = 1.0;
     }
     this->createSoundWork(2,1);
-    this->m_soundEffects[0].m_id = 0x225d;
+    this->m_soundEffects[0].m_id = snd_se_stage_Madein_01;
     this->m_soundEffects[0].m_0x10 = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
     this->m_soundEffects[0].m_0x14 = 0;
     this->m_soundEffects[0].m_0x1c = 0.0;
     this->m_soundEffects[0].m_0x20 = 0.0;
-    this->m_soundEffects[1].m_id = 0x225e;
+    this->m_soundEffects[1].m_id = snd_se_stage_Madein_04;
     this->m_soundEffects[1].m_0x10 = 0;
     this->m_soundEffects[1].m_nodeIndex = 0;
     this->m_soundEffects[1].m_0x14 = 0;
@@ -303,7 +304,6 @@ void grAdventureBarrelCannon::updateMove(float frameDelta)
 
 void grAdventureBarrelCannon::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
 {
-    gfHeapManager::dumpList();
     int newPlayerIndex = 0;
     Vec3f pos = this->getPos();
     grGimmickEventBarrelCannonInfo* cannonEventInfo = (grGimmickEventBarrelCannonInfo*)eventInfo;
