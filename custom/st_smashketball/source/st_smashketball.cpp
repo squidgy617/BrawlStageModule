@@ -92,10 +92,10 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     this->cannonData[index].attackData.m_offsetPos.m_y = 0.0;
     this->cannonData[index].attackData.m_offsetPos.m_z = 0.0;
     this->cannonData[index].attackData.m_size = 10.0;
-    this->cannonData[index].attackData.m_vector = 169;
-    this->cannonData[index].attackData.m_reactionEffect = 19;
+    this->cannonData[index].attackData.m_vector = 0x169;
+    this->cannonData[index].attackData.m_reactionEffect = 0x19;
     this->cannonData[index].attackData.m_reactionFix = 0;
-    this->cannonData[index].attackData.m_reactionAdd = 5;
+    this->cannonData[index].attackData.m_reactionAdd = 0x5;
     this->cannonData[index].attackData.m_elementType = Element_Type_Normal;
     this->cannonData[index].attackData.m_isClankable = false;
     this->cannonData[index].attackData.m_unk2 = false;
@@ -130,8 +130,6 @@ void stSmashketball::createObjGlass(int mdlIndex, int collIndex, int index) {
         addGround(glass);
         glass->startup(m_fileData, 0, 0);
         glass->setStageData(m_stageData);
-        glass->initializeEntity();
-        glass->startEntity();
         glass->setPos(smashketballData->glassPos[index].m_x, smashketballData->glassPos[index].m_y, 0);
         createCollision(m_fileData, collIndex, glass);
     }
