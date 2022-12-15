@@ -56,7 +56,7 @@ void grQbertAlien::setupAttack() {
     overwriteAttackData->m_bits.isCollisionCategory1 = true;
     overwriteAttackData->m_bits.isCollisionCategory0 = true;
 
-    overwriteAttackData->m_bits.isCollisionSituationUnk = true;
+    overwriteAttackData->m_bits.isCollisionSituationODD = true;
     overwriteAttackData->m_bits.isCollisionSituationAir = true;
     overwriteAttackData->m_bits.isCollisionSituationGround = true;
 
