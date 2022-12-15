@@ -6,6 +6,7 @@
 #include <mt/mt_prng.h>
 #include "gr_final.h"
 #include "gr_adventure_barrel_cannon.h"
+#include "gr_smashketball_glass.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -18,12 +19,13 @@ struct stSmashketballPosData {
 };
 
 struct stSmashketballData {
-    stSmashketballPosData posData[2];
+    stSmashketballPosData cannonPosData[2];
     float shootSpeed;
     float shootTimerSpeed;
     float shootStunTimerSpeed;
     char _pad[3];
     bool isDisableCollision;
+    Vec2f glassPos[2];
 };
 
 class stSmashketball : public stMelee {
@@ -74,6 +76,7 @@ class stSmashketball : public stMelee {
         virtual bool isBamperVector();
         virtual ~stSmashketball() {this->releaseArchive(); };
 
-        virtual void createObjGround(int mdlIndex);
-        virtual void createObjCannon(int mdlIndex, int index);
+        void createObjGround(int mdlIndex);
+        void createObjCannon(int mdlIndex, int index);
+        void createObjGlass(int mdlIndex, int collIndex, int index);
 };
