@@ -18,6 +18,14 @@ void grSmashketballGlass::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
     grMadein::startup(archive, unk1, unk2);
 
+    this->createSoundWork(1,1);
+    this->m_soundEffects[0].m_id = snd_se_stage_Madein_02;
+    this->m_soundEffects[0].m_0x10 = 0;
+    this->m_soundEffects[0].m_nodeIndex = 0;
+    this->m_soundEffects[0].m_0x14 = 0;
+    this->m_soundEffects[0].m_0x1c = 0.0;
+    this->m_soundEffects[0].m_0x20 = 0.0;
+
     this->initializeEntity();
     this->startEntity();
 
@@ -34,10 +42,30 @@ void grSmashketballGlass::setHit() {
     // Done cause Brawl devs allocated ykData on the stack in grMadein::setupYakumonoClass leading to ykData being a garbage pointer so have to replace it in order to be able to change the HitSelfCategory
     this->m_yakumono->m_data = &this->yakumonoData;
     this->setSituationODD();
-    //this->m_yakumono->setCollisionHitSelfCatagory(9); // Changed category so that projectiles like Mario fireball don't get absorbed by it
 }
 
 void grSmashketballGlass::update(float deltaFrame)
 {
+    if (this->timer > 0) {
+        this->timer -= deltaFrame;
+        if (timer <= 0) {
+            this->setMotion(0);
+            this->setSleepHit(false);
+            this->setEnableCollisionStatus(true);
+        }
+    }
+}
 
+void grSmashketballGlass::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
+    this->setSleepHit(true);
+    this->setEnableCollisionStatus(false);
+    this->setMotion(1);
+    this->timer = 120.0;
+    this->startGimmickSE(0);
+
+    /*
+    Vec3f pos = {0,-100,0};
+    g_ecMgr->setDrawPrio(1);
+    g_ecMgr->setEffect(0x3c0003, &pos);
+    g_ecMgr->setDrawPrio(0xffffffff);*/
 }

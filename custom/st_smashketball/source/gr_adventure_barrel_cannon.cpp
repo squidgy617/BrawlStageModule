@@ -222,10 +222,6 @@ void grAdventureBarrelCannon::processFixPosition() {
                         this->isRotate = this->cannonData->alwaysRotate;
                         this->startGimmickEffect(0);
                         this->startGimmickSE(1);
-                        Vec3f pos = {0,-100,0};
-                        g_ecMgr->setDrawPrio(1);
-                        g_ecMgr->setEffect(0x3c0003, &pos);
-                        g_ecMgr->setDrawPrio(0xffffffff);
                     }
                     break;
                 case BarrelCannon_PlayerState_Path:
