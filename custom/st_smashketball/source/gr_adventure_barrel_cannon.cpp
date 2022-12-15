@@ -5,6 +5,7 @@
 #include <memory.h>
 #include <hk/hk_math.h>
 #include <gf/gf_heap_manager.h>
+#include <ft/fighter.h>
 
 grAdventureBarrelCannon* grAdventureBarrelCannon::create(int mdlIndex, BarrelCannonGimmickKind cannonKind, char* taskName)
 {
@@ -54,10 +55,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     {
         (this->m_modelAnims[0])->unbindNodeAnim(this->m_sceneModels[0]);
     }
-    this->areaData = (soAreaData){ 0, 0x15, 0, 0, 0, 0, this->cannonData->field_0x20,
-                                   this->cannonData->field_0x24,
-                                   this->cannonData->field_0x28,
-                                   this->cannonData->field_0x2c };
+    this->areaData = (soAreaData){ 0, 0x15, 0, 0, 0, 0, this->cannonData->areaPosOffset, this->cannonData->areaRange };
     this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
     stTrigger* trigger;
     switch (this->kind) {
@@ -95,13 +93,13 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
         this->m_effects[0].m_0x24 = 1.0;
     }
     this->createSoundWork(2,1);
-    this->m_soundEffects[0].m_id = 0x225d;
+    this->m_soundEffects[0].m_id = snd_se_stage_Madein_01;
     this->m_soundEffects[0].m_0x10 = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
     this->m_soundEffects[0].m_0x14 = 0;
     this->m_soundEffects[0].m_0x1c = 0.0;
     this->m_soundEffects[0].m_0x20 = 0.0;
-    this->m_soundEffects[1].m_id = 0x225e;
+    this->m_soundEffects[1].m_id = snd_se_stage_Madein_04;
     this->m_soundEffects[1].m_0x10 = 0;
     this->m_soundEffects[1].m_nodeIndex = 0;
     this->m_soundEffects[1].m_0x14 = 0;
@@ -221,6 +219,13 @@ void grAdventureBarrelCannon::processFixPosition() {
                             }
                             this->cannonPlayerInfos[i].frame += cannonPathData->shootMotionPathData.m_motionRatio;
                         }
+                        this->isRotate = this->cannonData->alwaysRotate;
+                        this->startGimmickEffect(0);
+                        this->startGimmickSE(1);
+                        Vec3f pos = {0,-100,0};
+                        g_ecMgr->setDrawPrio(1);
+                        g_ecMgr->setEffect(0x3c0003, &pos);
+                        g_ecMgr->setDrawPrio(0xffffffff);
                     }
                     break;
                 case BarrelCannon_PlayerState_Path:
@@ -303,7 +308,6 @@ void grAdventureBarrelCannon::updateMove(float frameDelta)
 
 void grAdventureBarrelCannon::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
 {
-    gfHeapManager::dumpList();
     int newPlayerIndex = 0;
     Vec3f pos = this->getPos();
     grGimmickEventBarrelCannonInfo* cannonEventInfo = (grGimmickEventBarrelCannonInfo*)eventInfo;

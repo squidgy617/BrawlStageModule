@@ -5,7 +5,7 @@
 #include <st/st_trigger.h>
 #include <snd/snd_system.h>
 
-#define NUM_PLAYERS 4
+#define NUM_PLAYERS 8
 
 enum BarrelCannonGimmickKind {
     BarrelCannon_GimmickKind_Static = 0x0,
@@ -23,10 +23,8 @@ enum BarrelCannonState {
 struct grGimmickBarrelCannnonData {
     grGimmickMotionPathData motionPathData;
     char _spacer[24];
-    float field_0x20;
-    float field_0x24;
-    float field_0x28;
-    float field_0x2c;
+    Vec2f areaPosOffset;
+    Vec2f areaRange;
     Vec2f pos;
     float rot;
     float maxRot;

@@ -1,30 +1,30 @@
 Pos X 1
-
+No Description Available.
 	/EndDescription
 0
 
 Pos Y 1
-
+No Description Available.
 	/EndDescription
 0
 
 Rot Angle 1
-
+No Description Available.
 	/EndDescription
 0
 
 Pos X 2
-
+No Description Available.
 	/EndDescription
 0
 
 Pos Y 2
-
+No Description Available.
 	/EndDescription
 0
 
 Rot Angle 2
-
+No Description Available.
 	/EndDescription
 0
 
@@ -43,3 +43,8 @@ Shoot Stun Timer Speed
 Default: 0.25
 	/EndDescription
 0
+
+Disable Collision
+(0 - Normal, 1 - Ignore Collision When Shot)
+	/EndDescription
+1

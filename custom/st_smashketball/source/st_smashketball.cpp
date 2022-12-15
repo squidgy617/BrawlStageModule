@@ -7,6 +7,7 @@
 #include <so/so_external_value_accesser.h>
 #include <OS/OSError.h>
 #include <hk/hk_math.h>
+#include <ft/ft_manager.h>
 
 static stClassInfoImpl<2, stSmashketball> classInfo = stClassInfoImpl<2, stSmashketball>();
 
@@ -28,6 +29,8 @@ void stSmashketball::createObj() {
     createObjGround(2);
     createObjCannon(110, 0);
     createObjCannon(110, 1);
+    createObjGlass(3, 4, 0);
+    createObjGlass(3, 4, 1);
     createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
@@ -68,14 +71,14 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     this->cannonData[index].motionPathData.m_mdlIndex = 0xFF;
     this->cannonData[index].motionPathData._padding = 0x0;
     this->cannonData[index]._spacer[7] = 0x12;
-    this->cannonData[index].field_0x28 = 20.0;
-    this->cannonData[index].field_0x2c = 15.0;
-    this->cannonData[index].pos = smashketballData->posData[index].pos;
-    this->cannonData[index].rot = smashketballData->posData[index].rot;
+    this->cannonData[index].areaPosOffset = (Vec2f){0.0, 0.0};
+    this->cannonData[index].areaRange = (Vec2f){20.0, 15.0};
+    this->cannonData[index].pos = smashketballData->cannonPosData[index].pos;
+    this->cannonData[index].rot = smashketballData->cannonPosData[index].rot;
     this->cannonData[index].maxRot = 62.0;
     this->cannonData[index].difficultyRotateSpeeds[0] = 0.0;
     this->cannonData[index].maxFrames = 0;
-    this->cannonData[index].maxFireRot = smashketballData->posData[index].rot;
+    this->cannonData[index].maxFireRot = smashketballData->cannonPosData[index].rot;
     this->cannonData[index].isAutoFire = true;
     this->cannonData[index].fullRotate = false;
     this->cannonData[index].alwaysRotate = false;
@@ -119,8 +122,33 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     }
 }
 
-void stSmashketball::update(float frameDelta){
+void stSmashketball::createObjGlass(int mdlIndex, int collIndex, int index) {
+    stSmashketballData* smashketballData = (stSmashketballData*)this->m_stageData;
+    grSmashketballGlass* glass = grSmashketballGlass::create(mdlIndex, "", "grGlass");
+    if (glass != NULL)
+    {
+        addGround(glass);
+        glass->startup(m_fileData, 0, 0);
+        glass->setStageData(m_stageData);
+        glass->initializeEntity();
+        glass->startEntity();
+        glass->setPos(smashketballData->glassPos[index].m_x, smashketballData->glassPos[index].m_y, 0);
+        createCollision(m_fileData, collIndex, glass);
+    }
+}
 
+void stSmashketball::update(float frameDelta){
+    stSmashketballData* smashketballData = (stSmashketballData*)this->m_stageData;
+    if (smashketballData->isDisableCollision) {
+        int entryCount = g_ftManager->getEntryCount();
+        for (int i = 0; i < entryCount; i++) {
+            int entryId = g_ftManager->getEntryIdFromIndex(i);
+            Fighter* fighter = g_ftManager->getFighter(entryId, 0);
+            if (fighter->m_moduleAccesser->getStatusModule()->getStatusKind() == 192) {
+                fighter->m_moduleAccesser->getGroundModule()->setCorrect(0,0);
+            };
+        }
+    }
 }
 
 void Ground::setStageData(void* stageData) {
