@@ -1,29 +1,29 @@
-Pos X 1
+Cannon Pos X 1
 No Description Available.
 	/EndDescription
 0
 
-Pos Y 1
+Cannon Pos Y 1
 No Description Available.
 	/EndDescription
 0
 
-Rot Angle 1
+Cannon Rot Angle 1
 No Description Available.
 	/EndDescription
 0
 
-Pos X 2
+Cannon Pos X 2
 No Description Available.
 	/EndDescription
 0
 
-Pos Y 2
+Cannon Pos Y 2
 No Description Available.
 	/EndDescription
 0
 
-Rot Angle 2
+Cannon Rot Angle 2
 No Description Available.
 	/EndDescription
 0
@@ -48,3 +48,29 @@ Disable Collision
 (0 - Normal, 1 - Ignore Collision When Shot)
 	/EndDescription
 1
+
+Glass Pos X 1
+No Description Available.
+	/EndDescription
+0
+
+Glass Pos Y 1
+No Description Available.
+	/EndDescription
+0
+
+Glass Pos X 2
+No Description Available.
+	/EndDescription
+0
+
+Glass Pos Y 2
+No Description Available.
+	/EndDescription
+0
+
+Glass Respawn Frames
+Default: 240
+
+	/EndDescription
+0

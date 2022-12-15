@@ -1,6 +1,7 @@
 #include "gr_smashketball_glass.h"
 #include <ec/ec_mgr.h>
 #include <memory.h>
+#include "st_smashketball_data.h"
 
 grSmashketballGlass* grSmashketballGlass::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grSmashketballGlass* glass = new(Heaps::StageInstance) grSmashketballGlass(taskName);
@@ -57,15 +58,10 @@ void grSmashketballGlass::update(float deltaFrame)
 }
 
 void grSmashketballGlass::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
+    stSmashketballData* smashketballData = (stSmashketballData*)this->getStageData();
     this->setSleepHit(true);
     this->setEnableCollisionStatus(false);
     this->setMotion(1);
-    this->timer = 120.0;
+    this->timer = smashketballData->glassRespawnFrames;
     this->startGimmickSE(0);
-
-    /*
-    Vec3f pos = {0,-100,0};
-    g_ecMgr->setDrawPrio(1);
-    g_ecMgr->setEffect(0x3c0003, &pos);
-    g_ecMgr->setDrawPrio(0xffffffff);*/
 }

@@ -80,7 +80,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->createSimpleEffectData(&simpleEffectData, 0x1030001, "FighterPos");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[0].m_id = simpleEffectData.m_id;
-        this->m_effects->m_0x10 = simpleEffectData.m_0x4;
+        this->m_effects[0].m_0x10 = simpleEffectData.m_0x4;
         if (simpleEffectData.m_nodeIndex == 0) {
             this->m_effects[0].m_nodeIndex = this->getNodeIndex(0, "effect_locator");
         }
@@ -92,7 +92,8 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
         this->m_effects[0].m_0x20 = 0.0;
         this->m_effects[0].m_0x24 = 1.0;
     }
-    this->createSoundWork(2,1);
+
+    this->createSoundWork(3,1);
     this->m_soundEffects[0].m_id = snd_se_stage_Madein_01;
     this->m_soundEffects[0].m_0x10 = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
@@ -105,6 +106,12 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->m_soundEffects[1].m_0x14 = 0;
     this->m_soundEffects[1].m_0x1c = 0.0;
     this->m_soundEffects[1].m_0x20 = 0.0;
+    this->m_soundEffects[2].m_id = snd_se_stage_Madein_03;
+    this->m_soundEffects[2].m_0x10 = 0;
+    this->m_soundEffects[2].m_nodeIndex = 0;
+    this->m_soundEffects[2].m_0x14 = 0;
+    this->m_soundEffects[2].m_0x1c = 0.0;
+    this->m_soundEffects[2].m_0x20 = 0.0;
     this->createSimpleEffectData(&simpleEffectData, 0x1030006, "effect_locator");
     u32 visProdIndex = 4;
     this->createEffectVisibleProductionForExcel(&simpleEffectData, &visProdIndex, this->m_visibleProductions);
@@ -222,6 +229,11 @@ void grAdventureBarrelCannon::processFixPosition() {
                         this->isRotate = this->cannonData->alwaysRotate;
                         this->startGimmickEffect(0);
                         this->startGimmickSE(1);
+
+                        Vec3f pos = {0,-100,0};
+                        g_ecMgr->setDrawPrio(1);
+                        this->effectIndex = g_ecMgr->setEffect(0x3c0003, &pos);
+                        g_ecMgr->setDrawPrio(0xffffffff);
                     }
                     break;
                 case BarrelCannon_PlayerState_Path:
@@ -278,6 +290,7 @@ void grAdventureBarrelCannon::update(float frameDelta)
         this->enableArea();
         this->isInCooldown = false;
         this->cooldownTimer = 0.0;
+        g_ecMgr->endEffect(this->effectIndex);
     }
     grGimmick::updateCallback(0);
 }
@@ -341,6 +354,7 @@ void grAdventureBarrelCannon::onGimmickEvent(soGimmickEventInfo* eventInfo, int*
                 this->cannonState = BarrelCannon_State_Set;
             }
             this->startGimmickSE(0);
+            this->startGimmickSE(2);
             cannonEventInfo->m_20 = this->cannonData->field_0xce;
             cannonEventInfo->m_pos = pos;
             break;

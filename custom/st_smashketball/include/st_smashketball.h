@@ -7,26 +7,12 @@
 #include "gr_final.h"
 #include "gr_adventure_barrel_cannon.h"
 #include "gr_smashketball_glass.h"
+#include "st_smashketball_data.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
 const float SCROLL_DIR = 0.0f;
 const float POKETRAINER_Z = 0.0f;
-
-struct stSmashketballPosData {
-    Vec2f pos;
-    float rot;
-};
-
-struct stSmashketballData {
-    stSmashketballPosData cannonPosData[2];
-    float shootSpeed;
-    float shootTimerSpeed;
-    float shootStunTimerSpeed;
-    char _pad[3];
-    bool isDisableCollision;
-    Vec2f glassPos[2];
-};
 
 class stSmashketball : public stMelee {
     protected:

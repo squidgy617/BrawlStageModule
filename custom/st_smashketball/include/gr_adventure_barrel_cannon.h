@@ -102,6 +102,7 @@ protected:
     soAreaData areaData;
     soAreaInit areaInit;
     ykAreaData areaInfo;
+    u32 effectIndex;
 
 public:
     grAdventureBarrelCannon(char* taskName) : grYakumono(taskName) {
@@ -121,6 +122,7 @@ public:
         this->animFireLength = 60;
         this->areaInfo.m_numHitGroups = 0;
         this->areaInfo.m_hitGroupsInfo = NULL;
+        this->effectIndex = 0;
 
     };
     virtual void processFixPosition();
