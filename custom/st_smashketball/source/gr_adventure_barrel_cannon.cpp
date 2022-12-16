@@ -106,7 +106,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->m_soundEffects[1].m_0x14 = 0;
     this->m_soundEffects[1].m_0x1c = 0.0;
     this->m_soundEffects[1].m_0x20 = 0.0;
-    this->m_soundEffects[2].m_id = snd_se_stage_Madein_03;
+    this->m_soundEffects[2].m_id = snd_se_stage_Madein_photo;
     this->m_soundEffects[2].m_0x10 = 0;
     this->m_soundEffects[2].m_nodeIndex = 0;
     this->m_soundEffects[2].m_0x14 = 0;

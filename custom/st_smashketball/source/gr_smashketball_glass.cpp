@@ -19,13 +19,20 @@ void grSmashketballGlass::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
     grMadein::startup(archive, unk1, unk2);
 
-    this->createSoundWork(1,1);
+    this->createSoundWork(2,1);
     this->m_soundEffects[0].m_id = snd_se_stage_Madein_02;
     this->m_soundEffects[0].m_0x10 = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
     this->m_soundEffects[0].m_0x14 = 0;
     this->m_soundEffects[0].m_0x1c = 0.0;
     this->m_soundEffects[0].m_0x20 = 0.0;
+
+    this->m_soundEffects[1].m_id = snd_se_stage_Madein_03;
+    this->m_soundEffects[1].m_0x10 = 0;
+    this->m_soundEffects[1].m_nodeIndex = 0;
+    this->m_soundEffects[1].m_0x14 = 0;
+    this->m_soundEffects[1].m_0x1c = 0.0;
+    this->m_soundEffects[1].m_0x20 = 0.0;
 
     this->initializeEntity();
     this->startEntity();
@@ -53,6 +60,7 @@ void grSmashketballGlass::update(float deltaFrame)
             this->setMotion(0);
             this->setSleepHit(false);
             this->setEnableCollisionStatus(true);
+            this->startGimmickSE(1);
         }
     }
 }
