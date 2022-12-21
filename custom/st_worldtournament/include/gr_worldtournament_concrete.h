@@ -11,6 +11,7 @@ public:
 
     };
     virtual void update(float deltaFrame);
+    virtual void receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3);
     virtual ~grWorldTournamentConcrete(){};
 
     static grWorldTournamentConcrete* create(int mdlIndex, char* tgtNodeName, char* taskName);

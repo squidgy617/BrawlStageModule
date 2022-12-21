@@ -43,8 +43,6 @@ void grWorldTournamentGrass::receiveCollMsg_Landing(grCollStatus* collStatus, gr
                     fighter->toDead(-1);
                 }
             }
-
-            //fighter->m_moduleAccesser->getStatusModule()->changeStatusRequest(ftStatus::Hit_Wall_Tumble, fighter->m_moduleAccesser);
         }
     }
 }
