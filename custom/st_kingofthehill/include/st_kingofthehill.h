@@ -57,8 +57,10 @@ class stKingOfTheHill : public stMelee {
         virtual void update(float frameDiff);
         virtual int getFinalTechniqColor();
         virtual bool isBamperVector();
+        virtual void notifyEventInfoGo();
+
         virtual ~stKingOfTheHill() {this->releaseArchive(); };
 
         virtual Ground* createObjGround(int mdlIndex);
-        virtual void createObjCapturePoint(int mdlIndex, Ground* capturePointPositions);
+        virtual void createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, Rule rule);
 };

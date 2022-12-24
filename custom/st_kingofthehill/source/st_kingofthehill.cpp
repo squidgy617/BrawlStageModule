@@ -19,19 +19,24 @@ bool stKingOfTheHill::loading(){
     return true;
 }
 
-// TODO: Countdown? Start with a certain amount of coins till you hit 0
+void stKingOfTheHill::notifyEventInfoGo() {
+    grCapturePoint* capturePoint = (grCapturePoint*)this->getGround(1);
+    capturePoint->setNewCapturePosition();
+};
 
 void stKingOfTheHill::createObj() {
 
     // TODO: Use additional time as coin objective?
-
-    g_ftManager->m_rule = Rule_Time;
+    Rule rule = g_ftManager->m_rule;
+    if (rule == Rule_Coin) {
+        g_ftManager->m_rule = Rule_Time;
+    }
 
     testStageParamInit(m_fileData, 10);
     testStageDataInit(m_fileData, 20, 1);
 
     Ground* capturePointPositions = createObjGround(0);
-    createObjCapturePoint(200, capturePointPositions);
+    createObjCapturePoint(200, capturePointPositions, rule);
     createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
@@ -64,16 +69,17 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
     return ground;
 }
 
-void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPositions) {
-    grCapturePoint* ground = grCapturePoint::create(mdlIndex, "", "grCapturePoint");
+void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, Rule rule) {
+    grCapturePoint* ground = grCapturePoint::create(mdlIndex, "", "grCapturePoint", this);
     if (ground != NULL)
     {
         addGround(ground);
         ground->setCapturePointPositions(capturePointPositions);
+        ground->setRule(rule);
         ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
         ground->initializeEntity();
-        ground->startEntityAutoLoop();
+        ground->startEntity();
     }
 }
 
