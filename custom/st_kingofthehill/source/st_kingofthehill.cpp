@@ -70,7 +70,6 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
 }
 
 void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, Rule rule) {
-    // TODO: Optionally add collision?
     grCapturePoint* ground = grCapturePoint::create(mdlIndex, "", "grCapturePoint", this);
     if (ground != NULL)
     {
@@ -81,6 +80,7 @@ void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPo
         ground->setStageData(m_stageData);
         ground->initializeEntity();
         ground->startEntity();
+        createCollision(m_fileData, 3, ground);
     }
 }
 

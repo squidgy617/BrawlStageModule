@@ -50,6 +50,9 @@ void grCapturePoint::update(float deltaFrame)
                 this->state = State_On;
                 this->setMotionDetails(0, 0, 0, 0, State_On);
                 this->stage->zoomInCamera();
+                if (this->collisionMode == CollisionMode_On) {
+                    this->setEnableCollisionStatus(true);
+                }
             }
             break;
         case State_Disappear:
@@ -71,6 +74,9 @@ void grCapturePoint::update(float deltaFrame)
             if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
                 this->state = State_On;
                 this->setMotionDetails(0, 0, 0, 0, State_On);
+                if (this->collisionMode == CollisionMode_CaptureOnly) {
+                    this->setEnableCollisionStatus(false);
+                }
             }
         default:
             if (!this->isCaptured) {
@@ -104,7 +110,16 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
         this->numCaptures++;
         if (this->state == State_Appear) {
             this->stage->zoomInCamera();
+            if (this->collisionMode == CollisionMode_On || this->collisionMode == CollisionMode_CaptureOnly) {
+                this->setEnableCollisionStatus(true);
+            }
         }
+        else if (this->state == State_On) {
+            if (this->collisionMode == CollisionMode_CaptureOnly) {
+                this->setEnableCollisionStatus(true);
+            }
+        }
+
         if (this->state != State_Disappear) {
             if (this->numCaptures >= 300) { // Expose to STDT
                 this->state = State_Disappear;
@@ -121,6 +136,7 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
                 }
             }
         }
+
         this->isCaptured = true;
     }
 }
@@ -149,6 +165,11 @@ void grCapturePoint::setNewCapturePosition() {
     this->selectedNodeIndex = nodeIndex;
     nw4r::g3d::ResNodeData* resNodeData = this->capturePointPositions->m_sceneModels[0]->m_resMdl.GetResNode(nodeIndex).ptr();
     this->setPos(resNodeData->m_translation.m_x, resNodeData->m_translation.m_y, 0.0);
+    this->setRot(0.0, 0.0, resNodeData->m_rotation.m_z);
+    this->setScale(&resNodeData->m_scale);
+    this->setEnableCollisionStatus(false);
+    this->collisionMode = static_cast<CollisionMode>(int(resNodeData->m_rotation.m_y));
+
     this->motionPathData.m_motionRatio = 1.0;
     this->motionPathData.m_index = 0;
     this->motionPathData.m_0x5 = 1;
@@ -196,7 +217,6 @@ void grCapturePoint::setNewCapturePosition() {
     // TODO: Play a sound effect
 }
 
-// TODO: Motion path
-
+// TODO: Consider separating capturePoints into own ground objects so that can have easily have it's own meshes and collisions and stuff
 
 

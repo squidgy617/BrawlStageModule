@@ -17,6 +17,12 @@ protected:
         State_Disappear = 0x6
     };
 
+    enum CollisionMode {
+        CollisionMode_Off = 0x0,
+        CollisionMode_On = 0x1,
+        CollisionMode_CaptureOnly = 0x2
+    };
+
     grGimmickMotionPathData motionPathData;
     soAreaData areaData;
     soAreaInit areaInit;
@@ -30,6 +36,7 @@ protected:
     bool isCaptured;
     bool prevIsCaptured;
     Rule rule : 8;
+    CollisionMode collisionMode : 8;
 
 public:
     grCapturePoint(char* taskName) : grMadein(taskName)
