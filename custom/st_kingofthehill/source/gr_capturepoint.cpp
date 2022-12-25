@@ -41,6 +41,7 @@ void grCapturePoint::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
 void grCapturePoint::update(float deltaFrame)
 {
+    grMadein::update(deltaFrame);
     switch(this->state) {
         case State_Off:
             break;
@@ -101,6 +102,9 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
             }
         }
         this->numCaptures++;
+        if (this->state == State_Appear) {
+            this->stage->zoomInCamera();
+        }
         if (this->state != State_Disappear) {
             if (this->numCaptures >= 300) { // Expose to STDT
                 this->state = State_Disappear;
@@ -133,7 +137,7 @@ void grCapturePoint::setNewCapturePosition() {
     u32 capturePointsIndex = this->capturePointPositions->getNodeIndex(0, "CapturePoints");
     u32 endIndex = this->capturePointPositions->getNodeIndex(0, "End");
     u32 nodeIndex;
-    if (this->selectedNodeIndex >= 0) {
+    if (this->selectedNodeIndex < 0) {
         nodeIndex = randi(endIndex - capturePointsIndex - 1) + capturePointsIndex + 1;
     }
     else {
@@ -144,7 +148,40 @@ void grCapturePoint::setNewCapturePosition() {
     }
     this->selectedNodeIndex = nodeIndex;
     nw4r::g3d::ResNodeData* resNodeData = this->capturePointPositions->m_sceneModels[0]->m_resMdl.GetResNode(nodeIndex).ptr();
-    this->setPos(&resNodeData->m_translation);
+    this->setPos(resNodeData->m_translation.m_x, resNodeData->m_translation.m_y, 0.0);
+    this->motionPathData.m_motionRatio = 1.0;
+    this->motionPathData.m_index = 0;
+    this->motionPathData.m_0x5 = 1;
+    this->motionPathData.m_mdlIndex = resNodeData->m_translation.m_z;
+    this->motionPathData._padding = 0x0;
+
+    if (this->m_gimmickMotionPath != NULL) {
+        gfTask* task = this->m_attachedTask;
+        if (task == this->m_gimmickMotionPath) {
+            this->m_attachedTask = NULL;
+        }
+        else {
+            gfTask* lastTask;
+            while (task != this->m_gimmickMotionPath) {
+                lastTask = task;
+                task = task->m_nextTask;
+
+            }
+            if (task->m_nextTask != NULL) {
+                lastTask->m_nextTask = task->m_nextTask;
+            }
+            else {
+                lastTask->m_nextTask = NULL;
+            }
+        }
+        this->m_gimmickMotionPath->preExit();
+        this->m_gimmickMotionPath->exit();
+        this->m_gimmickMotionPath = NULL;
+    }
+
+    grGimmickMotionPathInfo motionPathInfo = {this->stage->m_fileData, &this->motionPathData, 0x01000000, 0, 0, 0, 0, 0, 0 };
+    stTrigger::TriggerData triggerData = (stTrigger::TriggerData){0,0,1,0};
+    this->createAttachMotionPath(&motionPathInfo, &triggerData, "MoveNode");
 
     this->numCaptures = 0;
     this->isCaptured = false;
@@ -155,9 +192,9 @@ void grCapturePoint::setNewCapturePosition() {
     stRange range;
     this->stage->m_stagePositions->getCameraRange(&range);
     this->stage->zoomOutCamera((range.m_right - range.m_left)*2,(range.m_top - range.m_bottom)*2);
+
+    // TODO: Play a sound effect
 }
-
-
 
 // TODO: Motion path
 

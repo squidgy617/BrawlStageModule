@@ -17,6 +17,7 @@ protected:
         State_Disappear = 0x6
     };
 
+    grGimmickMotionPathData motionPathData;
     soAreaData areaData;
     soAreaInit areaInit;
     ykAreaData areaInfo;

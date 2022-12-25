@@ -36,7 +36,7 @@ void stKingOfTheHill::createObj() {
     testStageDataInit(m_fileData, 20, 1);
 
     Ground* capturePointPositions = createObjGround(0);
-    createObjCapturePoint(200, capturePointPositions, rule);
+    createObjCapturePoint(2, capturePointPositions, rule);
     createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
@@ -70,6 +70,7 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
 }
 
 void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, Rule rule) {
+    // TODO: Optionally add collision?
     grCapturePoint* ground = grCapturePoint::create(mdlIndex, "", "grCapturePoint", this);
     if (ground != NULL)
     {
