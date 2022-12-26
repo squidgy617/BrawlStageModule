@@ -32,6 +32,7 @@ protected:
     int selectedNodeIndex;
     float consecutiveFramesCaptured;
     u32 numCaptures;
+    u32 targetNumCaptures;
     State state : 8;
     bool isCaptured;
     bool prevIsCaptured;

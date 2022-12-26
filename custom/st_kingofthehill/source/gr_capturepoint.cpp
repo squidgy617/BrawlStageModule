@@ -3,6 +3,7 @@
 #include <memory.h>
 #include <mt/mt_prng.h>
 #include <OS/OSError.h>
+#include "st_kingofthehill_data.h"
 
 grCapturePoint* grCapturePoint::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage)
 {
@@ -21,17 +22,29 @@ grCapturePoint* grCapturePoint::create(int mdlIndex, char* tgtNodeName, char* ta
 void grCapturePoint::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     grMadein::startup(archive, unk1, unk2);
 
-    this->createSoundWork(1,1);
+    stKingOfTheHillData* stageData = (stKingOfTheHillData*)this->getStageData();
+
+    this->createSoundWork(3,1);
     this->m_soundEffects[0].m_id = snd_se_common_coin;
     this->m_soundEffects[0].m_0x10 = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
     this->m_soundEffects[0].m_0x14 = 0;
     this->m_soundEffects[0].m_0x1c = 0.0;
     this->m_soundEffects[0].m_0x20 = 0.0;
+    this->m_soundEffects[1].m_id = snd_se_common_Countdown;
+    this->m_soundEffects[1].m_0x10 = 0;
+    this->m_soundEffects[1].m_nodeIndex = 0;
+    this->m_soundEffects[1].m_0x14 = 0;
+    this->m_soundEffects[1].m_0x1c = 0.0;
+    this->m_soundEffects[1].m_0x20 = 0.0;
+    this->m_soundEffects[2].m_id = snd_se_AllStar_Heal_Warp;
+    this->m_soundEffects[2].m_0x10 = 0;
+    this->m_soundEffects[2].m_nodeIndex = 0;
+    this->m_soundEffects[2].m_0x14 = 0;
+    this->m_soundEffects[2].m_0x1c = 0.0;
+    this->m_soundEffects[2].m_0x20 = 0.0;
 
-    Vec2f areaOffsetPos = {0.0,12.5};
-    Vec2f areaRange = {25.0, 25.0}; // TODO: Expose values
-    this->areaData = (soAreaData){ 0, 0x15, 0, 0, 0, 0, areaOffsetPos, areaRange };
+    this->areaData = (soAreaData){ 0, 0x15, 0, 0, 0, 0, stageData->areaOffsetPos, stageData->areaRange};
     this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
     stTrigger* trigger = g_stTriggerMng->createTrigger(GimmickKind_AreaCommon,-1);
     trigger->setObserveYakumono(this->m_yakumono);
@@ -66,6 +79,10 @@ void grCapturePoint::update(float deltaFrame)
             }
             this->prevIsCaptured = this->isCaptured;
             this->isCaptured = false;
+
+            if (int(this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame()) % 45 == 0) {
+                this->startGimmickSE(1);
+            }
             if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
                 this->setNewCapturePosition();
             }
@@ -99,12 +116,14 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
 {
     int entryId = g_ftManager->getEntryIdFromTaskId(*taskId, NULL);
     if (entryId >= 0) {
-        if ((int)this->consecutiveFramesCaptured % 30 == 0) {
+        stKingOfTheHillData* stageData = (stKingOfTheHillData*)this->getStageData();
+
+        if (int(this->consecutiveFramesCaptured) % 30 == 0) {
             if (this->rule == Rule_Coin) {
                 g_ftManager->pickupCoin(entryId, 1);
                 this->startGimmickSE(0);
             } else {
-                g_ftManager->setHeal(entryId, 1.0); // TODO: Expose to STDT
+                g_ftManager->setHeal(entryId, stageData->healAmount);
             }
         }
         this->numCaptures++;
@@ -121,7 +140,7 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
         }
 
         if (this->state != State_Disappear) {
-            if (this->numCaptures >= 300) { // Expose to STDT
+            if (this->numCaptures >= this->targetNumCaptures) {
                 this->state = State_Disappear;
                 this->setMotionDetails(0, 0, 0, 0, State_Disappear);
             }
@@ -150,6 +169,7 @@ void grCapturePoint::setRule(Rule rule) {
 }
 
 void grCapturePoint::setNewCapturePosition() {
+    stKingOfTheHillData* stageData = (stKingOfTheHillData*)this->getStageData();
     u32 capturePointsIndex = this->capturePointPositions->getNodeIndex(0, "CapturePoints");
     u32 endIndex = this->capturePointPositions->getNodeIndex(0, "End");
     u32 nodeIndex;
@@ -169,13 +189,13 @@ void grCapturePoint::setNewCapturePosition() {
     this->setScale(&resNodeData->m_scale);
     this->setEnableCollisionStatus(false);
     this->collisionMode = static_cast<CollisionMode>(int(resNodeData->m_rotation.m_y));
+    this->startGimmickSE(2);
 
     this->motionPathData.m_motionRatio = 1.0;
     this->motionPathData.m_index = 0;
     this->motionPathData.m_0x5 = 1;
     this->motionPathData.m_mdlIndex = resNodeData->m_translation.m_z;
     this->motionPathData._padding = 0x0;
-
     if (this->m_gimmickMotionPath != NULL) {
         gfTask* task = this->m_attachedTask;
         if (task == this->m_gimmickMotionPath) {
@@ -199,11 +219,11 @@ void grCapturePoint::setNewCapturePosition() {
         this->m_gimmickMotionPath->exit();
         this->m_gimmickMotionPath = NULL;
     }
-
     grGimmickMotionPathInfo motionPathInfo = {this->stage->m_fileData, &this->motionPathData, 0x01000000, 0, 0, 0, 0, 0, 0 };
     stTrigger::TriggerData triggerData = (stTrigger::TriggerData){0,0,1,0};
     this->createAttachMotionPath(&motionPathInfo, &triggerData, "MoveNode");
 
+    this->targetNumCaptures = randf()*(stageData->maxCaptures - stageData->minCaptures) + stageData->minCaptures;
     this->numCaptures = 0;
     this->isCaptured = false;
     this->prevIsCaptured = false;
@@ -213,8 +233,6 @@ void grCapturePoint::setNewCapturePosition() {
     stRange range;
     this->stage->m_stagePositions->getCameraRange(&range);
     this->stage->zoomOutCamera((range.m_right - range.m_left)*2,(range.m_top - range.m_bottom)*2);
-
-    // TODO: Play a sound effect
 }
 
 // TODO: Consider separating capturePoints into own ground objects so that can have easily have it's own meshes and collisions and stuff

@@ -76,8 +76,8 @@ void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPo
         addGround(ground);
         ground->setCapturePointPositions(capturePointPositions);
         ground->setRule(rule);
-        ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
+        ground->startup(m_fileData, 0, 0);
         ground->initializeEntity();
         ground->startEntity();
         createCollision(m_fileData, 3, ground);
