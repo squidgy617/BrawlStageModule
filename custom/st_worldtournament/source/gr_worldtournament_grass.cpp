@@ -17,11 +17,29 @@ grWorldTournamentGrass* grWorldTournamentGrass::create(int mdlIndex, char* tgtNo
 
 void grWorldTournamentGrass::startup(gfArchive* data, u32 unk1, u32 unk2) {
     grYakumono::startup(data, unk1, unk2);
+    this->areaData = (soAreaData){ 0, 0x15, 0, 0, 0, 0, (Vec2f){0.0, -10.0}, (Vec2f){1000.0,5.0}};
+    this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
+    stTrigger* trigger = g_stTriggerMng->createTrigger(GimmickKind_AreaCommon,-1);
+    trigger->setObserveYakumono(this->m_yakumono);
 }
 
 void grWorldTournamentGrass::update(float deltaFrame)
 {
+    if (this->collTimer >= 0) {
+        this->collTimer -= deltaFrame;
+        if (this->collTimer <= 0) {
+            this->setEnableCollisionStatus(false);
+        }
+    }
 
+
+
+}
+
+void grWorldTournamentGrass::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
+{
+    this->collTimer = 2.0;
+    this->setEnableCollisionStatus(true); // Enable collision only when close to grass so that CPU does not want to go on it
 }
 
 void grWorldTournamentGrass::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
