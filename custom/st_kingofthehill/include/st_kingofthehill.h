@@ -62,5 +62,5 @@ class stKingOfTheHill : public stMelee {
         virtual ~stKingOfTheHill() {this->releaseArchive(); };
 
         virtual Ground* createObjGround(int mdlIndex);
-        virtual void createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, Rule rule);
+        virtual void createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, GameRule gameRule);
 };

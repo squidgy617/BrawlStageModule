@@ -69,16 +69,15 @@ void grCapturePoint::update(float deltaFrame)
             }
             break;
         case State_Disappear:
-            if (!this->isCaptured) {
-                if (this->prevIsCaptured) {
+            if (this->stayCapturedTimer > 0.0) {
+                this->stayCapturedTimer -= deltaFrame;
+                if (this->stayCapturedTimer <= 0.0) {
                     this->consecutiveFramesCaptured = 0;
                 }
+                else {
+                    this->consecutiveFramesCaptured += deltaFrame;
+                }
             }
-            else {
-                this->consecutiveFramesCaptured += deltaFrame;
-            }
-            this->prevIsCaptured = this->isCaptured;
-            this->isCaptured = false;
 
             if (int(this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame()) % 45 == 0) {
                 this->startGimmickSE(1);
@@ -96,18 +95,17 @@ void grCapturePoint::update(float deltaFrame)
                 }
             }
         default:
-            if (!this->isCaptured) {
-                if (this->prevIsCaptured) {
+            if (this->stayCapturedTimer > 0.0) {
+                this->stayCapturedTimer -= deltaFrame;
+                if (this->stayCapturedTimer <= 0.0) {
                     this->state = State_Out;
                     this->setMotionDetails(0, 0, 0, 0, State_Out);
+                    this->consecutiveFramesCaptured = 0;
                 }
-                this->consecutiveFramesCaptured = 0;
+                else {
+                    this->consecutiveFramesCaptured += deltaFrame;
+                }
             }
-            else {
-                this->consecutiveFramesCaptured += deltaFrame;
-            }
-            this->prevIsCaptured = this->isCaptured;
-            this->isCaptured = false;
             break;
     }
 }
@@ -119,7 +117,7 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
         stKingOfTheHillData* stageData = (stKingOfTheHillData*)this->getStageData();
 
         if (int(this->consecutiveFramesCaptured) % 30 == 0) {
-            if (this->rule == Rule_Coin) {
+            if (this->gameRule == GameRule_Coin) {
                 g_ftManager->pickupCoin(entryId, 1);
                 this->startGimmickSE(0);
             } else {
@@ -144,7 +142,7 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
                 this->state = State_Disappear;
                 this->setMotionDetails(0, 0, 0, 0, State_Disappear);
             }
-            if (!this->isCaptured && !this->prevIsCaptured) {
+            if (this->stayCapturedTimer <= 0.0) {
                 this->state = State_In;
                 this->setMotionDetails(0, 0, 0, 0, State_In);
             }
@@ -156,7 +154,7 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
             }
         }
 
-        this->isCaptured = true;
+        this->stayCapturedTimer = 2.0;
     }
 }
 
@@ -164,8 +162,8 @@ void grCapturePoint::setCapturePointPositions(Ground* capturePointPositions) {
     this->capturePointPositions = capturePointPositions;
 }
 
-void grCapturePoint::setRule(Rule rule) {
-    this->rule = rule;
+void grCapturePoint::setGameRule(GameRule gameRule) {
+    this->gameRule = gameRule;
 }
 
 void grCapturePoint::setNewCapturePosition() {
@@ -225,8 +223,7 @@ void grCapturePoint::setNewCapturePosition() {
 
     this->targetNumCaptures = randf()*(stageData->maxCaptures - stageData->minCaptures) + stageData->minCaptures;
     this->numCaptures = 0;
-    this->isCaptured = false;
-    this->prevIsCaptured = false;
+    this->stayCapturedTimer = 0.0;
     this->enableArea();
     this->state = State_Appear;
     this->setMotionDetails(0, 0, 0, 0, State_Appear);

@@ -34,9 +34,8 @@ protected:
     u32 numCaptures;
     u32 targetNumCaptures;
     State state : 8;
-    bool isCaptured;
-    bool prevIsCaptured;
-    Rule rule : 8;
+    float stayCapturedTimer;
+    GameRule gameRule : 8;
     CollisionMode collisionMode : 8;
 
 public:
@@ -48,8 +47,7 @@ public:
         selectedNodeIndex = -1;
         consecutiveFramesCaptured = 0.0;
         state = State_Off;
-        isCaptured = false;
-        prevIsCaptured = false;
+        stayCapturedTimer = 0.0;
 
     };
     virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
@@ -57,7 +55,7 @@ public:
     virtual void onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId);
     virtual ~grCapturePoint(){};
     virtual void setCapturePointPositions(Ground* capturePointPositions);
-    virtual void setRule(Rule rule);
+    virtual void setGameRule(GameRule gameRule);
     virtual void setNewCapturePosition();
 
     static grCapturePoint* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);

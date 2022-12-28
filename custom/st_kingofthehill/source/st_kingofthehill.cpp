@@ -7,6 +7,8 @@
 #include <so/so_external_value_accesser.h>
 #include <OS/OSError.h>
 #include <hk/hk_math.h>
+#include <gm/gm_global.h>
+#include <sc/sc_melee.h>
 
 static stClassInfoImpl<2, stKingOfTheHill> classInfo = stClassInfoImpl<2, stKingOfTheHill>();
 
@@ -27,16 +29,16 @@ void stKingOfTheHill::notifyEventInfoGo() {
 void stKingOfTheHill::createObj() {
 
     // TODO: Use additional time as coin objective?
-    Rule rule = g_ftManager->m_rule;
-    if (rule == Rule_Coin) {
-        g_ftManager->m_rule = Rule_Time;
+    GameRule gameRule = g_ftManager->m_gameRule;
+    if (gameRule == GameRule_Coin) {
+        g_ftManager->m_gameRule = GameRule_Time;
     }
 
     testStageParamInit(m_fileData, 10);
     testStageDataInit(m_fileData, 20, 1);
 
     Ground* capturePointPositions = createObjGround(0);
-    createObjCapturePoint(2, capturePointPositions, rule);
+    createObjCapturePoint(2, capturePointPositions, gameRule);
     createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
@@ -69,13 +71,13 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
     return ground;
 }
 
-void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, Rule rule) {
+void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, GameRule gameRule) {
     grCapturePoint* ground = grCapturePoint::create(mdlIndex, "", "grCapturePoint", this);
     if (ground != NULL)
     {
         addGround(ground);
         ground->setCapturePointPositions(capturePointPositions);
-        ground->setRule(rule);
+        ground->setGameRule(gameRule);
         ground->setStageData(m_stageData);
         ground->startup(m_fileData, 0, 0);
         ground->initializeEntity();
