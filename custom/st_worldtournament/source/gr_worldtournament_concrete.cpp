@@ -2,6 +2,7 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 #include <ft/ft_manager.h>
+#include <so/so_external_value_accesser.h>
 
 grWorldTournamentConcrete* grWorldTournamentConcrete::create(int mdlIndex, char* tgtNodeName, char* taskName)
 {
@@ -12,10 +13,28 @@ grWorldTournamentConcrete* grWorldTournamentConcrete::create(int mdlIndex, char*
     return ground;
 }
 
+void grWorldTournamentConcrete::startup(gfArchive* data, u32 unk1, u32 unk2) {
+    grYakumono::startup(data, unk1, unk2);
+    this->areaData = (soAreaData){ 0, 0x15, 0, 0, 0, 0, (Vec2f){0.0, -115.0}, (Vec2f){1000.0,100.0}};
+    this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
+    stTrigger* trigger = g_stTriggerMng->createTrigger(GimmickKind_AreaCommon,-1);
+    trigger->setObserveYakumono(this->m_yakumono);
+}
+
 void grWorldTournamentConcrete::update(float deltaFrame)
 {
 
 }
+
+void grWorldTournamentConcrete::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
+    Fighter* fighter = static_cast<Fighter*>(gfTask::getTask(*taskId));
+    if (fighter != NULL) {
+        Vec3f pos = soExternalValueAccesser::getPos(fighter);
+        pos.m_y = -10.0;
+        fighter->warp(&pos, 1.0, false);
+    }
+}
+
 
 void grWorldTournamentConcrete::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
     int unk = 1;

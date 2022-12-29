@@ -31,9 +31,6 @@ void grWorldTournamentGrass::update(float deltaFrame)
             this->setEnableCollisionStatus(false);
         }
     }
-
-
-
 }
 
 void grWorldTournamentGrass::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
