@@ -87,7 +87,7 @@ void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPo
 }
 
 void stKingOfTheHill::update(float frameDelta){
-    OSReport("Event ID: %08X \n", &g_GameGlobal->m_modeMelee->m_meleeInitData.m_eventId);
+
 }
 
 void Ground::setStageData(void* stageData) {
