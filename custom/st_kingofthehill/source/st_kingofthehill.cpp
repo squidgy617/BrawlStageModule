@@ -30,8 +30,8 @@ void stKingOfTheHill::createObj() {
 
     // TODO: Use additional time as coin objective?
     GameRule gameRule = g_ftManager->m_gameRule;
-    if (gameRule == GameRule_Coin) {
-        g_ftManager->m_gameRule = GameRule_Time;
+    if (gameRule == Game_Rule_Coin) {
+        g_ftManager->m_gameRule = Game_Rule_Time;
     }
 
     testStageParamInit(m_fileData, 10);
@@ -87,7 +87,7 @@ void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPo
 }
 
 void stKingOfTheHill::update(float frameDelta){
-
+    OSReport("Widescreen: %d \n", g_GameGlobal->getGlobalRecordMenuDatap()->m_isWidescreen);
 }
 
 void Ground::setStageData(void* stageData) {

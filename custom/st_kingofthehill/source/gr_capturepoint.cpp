@@ -117,7 +117,7 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
         stKingOfTheHillData* stageData = (stKingOfTheHillData*)this->getStageData();
 
         if (int(this->consecutiveFramesCaptured) % 30 == 0) {
-            if (this->gameRule == GameRule_Coin) {
+            if (this->gameRule == Game_Rule_Coin) {
                 g_ftManager->pickupCoin(entryId, 1);
                 this->startGimmickSE(0);
             } else {
