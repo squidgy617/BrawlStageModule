@@ -28,7 +28,6 @@ void stKingOfTheHill::notifyEventInfoGo() {
 
 void stKingOfTheHill::createObj() {
 
-    // TODO: Use additional time as coin objective?
     GameRule gameRule = g_ftManager->m_gameRule;
     if (gameRule == Game_Rule_Coin) {
         g_ftManager->m_gameRule = Game_Rule_Time;
