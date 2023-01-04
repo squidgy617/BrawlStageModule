@@ -6,6 +6,7 @@
 #include <mt/mt_prng.h>
 #include "gr_final.h"
 #include "gr_capturepoint.h"
+#include "gr_platform.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -63,4 +64,5 @@ class stKingOfTheHill : public stMelee {
 
         virtual Ground* createObjGround(int mdlIndex);
         virtual void createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, GameRule gameRule);
+        virtual void createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec3f* scale, int motionPathIndex, int collIndex);
 };

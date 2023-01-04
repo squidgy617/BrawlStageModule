@@ -29,6 +29,8 @@ protected:
     ykAreaData areaInfo;
     stMelee* stage;
     Ground* capturePointPositions;
+    grMadein* syncedGround;
+    int syncedGroundExitAnim;
     int selectedNodeIndex;
     float consecutiveFramesCaptured;
     u32 numCaptures;
@@ -43,6 +45,8 @@ public:
     {
         areaInfo.m_numHitGroups = 0;
         areaInfo.m_hitGroupsInfo = NULL;
+        syncedGround = NULL;
+        syncedGroundExitAnim = -1;
         numCaptures = 0;
         selectedNodeIndex = -1;
         consecutiveFramesCaptured = 0.0;

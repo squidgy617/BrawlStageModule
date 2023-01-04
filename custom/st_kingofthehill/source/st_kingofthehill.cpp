@@ -22,7 +22,7 @@ bool stKingOfTheHill::loading(){
 }
 
 void stKingOfTheHill::notifyEventInfoGo() {
-    grCapturePoint* capturePoint = (grCapturePoint*)this->getGround(1);
+    grCapturePoint* capturePoint = static_cast<grCapturePoint*>(this->getGround(this->getGroundNum() - 2));
     capturePoint->setNewCapturePosition();
 };
 
@@ -66,6 +66,14 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
         ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
         ground->setDontMoveGround();
+        u32 platformsIndex = ground->getNodeIndex(0, "Platforms");
+        u32 capturePointsIndex = ground->getNodeIndex(0, "CapturePoints");
+        for (int i = platformsIndex + 1; i < capturePointsIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjPlatform(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                                    resNodeData->m_rotation.m_z, &resNodeData->m_scale, resNodeData->m_translation.m_z,
+                                    resNodeData->m_rotation.m_y);
+        }
     }
     return ground;
 }
@@ -85,8 +93,24 @@ void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPo
     }
 }
 
+void stKingOfTheHill::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec3f* scale, int motionPathIndex, int collIndex) {
+    grPlatform* platform = grPlatform::create(mdlIndex, "", "grPlatform");
+    if(platform != NULL){
+        addGround(platform);
+        platform->setStageData(m_stageData);
+        platform->setMotionPathData(motionPathIndex);
+        platform->startup(this->m_fileData,0,0);
+        platform->setPos(pos->m_x, pos->m_y, 0.0);
+        platform->setScale(scale);
+        platform->setRot(0.0, 0.0, rot);
+        createCollision(m_fileData, collIndex, platform);
+    }
+}
+
+// TODO: Hazards, Springs, Conveyors from Target Smash
+
 void stKingOfTheHill::update(float frameDelta){
-    OSReport("Widescreen: %d \n", g_GameGlobal->getGlobalRecordMenuDatap()->m_isWidescreen);
+
 }
 
 void Ground::setStageData(void* stageData) {

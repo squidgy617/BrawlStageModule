@@ -50,11 +50,18 @@ void grCapturePoint::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     trigger->setObserveYakumono(this->m_yakumono);
 
     this->disableArea();
+    this->setPos(2*this->stage->m_deadRange.m_top, 0.0, 0.0);
 }
 
 void grCapturePoint::update(float deltaFrame)
 {
     grMadein::update(deltaFrame);
+
+    if (this->m_gimmickMotionPath == NULL && this->syncedGround != NULL) {
+        Vec3f pos = this->syncedGround->getPos();
+        this->setPos(&pos);
+    }
+
     switch(this->state) {
         case State_Off:
             break;
@@ -138,7 +145,7 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
         }
 
         if (this->state != State_Disappear) {
-            if (this->numCaptures >= this->targetNumCaptures) {
+            if (this->targetNumCaptures > 0 && this->numCaptures >= this->targetNumCaptures) {
                 this->state = State_Disappear;
                 this->setMotionDetails(0, 0, 0, 0, State_Disappear);
             }
@@ -175,6 +182,7 @@ void grCapturePoint::setNewCapturePosition() {
         nodeIndex = randi(endIndex - capturePointsIndex - 1) + capturePointsIndex + 1;
     }
     else {
+        // Skip currently selected node
         nodeIndex = randi(endIndex - capturePointsIndex - 2) + capturePointsIndex + 1;
         if (nodeIndex >= this->selectedNodeIndex) {
             nodeIndex++;
@@ -217,9 +225,27 @@ void grCapturePoint::setNewCapturePosition() {
         this->m_gimmickMotionPath->exit();
         this->m_gimmickMotionPath = NULL;
     }
+
+    if (this->syncedGround != NULL && this->syncedGroundExitAnim >= 0) {
+        this->syncedGround->setMotion(this->syncedGroundExitAnim);
+    }
+    this->syncedGround = NULL;
+    this->syncedGroundExitAnim = -1;
     grGimmickMotionPathInfo motionPathInfo = {this->stage->m_fileData, &this->motionPathData, 0x01000000, 0, 0, 0, 0, 0, 0 };
     stTrigger::TriggerData triggerData = (stTrigger::TriggerData){0,0,1,0};
     this->createAttachMotionPath(&motionPathInfo, &triggerData, "MoveNode");
+    if (resNodeData->m_rotation.m_x > 0) {
+        this->syncedGround = static_cast<grMadein*>(this->stage->getGround(resNodeData->m_rotation.m_x));
+        if (this->syncedGround != NULL) {
+            if (resNodeData->m_translation.m_x >= 0) {
+                this->syncedGround->setMotion(resNodeData->m_translation.m_x);
+                this->syncedGroundExitAnim = resNodeData->m_translation.m_y;
+            }
+            if (this->m_gimmickMotionPath != NULL) {
+                this->m_gimmickMotionPath->setFrame(this->syncedGround->getMotionFrame(0));
+            }
+        }
+    }
 
     this->targetNumCaptures = randf()*(stageData->maxCaptures - stageData->minCaptures) + stageData->minCaptures;
     this->numCaptures = 0;
@@ -228,10 +254,9 @@ void grCapturePoint::setNewCapturePosition() {
     this->state = State_Appear;
     this->setMotionDetails(0, 0, 0, 0, State_Appear);
     stRange range;
+
+    // TODO: STDT disable camera zoom option
     this->stage->m_stagePositions->getCameraRange(&range);
     this->stage->zoomOutCamera((range.m_right - range.m_left)*2,(range.m_top - range.m_bottom)*2);
 }
-
-// TODO: Consider separating capturePoints into own ground objects so that can have easily have it's own meshes and collisions and stuff
-
 
