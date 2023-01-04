@@ -35,8 +35,9 @@ protected:
     float consecutiveFramesCaptured;
     u32 numCaptures;
     u32 targetNumCaptures;
-    State state : 8;
     float stayCapturedTimer;
+    int bonusMultiplier;
+    State state : 8;
     GameRule gameRule : 8;
     CollisionMode collisionMode : 8;
 
@@ -49,7 +50,6 @@ public:
         syncedGroundExitAnim = -1;
         numCaptures = 0;
         selectedNodeIndex = -1;
-        consecutiveFramesCaptured = 0.0;
         state = State_Off;
         stayCapturedTimer = 0.0;
 

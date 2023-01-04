@@ -61,6 +61,7 @@ void grCapturePoint::update(float deltaFrame)
         Vec3f pos = this->syncedGround->getPos();
         this->setPos(&pos);
     }
+    stKingOfTheHillData* stageData = (stKingOfTheHillData*)this->getStageData();
 
     switch(this->state) {
         case State_Off:
@@ -80,9 +81,13 @@ void grCapturePoint::update(float deltaFrame)
                 this->stayCapturedTimer -= deltaFrame;
                 if (this->stayCapturedTimer <= 0.0) {
                     this->consecutiveFramesCaptured = 0;
+                    this->bonusMultiplier = 1;
                 }
                 else {
                     this->consecutiveFramesCaptured += deltaFrame;
+                    if (stageData->consecutiveFramesBeforeBonus > 0 && int(this->consecutiveFramesCaptured) % stageData->consecutiveFramesBeforeBonus == 0) {
+                        this->bonusMultiplier++;
+                    }
                 }
             }
 
@@ -108,9 +113,13 @@ void grCapturePoint::update(float deltaFrame)
                     this->state = State_Out;
                     this->setMotionDetails(0, 0, 0, 0, State_Out);
                     this->consecutiveFramesCaptured = 0;
+                    this->bonusMultiplier = 1;
                 }
                 else {
                     this->consecutiveFramesCaptured += deltaFrame;
+                    if (int(this->consecutiveFramesCaptured) % stageData->consecutiveFramesBeforeBonus == 0) {
+                        this->bonusMultiplier++;
+                    }
                 }
             }
             break;
@@ -121,47 +130,49 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
 {
     int entryId = g_ftManager->getEntryIdFromTaskId(*taskId, NULL);
     if (entryId >= 0) {
-        stKingOfTheHillData* stageData = (stKingOfTheHillData*)this->getStageData();
+        stKingOfTheHillData* stageData = static_cast<stKingOfTheHillData*>(this->getStageData());
 
-        if (int(this->consecutiveFramesCaptured) % 30 == 0) {
-            if (this->gameRule == Game_Rule_Coin) {
-                g_ftManager->pickupCoin(entryId, 1);
-                this->startGimmickSE(0);
-            } else {
-                g_ftManager->setHeal(entryId, stageData->healAmount);
-            }
-        }
-        this->numCaptures++;
-        if (this->state == State_Appear) {
-            this->stage->zoomInCamera();
-            if (this->collisionMode == CollisionMode_On || this->collisionMode == CollisionMode_CaptureOnly) {
-                this->setEnableCollisionStatus(true);
-            }
-        }
-        else if (this->state == State_On) {
-            if (this->collisionMode == CollisionMode_CaptureOnly) {
-                this->setEnableCollisionStatus(true);
-            }
-        }
-
-        if (this->state != State_Disappear) {
-            if (this->targetNumCaptures > 0 && this->numCaptures >= this->targetNumCaptures) {
-                this->state = State_Disappear;
-                this->setMotionDetails(0, 0, 0, 0, State_Disappear);
-            }
-            if (this->stayCapturedTimer <= 0.0) {
-                this->state = State_In;
-                this->setMotionDetails(0, 0, 0, 0, State_In);
-            }
-            else if (this->state == State_In){
-                if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
-                    this->state = State_Capturing;
-                    this->setMotionDetails(0, 0, 0, 0, State_Capturing);
+        Fighter* fighter = g_ftManager->getFighter(entryId, 0);
+        if (!stageData->disableCapturesDuringShielding || fighter->m_moduleAccesser->getStatusModule()->getStatusKind() != ftStatus::Shield) {
+            if (this->consecutiveFramesCaptured >= stageData->consecutiveFramesBeforeStartReward && int(this->consecutiveFramesCaptured) % stageData->rewardRate == 0) {
+                if (this->gameRule == Game_Rule_Coin) {
+                    g_ftManager->pickupCoin(entryId, 1*this->bonusMultiplier);
+                    this->startGimmickSE(0);
+                } else {
+                    g_ftManager->setHeal(entryId, stageData->healAmount*this->bonusMultiplier);
                 }
             }
-        }
+            this->numCaptures++;
+            if (this->state == State_Appear) {
+                this->stage->zoomInCamera();
+                if (this->collisionMode == CollisionMode_On || this->collisionMode == CollisionMode_CaptureOnly) {
+                    this->setEnableCollisionStatus(true);
+                }
+            }
+            else if (this->state == State_On) {
+                if (this->collisionMode == CollisionMode_CaptureOnly) {
+                    this->setEnableCollisionStatus(true);
+                }
+            }
 
-        this->stayCapturedTimer = 2.0;
+            if (this->state != State_Disappear) {
+                if (this->targetNumCaptures > 0 && this->numCaptures >= this->targetNumCaptures) {
+                    this->state = State_Disappear;
+                    this->setMotionDetails(0, 0, 0, 0, State_Disappear);
+                }
+                if (this->stayCapturedTimer <= 0.0) {
+                    this->state = State_In;
+                    this->setMotionDetails(0, 0, 0, 0, State_In);
+                }
+                else if (this->state == State_In){
+                    if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
+                        this->state = State_Capturing;
+                        this->setMotionDetails(0, 0, 0, 0, State_Capturing);
+                    }
+                }
+            }
+            this->stayCapturedTimer = stageData->framesBeforeStopCapture;
+        }
     }
 }
 
@@ -174,7 +185,7 @@ void grCapturePoint::setGameRule(GameRule gameRule) {
 }
 
 void grCapturePoint::setNewCapturePosition() {
-    stKingOfTheHillData* stageData = (stKingOfTheHillData*)this->getStageData();
+    stKingOfTheHillData* stageData = static_cast<stKingOfTheHillData*>(this->getStageData());
     u32 capturePointsIndex = this->capturePointPositions->getNodeIndex(0, "CapturePoints");
     u32 endIndex = this->capturePointPositions->getNodeIndex(0, "End");
     u32 nodeIndex;
@@ -247,16 +258,18 @@ void grCapturePoint::setNewCapturePosition() {
         }
     }
 
-    this->targetNumCaptures = randf()*(stageData->maxCaptures - stageData->minCaptures) + stageData->minCaptures;
+    this->targetNumCaptures = randf()*(stageData->maxCapturesBeforeRelocate - stageData->minCapturesBeforeRelocate) + stageData->minCapturesBeforeRelocate;
     this->numCaptures = 0;
     this->stayCapturedTimer = 0.0;
+    this->consecutiveFramesCaptured = 0;
+    this->bonusMultiplier = 1;
     this->enableArea();
     this->state = State_Appear;
     this->setMotionDetails(0, 0, 0, 0, State_Appear);
     stRange range;
 
-    // TODO: STDT disable camera zoom option
-    this->stage->m_stagePositions->getCameraRange(&range);
+    if (!stageData->disableCameraZoom) {
+        this->stage->m_stagePositions->getCameraRange(&range);
+    }
     this->stage->zoomOutCamera((range.m_right - range.m_left)*2,(range.m_top - range.m_bottom)*2);
 }
-
