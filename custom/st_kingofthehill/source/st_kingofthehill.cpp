@@ -107,6 +107,18 @@ void stKingOfTheHill::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec
     }
 }
 
+void stKingOfTheHill::createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, int motionPathIndex, bool isAutoFire) {
+
+    grAdventureBarrelCannon* cannon = grAdventureBarrelCannon::create(mdlIndex, BarrelCannon_GimmickKind_Static, "grAdventureBarrelCannon");
+    if (cannon != NULL)
+    {
+        addGround(cannon);
+        cannon->setStageData(m_stageData);
+        cannon->prepareCannonData(pos, rot, rotSpeed, motionPathIndex, isAutoFire);
+        cannon->startup(m_fileData, 0, 0);
+    }
+}
+
 // TODO: Hazards, Springs, Conveyors from Target Smash
 
 void stKingOfTheHill::update(float frameDelta){

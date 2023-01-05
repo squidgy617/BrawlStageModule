@@ -3,7 +3,6 @@
 #include <memory.h>
 #include <mt/mt_prng.h>
 #include <OS/OSError.h>
-#include "st_kingofthehill_data.h"
 
 grCapturePoint* grCapturePoint::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage)
 {
@@ -82,10 +81,11 @@ void grCapturePoint::update(float deltaFrame)
                 if (this->stayCapturedTimer <= 0.0) {
                     this->consecutiveFramesCaptured = 0;
                     this->bonusMultiplier = 1;
+                    this->applyMotionRate(1.0);
                 }
                 else {
                     this->consecutiveFramesCaptured += deltaFrame;
-                    if (stageData->consecutiveFramesBeforeBonus > 0 && int(this->consecutiveFramesCaptured) % stageData->consecutiveFramesBeforeBonus == 0) {
+                    if (stageData->consecutiveFramesBeforeBonus > 0 && int(this->consecutiveFramesCaptured) % stageData->consecutiveFramesBeforeBonus == 0 && this->bonusMultiplier <= 5) {
                         this->bonusMultiplier++;
                     }
                 }
@@ -114,10 +114,11 @@ void grCapturePoint::update(float deltaFrame)
                     this->setMotionDetails(0, 0, 0, 0, State_Out);
                     this->consecutiveFramesCaptured = 0;
                     this->bonusMultiplier = 1;
+                    this->applyMotionRate(1.0);
                 }
                 else {
                     this->consecutiveFramesCaptured += deltaFrame;
-                    if (int(this->consecutiveFramesCaptured) % stageData->consecutiveFramesBeforeBonus == 0) {
+                    if (stageData->consecutiveFramesBeforeBonus > 0 && int(this->consecutiveFramesCaptured) % stageData->consecutiveFramesBeforeBonus == 0 && this->bonusMultiplier <= 5) {
                         this->bonusMultiplier++;
                     }
                 }
@@ -134,6 +135,7 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
 
         Fighter* fighter = g_ftManager->getFighter(entryId, 0);
         if (!stageData->disableCapturesDuringShielding || fighter->m_moduleAccesser->getStatusModule()->getStatusKind() != ftStatus::Shield) {
+            this->applyMotionRate(stageData->bonusMotionSpeedMultipliers[this->bonusMultiplier - 1]);
             if (this->consecutiveFramesCaptured >= stageData->consecutiveFramesBeforeStartReward && int(this->consecutiveFramesCaptured) % stageData->rewardRate == 0) {
                 if (this->gameRule == Game_Rule_Coin) {
                     g_ftManager->pickupCoin(entryId, 1*this->bonusMultiplier);
@@ -237,6 +239,7 @@ void grCapturePoint::setNewCapturePosition() {
         this->m_gimmickMotionPath = NULL;
     }
 
+    this->applyMotionRate(1.0);
     if (this->syncedGround != NULL && this->syncedGroundExitAnim >= 0) {
         this->syncedGround->setMotion(this->syncedGroundExitAnim);
     }
@@ -272,4 +275,13 @@ void grCapturePoint::setNewCapturePosition() {
         this->stage->m_stagePositions->getCameraRange(&range);
     }
     this->stage->zoomOutCamera((range.m_right - range.m_left)*2,(range.m_top - range.m_bottom)*2);
+}
+
+void grCapturePoint::applyMotionRate(float motionRate) {
+    if (this->m_gimmickMotionPath != NULL) {
+        this->m_gimmickMotionPath->setFrameUpdate(motionRate);
+    }
+    if (this->syncedGround != NULL) {
+        this->syncedGround->setMotionRatio(motionRate);
+    }
 }

@@ -3,7 +3,7 @@
 #include <gr/gr_madein.h>
 #include <ft/ft_manager.h>
 #include <st/st_melee.h>
-
+#include "st_kingofthehill_data.h"
 
 class grCapturePoint : public grMadein {
 protected:
@@ -61,6 +61,7 @@ public:
     virtual void setCapturePointPositions(Ground* capturePointPositions);
     virtual void setGameRule(GameRule gameRule);
     virtual void setNewCapturePosition();
+    virtual void applyMotionRate(float motionRate);
 
     static grCapturePoint* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
 };

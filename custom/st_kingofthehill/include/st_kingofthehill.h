@@ -7,6 +7,7 @@
 #include "gr_final.h"
 #include "gr_capturepoint.h"
 #include "gr_platform.h"
+#include "gr_barrel_cannon.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -64,5 +65,6 @@ class stKingOfTheHill : public stMelee {
 
         virtual Ground* createObjGround(int mdlIndex);
         virtual void createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, GameRule gameRule);
+        void createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, int motionPathIndex, bool isAutoFire);
         virtual void createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec3f* scale, int motionPathIndex, int collIndex);
 };
