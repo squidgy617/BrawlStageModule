@@ -16,7 +16,7 @@ grAdventureBarrelCannon* grAdventureBarrelCannon::create(int mdlIndex, BarrelCan
 }
 
 void grAdventureBarrelCannon::prepareCannonData(Vec2f* pos, float rot, float rotSpeed, int motionPathIndex, bool isAutoFire) {
-    stKingOfTheHillData* stageData = (stKingOfTheHillData*)this->getStageData();
+    stKingOfTheHillData* stageData = static_cast<stKingOfTheHillData*>(this->getStageData());
 
     this->_cannonData.motionPathData.m_motionRatio = 1.0;
     this->_cannonData.motionPathData.m_index = 0;

@@ -56,6 +56,9 @@ void stKingOfTheHill::createObj() {
     registSceneAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
+
+    stKingOfTheHillData* stageData = static_cast<stKingOfTheHillData*>(this->m_stageData);
+    this->setStageAttackData(&stageData->damageFloor, 0);
 }
 
 Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
