@@ -15,7 +15,7 @@ grAdventureBarrelCannon* grAdventureBarrelCannon::create(int mdlIndex, BarrelCan
     return cannon;
 }
 
-void grAdventureBarrelCannon::prepareCannonData(Vec2f* pos, float rot, float rotSpeed, int motionPathIndex, bool isAutoFire) {
+void grAdventureBarrelCannon::prepareCannonData(Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, bool isAutoFire) {
     stKingOfTheHillData* stageData = static_cast<stKingOfTheHillData*>(this->getStageData());
 
     this->_cannonData.motionPathData.m_motionRatio = 1.0;
@@ -26,12 +26,11 @@ void grAdventureBarrelCannon::prepareCannonData(Vec2f* pos, float rot, float rot
     this->_cannonData._spacer[7] = 0x12;
     this->_cannonData.pos = *pos;
     this->_cannonData.rot = rot;
-    this->_cannonData.maxRot = 62.0;
+    this->_cannonData.maxRot = maxRot;
     this->_cannonData.maxFrames = 0;
-    this->_cannonData.maxFireRot = 0;
     this->_cannonData.isAutoFire = isAutoFire;
-    this->_cannonData.fullRotate = false;
-    this->_cannonData.alwaysRotate = false;
+    this->_cannonData.fullRotate = fullRotate;
+    this->_cannonData.alwaysRotate = alwaysRotate;
     this->_cannonData.field_0xce = 0x8;
     this->_cannonData.enterCannonTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
     this->_cannonData.motionPathTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
@@ -215,8 +214,7 @@ void grAdventureBarrelCannon::processFixPosition() {
                     break;
                 case BarrelCannon_PlayerState_Set:
                     rot = this->getRot();
-                    if (hkMath::fabs(rot.m_z - this->cannonData->maxFireRot) < this->rotThreshold
-                        && (this->kind == BarrelCannon_GimmickKind_StaticAuto || this->kind == BarrelCannon_GimmickKind_PathAuto)) {
+                    if (this->kind == BarrelCannon_GimmickKind_StaticAuto || this->kind == BarrelCannon_GimmickKind_PathAuto) {
                         this->cannonPlayerInfos[i].state = BarrelCannon_PlayerState_Fire;
                         if (this->cannonState == BarrelCannon_State_Rest) {
                             this->changeNodeAnim(1, 0);

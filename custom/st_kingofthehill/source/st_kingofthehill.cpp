@@ -94,8 +94,12 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
         }
         for (int i = cannonsIndex + 1; i < capturePointsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            u32 rotateFlags = resNodeData->m_scale.m_y;
+            bool alwaysRotate = rotateFlags & 1;
+            bool fullRotate = rotateFlags & 2;
             this->createObjCannon(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
-                                    resNodeData->m_rotation.m_z, resNodeData->m_rotation.m_y, resNodeData->m_translation.m_z, false);
+                                    resNodeData->m_rotation.m_z, resNodeData->m_rotation.m_y, resNodeData->m_scale.m_z,
+                                    resNodeData->m_translation.m_z, alwaysRotate, fullRotate, resNodeData->m_scale.m_x);
         }
     }
     return ground;
@@ -161,19 +165,19 @@ void stKingOfTheHill::createTriggerConveyor(Vec3f* posSW, Vec3f* posNE, float sp
 }
 
 
-void stKingOfTheHill::createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, int motionPathIndex, bool isAutoFire) {
+void stKingOfTheHill::createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, bool isAutoFire) {
 
     grAdventureBarrelCannon* cannon = grAdventureBarrelCannon::create(mdlIndex, BarrelCannon_GimmickKind_Static, "grAdventureBarrelCannon");
     if (cannon != NULL)
     {
         addGround(cannon);
         cannon->setStageData(m_stageData);
-        cannon->prepareCannonData(pos, rot, rotSpeed, motionPathIndex, isAutoFire);
+        cannon->prepareCannonData(pos, rot, rotSpeed, maxRot, motionPathIndex, alwaysRotate, fullRotate, isAutoFire);
         cannon->startup(m_fileData, 0, 0);
     }
 }
 
-// TODO: Hazards, Springs, Conveyors from Target Smash
+// TODO: Ladders, Breakable regen blocks, water? Falling blocks?
 
 void stKingOfTheHill::update(float frameDelta){
 

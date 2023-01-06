@@ -68,6 +68,6 @@ class stKingOfTheHill : public stMelee {
         virtual void createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, GameRule gameRule);
         void createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, float rot, Vec2f* range, float bounce, int motionPathIndex);
         void createTriggerConveyor(Vec3f* posSW, Vec3f* posNE, float speed, bool isRightDirection);
-        void createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, int motionPathIndex, bool isAutoFire);
+        void createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, bool isAutoFire);
         virtual void createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec3f* scale, int motionPathIndex, int collIndex);
 };

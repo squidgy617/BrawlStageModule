@@ -28,7 +28,6 @@ struct grGimmickBarrelCannonData {
     float rot;
     float maxRot;
     u32 maxFrames;
-    float maxFireRot;
     Vec2f cameraOffset;
     bool isAutoFire;
     bool fullRotate;
@@ -135,6 +134,6 @@ public:
     void presentShootEvent(int playerCannonIndex);
     void eraseSendID(int sendID);
 
-    void prepareCannonData(Vec2f* pos, float rot, float rotSpeed, int motionPathIndex, bool isAutoFire);
+    void prepareCannonData(Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, bool isAutoFire);
 
 };
