@@ -70,12 +70,32 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
         ground->setStageData(m_stageData);
         ground->setDontMoveGround();
         u32 platformsIndex = ground->getNodeIndex(0, "Platforms");
+        u32 springsIndex = ground->getNodeIndex(0, "Springs");
+        u32 conveyorsIndex = ground->getNodeIndex(0, "Conveyors");
+        u32 cannonsIndex = ground->getNodeIndex(0, "Cannons");
         u32 capturePointsIndex = ground->getNodeIndex(0, "CapturePoints");
-        for (int i = platformsIndex + 1; i < capturePointsIndex; i++) {
+        for (int i = platformsIndex + 1; i < springsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             this->createObjPlatform(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                                     resNodeData->m_rotation.m_z, &resNodeData->m_scale, resNodeData->m_translation.m_z,
                                     resNodeData->m_rotation.m_y);
+        }
+        for (int i = springsIndex + 1; i < conveyorsIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjSpring(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y, &resNodeData->m_translation.m_xy,
+                                  resNodeData->m_rotation.m_z, &resNodeData->m_scale.m_xy, resNodeData->m_scale.m_z,
+                                  resNodeData->m_translation.m_z);
+        }
+        for (int i = conveyorsIndex + 1; i < cannonsIndex; i += 2) {
+            nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
+            this->createTriggerConveyor(&resNodeDataSW->m_translation, &resNodeDataNE->m_translation,
+                                        resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y);
+        }
+        for (int i = cannonsIndex + 1; i < capturePointsIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjCannon(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                                    resNodeData->m_rotation.m_z, resNodeData->m_rotation.m_y, resNodeData->m_translation.m_z, false);
         }
     }
     return ground;
@@ -109,6 +129,37 @@ void stKingOfTheHill::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec
         createCollision(m_fileData, collIndex, platform);
     }
 }
+
+void stKingOfTheHill::createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, float rot, Vec2f* range, float bounce, int motionPathIndex) {
+    grSpring* spring = grSpring::create(mdlIndex, "grSpring");
+    if (spring != NULL) {
+        grGimmickSpringData springData;
+        __memfill(&springData, 0, sizeof(springData));
+        springData.m_motionPathData.m_mdlIndex = -1;
+        addGround(spring);
+        springData.m_pos = *pos;
+        springData.m_rot = rot;
+        springData.m_areaRange = *range;
+        springData.m_bounce = bounce;
+        spring->setMotionPathData(motionPathIndex);
+        spring->setGimmickData(&springData); // Note: gimmickData will only apply in next function since was allocated on the stack
+        spring->startup(this->m_fileData,0,0);
+        this->createGimmickCollision(collIndex, spring, this->m_fileData);
+    }
+}
+
+void stKingOfTheHill::createTriggerConveyor(Vec3f* posSW, Vec3f* posNE, float speed, bool isRightDirection) {
+    SquareBeltConveyorGimmickAreaData beltConveyorAreaData;
+    __memfill(&beltConveyorAreaData, 0, sizeof(SquareBeltConveyorGimmickAreaData));
+    beltConveyorAreaData.m_conveyorPos = (*posSW + *posNE) * 0.5;
+    beltConveyorAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
+    beltConveyorAreaData.m_speed = speed;
+    beltConveyorAreaData.m_isRightDirection = isRightDirection;
+
+    stTrigger* trigger = g_stTriggerMng->createTrigger(GimmickKind_BeltConveyor,-1);
+    trigger->setBeltConveyorTrigger(&beltConveyorAreaData);
+}
+
 
 void stKingOfTheHill::createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, int motionPathIndex, bool isAutoFire) {
 

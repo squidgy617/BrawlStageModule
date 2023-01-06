@@ -26,7 +26,7 @@ void grAdventureBarrelCannon::prepareCannonData(Vec2f* pos, float rot, float rot
     this->_cannonData._spacer[7] = 0x12;
     this->_cannonData.pos = *pos;
     this->_cannonData.rot = rot;
-    this->_cannonData.maxRot = 360.0;
+    this->_cannonData.maxRot = 62.0;
     this->_cannonData.maxFrames = 0;
     this->_cannonData.maxFireRot = 0;
     this->_cannonData.isAutoFire = isAutoFire;
@@ -92,7 +92,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->cannonData->field_0xce = 8;
 
     grGimmickMotionPathInfo motionPathInfo = { archive, &this->cannonData->motionPathData, 0x01000000, 0, 0, 0, 0, 0, 0 };
-    this->createAttachMotionPath(&motionPathInfo, &this->cannonData->motionPathTriggerData, "path_locator");
+    this->createAttachMotionPath(&motionPathInfo, &this->cannonData->motionPathTriggerData, "MoveNode");
     nw4r::g3d::CHR0* anmChr = this->m_resFile.GetResAnmChr(0);
     if (anmChr != NULL) {
         this->animSetLength = anmChr->m_animLength;
