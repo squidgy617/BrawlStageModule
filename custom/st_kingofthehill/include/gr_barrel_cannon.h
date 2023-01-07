@@ -6,7 +6,7 @@
 #include <snd/snd_system.h>
 #include "st_kingofthehill_data.h"
 
-#define NUM_PLAYERS 8
+#define NUM_PLAYERS 7
 
 enum BarrelCannonGimmickKind {
     BarrelCannon_GimmickKind_Static = 0x0,
