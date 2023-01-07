@@ -102,8 +102,13 @@ void grQbertCube::setTeam(u8 teamId, bool incrementScore) {
                 this->soundGenerator.playSE(snd_se_stage_Madein_10, 0x0, 0x0, 0xffffffff);
                 if (teamId - 1 < NUM_PLAYERS && incrementScore) {
                     this->teamScoresWork[teamId - 1] += CUBE_POINTS;
-                    if (this->gameRule == Game_Rule_Coin && this->lastLanderEntryIdForTeamCube[teamId] > -1) {
-                        g_ftManager->pickupCoin(this->lastLanderEntryIdForTeamCube[teamId], CUBE_POINTS);
+                    if (this->gameRule == Game_Rule_Coin) {
+                        if (this->lastLanderEntryIdForTeamCube[teamId] > -1) {
+                            g_ftManager->pickupCoin(this->lastLanderEntryIdForTeamCube[teamId], CUBE_POINTS);
+                        }
+                        else if (this->lastLanderEntryIdForTeamWork[teamId] > -1) {
+                            g_ftManager->pickupCoin(this->lastLanderEntryIdForTeamWork[teamId], CUBE_POINTS);
+                        }
                     }
                 }
             }
