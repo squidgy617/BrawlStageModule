@@ -4,6 +4,7 @@
 #include "gr_qbert_cube.h"
 #include <mt/mt_prng.h>
 #include <OS/OSError.h>
+#include <ft/ft_manager.h>
 
 grQbertCube* grQbertCube::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grQbertCube* ground = new(Heaps::StageInstance) grQbertCube(taskName);
@@ -38,7 +39,15 @@ void grQbertCube::update(float frameDelta){
 void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
     if (this->timer <= 0) {
         gfTask* stageObject = gfTask::getTask(collStatus->m_taskId);
-        int teamNumber = soExternalValueAccesser::getTeamNo((StageObject*)stageObject);
+        int teamNumber = soExternalValueAccesser::getTeamNo(static_cast<StageObject*>(stageObject));
+        int unk = 1;
+        int entryId = -1;
+        if (this->isCollisionStatusOwnerTask(collStatus, &unk)) {
+            entryId = g_ftManager->getEntryIdFromTaskId(collStatus->m_taskId, NULL);
+            if (entryId > -1) {
+                teamNumber = g_ftManager->getTeam(entryId, false, false);
+            }
+        }
         if (teamNumber >= 0 && teamNumber < NUM_TEAMS - 1) {
             teamNumber++;
         }
@@ -46,6 +55,10 @@ void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJo
             teamNumber = DEFAULT_TEAM_ID;
         }
         this->numMembersOnTeamLanded[teamNumber]++;
+        if (entryId > -1) {
+            this->lastLanderEntryIdForTeamCube[teamNumber] = entryId;
+            this->lastLanderEntryIdForTeamWork[teamNumber] = entryId;
+        }
     }
 }
 
@@ -67,6 +80,10 @@ void grQbertCube::setNumBlocksPerTeamWork(u8* numBlocksPerTeam) {
     this->numBlocksPerTeam = numBlocksPerTeam;
 }
 
+void grQbertCube::setLastLanderEntryIdForTeamWork(int* lastLanderEntryIdForTeamWork) {
+    this->lastLanderEntryIdForTeamWork = lastLanderEntryIdForTeamWork;
+}
+
 u8 grQbertCube::getTeam() {
     return this->teamId;
 }
@@ -85,6 +102,9 @@ void grQbertCube::setTeam(u8 teamId, bool incrementScore) {
                 this->soundGenerator.playSE(snd_se_stage_Madein_10, 0x0, 0x0, 0xffffffff);
                 if (teamId - 1 < NUM_PLAYERS && incrementScore) {
                     this->teamScoresWork[teamId - 1] += CUBE_POINTS;
+                    if (this->gameRule == Game_Rule_Coin && this->lastLanderEntryIdForTeamCube[teamId] > -1) {
+                        g_ftManager->pickupCoin(this->lastLanderEntryIdForTeamCube[teamId], CUBE_POINTS);
+                    }
                 }
             }
         }
@@ -92,8 +112,9 @@ void grQbertCube::setTeam(u8 teamId, bool incrementScore) {
     }
 };
 
-void grQbertCube::setTeamScoresWork(u32* teamScoresWork) {
+void grQbertCube::setTeamScoresWork(u32* teamScoresWork, GameRule gameRule) {
     this->teamScoresWork = teamScoresWork;
+    this->gameRule = gameRule;
 }
 
 void grQbertCube::setWin() {
@@ -102,4 +123,3 @@ void grQbertCube::setWin() {
     stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     this->timer = qbertStageData->winFrames;
 }
-

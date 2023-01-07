@@ -12,13 +12,13 @@ class grQbertCoily : public grQbertEnemy
     protected:
         grQbertAlien* enemyTarget;
         float damage;
+        int attackerEntryId;
         bool isHatched;
-        u8 teamId;
     public:
         grQbertCoily(char* taskName) : grQbertEnemy(taskName) {
             isHatched = false;
             damage = 0;
-            teamId = 0;
+            attackerEntryId = -1;
         };
         virtual void onInflictEach(soCollisionLog* collisionLog, float power);
         virtual void onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo);

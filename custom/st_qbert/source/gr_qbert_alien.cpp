@@ -10,6 +10,7 @@
 #include <if/if_mngr.h>
 #include <snd/snd_system.h>
 #include <mt/mt_prng.h>
+#include <ft/ft_manager.h>
 
 grQbertAlien* grQbertAlien::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage){
     grQbertAlien* alien = new(Heaps::StageInstance) grQbertAlien(taskName);
@@ -216,6 +217,10 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
         else {
             this->setTeam(DEFAULT_TEAM_ID);
         }
+        if (attackerInfo->m_indirectAttackerSoKind == SoKind_Fighter) {
+            this->setTeam(g_ftManager->getTeam(attackerInfo->m_indirectAttackerEntryId, false, false) + 1);
+        }
+
         this->lives--;
         this->angle = damage->vector;
         if (damage->side == -1) {

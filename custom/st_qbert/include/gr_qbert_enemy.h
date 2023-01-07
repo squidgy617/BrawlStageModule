@@ -2,6 +2,7 @@
 
 #include <st/st_melee.h>
 #include <gr/gr_madein.h>
+#include <gm/gm_global.h>
 #include "gr_qbert_cube.h"
 #include "st_qbert_stage_data.h"
 
@@ -23,6 +24,7 @@ protected:
     bool isStart;
     float immobilizeTimer;
     u32* teamScoresWork;
+    GameRule gameRule;
 public:
     Vec3f prevPos;
     Vec3f targetPos;
@@ -46,7 +48,7 @@ public:
     virtual void setupHitPoint() {};
     virtual void setStartPos() {};
     virtual void setTargetPos() {};
-    virtual void setTeamScoresWork(u32* teamScoresWork);
+    virtual void setTeamScoresWork(u32* teamScoresWork, GameRule gamerule);
     virtual void setStart();
     virtual void setAnim();
     virtual void updateMove(float frameDelta) {};
