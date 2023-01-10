@@ -45,37 +45,39 @@ void grLunarHorizonColour::update(float deltaFrame)
 
 void grLunarHorizonColour::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(this->getStageData());
-    if (this->turnOffTimer <= 0) {
-        this->setMotion(1);
-        this->startGimmickSE(0);
+
+    if (g_Gravity->up < stageData->maxGravityUp && g_Gravity->up > stageData->minGravityUp && g_Gravity->down < stageData->maxGravityDown && g_Gravity->down > stageData->minGravityDown) {
+        if (this->turnOffTimer <= 0) {
+            this->setMotion(1);
+            this->startGimmickSE(0);
+        }
+
+        if (int(this->consecutiveFrames) % stageData->gravityUpdateFrames) {
+            float gravityUp = g_Gravity->up + this->type*stageData->gravityUpRate;
+            if (gravityUp > stageData->maxGravityUp) {
+                g_Gravity->up = stageData->maxGravityUp;
+            }
+            else if (gravityUp < stageData->minGravityUp) {
+                g_Gravity->up = stageData->minGravityUp;
+            }
+            else {
+                g_Gravity->up = gravityUp;
+            }
+            float gravityDown = g_Gravity->down + this->type*stageData->gravityDownRate;
+            if (gravityDown > stageData->maxGravityDown) {
+                g_Gravity->down = stageData->maxGravityDown;
+            }
+            else if (gravityDown < stageData->minGravityDown) {
+                g_Gravity->down = stageData->minGravityDown;
+            }
+            else {
+                g_Gravity->down = gravityDown;
+            }
+
+            this->consecutiveFrames += 1.0;
+        }
+        this->turnOffTimer = 10.0;
     }
-
-    if (int(this->consecutiveFrames) % stageData->gravityUpdateFrames) {
-        float gravityUp = g_Gravity->up + this->type*stageData->gravityUpRate;
-        if (gravityUp > stageData->maxGravityUp) {
-            g_Gravity->up = stageData->maxGravityUp;
-        }
-        else if (gravityUp < stageData->minGravityUp) {
-            g_Gravity->up = stageData->minGravityUp;
-        }
-        else {
-            g_Gravity->up = gravityUp;
-        }
-        float gravityDown = g_Gravity->down + this->type*stageData->gravityDownRate;
-        if (gravityDown > stageData->maxGravityDown) {
-            g_Gravity->down = stageData->maxGravityDown;
-        }
-        else if (gravityDown < stageData->minGravityDown) {
-            g_Gravity->down = stageData->minGravityDown;
-        }
-        else {
-            g_Gravity->down = gravityDown;
-        }
-
-        this->consecutiveFrames += 1.0;
-    }
-
-    this->turnOffTimer = 10.0;
 }
 
 void grLunarHorizonColour::setType(int type) {
