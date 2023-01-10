@@ -13,6 +13,23 @@ grLunarHorizonColour* grLunarHorizonColour::create(int mdlIndex, char* tgtNodeNa
     return ground;
 }
 
+void grLunarHorizonColour::startup(gfArchive* data, u32 unk1, u32 unk2) {
+    grMadein::startup(data, unk1, unk2);
+    this->createSoundWork(1,1);
+    if (this->type > 0) {
+        this->m_soundEffects[0].m_id = snd_se_stage_Pictchat_clock;
+    }
+    else {
+        this->m_soundEffects[0].m_id = snd_se_stage_Pictchat_wheel;
+    }
+
+    this->m_soundEffects[0].m_0x10 = 0;
+    this->m_soundEffects[0].m_nodeIndex = 0;
+    this->m_soundEffects[0].m_0x14 = 0;
+    this->m_soundEffects[0].m_0x1c = 0.0;
+    this->m_soundEffects[0].m_0x20 = 0.0;
+}
+
 void grLunarHorizonColour::update(float deltaFrame)
 {
     if (this->turnOffTimer > 0) {
@@ -20,6 +37,7 @@ void grLunarHorizonColour::update(float deltaFrame)
         this->turnOffTimer -= deltaFrame;
         if (this->turnOffTimer <= 0) {
             this->setMotion(0);
+            this->stopGimmickSE(0);
             // TODO: Play stopping sound
         }
     }
@@ -29,7 +47,7 @@ void grLunarHorizonColour::receiveCollMsg_Landing(grCollStatus* collStatus, grCo
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(this->getStageData());
     if (this->turnOffTimer <= 0) {
         this->setMotion(1);
-        // TODO: Play looping sound
+        this->startGimmickSE(0);
     }
 
     if (int(this->consecutiveFrames) % stageData->gravityUpdateFrames) {
@@ -57,7 +75,7 @@ void grLunarHorizonColour::receiveCollMsg_Landing(grCollStatus* collStatus, grCo
         this->consecutiveFrames += 1.0;
     }
 
-    this->turnOffTimer = 10;
+    this->turnOffTimer = 10.0;
 }
 
 void grLunarHorizonColour::setType(int type) {

@@ -14,6 +14,7 @@ public:
         turnOffTimer = 0.0;
         consecutiveFrames = 0.0;
     };
+    virtual void startup(gfArchive* data, u32 unk1, u32 unk2);
     virtual void update(float deltaFrame);
     virtual ~grLunarHorizonColour(){};
     virtual void receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3);

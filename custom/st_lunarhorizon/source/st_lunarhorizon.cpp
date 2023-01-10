@@ -9,6 +9,7 @@
 #include <hk/hk_math.h>
 #include <gm/gm_global.h>
 #include <sc/sc_melee.h>
+#include <gf/gf_3d_scene.h>
 
 static stClassInfoImpl<2, stLunarHorizon> classInfo = stClassInfoImpl<2, stLunarHorizon>();
 
@@ -77,9 +78,9 @@ void stLunarHorizon::createObjBlue(int mdlIndex, int collIndex) {
     if (blue != NULL)
     {
         addGround(blue);
+        blue->setType(-1);
         blue->startup(m_fileData, 0, 0);
         blue->setStageData(m_stageData);
-        blue->setType(-1);
         createCollision(m_fileData, collIndex, blue);
     }
 }
@@ -89,9 +90,9 @@ void stLunarHorizon::createObjRed(int mdlIndex, int collIndex) {
     if (red != NULL)
     {
         addGround(red);
+        red->setType(1);
         red->startup(m_fileData, 0, 0);
         red->setStageData(m_stageData);
-        red->setType(1);
         createCollision(m_fileData, collIndex, red);
     }
 }
@@ -108,7 +109,11 @@ void stLunarHorizon::createObjYellow(int mdlIndex, int collIndex) {
 }
 
 void stLunarHorizon::update(float frameDelta){
+    // TODO: Gradually increment to desired gravity
 
+    stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(m_stageData);
+    float currentFrame = 2000*(g_Gravity->up - stageData->minGravityUp)/(stageData->maxGravityUp - stageData->minGravityUp);
+    g_gfSceneRoot->setCurrentFrame(currentFrame);
 }
 
 void Ground::setStageData(void* stageData) {

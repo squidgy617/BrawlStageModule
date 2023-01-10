@@ -13,23 +13,47 @@ grLunarHorizonYellow* grLunarHorizonYellow::create(int mdlIndex, char* tgtNodeNa
     return ground;
 }
 
+void grLunarHorizonYellow::startup(gfArchive* data, u32 unk1, u32 unk2) {
+    grMadein::startup(data, unk1, unk2);
+    this->createSoundWork(1,1);
+    this->m_soundEffects[0].m_id = snd_se_stage_Pictchat_missile_exp;
+    this->m_soundEffects[0].m_0x10 = 0;
+    this->m_soundEffects[0].m_nodeIndex = 0;
+    this->m_soundEffects[0].m_0x14 = 0;
+    this->m_soundEffects[0].m_0x1c = 0.0;
+    this->m_soundEffects[0].m_0x20 = 0.0;
+}
+
 void grLunarHorizonYellow::update(float deltaFrame)
 {
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(this->getStageData());
-    if (g_Gravity->up >= stageData->maxGravityUpBeforeResetAvailable || g_Gravity->up <= stageData->minGravityUpBeforeResetAvailable) {
-        this->isActive = true;
-        this->setMotion(1);
+    if (this->turnOffTimer > 0) {
+        this->turnOffTimer -= deltaFrame;
     }
+    else {
+        if (g_Gravity->up >= stageData->maxGravityUpBeforeResetAvailable || g_Gravity->up <= stageData->minGravityUpBeforeResetAvailable) {
+            this->isActive = true;
+            this->setMotion(1);
+        }
+    }
+    if (this->isActive && g_Gravity->up < stageData->maxGravityUpBeforeResetAvailable && g_Gravity->up > stageData->minGravityUpBeforeResetAvailable) {
+        this->isActive = false;
+        this->setMotion(0);
+    }
+
+
 }
 
 void grLunarHorizonYellow::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(this->getStageData());
 
     if (this->isActive) {
-        // TODO: Play a sound
         this->isActive = false;
         this->setMotion(0);
+        this->startGimmickSE(0);
         *g_Gravity = stageData->startingGravity;
     }
+
+    this->turnOffTimer = 10.0;
 }
 
