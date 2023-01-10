@@ -57,7 +57,7 @@ void grSpring::setMotionOff() {
     this->m_modelAnims[0]->unbindShapeAnim(this->m_sceneModels[0]);
     this->changeNodeAnim(0,0);
     this->changeShapeAnim(0,0);
-    g_sndSystem->playSE(snd_se_Target_Spring, -1, 0, 0, -1);
+    g_sndSystem->playSE(snd_se_stage_Madein_02, -1, 0, 0, -1);
     this->m_state = State_Off;
     this->m_animFrame = 0.0;
 };

@@ -9,6 +9,7 @@
 #include "gr_platform.h"
 #include "gr_barrel_cannon.h"
 #include "gr_spring.h"
+#include <gr/gr_gimmick_ladder.h>
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -65,9 +66,10 @@ class stKingOfTheHill : public stMelee {
         virtual ~stKingOfTheHill() {this->releaseArchive(); };
 
         virtual Ground* createObjGround(int mdlIndex);
-        virtual void createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, GameRule gameRule);
+        void createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, GameRule gameRule);
         void createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, float rot, Vec2f* range, float bounce, int motionPathIndex);
         void createTriggerConveyor(Vec3f* posSW, Vec3f* posNE, float speed, bool isRightDirection);
         void createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, bool isAutoFire);
-        virtual void createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec3f* scale, int motionPathIndex, int collIndex);
+        void createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex);
+        void createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec3f* scale, int motionPathIndex, int collIndex);
 };

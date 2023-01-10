@@ -73,6 +73,7 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
         u32 springsIndex = ground->getNodeIndex(0, "Springs");
         u32 conveyorsIndex = ground->getNodeIndex(0, "Conveyors");
         u32 cannonsIndex = ground->getNodeIndex(0, "Cannons");
+        u32 laddersIndex = ground->getNodeIndex(0, "Ladders");
         u32 capturePointsIndex = ground->getNodeIndex(0, "CapturePoints");
         for (int i = platformsIndex + 1; i < springsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
@@ -160,8 +161,7 @@ void stKingOfTheHill::createTriggerConveyor(Vec3f* posSW, Vec3f* posNE, float sp
     beltConveyorAreaData.m_speed = speed;
     beltConveyorAreaData.m_isRightDirection = isRightDirection;
 
-    stTrigger* trigger = g_stTriggerMng->createTrigger(GimmickKind_BeltConveyor,-1);
-    trigger->setBeltConveyorTrigger(&beltConveyorAreaData);
+    this->createGimmickBeltConveyor2(&beltConveyorAreaData);
 }
 
 
@@ -175,6 +175,10 @@ void stKingOfTheHill::createObjCannon(int mdlIndex, Vec2f* pos, float rot, float
         cannon->prepareCannonData(pos, rot, rotSpeed, maxRot, motionPathIndex, alwaysRotate, fullRotate, isAutoFire);
         cannon->startup(m_fileData, 0, 0);
     }
+}
+
+void stKingOfTheHill::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex) {
+
 }
 
 // TODO: Ladders, Breakable regen blocks, water? Falling blocks?

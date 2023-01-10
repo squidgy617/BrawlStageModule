@@ -256,7 +256,12 @@ void grCapturePoint::setNewCapturePosition() {
                 this->syncedGroundExitAnim = resNodeData->m_translation.m_y;
             }
             if (this->m_gimmickMotionPath != NULL) {
-                this->m_gimmickMotionPath->setFrame(this->syncedGround->getMotionFrame(0));
+                if (this->syncedGround->m_gimmickMotionPath != NULL) {
+                    this->m_gimmickMotionPath->setFrame(this->syncedGround->m_gimmickMotionPath->getFrame());
+                }
+                else {
+                    this->m_gimmickMotionPath->setFrame(this->syncedGround->getMotionFrame(0));
+                }
             }
         }
     }

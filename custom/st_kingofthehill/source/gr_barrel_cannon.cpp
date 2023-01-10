@@ -142,7 +142,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
         this->m_effects[0].m_0x24 = 1.0;
     }
 
-    this->createSoundWork(3,1);
+    this->createSoundWork(2,1);
     this->m_soundEffects[0].m_id = snd_se_stage_Madein_01;
     this->m_soundEffects[0].m_0x10 = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
@@ -155,12 +155,6 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->m_soundEffects[1].m_0x14 = 0;
     this->m_soundEffects[1].m_0x1c = 0.0;
     this->m_soundEffects[1].m_0x20 = 0.0;
-    this->m_soundEffects[2].m_id = snd_se_stage_Madein_photo;
-    this->m_soundEffects[2].m_0x10 = 0;
-    this->m_soundEffects[2].m_nodeIndex = 0;
-    this->m_soundEffects[2].m_0x14 = 0;
-    this->m_soundEffects[2].m_0x1c = 0.0;
-    this->m_soundEffects[2].m_0x20 = 0.0;
     this->createSimpleEffectData(&simpleEffectData, 0x1030006, "effect_locator");
     u32 visProdIndex = 4;
     this->createEffectVisibleProductionForExcel(&simpleEffectData, &visProdIndex, this->m_visibleProductions);
@@ -402,7 +396,6 @@ void grAdventureBarrelCannon::onGimmickEvent(soGimmickEventInfo* eventInfo, int*
                 this->cannonState = BarrelCannon_State_Set;
             }
             this->startGimmickSE(0);
-            this->startGimmickSE(2);
             cannonEventInfo->m_20 = this->cannonData->field_0xce;
             cannonEventInfo->m_pos = pos;
             break;
