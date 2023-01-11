@@ -16,7 +16,7 @@ const float POKETRAINER_Z = 0.0f;
 
 class stLunarHorizon : public stMelee {
     protected:
-
+        u16 scnAnimLength;
     public:
         stLunarHorizon(int stageID) : stMelee("stLunarHorizon", stageID) {
 
