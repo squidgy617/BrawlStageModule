@@ -31,7 +31,7 @@ void grLunarHorizonYellow::update(float deltaFrame)
         this->turnOffTimer -= deltaFrame;
     }
     else {
-        if (g_Gravity->m_up >= stageData->maxGravityUpBeforeResetAvailable || g_Gravity->m_up <= stageData->minGravityUpBeforeResetAvailable) {
+        if (!this->isActive && (g_Gravity->m_up >= stageData->maxGravityUpBeforeResetAvailable || g_Gravity->m_up <= stageData->minGravityUpBeforeResetAvailable)) {
             this->isActive = true;
             this->setMotion(1);
         }
