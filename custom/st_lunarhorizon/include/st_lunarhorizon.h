@@ -7,6 +7,7 @@
 #include "gr_final.h"
 #include "gr_lunarhorizon_colour.h"
 #include "gr_lunarhorizon_yellow.h"
+#include "gr_lunarhorizon_sun.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -65,4 +66,5 @@ class stLunarHorizon : public stMelee {
         void createObjBlue(int mdlIndex, int collIndex);
         void createObjRed(int mdlIndex, int collIndex);
         void createObjYellow(int mdlIndex, int collIndex);
+        void createObjSun(int mdlIndex);
 };

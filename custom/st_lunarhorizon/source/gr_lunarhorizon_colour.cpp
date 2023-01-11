@@ -46,32 +46,33 @@ void grLunarHorizonColour::update(float deltaFrame)
 void grLunarHorizonColour::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(this->getStageData());
 
-    if (g_Gravity->up < stageData->maxGravityUp && g_Gravity->up > stageData->minGravityUp && g_Gravity->down < stageData->maxGravityDown && g_Gravity->down > stageData->minGravityDown) {
+    if ((this->type > 0 && g_Gravity->m_up < stageData->maxGravityUp && g_Gravity->m_down < stageData->maxGravityDown) ||
+            (this->type < 0 && g_Gravity->m_up > stageData->minGravityUp && g_Gravity->m_down > stageData->minGravityDown)) {
         if (this->turnOffTimer <= 0) {
             this->setMotion(1);
             this->startGimmickSE(0);
         }
 
         if (int(this->consecutiveFrames) % stageData->gravityUpdateFrames) {
-            float gravityUp = g_Gravity->up + this->type*stageData->gravityUpRate;
+            float gravityUp = g_Gravity->m_up + this->type*stageData->gravityUpRate;
             if (gravityUp > stageData->maxGravityUp) {
-                g_Gravity->up = stageData->maxGravityUp;
+                g_Gravity->m_up = stageData->maxGravityUp;
             }
             else if (gravityUp < stageData->minGravityUp) {
-                g_Gravity->up = stageData->minGravityUp;
+                g_Gravity->m_up = stageData->minGravityUp;
             }
             else {
-                g_Gravity->up = gravityUp;
+                g_Gravity->m_up = gravityUp;
             }
-            float gravityDown = g_Gravity->down + this->type*stageData->gravityDownRate;
+            float gravityDown = g_Gravity->m_down + this->type*stageData->gravityDownRate;
             if (gravityDown > stageData->maxGravityDown) {
-                g_Gravity->down = stageData->maxGravityDown;
+                g_Gravity->m_down = stageData->maxGravityDown;
             }
             else if (gravityDown < stageData->minGravityDown) {
-                g_Gravity->down = stageData->minGravityDown;
+                g_Gravity->m_down = stageData->minGravityDown;
             }
             else {
-                g_Gravity->down = gravityDown;
+                g_Gravity->m_down = gravityDown;
             }
 
             this->consecutiveFrames += 1.0;

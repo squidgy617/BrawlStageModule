@@ -39,6 +39,7 @@ void stLunarHorizon::createObj() {
     createObjRed(6, 3);
     createObjBlue(7, 4);
     createObjYellow(8, 5);
+    createObjSun(9);
     createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
@@ -53,7 +54,7 @@ void stLunarHorizon::createObj() {
     }
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 30);
-    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
+    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe));
     registScnAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
@@ -108,11 +109,22 @@ void stLunarHorizon::createObjYellow(int mdlIndex, int collIndex) {
     }
 }
 
+void stLunarHorizon::createObjSun(int mdlIndex) {
+    grLunarHorizonSun* sun = grLunarHorizonSun::create(mdlIndex, "", "grSun");
+    if (sun != NULL)
+    {
+        addGround(sun);
+        sun->startup(m_fileData, 0, 0);
+        sun->setStageData(m_stageData);
+    }
+}
+
 void stLunarHorizon::update(float frameDelta){
     // TODO: Gradually increment to desired gravity
 
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(m_stageData);
-    float currentFrame = 2000*(g_Gravity->up - stageData->minGravityUp)/(stageData->maxGravityUp - stageData->minGravityUp);
+    // TODO: Get 2000 from anmScn
+    float currentFrame = 2000*(g_Gravity->m_up - stageData->minGravityUp)/(stageData->maxGravityUp - stageData->minGravityUp);
     g_gfSceneRoot->setCurrentFrame(currentFrame);
 }
 
