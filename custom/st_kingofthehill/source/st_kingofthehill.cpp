@@ -71,9 +71,10 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
         ground->setDontMoveGround();
         u32 platformsIndex = ground->getNodeIndex(0, "Platforms");
         u32 springsIndex = ground->getNodeIndex(0, "Springs");
-        u32 conveyorsIndex = ground->getNodeIndex(0, "Conveyors");
         u32 cannonsIndex = ground->getNodeIndex(0, "Cannons");
         u32 laddersIndex = ground->getNodeIndex(0, "Ladders");
+        u32 conveyorsIndex = ground->getNodeIndex(0, "Conveyors");
+        u32 watersIndex = ground->getNodeIndex(0, "Waters");
         u32 capturePointsIndex = ground->getNodeIndex(0, "CapturePoints");
         for (int i = platformsIndex + 1; i < springsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
@@ -81,19 +82,13 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
                                     resNodeData->m_rotation.m_z, &resNodeData->m_scale, resNodeData->m_translation.m_z,
                                     resNodeData->m_rotation.m_y);
         }
-        for (int i = springsIndex + 1; i < conveyorsIndex; i++) {
+        for (int i = springsIndex + 1; i < cannonsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             this->createObjSpring(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y, &resNodeData->m_translation.m_xy,
                                   resNodeData->m_rotation.m_z, &resNodeData->m_scale.m_xy, resNodeData->m_scale.m_z,
                                   resNodeData->m_translation.m_z);
         }
-        for (int i = conveyorsIndex + 1; i < cannonsIndex; i += 2) {
-            nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
-            this->createTriggerConveyor(&resNodeDataSW->m_translation, &resNodeDataNE->m_translation,
-                                        resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y);
-        }
-        for (int i = cannonsIndex + 1; i < capturePointsIndex; i++) {
+        for (int i = cannonsIndex + 1; i < laddersIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             u32 rotateFlags = resNodeData->m_scale.m_y;
             bool alwaysRotate = rotateFlags & 1;
@@ -101,6 +96,23 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
             this->createObjCannon(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                                     resNodeData->m_rotation.m_z, resNodeData->m_rotation.m_y, resNodeData->m_scale.m_z,
                                     resNodeData->m_translation.m_z, alwaysRotate, fullRotate, resNodeData->m_scale.m_x);
+        }
+        for (int i = laddersIndex + 1; i < conveyorsIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjLadder(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy, resNodeData->m_translation.m_z,
+                                  resNodeData->m_rotation.m_y, resNodeData->m_rotation.m_z);
+        }
+        for (int i = conveyorsIndex + 1; i < watersIndex; i += 2) {
+            nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
+            this->createTriggerConveyor(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
+                                        resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y);
+        }
+        for (int i = watersIndex + 1; i < capturePointsIndex; i += 2) {
+            nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
+            this->createTriggerWater(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
+                                     resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y);
         }
     }
     return ground;
@@ -153,18 +165,6 @@ void stKingOfTheHill::createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, f
     }
 }
 
-void stKingOfTheHill::createTriggerConveyor(Vec3f* posSW, Vec3f* posNE, float speed, bool isRightDirection) {
-    SquareBeltConveyorGimmickAreaData beltConveyorAreaData;
-    __memfill(&beltConveyorAreaData, 0, sizeof(SquareBeltConveyorGimmickAreaData));
-    beltConveyorAreaData.m_conveyorPos = (*posSW + *posNE) * 0.5;
-    beltConveyorAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
-    beltConveyorAreaData.m_speed = speed;
-    beltConveyorAreaData.m_isRightDirection = isRightDirection;
-
-    this->createGimmickBeltConveyor2(&beltConveyorAreaData);
-}
-
-
 void stKingOfTheHill::createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, bool isAutoFire) {
 
     grAdventureBarrelCannon* cannon = grAdventureBarrelCannon::create(mdlIndex, BarrelCannon_GimmickKind_Static, "grAdventureBarrelCannon");
@@ -177,11 +177,47 @@ void stKingOfTheHill::createObjCannon(int mdlIndex, Vec2f* pos, float rot, float
     }
 }
 
-void stKingOfTheHill::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex) {
+void stKingOfTheHill::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex, bool restrictUpExit, bool unk2) {
 
+    grLadder* ladder = grLadder::create(mdlIndex, "grLadder");
+    if (ladder != NULL) {
+        grGimmickLadderData ladderData;
+        __memfill(&ladderData, 0, sizeof(ladderData));
+        ladderData.m_motionPathTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
+        ladderData.m_isValidTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
+        ladderData.m_restrictUpExit = restrictUpExit;
+        ladderData.m_51 = unk2;
+        ladder->setMotionPathData(motionPathIndex);
+        ladder->startupLadder(this->m_fileData,0,0,&ladderData);
+        ladder->setPos(pos->m_x, pos->m_y, 0.0);
+    }
 }
 
-// TODO: Ladders, Breakable regen blocks, water? Falling blocks?
+void stKingOfTheHill::createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed, bool isRightDirection) {
+    SquareBeltConveyorGimmickAreaData beltConveyorAreaData;
+    __memfill(&beltConveyorAreaData, 0, sizeof(SquareBeltConveyorGimmickAreaData));
+    beltConveyorAreaData.m_conveyorPos = (Vec3f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0};
+    beltConveyorAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
+    beltConveyorAreaData.m_speed = speed;
+    beltConveyorAreaData.m_isRightDirection = isRightDirection;
+
+    this->createGimmickBeltConveyor2(&beltConveyorAreaData);
+}
+
+void stKingOfTheHill::createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bool canDrown) {
+    SquareWaterGimmickAreaData waterAreaData;
+    __memfill(&waterAreaData, 0, sizeof(waterAreaData));
+    waterAreaData.m_pos = (Vec2f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y)};
+    waterAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
+    waterAreaData.m_swimHeight = posNE->m_y;
+    waterAreaData.m_canDrown = canDrown;
+    waterAreaData.m_currentSpeed = speed;
+
+    this->createGimmickWaterArea(&waterAreaData);
+}
+
+
+// TODO: Breakable regen blocks, wind, Falling blocks?
 
 void stKingOfTheHill::update(float frameDelta){
 

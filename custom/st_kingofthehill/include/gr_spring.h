@@ -8,7 +8,6 @@ class grSpring : public grGimmickSpring {
     grGimmickMotionPathData motionPathData;
 public:
     grSpring(char* taskName) : grGimmickSpring(taskName) {
-        m_bounce = 5.0;
     }
     virtual ~grSpring() { }
     virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
