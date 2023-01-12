@@ -194,8 +194,8 @@ void stKingOfTheHill::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIn
 }
 
 void stKingOfTheHill::createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed, bool isRightDirection) {
-    SquareBeltConveyorGimmickAreaData beltConveyorAreaData;
-    __memfill(&beltConveyorAreaData, 0, sizeof(SquareBeltConveyorGimmickAreaData));
+    grGimmickBeltConveyorData beltConveyorAreaData;
+    __memfill(&beltConveyorAreaData, 0, sizeof(grGimmickBeltConveyorData));
     beltConveyorAreaData.m_conveyorPos = (Vec3f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0};
     beltConveyorAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
     beltConveyorAreaData.m_speed = speed;
@@ -205,7 +205,7 @@ void stKingOfTheHill::createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float sp
 }
 
 void stKingOfTheHill::createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bool canDrown) {
-    SquareWaterGimmickAreaData waterAreaData;
+    grGimmickWaterData waterAreaData;
     __memfill(&waterAreaData, 0, sizeof(waterAreaData));
     waterAreaData.m_pos = (Vec2f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y)};
     waterAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
