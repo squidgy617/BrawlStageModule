@@ -30,7 +30,7 @@ void grLadder::startupLadder(gfArchive* archive, u32 unk1, u32 unk2, grGimmickLa
     this->m_restrictUpExit = ladderData->m_restrictUpExit;
     this->m_51 = ladderData->m_51;
     grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, 0x01000000, 0, 0, 0, 0, 0, 0 };
-    stTrigger::TriggerData triggerData = (stTrigger::TriggerData){0,0,1,0};
+    stTriggerData triggerData = {0,0,1,0};
     this->createAttachMotionPath(&motionPathInfo, &triggerData, "MoveNode");
 }
 

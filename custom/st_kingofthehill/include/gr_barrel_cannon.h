@@ -34,9 +34,9 @@ struct grGimmickBarrelCannonData {
     bool alwaysRotate;
     char mdlIndex;
     unsigned short field_0xce;
-    stTrigger::TriggerData enterCannonTriggerData;
-    stTrigger::TriggerData motionPathTriggerData;
-    stTrigger::TriggerData isValidTriggerData;
+    stTriggerData enterCannonTriggerData;
+    stTriggerData motionPathTriggerData;
+    stTriggerData isValidTriggerData;
     grYakumono::AttackData attackData;
 };
 

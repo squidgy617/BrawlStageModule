@@ -72,5 +72,6 @@ class stKingOfTheHill : public stMelee {
         void createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex, bool restrictUpExit, bool);
         void createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed, bool isRightDirection);
         void createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bool canDrown);
+        void createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength);
         void createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec3f* scale, int motionPathIndex, int collIndex);
 };

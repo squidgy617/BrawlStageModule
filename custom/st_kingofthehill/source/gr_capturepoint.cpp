@@ -246,7 +246,7 @@ void grCapturePoint::setNewCapturePosition() {
     this->syncedGround = NULL;
     this->syncedGroundExitAnim = -1;
     grGimmickMotionPathInfo motionPathInfo = {this->stage->m_fileData, &this->motionPathData, 0x01000000, 0, 0, 0, 0, 0, 0 };
-    stTrigger::TriggerData triggerData = (stTrigger::TriggerData){0,0,1,0};
+    stTriggerData triggerData = {0,0,1,0};
     this->createAttachMotionPath(&motionPathInfo, &triggerData, "MoveNode");
     if (resNodeData->m_rotation.m_x > 0) {
         this->syncedGround = static_cast<grMadein*>(this->stage->getGround(resNodeData->m_rotation.m_x));

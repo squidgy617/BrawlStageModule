@@ -75,6 +75,7 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
         u32 laddersIndex = ground->getNodeIndex(0, "Ladders");
         u32 conveyorsIndex = ground->getNodeIndex(0, "Conveyors");
         u32 watersIndex = ground->getNodeIndex(0, "Waters");
+        u32 windsIndex = ground->getNodeIndex(0, "Winds");
         u32 capturePointsIndex = ground->getNodeIndex(0, "CapturePoints");
         for (int i = platformsIndex + 1; i < springsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
@@ -108,11 +109,17 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
             this->createTriggerConveyor(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
                                         resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y);
         }
-        for (int i = watersIndex + 1; i < capturePointsIndex; i += 2) {
+        for (int i = watersIndex + 1; i < windsIndex; i += 2) {
             nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
             this->createTriggerWater(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
                                      resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y);
+        }
+        for (int i = windsIndex + 1; i < capturePointsIndex; i += 2) {
+            nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
+            this->createTriggerWind(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
+                                     resNodeDataNE->m_scale.m_x);
         }
     }
     return ground;
@@ -183,8 +190,8 @@ void stKingOfTheHill::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIn
     if (ladder != NULL) {
         grGimmickLadderData ladderData;
         __memfill(&ladderData, 0, sizeof(ladderData));
-        ladderData.m_motionPathTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
-        ladderData.m_isValidTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
+        ladderData.m_motionPathTriggerData = (stTriggerData){ 0, 0, 1, 0 };
+        ladderData.m_isValidTriggerData = (stTriggerData){ 0, 0, 1, 0 };
         ladderData.m_restrictUpExit = restrictUpExit;
         ladderData.m_51 = unk2;
         ladder->setMotionPathData(motionPathIndex);
@@ -214,6 +221,16 @@ void stKingOfTheHill::createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed
     waterAreaData.m_currentSpeed = speed;
 
     this->createGimmickWaterArea(&waterAreaData);
+}
+
+void stKingOfTheHill::createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength) {
+    grGimmickWindData windAreaData;
+    __memfill(&windAreaData, 0, sizeof(windAreaData));
+    windAreaData.m_pos = (Vec2f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y)};
+    windAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
+    windAreaData.m_strength = 1.0;
+
+    this->createGimmickWind2(&windAreaData);
 }
 
 
