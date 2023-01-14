@@ -56,10 +56,18 @@ void grCapturePoint::update(float deltaFrame)
 {
     grMadein::update(deltaFrame);
 
-    if (this->m_gimmickMotionPath == NULL && this->syncedGround != NULL) {
-        Vec3f pos = this->syncedGround->getPos();
-        this->setPos(&pos);
+    if (this->syncedGround != NULL) {
+        if (this->m_gimmickMotionPath == NULL) {
+            Vec3f pos = this->syncedGround->getPos();
+            this->setPos(&pos);
+        }
+        else {
+            if (this->syncedGround->m_gimmickMotionPath != NULL) {
+                this->m_gimmickMotionPath->setFrame(this->syncedGround->m_gimmickMotionPath->getFrame());
+            }
+        }
     }
+
     stKingOfTheHillData* stageData = (stKingOfTheHillData*)this->getStageData();
 
     switch(this->state) {

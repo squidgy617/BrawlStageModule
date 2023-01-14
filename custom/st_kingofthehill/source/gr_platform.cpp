@@ -21,6 +21,59 @@ void grPlatform::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, 0x01000000, 0, 0, 0, 0, 0, 0 };
     stTriggerData triggerData = {0,0,1,0};
     this->createAttachMotionPath(&motionPathInfo, &triggerData, "MovePlatformNode");
+
+    this->createSoundWork(2,1);
+    this->m_soundEffects[0].m_id = snd_se_stage_Madein_05;
+    this->m_soundEffects[0].m_0x10 = 0;
+    this->m_soundEffects[0].m_nodeIndex = 0;
+    this->m_soundEffects[0].m_0x14 = 0;
+    this->m_soundEffects[0].m_0x1c = 0.0;
+    this->m_soundEffects[0].m_0x20 = 0.0;
+
+    this->m_soundEffects[1].m_id = snd_se_stage_Madein_06;
+    this->m_soundEffects[1].m_0x10 = 0;
+    this->m_soundEffects[1].m_nodeIndex = 0;
+    this->m_soundEffects[1].m_0x14 = 0;
+    this->m_soundEffects[1].m_0x1c = 0.0;
+    this->m_soundEffects[1].m_0x20 = 0.0;
+}
+
+void grPlatform::update(float deltaFrame)
+{
+    grMadein::update(deltaFrame);
+
+    if (this->timer > 0) {
+        this->timer -= deltaFrame;
+        if (this->timer <= 0) {
+            this->setMotion(0);
+        }
+    }
+}
+
+void grPlatform::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
+    if (this->timer <= 0 && damage->totalDamage >= this->maxDamage) {
+        damage->totalDamage = 0;
+        this->startGimmickSE(1);
+        if (this->respawnTime > 0) {
+            this->timer = this->respawnTime;
+            this->setMotion(1);
+        }
+        else {
+            this->setMotion(this->isOn);
+            this->isOn = !this->isOn;
+        }
+        if (this->m_gimmickMotionPath != NULL) {
+            if (this->respawnTime < 0) {
+                this->m_gimmickMotionPath->setFrameUpdate(-1.0)
+            }
+            else {
+                this->m_gimmickMotionPath->setFrameUpdate(0);
+            }
+        }
+    }
+    else {
+        this->startGimmickSE(0);
+    }
 }
 
 void grPlatform::setMotionPathData(int mdlIndex) {
@@ -30,3 +83,15 @@ void grPlatform::setMotionPathData(int mdlIndex) {
     this->motionPathData.m_mdlIndex = mdlIndex;
     this->motionPathData._padding = 0x0;
 }
+
+void grPlatform::setupHitPoint(float maxDamage, float respawnTime) {
+    this->maxDamage = maxDamage;
+    this->respawnTime = respawnTime;
+
+    Vec3f startOffsetPos;
+    this->getNodePosition(&startOffsetPos, 0, "HitboxOffsetStart");
+    Vec3f endOffsetPos;
+    this->getNodePosition(&startOffsetPos, 0, "HitboxOffsetEnd");
+    this->setHitPoint(1.0, &startOffsetPos, &endOffsetPos, 1, this->getNodeIndex(0, "HitboxNode"));
+}
+

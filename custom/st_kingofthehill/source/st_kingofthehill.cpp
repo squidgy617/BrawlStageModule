@@ -79,9 +79,21 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
         u32 capturePointsIndex = ground->getNodeIndex(0, "CapturePoints");
         for (int i = platformsIndex + 1; i < springsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            this->createObjPlatform(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
-                                    resNodeData->m_rotation.m_z, &resNodeData->m_scale, resNodeData->m_translation.m_z,
-                                    resNodeData->m_rotation.m_y);
+
+            switch (int(resNodeData->m_scale.m_x)) {
+                case 2:
+                    this->createObjBreak(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                                            resNodeData->m_rotation.m_z, resNodeData->m_translation.m_z,
+                                            resNodeData->m_rotation.m_y, resNodeData->m_scale.m_y,
+                                            resNodeData->m_scale.m_z);
+                    break;
+                default:
+                    this->createObjPlatform(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                                            resNodeData->m_rotation.m_z, resNodeData->m_scale.m_z, resNodeData->m_translation.m_z,
+                                            resNodeData->m_rotation.m_y);
+                    break;
+            }
+
         }
         for (int i = springsIndex + 1; i < cannonsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
@@ -119,7 +131,7 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
             nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
             this->createTriggerWind(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
-                                     resNodeDataNE->m_scale.m_x);
+                                     resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y);
         }
     }
     return ground;
@@ -140,7 +152,7 @@ void stKingOfTheHill::createObjCapturePoint(int mdlIndex, Ground* capturePointPo
     }
 }
 
-void stKingOfTheHill::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec3f* scale, int motionPathIndex, int collIndex) {
+void stKingOfTheHill::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, int collIndex) {
     grPlatform* platform = grPlatform::create(mdlIndex, "", "grPlatform");
     if(platform != NULL){
         addGround(platform);
@@ -148,7 +160,23 @@ void stKingOfTheHill::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec
         platform->setMotionPathData(motionPathIndex);
         platform->startup(this->m_fileData,0,0);
         platform->setPos(pos->m_x, pos->m_y, 0.0);
-        platform->setScale(scale);
+        platform->setScale(scale, scale, scale);
+        platform->setRot(0.0, 0.0, rot);
+        createCollision(m_fileData, collIndex, platform);
+    }
+}
+
+void stKingOfTheHill::createObjBreak(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float maxDamage, float respawnTime) {
+    grPlatform* platform = grPlatform::create(mdlIndex, "", "grBreak");
+    if(platform != NULL){
+        addGround(platform);
+        platform->setStageData(m_stageData);
+        platform->setMotionPathData(motionPathIndex);
+        platform->startup(this->m_fileData,0,0);
+        platform->setupHitPoint(maxDamage, respawnTime);
+        platform->initializeEntity();
+        platform->startEntity();
+        platform->setPos(pos->m_x, pos->m_y, 0.0);
         platform->setRot(0.0, 0.0, rot);
         createCollision(m_fileData, collIndex, platform);
     }
@@ -223,18 +251,19 @@ void stKingOfTheHill::createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed
     this->createGimmickWaterArea(&waterAreaData);
 }
 
-void stKingOfTheHill::createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength) {
+void stKingOfTheHill::createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength, float angle) {
     grGimmickWindData windAreaData;
     __memfill(&windAreaData, 0, sizeof(windAreaData));
-    windAreaData.m_pos = (Vec2f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y)};
+    windAreaData.m_windPos = (Vec3f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0};
     windAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
-    windAreaData.m_strength = 1.0;
+    windAreaData.m_strength = strength;
+    windAreaData.m_angle = angle;
 
     this->createGimmickWind2(&windAreaData);
 }
 
 
-// TODO: Breakable regen blocks, wind, Falling blocks?
+// TODO: Breakable regen blocks, Falling/motion blocks based on landing, elevator -> make all part of 'Platforms', Punch slider?
 
 void stKingOfTheHill::update(float frameDelta){
 

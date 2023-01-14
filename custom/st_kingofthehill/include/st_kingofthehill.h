@@ -67,11 +67,14 @@ class stKingOfTheHill : public stMelee {
 
         virtual Ground* createObjGround(int mdlIndex);
         void createObjCapturePoint(int mdlIndex, Ground* capturePointPositions, GameRule gameRule);
+
+        void createObjPlatform(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, int collIndex);
+        void createObjBreak(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float maxDamage, float respawnTime);
+
         void createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, float rot, Vec2f* range, float bounce, int motionPathIndex);
         void createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, bool isAutoFire);
         void createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex, bool restrictUpExit, bool);
         void createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed, bool isRightDirection);
         void createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bool canDrown);
-        void createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength);
-        void createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec3f* scale, int motionPathIndex, int collIndex);
+        void createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength, float angle);
 };
