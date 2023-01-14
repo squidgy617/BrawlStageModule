@@ -15,7 +15,8 @@ struct stLunarHorizonData {
     float maxGravityDown;
     float minGravityUpBeforeResetAvailable;
     float maxGravityUpBeforeResetAvailable;
+    float cooldownFrames;
 
-    STATIC_CHECK(sizeof(stLunarHorizonData) == 44)
+    STATIC_CHECK(sizeof(stLunarHorizonData) == 48)
 
 };

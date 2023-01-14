@@ -7,7 +7,10 @@ class grLunarHorizonYellow : public grMadein {
 protected:
     float turnOffTimer;
     bool isActive;
+    float* cooldownTimerWork;
+    bool* isResetWork;
 public:
+
     grLunarHorizonYellow(char* taskName) : grMadein(taskName)
     {
         turnOffTimer = 0.0;
@@ -18,6 +21,8 @@ public:
     virtual ~grLunarHorizonYellow(){};
     virtual void receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3);
 
+    virtual void setCooldownWork(float* cooldownTimerWork);
+    virtual void setIsResetWork(bool* isResetWork);
 
     static grLunarHorizonYellow* create(int mdlIndex, char* tgtNodeName, char* taskName);
 };

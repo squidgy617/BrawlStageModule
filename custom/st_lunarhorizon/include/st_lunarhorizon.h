@@ -17,9 +17,14 @@ const float POKETRAINER_Z = 0.0f;
 class stLunarHorizon : public stMelee {
     protected:
         u16 scnAnimLength;
+        bool isReset;
+        int numColourPlatforms;
+        float cooldownTimer;
     public:
         stLunarHorizon(int stageID) : stMelee("stLunarHorizon", stageID) {
-
+            cooldownTimer = 0.0;
+            isReset = false;
+            numColourPlatforms = 0;
         };
         static stLunarHorizon* create();
 
@@ -62,9 +67,9 @@ class stLunarHorizon : public stMelee {
 
         virtual ~stLunarHorizon() {this->releaseArchive(); };
 
+        void createObjBaseGround(int mdlIndex);
         void createObjGround(int mdlIndex);
-        void createObjBlue(int mdlIndex, int collIndex);
-        void createObjRed(int mdlIndex, int collIndex);
-        void createObjYellow(int mdlIndex, int collIndex);
+        void createObjColour(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, int collIndex, int type);
+        void createObjYellow(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, int collIndex);
         void createObjSun(int mdlIndex);
 };

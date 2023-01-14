@@ -32,13 +32,10 @@ void stLunarHorizon::createObj() {
     testStageParamInit(m_fileData, 10);
     testStageDataInit(m_fileData, 20, 1);
 
-    createObjGround(2);
+    createObjBaseGround(2);
     createObjGround(3);
     createObjGround(4);
     createObjGround(5);
-    createObjRed(6, 3);
-    createObjBlue(7, 4);
-    createObjYellow(8, 5);
     createObjSun(9);
     createCollision(m_fileData, 2, NULL);
 
@@ -63,6 +60,38 @@ void stLunarHorizon::createObj() {
 
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(m_stageData);
     *g_Gravity = stageData->startingGravity;
+    this->cooldownTimer = stageData->cooldownFrames;
+}
+
+void stLunarHorizon::createObjBaseGround(int mdlIndex) {
+    grFinal* ground = grFinal::create(mdlIndex, "", "grFinal");
+    if (ground != NULL)
+    {
+        addGround(ground);
+        ground->startup(m_fileData, 0, 0);
+        ground->setStageData(m_stageData);
+        ground->setDontMoveGround();
+
+        u32 coloursIndex = ground->getNodeIndex(0, "Colours");
+        u32 greensIndex = ground->getNodeIndex(0, "Greens");
+        u32 endIndex = ground->getNodeIndex(0, "End");
+
+        for (int i = coloursIndex + 1; i < greensIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjColour(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                                    resNodeData->m_rotation.m_z, resNodeData->m_scale.m_z, resNodeData->m_translation.m_z,
+                                    resNodeData->m_rotation.m_y, resNodeData->m_scale.m_x);
+            this->numColourPlatforms++;
+
+        }
+        for (int i = greensIndex + 1; i < endIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjYellow(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                                    resNodeData->m_rotation.m_z, resNodeData->m_scale.m_z, resNodeData->m_translation.m_z,
+                                    resNodeData->m_rotation.m_y);
+
+        }
+    }
 }
 
 void stLunarHorizon::createObjGround(int mdlIndex) {
@@ -76,37 +105,34 @@ void stLunarHorizon::createObjGround(int mdlIndex) {
     }
 }
 
-void stLunarHorizon::createObjBlue(int mdlIndex, int collIndex) {
-    grLunarHorizonColour* blue = grLunarHorizonColour::create(mdlIndex, "", "grBlue");
-    if (blue != NULL)
+void stLunarHorizon::createObjColour(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, int collIndex, int type) {
+    grLunarHorizonColour* colour = grLunarHorizonColour::create(mdlIndex, "", "grColour");
+    if (colour != NULL)
     {
-        addGround(blue);
-        blue->setType(-1);
-        blue->startup(m_fileData, 0, 0);
-        blue->setStageData(m_stageData);
-        createCollision(m_fileData, collIndex, blue);
+        addGround(colour);
+        colour->setType(type);
+        colour->setCooldownWork(&this->cooldownTimer);
+        colour->startup(m_fileData, 0, 0);
+        colour->setStageData(m_stageData);
+        colour->setPos(pos->m_x, pos->m_y, 0.0);
+        colour->setRot(0, 0, rot);
+        colour->setScale(scale, scale, scale);
+        createCollision(m_fileData, collIndex, colour);
     }
 }
 
-void stLunarHorizon::createObjRed(int mdlIndex, int collIndex) {
-    grLunarHorizonColour* red = grLunarHorizonColour::create(mdlIndex, "", "grRed");
-    if (red != NULL)
-    {
-        addGround(red);
-        red->setType(1);
-        red->startup(m_fileData, 0, 0);
-        red->setStageData(m_stageData);
-        createCollision(m_fileData, collIndex, red);
-    }
-}
-
-void stLunarHorizon::createObjYellow(int mdlIndex, int collIndex) {
+void stLunarHorizon::createObjYellow(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, int collIndex) {
     grLunarHorizonYellow* yellow = grLunarHorizonYellow::create(mdlIndex, "", "grYellow");
     if (yellow != NULL)
     {
         addGround(yellow);
+        yellow->setCooldownWork(&this->cooldownTimer);
+        yellow->setIsResetWork(&this->isReset);
         yellow->startup(m_fileData, 0, 0);
         yellow->setStageData(m_stageData);
+        yellow->setPos(pos->m_x, pos->m_y, 0.0);
+        yellow->setRot(0, 0, rot);
+        yellow->setScale(scale, scale, scale);
         createCollision(m_fileData, collIndex, yellow);
     }
 }
@@ -121,12 +147,22 @@ void stLunarHorizon::createObjSun(int mdlIndex) {
     }
 }
 
-void stLunarHorizon::update(float frameDelta){
-    // TODO: Gradually increment to desired gravity
-
+void stLunarHorizon::update(float deltaFrame){
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(m_stageData);
     float currentFrame = this->scnAnimLength*(g_Gravity->m_up - stageData->minGravityUp)/(stageData->maxGravityUp - stageData->minGravityUp);
     g_gfSceneRoot->setCurrentFrame(currentFrame);
+
+    if (this->cooldownTimer > 0) {
+        this->cooldownTimer -= deltaFrame;
+    }
+
+    if (this->isReset) {
+        this->isReset = false;
+        for (int i = 1; i < numColourPlatforms + 1; i++) {
+            grLunarHorizonColour* colourPlatform = static_cast<grLunarHorizonColour*>(this->getGround(i));
+            colourPlatform->reverseType();
+        }
+    }
 }
 
 void Ground::setStageData(void* stageData) {

@@ -1,0 +1,64 @@
+startingGravityUp
+Default: 1.0
+	/EndDescription
+0
+
+startingGravityDown	
+Default: 1.0
+
+	/EndDescription
+0
+
+gravityUpdateFrames
+Default: 30
+
+	/EndDescription
+1
+
+gravityUpRate
+Default: 0.01
+	/EndDescription
+0
+
+gravityDownRate
+Default: 0.01
+
+	/EndDescription
+0
+
+minGravityUp
+Default: 0.5
+
+	/EndDescription
+0
+
+minGravityDown
+Default: 0.5
+
+	/EndDescription
+0
+
+maxGravityUp
+Default: 1.5
+	/EndDescription
+0
+
+minGravityDown
+Default: 1.5
+	/EndDescription
+0
+
+minGravityUpBeforeResetAvailable
+Default: 0.6
+	/EndDescription
+0
+
+maxGravityUpBeforeResetAvailable
+Default: 1.4
+	/EndDescription
+0
+
+cooldownFrames
+Default: 420
+	/EndDescription
+0
