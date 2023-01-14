@@ -87,6 +87,12 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
                                             resNodeData->m_rotation.m_y, resNodeData->m_scale.m_y,
                                             resNodeData->m_scale.m_z);
                     break;
+                case 3:
+                    this->createObjLand(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                                         resNodeData->m_rotation.m_z, resNodeData->m_translation.m_z,
+                                         resNodeData->m_rotation.m_y, resNodeData->m_scale.m_y,
+                                         resNodeData->m_scale.m_z);
+                    break;
                 default:
                     this->createObjPlatform(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                                             resNodeData->m_rotation.m_z, resNodeData->m_scale.m_z, resNodeData->m_translation.m_z,
@@ -182,6 +188,20 @@ void stKingOfTheHill::createObjBreak(int mdlIndex, Vec2f* pos, float rot, int mo
     }
 }
 
+void stKingOfTheHill::createObjLand(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float maxDamage, float respawnTime) {
+    grPlatform* platform = grPlatform::create(mdlIndex, "", "grPlatform");
+    if(platform != NULL){
+        addGround(platform);
+        platform->setStageData(m_stageData);
+        platform->setMotionPathData(motionPathIndex);
+        platform->startup(this->m_fileData,0,0);
+        platform->setupLanding(maxDamage, respawnTime);
+        platform->setPos(pos->m_x, pos->m_y, 0.0);
+        platform->setRot(0.0, 0.0, rot);
+        createCollision(m_fileData, collIndex, platform);
+    }
+}
+
 void stKingOfTheHill::createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, float rot, Vec2f* range, float bounce, int motionPathIndex) {
     grSpring* spring = grSpring::create(mdlIndex, "grSpring");
     if (spring != NULL) {
@@ -263,7 +283,7 @@ void stKingOfTheHill::createTriggerWind(Vec2f* posSW, Vec2f* posNE, float streng
 }
 
 
-// TODO: Breakable regen blocks, Falling/motion blocks based on landing, elevator -> make all part of 'Platforms', Punch slider?
+// TODO: elevator -> make all part of 'Platforms', Punch slider?
 
 void stKingOfTheHill::update(float frameDelta){
 

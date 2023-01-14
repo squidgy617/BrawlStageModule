@@ -48,23 +48,34 @@ void grPlatform::update(float deltaFrame)
             this->setMotion(0);
         }
     }
+
+    if (this->landTimer > 0) {
+        this->landTimer -= deltaFrame;
+        if (this->landTimer <= 0) {
+            this->consecutiveLandings = 0;
+            this->isLandActivated = false;
+            if (this->respawnFrames <= 0) {
+                this->setMotion(0);
+            }
+            if (this->m_gimmickMotionPath != NULL) {
+                this->m_gimmickMotionPath->setFrameUpdate(1.0);
+            }
+        }
+    }
 }
 
 void grPlatform::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
     if (this->timer <= 0 && damage->totalDamage >= this->maxDamage) {
         damage->totalDamage = 0;
         this->startGimmickSE(1);
-        if (this->respawnTime > 0) {
-            this->timer = this->respawnTime;
+        if (this->respawnFrames > 0) {
+            this->timer = this->respawnFrames;
             this->setMotion(1);
         }
-        else {
-            this->setMotion(this->isOn);
-            this->isOn = !this->isOn;
-        }
+        this->setMotion(1);
         if (this->m_gimmickMotionPath != NULL) {
-            if (this->respawnTime < 0) {
-                this->m_gimmickMotionPath->setFrameUpdate(-1.0)
+            if (this->respawnFrames < 0) {
+                this->m_gimmickMotionPath->setFrameUpdate(-1.0);
             }
             else {
                 this->m_gimmickMotionPath->setFrameUpdate(0);
@@ -76,6 +87,27 @@ void grPlatform::onDamage(int index, soDamage* damage, soDamageAttackerInfo* att
     }
 }
 
+void grPlatform::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
+    this->consecutiveLandings++;
+    this->landTimer = 10.0;
+
+    if (!this->isLandActivated && this->timer <= 0 && this->maxLandings >= 0 && this->consecutiveLandings >= this->maxLandings) {
+        this->isLandActivated = true;
+        if (this->respawnFrames > 0) {
+            this->timer = this->respawnFrames;
+            this->setMotion(1);
+        }
+        if (this->m_gimmickMotionPath != NULL) {
+            if (this->respawnFrames < 0) {
+                this->m_gimmickMotionPath->setFrameUpdate(-1.0);
+            }
+            else {
+                this->m_gimmickMotionPath->setFrameUpdate(0);
+            }
+        }
+    }
+}
+
 void grPlatform::setMotionPathData(int mdlIndex) {
     this->motionPathData.m_motionRatio = 1.0;
     this->motionPathData.m_index = 0;
@@ -84,14 +116,19 @@ void grPlatform::setMotionPathData(int mdlIndex) {
     this->motionPathData._padding = 0x0;
 }
 
-void grPlatform::setupHitPoint(float maxDamage, float respawnTime) {
+void grPlatform::setupHitPoint(float maxDamage, float respawnFrames) {
     this->maxDamage = maxDamage;
-    this->respawnTime = respawnTime;
+    this->respawnFrames = respawnFrames;
 
     Vec3f startOffsetPos;
     this->getNodePosition(&startOffsetPos, 0, "HitboxOffsetStart");
     Vec3f endOffsetPos;
     this->getNodePosition(&startOffsetPos, 0, "HitboxOffsetEnd");
     this->setHitPoint(1.0, &startOffsetPos, &endOffsetPos, 1, this->getNodeIndex(0, "HitboxNode"));
+}
+
+void grPlatform::setupLanding(float maxLandings, float respawnFrame) {
+    this->maxLandings = maxLandings;
+    this->respawnFrames = respawnFrames;
 }
 

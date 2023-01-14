@@ -145,11 +145,16 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
         if (!stageData->disableCapturesDuringShielding || fighter->m_moduleAccesser->getStatusModule()->getStatusKind() != ftStatus::Shield) {
             this->applyMotionRate(stageData->bonusMotionSpeedMultipliers[this->bonusMultiplier - 1]);
             if (this->consecutiveFramesCaptured >= stageData->consecutiveFramesBeforeStartReward && int(this->consecutiveFramesCaptured) % stageData->rewardRate == 0) {
+                int lastChanceMultiplier = 1;
+                if (this->state == State_Disappear) {
+                    lastChanceMultiplier = 2;
+                }
+
                 if (this->gameRule == Game_Rule_Coin) {
-                    g_ftManager->pickupCoin(entryId, 1*this->bonusMultiplier);
+                    g_ftManager->pickupCoin(entryId, lastChanceMultiplier*this->bonusMultiplier);
                     this->startGimmickSE(0);
                 } else {
-                    g_ftManager->setHeal(entryId, stageData->healAmount*this->bonusMultiplier);
+                    g_ftManager->setHeal(entryId, lastChanceMultiplier*stageData->healAmount*this->bonusMultiplier);
                 }
             }
             this->numCaptures++;
