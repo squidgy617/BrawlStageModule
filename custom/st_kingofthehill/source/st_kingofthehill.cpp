@@ -188,14 +188,14 @@ void stKingOfTheHill::createObjBreak(int mdlIndex, Vec2f* pos, float rot, int mo
     }
 }
 
-void stKingOfTheHill::createObjLand(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float maxDamage, float respawnTime) {
+void stKingOfTheHill::createObjLand(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float maxLandings, float respawnTime) {
     grPlatform* platform = grPlatform::create(mdlIndex, "", "grPlatform");
     if(platform != NULL){
         addGround(platform);
         platform->setStageData(m_stageData);
         platform->setMotionPathData(motionPathIndex);
         platform->startup(this->m_fileData,0,0);
-        platform->setupLanding(maxDamage, respawnTime);
+        platform->setupLanding(maxLandings, respawnTime);
         platform->setPos(pos->m_x, pos->m_y, 0.0);
         platform->setRot(0.0, 0.0, rot);
         createCollision(m_fileData, collIndex, platform);

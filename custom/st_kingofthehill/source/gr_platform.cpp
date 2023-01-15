@@ -88,21 +88,23 @@ void grPlatform::onDamage(int index, soDamage* damage, soDamageAttackerInfo* att
 }
 
 void grPlatform::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
-    this->consecutiveLandings++;
-    this->landTimer = 10.0;
+    if (this->maxLandings >= 0) {
+        this->consecutiveLandings++;
+        this->landTimer = 10.0;
 
-    if (!this->isLandActivated && this->timer <= 0 && this->maxLandings >= 0 && this->consecutiveLandings >= this->maxLandings) {
-        this->isLandActivated = true;
-        if (this->respawnFrames > 0) {
-            this->timer = this->respawnFrames;
-            this->setMotion(1);
-        }
-        if (this->m_gimmickMotionPath != NULL) {
-            if (this->respawnFrames < 0) {
-                this->m_gimmickMotionPath->setFrameUpdate(-1.0);
+        if (!this->isLandActivated && this->timer <= 0 && this->consecutiveLandings >= this->maxLandings) {
+            this->isLandActivated = true;
+            if (this->respawnFrames > 0) {
+                this->timer = this->respawnFrames;
+                this->setMotion(1);
             }
-            else {
-                this->m_gimmickMotionPath->setFrameUpdate(0);
+            if (this->m_gimmickMotionPath != NULL) {
+                if (this->respawnFrames < 0) {
+                    this->m_gimmickMotionPath->setFrameUpdate(-1.0);
+                }
+                else {
+                    this->m_gimmickMotionPath->setFrameUpdate(0);
+                }
             }
         }
     }
