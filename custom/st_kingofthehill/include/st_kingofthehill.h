@@ -10,6 +10,7 @@
 #include "gr_barrel_cannon.h"
 #include "gr_spring.h"
 #include "gr_ladder.h"
+#include "gr_elevator.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -71,6 +72,7 @@ class stKingOfTheHill : public stMelee {
         void createObjPlatform(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, int collIndex);
         void createObjBreak(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float maxDamage, float respawnTime);
         void createObjLand(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float maxLandings, float respawnTime);
+        void createObjElevator(int mdlIndex, Vec2f* pos, Vec2f* range, int collIndex, int posIndex, float speed, float deltaSpeed);
 
         void createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, float rot, Vec2f* range, float bounce, int motionPathIndex);
         void createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, bool isAutoFire);

@@ -23,16 +23,13 @@ enum BarrelCannonState {
 
 struct grGimmickBarrelCannonData {
     grGimmickMotionPathData motionPathData;
-    char _spacer[24];
     Vec2f pos;
     float rot;
     float maxRot;
     u32 maxFrames;
-    Vec2f cameraOffset;
     bool isAutoFire;
     bool fullRotate;
     bool alwaysRotate;
-    char mdlIndex;
     unsigned short field_0xce;
     stTriggerData enterCannonTriggerData;
     stTriggerData motionPathTriggerData;

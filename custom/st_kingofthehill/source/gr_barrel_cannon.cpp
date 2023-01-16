@@ -23,7 +23,6 @@ void grAdventureBarrelCannon::prepareCannonData(Vec2f* pos, float rot, float rot
     this->_cannonData.motionPathData.m_0x5 = 1;
     this->_cannonData.motionPathData.m_mdlIndex = motionPathIndex;
     this->_cannonData.motionPathData._padding = 0x0;
-    this->_cannonData._spacer[7] = 0x12;
     this->_cannonData.pos = *pos;
     this->_cannonData.rot = rot;
     this->_cannonData.maxRot = maxRot;

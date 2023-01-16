@@ -22,7 +22,6 @@ enum BarrelCannonState {
 
 struct grGimmickBarrelCannnonData {
     grGimmickMotionPathData motionPathData;
-    char _spacer[24];
     Vec2f areaPosOffset;
     Vec2f areaRange;
     Vec2f pos;
