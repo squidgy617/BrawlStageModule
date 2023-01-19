@@ -115,6 +115,12 @@ void grCapturePoint::update(float deltaFrame)
                 }
             }
         default:
+            if (this->state == State_In){
+                if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
+                    this->state = State_Capturing;
+                    this->setMotionDetails(0, 0, 0, 0, State_Capturing);
+                }
+            }
             if (this->stayCapturedTimer > 0.0) {
                 this->stayCapturedTimer -= deltaFrame;
                 if (this->stayCapturedTimer <= 0.0) {
@@ -178,12 +184,6 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
                 if (this->stayCapturedTimer <= 0.0) {
                     this->state = State_In;
                     this->setMotionDetails(0, 0, 0, 0, State_In);
-                }
-                else if (this->state == State_In){
-                    if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
-                        this->state = State_Capturing;
-                        this->setMotionDetails(0, 0, 0, 0, State_Capturing);
-                    }
                 }
             }
             this->stayCapturedTimer = stageData->framesBeforeStopCapture;
