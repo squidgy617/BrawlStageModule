@@ -34,27 +34,7 @@ void grAdventureBarrelCannon::prepareCannonData(Vec2f* pos, float rot, float rot
     this->_cannonData.enterCannonTriggerData = (stTriggerData){ 0, 0, 1, 0 };
     this->_cannonData.motionPathTriggerData = (stTriggerData){ 0, 0, 1, 0 };
     this->_cannonData.isValidTriggerData = (stTriggerData){ 0, 0, 1, 0 };
-    this->_cannonData.attackData.m_damage = 0;
-    this->_cannonData.attackData.m_offsetPos.m_x = 0.0;
-    this->_cannonData.attackData.m_offsetPos.m_y = 0.0;
-    this->_cannonData.attackData.m_offsetPos.m_z = 0.0;
-    this->_cannonData.attackData.m_size = 10.0;
-    this->_cannonData.attackData.m_vector = stageData->cannonAttackVector;
-    this->_cannonData.attackData.m_reactionEffect = stageData->cannonAttackReactionEffect;
-    this->_cannonData.attackData.m_reactionFix = stageData->cannonAttackReactionFix;
-    this->_cannonData.attackData.m_reactionAdd = stageData->cannonAttackReactionAdd;
-    this->_cannonData.attackData.m_elementType = Element_Type_Normal;
-    this->_cannonData.attackData.m_isClankable = false;
-    this->_cannonData.attackData.m_unk2 = false;
-    this->_cannonData.attackData.m_unk3 = true;
-    this->_cannonData.attackData.m_unk4 = true;
-    this->_cannonData.attackData.m_detectionRate = stageData->cannonAttackDetectionRate;
-    this->_cannonData.attackData.m_hitSoundLevel = Hit_Sound_Level_Medium;
-    this->_cannonData.attackData.m_hitSoundType = Hit_Sound_Type_Punch;
-    this->_cannonData.attackData.m_unk5 = false;
-    this->_cannonData.attackData.m_isShapeCapsule = false;
-    this->_cannonData.attackData.m_nodeIndex = 0;
-    this->_cannonData.attackData.m_power = stageData->cannonAttackDamage;
+    this->_cannonData.attackData = stageData->cannonAttackData;
     this->_cannonData.shootSpeed = stageData->cannonShootSpeed;
     this->_cannonData.shootTimerSpeed = stageData->cannonShootTimerSpeed;
     this->_cannonData.shootAngleOffset = 0.0;
@@ -142,13 +122,13 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     }
 
     this->createSoundWork(2,1);
-    this->m_soundEffects[0].m_id = snd_se_stage_Madein_01;
+    this->m_soundEffects[0].m_id = snd_se_ADVstage_common_03;
     this->m_soundEffects[0].m_0x10 = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
     this->m_soundEffects[0].m_0x14 = 0;
     this->m_soundEffects[0].m_0x1c = 0.0;
     this->m_soundEffects[0].m_0x20 = 0.0;
-    this->m_soundEffects[1].m_id = snd_se_stage_Madein_04;
+    this->m_soundEffects[1].m_id = snd_se_ADVstage_common_04;
     this->m_soundEffects[1].m_0x10 = 0;
     this->m_soundEffects[1].m_nodeIndex = 0;
     this->m_soundEffects[1].m_0x14 = 0;

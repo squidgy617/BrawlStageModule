@@ -70,7 +70,6 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     this->cannonData[index].motionPathData.m_0x5 = 1;
     this->cannonData[index].motionPathData.m_mdlIndex = 0xFF;
     this->cannonData[index].motionPathData._padding = 0x0;
-    this->cannonData[index]._spacer[7] = 0x12;
     this->cannonData[index].areaPosOffset = (Vec2f){0.0, 0.0};
     this->cannonData[index].areaRange = (Vec2f){20.0, 15.0};
     this->cannonData[index].pos = smashketballData->cannonPosData[index].pos;

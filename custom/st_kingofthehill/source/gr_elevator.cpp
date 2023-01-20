@@ -59,7 +59,7 @@ void grAdventureElevator::startup(gfArchive* archive, u32 unk1, u32 unk2)
     stTrigger* trigger = g_stTriggerMng->createTrigger(GimmickKind_Elevator, -1);
     trigger->setObserveYakumono(this->m_yakumono);
     this->createSoundWork(4,1);
-    SndID sndId = snd_se_stage_Madein_10;
+    SndID sndId = snd_se_ADVstage_common_57;
     for (int i = 0; i < 4; i++) {
         this->m_soundEffects[i].m_id = sndId + i;
         this->m_soundEffects[i].m_0x10 = 0;

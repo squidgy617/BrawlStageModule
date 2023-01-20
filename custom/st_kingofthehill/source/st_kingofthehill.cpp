@@ -70,6 +70,7 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
         ground->setStageData(m_stageData);
         ground->setDontMoveGround();
         u32 platformsIndex = ground->getNodeIndex(0, "Platforms");
+        u32 slidersIndex = ground->getNodeIndex(0, "Sliders");
         u32 springsIndex = ground->getNodeIndex(0, "Springs");
         u32 cannonsIndex = ground->getNodeIndex(0, "Cannons");
         u32 laddersIndex = ground->getNodeIndex(0, "Ladders");
@@ -77,7 +78,7 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
         u32 watersIndex = ground->getNodeIndex(0, "Waters");
         u32 windsIndex = ground->getNodeIndex(0, "Winds");
         u32 capturePointsIndex = ground->getNodeIndex(0, "CapturePoints");
-        for (int i = platformsIndex + 1; i < springsIndex; i++) {
+        for (int i = platformsIndex + 1; i < slidersIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
 
             switch (int(resNodeData->m_scale.m_z)) {
@@ -108,6 +109,12 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
                     break;
             }
 
+        }
+        for (int i = slidersIndex + 1; i < springsIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjPunchSlider(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y, resNodeData->m_translation.m_z,
+                                       resNodeData->m_translation.m_x, resNodeData->m_translation.m_y, resNodeData->m_rotation.m_z,
+                                       resNodeData->m_scale.m_x, resNodeData->m_scale.m_y, resNodeData->m_scale.m_z);
         }
         for (int i = springsIndex + 1; i < cannonsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
@@ -207,6 +214,16 @@ void stKingOfTheHill::createObjLand(int mdlIndex, Vec2f* pos, float rot, int mot
         platform->setPos(pos->m_x, pos->m_y, 0.0);
         platform->setRot(0.0, 0.0, rot);
         createCollision(m_fileData, collIndex, platform);
+    }
+}
+
+void stKingOfTheHill::createObjPunchSlider(int mdlIndex, int sliderPathIndex, int motionPathIndex, float unk1, float unk2, float unk3, float unk4, float unk5, float unk6) {
+    grPunchSlider* slider = grPunchSlider::create(mdlIndex, "grPunchSlider");
+    if (slider != NULL) {
+        addGround(slider);
+        slider->setStageData(m_stageData);
+        slider->prepareSliderData(motionPathIndex, sliderPathIndex, unk1, unk2, unk3, unk4, unk5, unk6);
+        slider->startup(m_fileData, 0, 0);
     }
 }
 

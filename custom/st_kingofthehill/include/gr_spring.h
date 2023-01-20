@@ -12,7 +12,6 @@ public:
     virtual ~grSpring() { }
     virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
     virtual void update(float deltaFrame);
-    virtual void setMotionOff();
     virtual void presentShootEvent();
     virtual void setMotionPathData(int mdlIndex);
 

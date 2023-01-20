@@ -23,14 +23,14 @@ void grPlatform::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     this->createAttachMotionPath(&motionPathInfo, &triggerData, "MovePlatformNode");
 
     this->createSoundWork(2,1);
-    this->m_soundEffects[0].m_id = snd_se_stage_Madein_05;
+    this->m_soundEffects[0].m_id = snd_se_ADVstage_common_61;
     this->m_soundEffects[0].m_0x10 = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
     this->m_soundEffects[0].m_0x14 = 0;
     this->m_soundEffects[0].m_0x1c = 0.0;
     this->m_soundEffects[0].m_0x20 = 0.0;
 
-    this->m_soundEffects[1].m_id = snd_se_stage_Madein_06;
+    this->m_soundEffects[1].m_id = snd_se_ADVstage_common_62;
     this->m_soundEffects[1].m_0x10 = 0;
     this->m_soundEffects[1].m_nodeIndex = 0;
     this->m_soundEffects[1].m_0x14 = 0;

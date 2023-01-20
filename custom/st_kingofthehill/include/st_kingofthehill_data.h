@@ -18,17 +18,13 @@ struct stKingOfTheHillData {
     bool disableCapturesDuringShielding : 1;
     bool disableCameraZoom : 1;
     int _pad : 30;
-    int cannonAttackDamage;
-    int cannonAttackVector;
-    int cannonAttackReactionEffect;
-    int cannonAttackReactionFix;
-    int cannonAttackReactionAdd;
-    int cannonAttackDetectionRate;
+    grGimmick::AttackData sliderAttackData;
+    grGimmick::AttackData cannonAttackData;
     float cannonShootSpeed;
     float cannonShootTimerSpeed;
     float cannonShootStunTimerSpeed;
     grGimmickDamageFloor damageFloor;
 
-    STATIC_CHECK(sizeof(stKingOfTheHillData) == 204)
+    STATIC_CHECK(sizeof(stKingOfTheHillData) == 356)
 
 };
