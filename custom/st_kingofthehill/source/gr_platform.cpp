@@ -70,7 +70,6 @@ void grPlatform::onDamage(int index, soDamage* damage, soDamageAttackerInfo* att
         this->startGimmickSE(1);
         if (this->respawnFrames > 0) {
             this->timer = this->respawnFrames;
-            this->setMotion(1);
         }
         this->setMotion(1);
         if (this->m_gimmickMotionPath != NULL) {
@@ -96,8 +95,8 @@ void grPlatform::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoi
             this->isLandActivated = true;
             if (this->respawnFrames > 0) {
                 this->timer = this->respawnFrames;
-                this->setMotion(1);
             }
+            this->setMotion(1);
             if (this->m_gimmickMotionPath != NULL) {
                 if (this->respawnFrames < 0) {
                     this->m_gimmickMotionPath->setFrameUpdate(-1.0);
