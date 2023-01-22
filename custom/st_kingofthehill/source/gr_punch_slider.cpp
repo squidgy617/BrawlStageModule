@@ -3,11 +3,12 @@
 #include "gr_punch_slider.h"
 #include <memory.h>
 #include <string.h>
+#include <st/st_trigger.h>
 
 grPunchSlider* grPunchSlider::create(int mdlIndex, char* taskName) {
-    grPunchSlider* elevator = new (Heaps::StageInstance) grPunchSlider(taskName);
-    elevator->setMdlIndex(mdlIndex);
-    return elevator;
+    grPunchSlider* slider = new (Heaps::StageInstance) grPunchSlider(taskName);
+    slider->setMdlIndex(mdlIndex);
+    return slider;
 }
 
 void grPunchSlider::prepareSliderData(int motionPathIndex, int sliderPathIndex, float unk1, float unk2, float unk3, float unk4, float unk5, float unk6) {
