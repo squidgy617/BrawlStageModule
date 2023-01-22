@@ -34,18 +34,19 @@ void grWarpZone::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
         Vec3f warpDest = this->m_warpDest;
         Fighter* fighter = g_ftManager->getFighter(entryId, 0);
         Vec3f currentPos = soExternalValueAccesser::getPos(fighter);
+        float currentLr = soExternalValueAccesser::getLr(fighter);
         switch(this->m_warpType) {
             case 1:
                 warpDest.m_x = currentPos.m_x;
-                g_ftManager->setWarpFighter(entryId, &warpDest, 1.0, false);
+                g_ftManager->setWarpFighter(entryId, &warpDest, currentLr, false);
                 break;
             case 2:
                 warpDest.m_y = currentPos.m_y;
-                g_ftManager->setWarpFighter(entryId, &warpDest, 1.0, false);
+                g_ftManager->setWarpFighter(entryId, &warpDest, currentLr, false);
                 break;
             default:
                 this->startGimmickSE(0);
-                g_ftManager->setWarpFighter(entryId, &warpDest, 1.0, true);
+                g_ftManager->setWarpFighter(entryId, &warpDest, currentLr, true);
                 break;
         }
         this->changeNodeAnim(1,0);
