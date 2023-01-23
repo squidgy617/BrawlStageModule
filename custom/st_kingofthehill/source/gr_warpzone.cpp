@@ -2,8 +2,9 @@
 
 #include "gr_warpzone.h"
 #include <memory.h>
-#include <ft/ft_manager.h>
 #include <so/so_external_value_accesser.h>
+#include <OS/OSError.h>
+#include <ec/ec_mgr.h>
 
 grWarpZone* grWarpZone::create(int mdlIndex, char* taskName) {
     grWarpZone* warpZone = new (Heaps::StageInstance) grWarpZone(taskName);
@@ -35,18 +36,55 @@ void grWarpZone::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
         Fighter* fighter = g_ftManager->getFighter(entryId, 0);
         Vec3f currentPos = soExternalValueAccesser::getPos(fighter);
         float currentLr = soExternalValueAccesser::getLr(fighter);
+        int correct = fighter->m_moduleAccesser->getGroundModule()->getCorrect(0);
+        Vec3f zeroVec = {0, 0, 0};
         switch(this->m_warpType) {
-            case 1:
-                warpDest.m_x = currentPos.m_x;
-                g_ftManager->setWarpFighter(entryId, &warpDest, currentLr, false);
-                break;
-            case 2:
-                warpDest.m_y = currentPos.m_y;
-                g_ftManager->setWarpFighter(entryId, &warpDest, currentLr, false);
-                break;
-            default:
+            case 10:
+                if (this->isInHitstun(fighter)) {
+                    return;
+                }
+            case 0: // Warp change status
                 this->startGimmickSE(0);
                 g_ftManager->setWarpFighter(entryId, &warpDest, currentLr, true);
+                break;
+            case 11:
+                if (this->isInHitstun(fighter)) {
+                    return;
+                }
+            case 1: // Keep status unless on ground (i.e. destination is in the air)
+                this->startGimmickSE(0);
+                fighter->m_moduleAccesser->getPostureModule()->initPos(&warpDest);
+                if (correct == 1 || correct == 2 || correct == 3) {
+                    fighter->m_moduleAccesser->getStatusModule()->changeStatusRequest(ftStatus::Fall_1, fighter->m_moduleAccesser);
+                }
+                g_ecMgr->setEffect(0x104004e, &warpDest);
+                break;
+            case 12:
+                if (this->isInHitstun(fighter)) {
+                    return;
+                }
+            case 2: // Keep status
+                this->startGimmickSE(0);
+                fighter->m_moduleAccesser->getPostureModule()->initPos(&warpDest);
+                g_ecMgr->setEffect(0x104004e, &warpDest);
+                break;
+            case 13:
+                if (this->isInHitstun(fighter)) {
+                    return;
+                }
+            case 3: // Horizontal wrap
+                warpDest.m_x = currentPos.m_x;
+                fighter->m_moduleAccesser->getPostureModule()->initPos(&warpDest);
+                break;
+            case 14:
+                if (this->isInHitstun(fighter)) {
+                    return;
+                }
+            case 4: // Vertical wrap
+                warpDest.m_y = currentPos.m_y;
+                fighter->m_moduleAccesser->getPostureModule()->initPos(&warpDest);
+                break;
+            default:
                 break;
         }
         this->changeNodeAnim(1,0);
@@ -66,4 +104,12 @@ void grWarpZone::update(float deltaFrame) {
             this->changeNodeAnim(0,0);
         }
     }
+}
+
+bool grWarpZone::isInHitstun(Fighter* fighter) {
+    int status = fighter->m_moduleAccesser->getStatusModule()->getStatusKind();
+    if (status == ftStatus::Hitstun_Weak_Hits || status == ftStatus::Hitstun_No_Tumble || status == ftStatus::Hitstun) {
+        return true;
+    }
+    return false;
 }
