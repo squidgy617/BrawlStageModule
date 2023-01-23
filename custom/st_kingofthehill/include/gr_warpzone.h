@@ -7,7 +7,7 @@
 
 class grWarpZone : public grGimmickWarpZone {
 
-    grGimmickWarpData _warpData;
+    grGimmickMotionPathData motionPathData;
     float deactivateFrames;
 
 public:
@@ -22,7 +22,7 @@ public:
     static grWarpZone* create(int mdlIndex, char* taskName);
 
 
-    void prepareWarpData(Vec2f* pos, Vec2f* range, int motionPathIndex, float deactivateFrames, Vec2f* warpDest, u8 warpType);
+    void prepareWarpData(int motionPathIndex, float deactivateFrames, Vec2f* warpDest, u8 warpType);
 
 
 };

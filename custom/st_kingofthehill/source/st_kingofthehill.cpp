@@ -251,10 +251,9 @@ void stKingOfTheHill::createObjElevator(int mdlIndex, Vec2f* pos, Vec2f* range, 
 void stKingOfTheHill::createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, float rot, Vec2f* range, float bounce, int motionPathIndex) {
     grSpring* spring = grSpring::create(mdlIndex, "grSpring");
     if (spring != NULL) {
+        addGround(spring);
         grGimmickSpringData springData;
         __memfill(&springData, 0, sizeof(springData));
-        springData.m_motionPathData.m_mdlIndex = -1;
-        addGround(spring);
         springData.m_pos = *pos;
         springData.m_rot = rot;
         springData.m_areaRange = *range;
@@ -282,6 +281,7 @@ void stKingOfTheHill::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIn
 
     grLadder* ladder = grLadder::create(mdlIndex, "grLadder");
     if (ladder != NULL) {
+        addGround(ladder);
         grGimmickLadderData ladderData;
         __memfill(&ladderData, 0, sizeof(ladderData));
         ladderData.m_motionPathTriggerData = (stTriggerData){ 0, 0, 1, 0 };
@@ -298,8 +298,14 @@ void stKingOfTheHill::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, flo
     grWarpZone* warpZone = grWarpZone::create(mdlIndex, "grWarpZone");
     if (warpZone != NULL) {
         addGround(warpZone);
+        grGimmickWarpData warpData;
+        __memfill(&warpData, 0, sizeof(warpData));
+        warpData.m_pos = *pos;
+        warpData.m_areaRange = *range;
+        warpData.m_sndIDs[0] = snd_se_ADVstage_common_FIGHTER_IN;
         warpZone->setStageData(m_stageData);
-        warpZone->prepareWarpData(pos, range, motionPathIndex, deactivateFrames, dest, warpType);
+        warpZone->prepareWarpData(motionPathIndex, deactivateFrames, dest, warpType);
+        warpZone->setGimmickData(&warpData); // Note: gimmickData will only apply in next function since was allocated on the stack
         warpZone->startup(m_fileData, 0, 0);
         warpZone->setRot(0, 0, rot);
         warpZone->setScale(scale, scale, scale);

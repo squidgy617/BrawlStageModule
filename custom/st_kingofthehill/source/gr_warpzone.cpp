@@ -12,21 +12,23 @@ grWarpZone* grWarpZone::create(int mdlIndex, char* taskName) {
     return warpZone;
 }
 
-void grWarpZone::prepareWarpData(Vec2f* pos, Vec2f* range, int motionPathIndex, float deactivateFrames, Vec2f* warpDest, u8 warpType) {
-    __memfill(&this->_warpData, 0, sizeof(grGimmickWarpData));
-    this->_warpData.m_motionPathData.m_motionRatio = 1.0;
-    this->_warpData.m_motionPathData.m_index = 0;
-    this->_warpData.m_motionPathData.m_0x5 = 1;
-    this->_warpData.m_motionPathData.m_mdlIndex = motionPathIndex;
-    this->_warpData.m_motionPathData._padding = 0x0;
-    this->_warpData.m_pos = *pos;
-    this->_warpData.m_areaRange = *range;
-    this->_warpData.m_sndIDs[0] = snd_se_ADVstage_common_FIGHTER_IN;
+void grWarpZone::prepareWarpData(int motionPathIndex, float deactivateFrames, Vec2f* warpDest, u8 warpType) {
+    this->motionPathData.m_motionRatio = 1.0;
+    this->motionPathData.m_index = 0;
+    this->motionPathData.m_0x5 = 1;
+    this->motionPathData.m_mdlIndex = motionPathIndex;
+    this->motionPathData._padding = 0x0;
 
     this->setWarpAttrData(&(Vec3f){warpDest->m_x, warpDest->m_y, 0.0}, warpType, false);
-    this->setGimmickData(&this->_warpData);
     this->deactivateFrames = deactivateFrames;
 };
+
+void grWarpZone::startup(gfArchive* archive, u32 unk1, u32 unk2) {
+    grGimmickWarpZone::startup(archive, unk1, unk2);
+
+    grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, 0x01000000, 0, 0, 0, 0, 0, 0 };
+    this->createAttachMotionPath(&motionPathInfo, NULL, "MoveNode");
+}
 
 void grWarpZone::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
     if (eventInfo->m_state == 0x32) {
