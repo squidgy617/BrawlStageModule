@@ -76,6 +76,7 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
         u32 laddersIndex = ground->getNodeIndex(0, "Ladders");
         u32 catapultsIndex = ground->getNodeIndex(0, "Catapults");
         u32 warpsIndex = ground->getNodeIndex(0, "Warps");
+        u32 toxinsIndex = ground->getNodeIndex(0, "Toxins");
         u32 conveyorsIndex = ground->getNodeIndex(0, "Conveyors");
         u32 watersIndex = ground->getNodeIndex(0, "Waters");
         u32 windsIndex = ground->getNodeIndex(0, "Winds");
@@ -144,7 +145,7 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
                                     resNodeData->m_translation.m_y, resNodeData->m_translation.m_z, resNodeData->m_scale.m_z,
                                     resNodeData->m_rotation.m_y, resNodeData->m_rotation.m_z);
         }
-        for (int i = warpsIndex + 1; i < conveyorsIndex; i += 2) {
+        for (int i = warpsIndex + 1; i < toxinsIndex; i += 2) {
             nw4r::g3d::ResNodeData* resNodeDataFrom = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             nw4r::g3d::ResNodeData* resNodeDataTo = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
             this->createObjWarpZone(resNodeDataFrom->m_rotation.m_x, &resNodeDataFrom->m_translation.m_xy,
@@ -153,6 +154,13 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
                                     resNodeDataFrom->m_rotation.m_y,
                                     &resNodeDataTo->m_translation.m_xy, resNodeDataTo->m_scale.m_z, resNodeDataTo->m_rotation.m_z);
         }
+        for (int i = toxinsIndex + 1; i < conveyorsIndex; i += 2) {
+            nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
+            this->createTriggerHitPointEffect(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
+                                        resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y);
+        }
+
         for (int i = conveyorsIndex + 1; i < watersIndex; i += 2) {
             nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
@@ -329,9 +337,23 @@ void stKingOfTheHill::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, flo
     }
 }
 
+void stKingOfTheHill::createTriggerHitPointEffect(Vec2f* posSW, Vec2f* posNE, float damage, short detectionRate) {
+    grGimmickHitPointEffectData hitPointEffectData;
+    __memfill(&hitPointEffectData, 0, sizeof(hitPointEffectData));
+    hitPointEffectData.m_pos = (Vec2f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y)};
+    hitPointEffectData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
+    if (damage < 0) {
+        hitPointEffectData.m_isHeal = true;
+        damage = -damage;
+    }
+    hitPointEffectData.m_damage = damage;
+    hitPointEffectData.m_detectionRate = detectionRate;
+    this->createGimmickHitPointEffectArea(&hitPointEffectData);
+}
+
 void stKingOfTheHill::createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed, bool isRightDirection) {
     grGimmickBeltConveyorData beltConveyorAreaData;
-    __memfill(&beltConveyorAreaData, 0, sizeof(grGimmickBeltConveyorData));
+    __memfill(&beltConveyorAreaData, 0, sizeof(beltConveyorAreaData));
     beltConveyorAreaData.m_conveyorPos = (Vec3f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0};
     beltConveyorAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
     beltConveyorAreaData.m_speed = speed;
