@@ -12,14 +12,13 @@ grWarpZone* grWarpZone::create(int mdlIndex, char* taskName) {
     return warpZone;
 }
 
-void grWarpZone::prepareWarpData(int motionPathIndex, float deactivateFrames, Vec2f* warpDest, u8 warpType) {
+void grWarpZone::prepareWarpData(int motionPathIndex, float deactivateFrames) {
     this->motionPathData.m_motionRatio = 1.0;
     this->motionPathData.m_index = 0;
     this->motionPathData.m_0x5 = 1;
     this->motionPathData.m_mdlIndex = motionPathIndex;
     this->motionPathData._padding = 0x0;
 
-    this->setWarpAttrData(&(Vec3f){warpDest->m_x, warpDest->m_y, 0.0}, warpType, false);
     this->deactivateFrames = deactivateFrames;
 };
 

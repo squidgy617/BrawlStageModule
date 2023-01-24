@@ -23,7 +23,7 @@ public:
     static grWarpZone* create(int mdlIndex, char* taskName);
 
 
-    void prepareWarpData(int motionPathIndex, float deactivateFrames, Vec2f* warpDest, u8 warpType);
+    void prepareWarpData(int motionPathIndex, float deactivateFrames);
 
 
 };

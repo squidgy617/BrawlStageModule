@@ -15,15 +15,10 @@ void grPunchSlider::prepareSliderData(int motionPathIndex, int sliderPathIndex, 
     stKingOfTheHillData* stageData = static_cast<stKingOfTheHillData*>(this->getStageData());
     __memfill(&this->_sliderData, 0, sizeof(grGimmickPunchSliderData));
     this->_sliderData.m_motionPathData.m_motionRatio = 1.0;
-    this->_sliderData.m_motionPathData.m_index = 0;
     this->_sliderData.m_motionPathData.m_0x5 = 1;
     this->_sliderData.m_motionPathData.m_mdlIndex = motionPathIndex;
-    this->_sliderData.m_motionPathData._padding = 0x0;
     this->_sliderData.m_sliderPathData.m_motionRatio = 1.0;
-    this->_sliderData.m_sliderPathData.m_index = 0;
-    this->_sliderData.m_sliderPathData.m_0x5 = 0;
     this->_sliderData.m_sliderPathData.m_mdlIndex = sliderPathIndex;
-    this->_sliderData.m_sliderPathData._padding = 0x0;
     this->_sliderData.m_hitData.m_size = 8.0;
     this->_sliderData.m_attackData = stageData->sliderAttackData;
     this->_sliderData.m_148 = unk1; //0.9;

@@ -8,6 +8,7 @@ class grSpring : public grGimmickSpring {
     grGimmickMotionPathData motionPathData;
 public:
     grSpring(char* taskName) : grGimmickSpring(taskName) {
+
     }
     virtual ~grSpring() { }
     virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);

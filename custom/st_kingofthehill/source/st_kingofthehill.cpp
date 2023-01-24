@@ -74,6 +74,7 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
         u32 springsIndex = ground->getNodeIndex(0, "Springs");
         u32 cannonsIndex = ground->getNodeIndex(0, "Cannons");
         u32 laddersIndex = ground->getNodeIndex(0, "Ladders");
+        u32 catapultsIndex = ground->getNodeIndex(0, "Catapults");
         u32 warpsIndex = ground->getNodeIndex(0, "Warps");
         u32 conveyorsIndex = ground->getNodeIndex(0, "Conveyors");
         u32 watersIndex = ground->getNodeIndex(0, "Waters");
@@ -132,10 +133,16 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
                                     resNodeData->m_rotation.m_z, resNodeData->m_rotation.m_y, resNodeData->m_scale.m_z,
                                     resNodeData->m_translation.m_z, alwaysRotate, fullRotate, resNodeData->m_scale.m_x);
         }
-        for (int i = laddersIndex + 1; i < warpsIndex; i++) {
+        for (int i = laddersIndex + 1; i < catapultsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             this->createObjLadder(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy, resNodeData->m_translation.m_z,
                                   resNodeData->m_rotation.m_y, resNodeData->m_rotation.m_z);
+        }
+        for (int i = catapultsIndex + 1; i < warpsIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjCatapult(resNodeData->m_rotation.m_x, resNodeData->m_translation.m_x,
+                                    resNodeData->m_translation.m_y, resNodeData->m_translation.m_z, resNodeData->m_scale.m_z,
+                                    resNodeData->m_rotation.m_y, resNodeData->m_rotation.m_z);
         }
         for (int i = warpsIndex + 1; i < conveyorsIndex; i += 2) {
             nw4r::g3d::ResNodeData* resNodeDataFrom = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
@@ -144,7 +151,7 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
                                     resNodeDataFrom->m_rotation.m_z, resNodeDataFrom->m_scale.m_z,
                                     &resNodeDataFrom->m_scale.m_xy, resNodeDataFrom->m_translation.m_z,
                                     resNodeDataFrom->m_rotation.m_y,
-                                    &resNodeDataTo->m_translation.m_xy, resNodeDataTo->m_scale.m_z);
+                                    &resNodeDataTo->m_translation.m_xy, resNodeDataTo->m_scale.m_z, resNodeDataTo->m_rotation.m_z);
         }
         for (int i = conveyorsIndex + 1; i < watersIndex; i += 2) {
             nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
@@ -294,7 +301,16 @@ void stKingOfTheHill::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIn
     }
 }
 
-void stKingOfTheHill::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, float scale, Vec2f* range, int motionPathIndex, float deactivateFrames, Vec2f* dest, u8 warpType) {
+void stKingOfTheHill::createObjCatapult(int mdlIndex, float vector, float motionRatio, int motionPathIndex, float framesBeforeStartMove, float unk1, float unk2) {
+    grCatapult* catapult = grCatapult::create(mdlIndex, "grCatapult");
+    if (catapult != NULL) {
+        addGround(catapult);
+        catapult->prepareCatapultData(vector, motionRatio, motionPathIndex, framesBeforeStartMove, unk1, unk2);
+        catapult->startup(m_fileData, 0, 0);
+    }
+}
+
+void stKingOfTheHill::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, float scale, Vec2f* range, int motionPathIndex, float deactivateFrames, Vec2f* warpDest, u8 warpType, bool isNotAuto) {
     grWarpZone* warpZone = grWarpZone::create(mdlIndex, "grWarpZone");
     if (warpZone != NULL) {
         addGround(warpZone);
@@ -304,7 +320,8 @@ void stKingOfTheHill::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, flo
         warpData.m_areaRange = *range;
         warpData.m_sndIDs[0] = snd_se_ADVstage_common_FIGHTER_IN;
         warpZone->setStageData(m_stageData);
-        warpZone->prepareWarpData(motionPathIndex, deactivateFrames, dest, warpType);
+        warpZone->prepareWarpData(motionPathIndex, deactivateFrames);
+        warpZone->setWarpAttrData(&(Vec3f){warpDest->m_x, warpDest->m_y, 0.0}, warpType, isNotAuto);
         warpZone->setGimmickData(&warpData); // Note: gimmickData will only apply in next function since was allocated on the stack
         warpZone->startup(m_fileData, 0, 0);
         warpZone->setRot(0, 0, rot);
