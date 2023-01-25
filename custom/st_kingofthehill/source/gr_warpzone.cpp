@@ -34,6 +34,9 @@ void grWarpZone::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
         g_stTriggerMng->setTriggerFlag(&this->m_warpData->m_warpTriggerData);
         int entryId = g_ftManager->getEntryId(this->getPlayerNumber(taskId));
         Vec3f warpDest = this->m_warpDest;
+        if (this->connectedWarp != NULL) {
+            warpDest = this->connectedWarp->getPos();
+        }
         Fighter* fighter = g_ftManager->getFighter(entryId, 0);
         Vec3f currentPos = soExternalValueAccesser::getPos(fighter);
         float currentLr = soExternalValueAccesser::getLr(fighter);
@@ -90,8 +93,10 @@ void grWarpZone::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
         }
         this->changeNodeAnim(1,0);
         if (this->deactivateFrames > 0) {
-            this->disableArea();
-            this->m_frameCount = this->deactivateFrames;
+            this->deactivateWarp();
+            if (this->connectedWarp != NULL) {
+                this->connectedWarp->deactivateWarp();
+            }
         }
     }
 }
@@ -113,4 +118,13 @@ bool grWarpZone::isInHitstun(Fighter* fighter) {
         return true;
     }
     return false;
+}
+
+void grWarpZone::deactivateWarp() {
+    this->disableArea();
+    this->m_frameCount = this->deactivateFrames;
+}
+
+void grWarpZone::setConnectedWarp(grWarpZone* connectedWarp) {
+    this->connectedWarp = connectedWarp;
 }

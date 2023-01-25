@@ -168,7 +168,11 @@ FROM **Scale X,Y** - Range
 
 FROM **Rotation Y** - Deactivate Frames
 
+TO **Rotation X** - ModelData Index (if warp is two-ways)
+
 TO **Translation X, Y** - Warp Destination
+
+FROM **Translation Z** - Motion Path ModelData Index (if warp is two-ways) (overrides position) (node to follow must be called "MoveNode")
 
 TO **Scale Z** - Warp Type (0 - Warp change status, 1 - keep status unless on ground used for if destination is in the air, 2 - keep status,  3 - horizontal wrap, 4 - vertical wrap, Note: Add 1 before to disable warp during hitstun)
 

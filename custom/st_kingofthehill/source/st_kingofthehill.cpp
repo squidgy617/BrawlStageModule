@@ -152,7 +152,8 @@ Ground* stKingOfTheHill::createObjGround(int mdlIndex) {
                                     resNodeDataFrom->m_rotation.m_z, resNodeDataFrom->m_scale.m_z,
                                     &resNodeDataFrom->m_scale.m_xy, resNodeDataFrom->m_translation.m_z,
                                     resNodeDataFrom->m_rotation.m_y,
-                                    &resNodeDataTo->m_translation.m_xy, resNodeDataTo->m_scale.m_z, resNodeDataTo->m_rotation.m_z);
+                                    &resNodeDataTo->m_translation.m_xy, resNodeDataTo->m_scale.m_z, resNodeDataTo->m_rotation.m_z,
+                                    resNodeDataTo->m_rotation.m_x, resNodeDataTo->m_translation.m_z);
         }
         for (int i = toxinsIndex + 1; i < conveyorsIndex; i += 2) {
             nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
@@ -318,7 +319,7 @@ void stKingOfTheHill::createObjCatapult(int mdlIndex, float vector, float motion
     }
 }
 
-void stKingOfTheHill::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, float scale, Vec2f* range, int motionPathIndex, float deactivateFrames, Vec2f* warpDest, u8 warpType, bool isNotAuto) {
+void stKingOfTheHill::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, float scale, Vec2f* range, int motionPathIndex, float deactivateFrames, Vec2f* warpDest, u8 warpType, bool isNotAuto, int connectedMdlIndex, int connectedMotionPathIndex) {
     grWarpZone* warpZone = grWarpZone::create(mdlIndex, "grWarpZone");
     if (warpZone != NULL) {
         addGround(warpZone);
@@ -334,6 +335,24 @@ void stKingOfTheHill::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, flo
         warpZone->startup(m_fileData, 0, 0);
         warpZone->setRot(0, 0, rot);
         warpZone->setScale(scale, scale, scale);
+        if (connectedMdlIndex > 0) {
+            grWarpZone* toWarpZone = grWarpZone::create(connectedMdlIndex, "grWarpZone");
+            if (toWarpZone != NULL) {
+                warpData.m_pos = *warpDest;
+                warpData.m_areaRange = *range;
+                warpData.m_sndIDs[0] = snd_se_ADVstage_common_FIGHTER_IN;
+                toWarpZone->setStageData(m_stageData);
+                toWarpZone->prepareWarpData(connectedMotionPathIndex, deactivateFrames);
+                toWarpZone->setWarpAttrData(&(Vec3f){pos->m_x, pos->m_y, 0.0}, warpType, isNotAuto);
+                toWarpZone->setGimmickData(&warpData); // Note: gimmickData will only apply in next function since was allocated on the stack
+                toWarpZone->startup(m_fileData, 0, 0);
+                toWarpZone->setRot(0, 0, rot);
+                toWarpZone->setScale(scale, scale, scale);
+
+                warpZone->setConnectedWarp(toWarpZone);
+                toWarpZone->setConnectedWarp(warpZone);
+            }
+        }
     }
 }
 
