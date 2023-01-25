@@ -126,7 +126,7 @@ Hitbox Parameters: In the target ModelData, node to follow must be called "Hitbo
 
 ## Ladder
 
-**Rotation X** - ModelData Index
+**Rotation X** - ModelData Index (must have nodes called "under" and "upper" to define start and end of ladder)
 
 **Translation X,Y** - Position
 
