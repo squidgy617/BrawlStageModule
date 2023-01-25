@@ -339,8 +339,6 @@ void stKingOfTheHill::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, flo
             grWarpZone* toWarpZone = grWarpZone::create(connectedMdlIndex, "grWarpZone");
             if (toWarpZone != NULL) {
                 warpData.m_pos = *warpDest;
-                warpData.m_areaRange = *range;
-                warpData.m_sndIDs[0] = snd_se_ADVstage_common_FIGHTER_IN;
                 toWarpZone->setStageData(m_stageData);
                 toWarpZone->prepareWarpData(connectedMotionPathIndex, deactivateFrames);
                 toWarpZone->setWarpAttrData(&(Vec3f){pos->m_x, pos->m_y, 0.0}, warpType, isNotAuto);
