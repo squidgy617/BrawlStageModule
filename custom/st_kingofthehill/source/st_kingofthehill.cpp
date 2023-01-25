@@ -242,16 +242,6 @@ void stKingOfTheHill::createObjLand(int mdlIndex, Vec2f* pos, float rot, int mot
     }
 }
 
-void stKingOfTheHill::createObjPunchSlider(int mdlIndex, int sliderPathIndex, int motionPathIndex, float unk1, float unk2, float unk3, float unk4, float unk5, float unk6) {
-    grPunchSlider* slider = grPunchSlider::create(mdlIndex, "grPunchSlider");
-    if (slider != NULL) {
-        addGround(slider);
-        slider->setStageData(m_stageData);
-        slider->prepareSliderData(motionPathIndex, sliderPathIndex, unk1, unk2, unk3, unk4, unk5, unk6);
-        slider->startup(m_fileData, 0, 0);
-    }
-}
-
 void stKingOfTheHill::createObjElevator(int mdlIndex, Vec2f* pos, Vec2f* range, int collIndex, int posIndex, float speed, float deltaSpeed) {
     grAdventureElevator* elevator = grAdventureElevator::create(mdlIndex, "grAdventureElevator");
     if (elevator != NULL)
@@ -260,6 +250,16 @@ void stKingOfTheHill::createObjElevator(int mdlIndex, Vec2f* pos, Vec2f* range, 
         elevator->prepareElevatorData(pos, range, speed, deltaSpeed, posIndex);
         elevator->startup(m_fileData, 0, 0);
         createCollision(m_fileData, collIndex, elevator);
+    }
+}
+
+void stKingOfTheHill::createObjPunchSlider(int mdlIndex, int sliderPathIndex, int motionPathIndex, float unk1, float unk2, float unk3, float unk4, float unk5, float unk6) {
+    grPunchSlider* slider = grPunchSlider::create(mdlIndex, "grPunchSlider");
+    if (slider != NULL) {
+        addGround(slider);
+        slider->setStageData(m_stageData);
+        slider->prepareSliderData(motionPathIndex, sliderPathIndex, unk1, unk2, unk3, unk4, unk5, unk6);
+        slider->startup(m_fileData, 0, 0);
     }
 }
 
