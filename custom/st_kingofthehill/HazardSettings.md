@@ -61,7 +61,7 @@ Hitbox Parameters: In the target ModelData, node to follow must be called "Hitbo
 
 **Rotation Y** - Collision Index
 
-**Rotation Z** - Positions Model Data Index (Nodes are configured based on target positions excluding the first node)
+**Rotation Z** - Positions ModelData Index (Nodes are configured based on target positions excluding the first node)
 
 **Translation X,Y** - Position
 
@@ -75,9 +75,9 @@ Hitbox Parameters: In the target ModelData, node to follow must be called "Hitbo
 
 **Rotation X** - ModelData Index
 
-**Rotation Y** - Slider Path Model Data Index (node to follow must be called "MoveNode")
+**Rotation Y** - Slider Path ModelData Index (node to follow must be called "MoveNode")
 
-**Translation Z** - Motion Path Model Data Index (node to follow must be called "path_locator")
+**Translation Z** - Motion Path ModelData Index (node to follow must be called "path_locator")
 
 **Translation X** - Unk1 (Default: 0.9)
 
