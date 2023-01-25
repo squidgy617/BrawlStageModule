@@ -1,7 +1,7 @@
 
 # Hazard Settings
 
-Nodes must be in the first mdl of Model Data 0 with the following order: Platforms, Sliders, Springs, Cannons, Ladders, Catapults, Warps, Toxins, Conveyors, Waters, Winds, CapturePoints, End 
+Nodes must be in the first mdl of Model Data 0 with the following order and names: Platforms, Sliders, Springs, Cannons, Ladders, Catapults, Warps, Toxins, Conveyors, Waters, Winds, CapturePoints, End 
 
 ## Platform
 
@@ -9,27 +9,27 @@ Nodes must be in the first mdl of Model Data 0 with the following order: Platfor
 
 ### Normal
 
-**Rotation X** - Model Data Index
+**Rotation X** - ModelData Index
 
 **Rotation Y** - Collision Index
 
 **Translation X,Y** - Position
 
-**Translation Z** - Motion Path Index (overrides position) (node to follow must be called "MovePlatformNode")
+**Translation Z** - Motion Path ModelData Index (overrides position) (node to follow must be called "MovePlatformNode")
 
 **Rotation Z** - Rotation Z
 
 **Scale X** - Scale
 
-### Break
+### Break (contains two sets of anims for on and off)
 
-**Rotation X** - Model Data Index
+**Rotation X** - ModelData Index
 
 **Rotation Y** - Collision Index
 
 **Translation X,Y** - Position
 
-**Translation Z** - Motion Path Index (overrides position) (node to follow must be called "MovePlatformNode")
+**Translation Z** - Motion Path ModelData Index (overrides position) (node to follow must be called "MovePlatformNode")
 
 **Rotation Z** - Rotation Z
 
@@ -37,15 +37,17 @@ Nodes must be in the first mdl of Model Data 0 with the following order: Platfor
 
 **Scale Y** - Respawn Time
 
-### Landing
+Hitbox Parameters: In the target ModelData, node to follow must be called "HitboxNode", start and end offset positions are called "HitboxOffsetStart" and "HitboxOffsetEnd"
 
-**Rotation X** - Model Data Index
+### Landing (contains two sets of anims for on and off)
+
+**Rotation X** - ModelData Index
 
 **Rotation Y** - Collision Index
 
 **Translation X,Y** - Position
 
-**Translation Z** - Motion Path Index (overrides position) (node to follow must be called "MovePlatformNode")
+**Translation Z** - Motion Path ModelData Index (overrides position) (node to follow must be called "MovePlatformNode")
 
 **Rotation Z** - Rotation Z
 
@@ -55,11 +57,11 @@ Nodes must be in the first mdl of Model Data 0 with the following order: Platfor
 
 ### Elevator
 
-**Rotation X** - Model Data Index
+**Rotation X** - ModelData Index
 
 **Rotation Y** - Collision Index
 
-**Rotation Z** - Positions Index
+**Rotation Z** - Positions Model Data Index (Nodes are configured based on target positions excluding the first node)
 
 **Translation X,Y** - Position
 
@@ -71,11 +73,11 @@ Nodes must be in the first mdl of Model Data 0 with the following order: Platfor
 
 ## Punch Slider
 
-**Rotation X** - Model Data Index
+**Rotation X** - ModelData Index
 
-**Rotation Y** - Slider Path Index (node to follow must be called "MoveNode")
+**Rotation Y** - Slider Path Model Data Index (node to follow must be called "MoveNode")
 
-**Translation Z** - Motion Path Index (node to follow must be called "path_locator")
+**Translation Z** - Motion Path Model Data Index (node to follow must be called "path_locator")
 
 **Translation X** - Unk1 (Default: 0.9)
 
@@ -90,13 +92,13 @@ Nodes must be in the first mdl of Model Data 0 with the following order: Platfor
 **Scale Z** - Unk6 (Default: 1.0)
 
 ## Spring
-**Rotation X** - Model Data Index
+**Rotation X** - ModelData Index
 
 **Rotation Y** - Collision Data Index
 
 **Translation X,Y** - Position
 
-**Translation Z** - Motion Path Index (overrides position) (node to follow must be called "MoveNode")
+**Translation Z** - Motion Path ModelData Index (overrides position) (node to follow must be called "MoveNode")
 
 **Rotation Z** - Rotation Z
 
@@ -106,11 +108,11 @@ Nodes must be in the first mdl of Model Data 0 with the following order: Platfor
 
 ## Cannon
 
-**Rotation X** - Model Data Index
+**Rotation X** - ModelData Index
 
 **Translation X,Y** - Position
 
-**Translation Z** - Motion Path Index (overrides position) (node to follow must be called "MoveNode")
+**Translation Z** - Motion Path ModelData Index (overrides position) (node to follow must be called "MoveNode")
 
 **Rotation Z** - Rotation Z
 
@@ -124,11 +126,11 @@ Nodes must be in the first mdl of Model Data 0 with the following order: Platfor
 
 ## Ladder
 
-**Rotation X** - Model Data Index
+**Rotation X** - ModelData Index
 
 **Translation X,Y** - Position
 
-**Translation Z** - Motion Path Index (overrides position) (node to follow must be called "MoveNode")
+**Translation Z** - Motion Path ModelData Index (overrides position) (node to follow must be called "MoveNode")
 
 **Rotation Y** - 0 or 1, 1 being restrict being able to exit the ladder by holding up
 
@@ -136,9 +138,9 @@ Nodes must be in the first mdl of Model Data 0 with the following order: Platfor
 
 ## Catapult
 
-**Rotation X** - Model Data Index
+**Rotation X** - ModelData Index
 
-**Translation Z** - Motion Path Index (node to follow must be called "path_locator")
+**Translation Z** - Motion Path ModelData Index (node to follow must be called "path_locator")
 
 **Translation X** - Vector
 
@@ -152,11 +154,11 @@ Nodes must be in the first mdl of Model Data 0 with the following order: Platfor
 
 ## Warp
 
-FROM **Rotation Y** - Model Data Index
+FROM **Rotation Y** - ModelData Index
 
 FROM **Translation X, Y** - Position 
 
-FROM **Translation Z** - Model Path Index (overrides position) (node to follow must be called "MoveNode")
+FROM **Translation Z** - Motion Path ModelData Index (overrides position) (node to follow must be called "MoveNode")
 
 FROM **Rotation Z** - Rotation Z
 
