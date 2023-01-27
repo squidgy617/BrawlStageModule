@@ -1,0 +1,22 @@
+#pragma once
+
+#include "gr_cheesebridge_platform.h"
+
+class grCheeseBridgeRope : public grCheeseBridgePlatform {
+protected:
+    soAreaData m_areaData;
+    soAreaInit m_areaInit;
+    ykAreaData m_ykData;
+public:
+    grCheeseBridgeRope(char* taskName) : grCheeseBridgePlatform(taskName)
+    {
+
+    };
+    virtual ~grCheeseBridgeRope(){};
+    virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
+    virtual void onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId);
+    virtual void getUpperNode(Vec3f* pos);
+    virtual void getUnderNode(Vec3f* pos);
+
+    static grCheeseBridgeRope* create(int mdlIndex, char* tgtNodeName, char* taskName);
+};
