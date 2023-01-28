@@ -24,8 +24,11 @@ void stCheeseBridge::createObj() {
     testStageParamInit(m_fileData, 10);
     testStageDataInit(m_fileData, 20, 1);
 
-    createObjGround(0);
+    createObjGround(1);
     createCollision(m_fileData, 2, NULL);
+    createObjPlatform(2, 3, 16);
+    createObjSaw(3, 15);
+    createObjRope(4, 17);
 
     initCameraParam();
     void* posData = m_fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);

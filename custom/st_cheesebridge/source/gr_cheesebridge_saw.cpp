@@ -1,6 +1,7 @@
 #include "gr_cheesebridge_saw.h"
 #include <ec/ec_mgr.h>
 #include <memory.h>
+#include <OS/OSError.h>
 #include "st_cheesebridge_data.h"
 
 grCheeseBridgeSaw* grCheeseBridgeSaw::create(int mdlIndex, char* tgtNodeName, char* taskName)
@@ -28,6 +29,7 @@ void grCheeseBridgeSaw::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     this->getNodePosition(&startPos, 0, startHitboxNode);
     this->getNodePosition(&endPos, 0, "HitboxEnd");
     Vec3f offsetPos = endPos - startPos;
+    OSReport("Offset Y: %f \n", offsetPos.m_y);
     this->setAttack(size, &offsetPos);
     this->m_attackInfo->m_preset = 4;
 

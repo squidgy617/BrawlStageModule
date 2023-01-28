@@ -22,7 +22,10 @@ void grCheeseBridgeRope::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     Vec3f underNode;
     this->getUpperNode(&upperNode);
     this->getUnderNode(&underNode);
-    this->m_areaData = (soAreaData){ 0, 0x16, 0, 0, 0, 0, 0.0, 0.0, 10.0, upperNode.m_y - underNode.m_y};
+    Vec3f rootNode;
+    int root = 0;
+    this->getNodePosition(&rootNode, 0, root);
+    this->m_areaData = (soAreaData){ 0, 0x16, 0, 0, 0, 0, 0.0, (upperNode.m_y + underNode.m_y)/2, 10.0, upperNode.m_y - underNode.m_y};
     this->setAreaGimmick(&this->m_areaData, &this->m_areaInit, &this->m_ykData, false);
     stTrigger* trigger = g_stTriggerMng->createTrigger(GimmickKind_Ladder, -1);
     trigger->setObserveYakumono(this->m_yakumono);
