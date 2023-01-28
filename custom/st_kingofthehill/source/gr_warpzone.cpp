@@ -15,7 +15,7 @@ grWarpZone* grWarpZone::create(int mdlIndex, char* taskName) {
 void grWarpZone::prepareWarpData(int motionPathIndex, float deactivateFrames) {
     this->motionPathData.m_motionRatio = 1.0;
     this->motionPathData.m_index = 0;
-    this->motionPathData.m_0x5 = 1;
+    this->motionPathData.m_pathMode = MotionPathMode_Loop;
     this->motionPathData.m_mdlIndex = motionPathIndex;
     this->motionPathData._padding = 0x0;
 
