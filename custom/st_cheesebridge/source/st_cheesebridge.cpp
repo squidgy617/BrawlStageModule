@@ -26,9 +26,23 @@ void stCheeseBridge::createObj() {
 
     createObjGround(1);
     createCollision(m_fileData, 2, NULL);
-    createObjPlatform(2, 3, 16);
-    createObjSaw(3, 15);
-    createObjRope(4, 17);
+
+    stCheeseBridgeData* stageData = static_cast<stCheeseBridgeData*>(m_stageData);
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < stageData->numPlatformsForRails[i]; j++) {
+            createObjPlatform(2, 3, 15 + i);
+        }
+    }
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < stageData->numSawsForRails[i]; j++) {
+            createObjSaw(3, 15 + i);
+        }
+    }
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < stageData->numRopesForRails[i]; j++) {
+            createObjRope(4, 15 + i);
+        }
+    }
 
     initCameraParam();
     void* posData = m_fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);

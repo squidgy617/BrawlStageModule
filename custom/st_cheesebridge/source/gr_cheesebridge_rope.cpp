@@ -1,7 +1,6 @@
 #include "gr_cheesebridge_rope.h"
 #include <ec/ec_mgr.h>
 #include <memory.h>
-#include "st_cheesebridge_data.h"
 
 grCheeseBridgeRope* grCheeseBridgeRope::create(int mdlIndex, char* tgtNodeName, char* taskName)
 {
@@ -17,6 +16,11 @@ grCheeseBridgeRope* grCheeseBridgeRope::create(int mdlIndex, char* tgtNodeName, 
 
 void grCheeseBridgeRope::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     grCheeseBridgePlatform::startup(archive, unk1, unk2);
+    this->m_soundEffects[0].m_id = snd_se_stage_Jungle_01;
+
+    stCheeseBridgeData* stageData = static_cast<stCheeseBridgeData*>(this->getStageData());
+    this->railParam = &stageData->ropeParam;
+    this->respawnTimer = randf()*(railParam->maxRespawnFrames - railParam->minRespawnFrames) + railParam->minRespawnFrames;
 
     Vec3f upperNode;
     Vec3f underNode;

@@ -2,7 +2,6 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 #include <OS/OSError.h>
-#include "st_cheesebridge_data.h"
 
 grCheeseBridgeSaw* grCheeseBridgeSaw::create(int mdlIndex, char* tgtNodeName, char* taskName)
 {
@@ -18,8 +17,11 @@ grCheeseBridgeSaw* grCheeseBridgeSaw::create(int mdlIndex, char* tgtNodeName, ch
 
 void grCheeseBridgeSaw::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     grCheeseBridgePlatform::startup(archive, unk1, unk2);
+    this->m_soundEffects[0].m_id = snd_se_stage_Jungle_01;
 
-    stCheeseBridgeData* stageData = (stCheeseBridgeData*)this->getStageData();
+    stCheeseBridgeData* stageData = static_cast<stCheeseBridgeData*>(this->getStageData());
+    this->railParam = &stageData->sawParam;
+    this->respawnTimer = randf()*(railParam->maxRespawnFrames - railParam->minRespawnFrames) + railParam->minRespawnFrames;
 
     u32 startHitboxNode = this->getNodeIndex(0, "HitboxStart");
     float size = 1.0;
@@ -29,7 +31,6 @@ void grCheeseBridgeSaw::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     this->getNodePosition(&startPos, 0, startHitboxNode);
     this->getNodePosition(&endPos, 0, "HitboxEnd");
     Vec3f offsetPos = endPos - startPos;
-    OSReport("Offset Y: %f \n", offsetPos.m_y);
     this->setAttack(size, &offsetPos);
     this->m_attackInfo->m_preset = 4;
 
@@ -92,4 +93,13 @@ void grCheeseBridgeSaw::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
     overwriteAttackData->m_bits.isShapeCapsule = true;
 }
+
+void grCheeseBridgeSaw::setOrientation() {
+    if (randi(2) == 0) {
+        this->setRot(0, 0, 0);
+    }
+    else {
+        this->setRot(0, 0, 180);
+    }
+};
 

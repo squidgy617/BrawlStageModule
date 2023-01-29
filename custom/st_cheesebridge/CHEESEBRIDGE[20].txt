@@ -1,0 +1,84 @@
+Saw Reaction Effect
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+Saw Reaction Fix
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+Saw Reaction Add
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+Saw Power
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+Saw Hitstop Multiplier
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+SawAddShieldDmg, platsRail1, platsRail2, platsRail3
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+6
+
+sawsRail1, sawsRail2, sawsRail3, ropesRail1
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+6
+
+ropesRail2, ropesRail3, pad, pad
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+6
+
+Platform Speed
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Min Platform Respawn Frames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Max Platform Respawn Frames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Saw Speed
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Min Saw Respawn Frames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Max Saw Respawn Fraames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Rope Speed
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Min Rope Respawn Frames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Max Rope Respawn Frames
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
