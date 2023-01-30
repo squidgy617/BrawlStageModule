@@ -77,7 +77,7 @@ void grQbertRed::setupAttack() {
     overwriteAttackData->m_bits.isBlockable = true;
     overwriteAttackData->m_bits.isReflectable = true;
     overwriteAttackData->m_bits.isAbsorbable = false;
-    overwriteAttackData->m_bits.field_0x34_8 = 0;
+    overwriteAttackData->m_bits.field_0x38_10 = 0;
 
     overwriteAttackData->m_bits.detectionRate = 120;
     overwriteAttackData->m_bits.field_0x38_1 = false;

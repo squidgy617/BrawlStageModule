@@ -77,7 +77,7 @@ void grCheeseBridgeSaw::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     overwriteAttackData->m_bits.isBlockable = true;
     overwriteAttackData->m_bits.isReflectable = false;
     overwriteAttackData->m_bits.isAbsorbable = false;
-    overwriteAttackData->m_bits.field_0x34_8 = 0;
+    overwriteAttackData->m_bits.addedShieldDamage = stageData->addedShieldDamage;
 
     overwriteAttackData->m_bits.detectionRate = 0x3c;
     overwriteAttackData->m_bits.field_0x38_1 = false;
@@ -89,7 +89,7 @@ void grCheeseBridgeSaw::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     overwriteAttackData->m_bits.disableHitstop = false;
     overwriteAttackData->m_bits.disableHitGfx = false;
     overwriteAttackData->m_bits.disableFlinch = false;
-    overwriteAttackData->m_bits.addedShieldDamage = stageData->addedShieldDamage;
+    overwriteAttackData->m_bits.field_0x38_10 = 0;
 
     overwriteAttackData->m_bits.isShapeCapsule = true;
 }
