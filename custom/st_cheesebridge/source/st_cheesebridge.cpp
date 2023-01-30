@@ -94,7 +94,7 @@ void stCheeseBridge::createObjSaw(int mdlIndex, int motionPathIndex) {
         saw->setStageData(m_stageData);
         saw->startup(m_fileData, 0, 0);
         saw->initializeEntity();
-        saw->startEntity();
+        saw->startEntityAutoLoop();
     }
 }
 
@@ -107,7 +107,7 @@ void stCheeseBridge::createObjRope(int mdlIndex, int motionPathIndex) {
         rope->setStageData(m_stageData);
         rope->startup(m_fileData, 0, 0);
         rope->initializeEntity();
-        rope->startEntity();
+        rope->startEntityAutoLoop();
     }
 }
 
