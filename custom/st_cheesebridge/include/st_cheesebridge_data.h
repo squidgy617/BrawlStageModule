@@ -2,10 +2,13 @@
 
 #include <types.h>
 
+#define NUM_RAILS 3
+
 struct RailObjectParam {
     float speed;
     float minRespawnFrames;
     float maxRespawnFrames;
+    float spawnCooldownFrames;
 };
 
 struct stCheeseBridgeData {
@@ -14,15 +17,15 @@ struct stCheeseBridgeData {
     int reactionAdd;
     int power;
     float hitstopMultiplier;
-    u8 addedShieldDamage;
-    u8 numPlatformsForRails[3];
-    u8 numSawsForRails[3];
-    u8 numRopesForRails[3];
-    char _pad[2];
+    int addedShieldDamage;
+    u8 numPlatformsForRails[NUM_RAILS];
+    u8 numSawsForRails[NUM_RAILS];
+    u8 numRopesForRails[NUM_RAILS];
+    //char _pad[3];
     RailObjectParam platformParam;
     RailObjectParam sawParam;
     RailObjectParam ropeParam;
 
-    STATIC_CHECK(sizeof(stCheeseBridgeData) == 68)
+    STATIC_CHECK(sizeof(stCheeseBridgeData) == 84)
 
 };

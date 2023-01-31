@@ -10,6 +10,7 @@ protected:
     grGimmickMotionPathData motionPathData;
     RailObjectParam* railParam;
     float respawnTimer;
+    float* cooldownTimerWork;
 public:
     grCheeseBridgePlatform(char* taskName) : grMadein(taskName)
     {
@@ -20,6 +21,7 @@ public:
     virtual void update(float deltaFrame);
 
     virtual void setMotionPathData(int mdlIndex);
+    virtual void setCooldownTimerWork(float* cooldownTimerWork);
     virtual void setOrientation();
 
     static grCheeseBridgePlatform* create(int mdlIndex, char* tgtNodeName, char* taskName);

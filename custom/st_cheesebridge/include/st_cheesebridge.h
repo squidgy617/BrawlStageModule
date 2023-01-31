@@ -16,10 +16,12 @@ const float POKETRAINER_Z = 0.0f;
 
 class stCheeseBridge : public stMelee {
     protected:
-
+        float platformCooldownRailTimers[NUM_RAILS];
+        float sawCooldownRailTimers[NUM_RAILS];
+        float ropeCooldownRailTimers[NUM_RAILS];
     public:
         stCheeseBridge(int stageID) : stMelee("stCheeseBridge", stageID) {
-
+            __memfill(&platformCooldownRailTimers, 0, NUM_RAILS*4*3);
         };
         static stCheeseBridge* create();
 
@@ -62,8 +64,8 @@ class stCheeseBridge : public stMelee {
         virtual ~stCheeseBridge() {this->releaseArchive(); };
 
         virtual void createObjGround(int mdlIndex);
-        virtual void createObjPlatform(int mdlIndex, int collIndex, int motionPathIndex);
-        virtual void createObjSaw(int mdlIndex, int motionPathIndex);
-        virtual void createObjRope(int mdlIndex, int motionPathIndex);
+        virtual void createObjPlatform(int mdlIndex, int collIndex, int motionPathIndex, int railIndex);
+        virtual void createObjSaw(int mdlIndex, int motionPathIndex, int railIndex);
+        virtual void createObjRope(int mdlIndex, int motionPathIndex, int railIndex);
 
 };

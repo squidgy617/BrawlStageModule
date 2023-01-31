@@ -44,6 +44,10 @@ void grCheeseBridgePlatform::setMotionPathData(int mdlIndex) {
     this->motionPathData._padding = 0x0;
 }
 
+void grCheeseBridgePlatform::setCooldownTimerWork(float* cooldownTimerWork) {
+    this->cooldownTimerWork = cooldownTimerWork;
+}
+
 void grCheeseBridgePlatform::update(float deltaFrame) {
     grMadein::update(deltaFrame);
 
@@ -56,9 +60,10 @@ void grCheeseBridgePlatform::update(float deltaFrame) {
     }
     else if (this->motionPathData.m_motionRatio == 0){
         this->respawnTimer -= deltaFrame;
-        if (this->respawnTimer <= 0) {
+        if (this->respawnTimer <= 0 && *this->cooldownTimerWork <= 0) {
             this->startGimmickSE(0);
             this->setOrientation();
+            *this->cooldownTimerWork = railParam->spawnCooldownFrames;
             if (randi(2) == 0) {
                 this->motionPathData.m_motionRatio = -railParam->speed;
                 this->m_gimmickMotionPath->applyEndFrame();

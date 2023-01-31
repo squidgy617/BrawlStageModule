@@ -28,19 +28,19 @@ void stCheeseBridge::createObj() {
     createCollision(m_fileData, 2, NULL);
 
     stCheeseBridgeData* stageData = static_cast<stCheeseBridgeData*>(m_stageData);
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < NUM_RAILS; i++) {
         for (int j = 0; j < stageData->numPlatformsForRails[i]; j++) {
-            createObjPlatform(2, 3, 15 + i);
+            createObjPlatform(2, 3, 15 + i, i);
         }
     }
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < NUM_RAILS; i++) {
         for (int j = 0; j < stageData->numSawsForRails[i]; j++) {
-            createObjSaw(3, 15 + i);
+            createObjSaw(3, 15 + i, i);
         }
     }
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < NUM_RAILS; i++) {
         for (int j = 0; j < stageData->numRopesForRails[i]; j++) {
-            createObjRope(4, 15 + i);
+            createObjRope(4, 15 + i, i);
         }
     }
 
@@ -73,24 +73,26 @@ void stCheeseBridge::createObjGround(int mdlIndex) {
     }
 }
 
-void stCheeseBridge::createObjPlatform(int mdlIndex, int collIndex, int motionPathIndex) {
+void stCheeseBridge::createObjPlatform(int mdlIndex, int collIndex, int motionPathIndex, int railIndex) {
     grCheeseBridgePlatform* platform = grCheeseBridgePlatform::create(mdlIndex, "", "grCheeseBridgePlatform");
     if (platform != NULL)
     {
         addGround(platform);
         platform->setMotionPathData(motionPathIndex);
+        platform->setCooldownTimerWork(&this->platformCooldownRailTimers[railIndex]);
         platform->setStageData(m_stageData);
         platform->startup(m_fileData, 0, 0);
         createCollision(m_fileData, collIndex, platform);
     }
 }
 
-void stCheeseBridge::createObjSaw(int mdlIndex, int motionPathIndex) {
+void stCheeseBridge::createObjSaw(int mdlIndex, int motionPathIndex, int railIndex) {
     grCheeseBridgeSaw* saw = grCheeseBridgeSaw::create(mdlIndex, "", "grCheeseBridgeSaw");
     if (saw != NULL)
     {
         addGround(saw);
         saw->setMotionPathData(motionPathIndex);
+        saw->setCooldownTimerWork(&this->sawCooldownRailTimers[railIndex]);
         saw->setStageData(m_stageData);
         saw->startup(m_fileData, 0, 0);
         saw->initializeEntity();
@@ -98,12 +100,13 @@ void stCheeseBridge::createObjSaw(int mdlIndex, int motionPathIndex) {
     }
 }
 
-void stCheeseBridge::createObjRope(int mdlIndex, int motionPathIndex) {
+void stCheeseBridge::createObjRope(int mdlIndex, int motionPathIndex, int railIndex) {
     grCheeseBridgeRope* rope = grCheeseBridgeRope::create(mdlIndex, "", "grCheeseBridgeRope");
     if (rope != NULL)
     {
         addGround(rope);
         rope->setMotionPathData(motionPathIndex);
+        rope->setCooldownTimerWork(&this->ropeCooldownRailTimers[railIndex]);
         rope->setStageData(m_stageData);
         rope->startup(m_fileData, 0, 0);
         rope->initializeEntity();
@@ -112,7 +115,17 @@ void stCheeseBridge::createObjRope(int mdlIndex, int motionPathIndex) {
 }
 
 void stCheeseBridge::update(float frameDelta){
-
+    for (int i = 0; i < NUM_RAILS; i++) {
+        if (this->platformCooldownRailTimers[i] > 0) {
+            this->platformCooldownRailTimers[i] -= frameDelta;
+        }
+        if (this->sawCooldownRailTimers[i] > 0) {
+            this->sawCooldownRailTimers[i] -= frameDelta;
+        }
+        if (this->ropeCooldownRailTimers[i] > 0) {
+            this->ropeCooldownRailTimers[i] -= frameDelta;
+        }
+    }
 }
 
 void Ground::setStageData(void* stageData) {
