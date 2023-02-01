@@ -127,14 +127,12 @@ void stDemo::createObj()
 
     this->doorData.motionPathData.m_motionRatio = 1.0;
     this->doorData.motionPathData.m_index = 0;
-    this->doorData.motionPathData.m_0x5 = 1;
+    this->doorData.motionPathData.m_pathMode = MotionPathMode_Loop;
     this->doorData.motionPathData.m_mdlIndex = 0xFF;
     this->doorData.motionPathData._padding = 0x0;
     this->doorData._spacer[7] = 0x12;
-    this->doorData.field_0x20 = 0;
-    this->doorData.field_0x24 = 10.0;
-    this->doorData.field_0x28 = 20.0;
-    this->doorData.field_0x2c = 20.0;
+    this->doorData.areaOffsetPos = (Vec2f){0, 10.0};
+    this->doorData.areaRange = (Vec2f){20.0, 20.0};
     this->doorData.levelId = 0x04;
     this->doorData.levelSequenceId = 0x0;
     this->doorData.levelSegmentId = 0x1;
@@ -145,20 +143,19 @@ void stDemo::createObj()
     this->doorData.field_0x37 = 0x1;
     this->doorData.pos.m_x = 0.0;
     this->doorData.pos.m_y = 0.0;
-    this->doorData.openDoorTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
+    this->doorData.openDoorTriggerData = (stTriggerData){ 0, 0, 1, 0 };
     this->doorData.doorType = Normal_Door;
     this->doorData.sndID = snd_se_AllStar_Heal_Warp; //snd_se_invalid;
-    this->doorData.motionPathTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
-    this->doorData.isValidTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
+    this->doorData.motionPathTriggerData = (stTriggerData){ 0, 0, 1, 0 };
+    this->doorData.isValidTriggerData = (stTriggerData){ 0, 0, 1, 0 };
 
     this->cannonData.motionPathData.m_motionRatio = 1.0;
     this->cannonData.motionPathData.m_index = 0;
-    this->cannonData.motionPathData.m_0x5 = 1;
+    this->cannonData.motionPathData.m_pathMode = MotionPathMode_Loop;
     this->cannonData.motionPathData.m_mdlIndex = 0xFF;
     this->cannonData.motionPathData._padding = 0x0;
     this->cannonData._spacer[7] = 0x12;
-    this->cannonData.field_0x28 = 20.0;
-    this->cannonData.field_0x2c = 15.0;
+    this->cannonData.areaRange = (Vec2f){20.0, 15.0};
     this->cannonData.pos.m_x = 0.0;
     this->cannonData.pos.m_y = 50.0;
     this->cannonData.rot = 0.0;
@@ -171,18 +168,18 @@ void stDemo::createObj()
     this->cannonData.alwaysRotate = false;
     this->cannonData.mdlIndex = 110;
     this->cannonData.field_0xce = 0x8;
-    this->cannonData.enterCannonTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
-    this->cannonData.motionPathTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
-    this->cannonData.isValidTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
-    this->cannonData.attackData.m_unk1 = 0;
+    this->cannonData.enterCannonTriggerData = (stTriggerData){ 0, 0, 1, 0 };
+    this->cannonData.motionPathTriggerData = (stTriggerData){ 0, 0, 1, 0 };
+    this->cannonData.isValidTriggerData = (stTriggerData){ 0, 0, 1, 0 };
+    this->cannonData.attackData.m_damage = 0;
     this->cannonData.attackData.m_offsetPos.m_x = 0.0;
     this->cannonData.attackData.m_offsetPos.m_y = 0.0;
     this->cannonData.attackData.m_offsetPos.m_z = 0.0;
     this->cannonData.attackData.m_size = 10.0;
-    this->cannonData.attackData.m_vector = 169;
-    this->cannonData.attackData.m_reactionEffect = 19;
+    this->cannonData.attackData.m_vector = 0x169;
+    this->cannonData.attackData.m_reactionEffect = 0x19;
     this->cannonData.attackData.m_reactionFix = 0;
-    this->cannonData.attackData.m_reactionAdd = 5;
+    this->cannonData.attackData.m_reactionAdd = 0x5;
     //char _spacer[4];
     this->cannonData.attackData.m_elementType = Element_Type_Normal;
     this->cannonData.attackData.m_isClankable = false;
@@ -203,10 +200,8 @@ void stDemo::createObj()
     this->cannonData.shootAngleOffset = 10;
     this->cannonData.shootStunTimerSpeed = 0.25;
 
-    this->elevatorData.field_0x18 = 0.0;
-    this->elevatorData.field_0x1c = 25.0;
-    this->elevatorData.field_0x20 = 30.0;
-    this->elevatorData.field_0x24 = 65.0;
+    this->elevatorData.areaOffsetPos = (Vec2f){0.0, 25.0};
+    this->elevatorData.areaRange = (Vec2f){30.0, 65.0};
     this->elevatorData.speed = 0.5; // 2.5
     this->elevatorData.deltaSpeed = 0.1; // 0.2
     this->elevatorData.mdlIndex = 105;
@@ -278,8 +273,8 @@ void stDemo::createObj()
     }
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 0x1E);
-    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
-    registSceneAnim(scnData, 0);
+    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe));
+    registScnAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 }

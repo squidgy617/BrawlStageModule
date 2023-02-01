@@ -19,18 +19,18 @@ void grAdventureElevator::startup(gfArchive* archive, u32 unk1, u32 unk2)
     grYakumono::startup(archive, unk1, unk2);
     this->elevatorData = (grAdventureElevatorData*)this->getGimmickData();
     this->elevatorPosGround = grAdventure2::create(this->elevatorData->posMdlIndex, "");
-    this->elevatorPosGround->unk_0x1c = this;
-    gfTask* task = this->unk_0x20;
+    this->elevatorPosGround->m_connectedTask = this;
+    gfTask* task = this->m_attachedTask;
     if (task == NULL) {
-        this->unk_0x20 = this->elevatorPosGround;
+        this->m_attachedTask = this->elevatorPosGround;
     }
     else {
         gfTask* lastTask;
         while (task != NULL) {
             lastTask = task;
-            task = task->unk_0x24;
+            task = task->m_nextTask;
         }
-        lastTask->unk_0x24 = this->elevatorPosGround;
+        lastTask->m_nextTask = this->elevatorPosGround;
     }
     this->elevatorPosGround->startup(archive, unk1, unk2);
     if (this->m_modelAnims != NULL)
@@ -47,10 +47,7 @@ void grAdventureElevator::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->elevatorPosGround->getNodePosition(&pos, 0, this->prevFloor + 1);
     this->setPos(&pos);
     this->nextFloor = this->prevFloor;
-    this->areaData = (soAreaData){ 0, 0x17, 1, 0, 0, 0, this->elevatorData->field_0x18,
-                                   this->elevatorData->field_0x1c,
-                                   this->elevatorData->field_0x20,
-                                   this->elevatorData->field_0x24};
+    this->areaData = (soAreaData){ 0, 0x17, 1, 0, 0, 0, this->elevatorData->areaOffsetPos, this->elevatorData->areaRange };
     this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
     stTrigger* trigger = g_stTriggerMng->createTrigger(GimmickKind_Elevator, -1);
     trigger->setObserveYakumono(this->m_yakumono);

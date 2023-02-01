@@ -76,11 +76,11 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     }
     trigger->setObserveYakumono(this->m_yakumono);
     this->createEffectWork(1);
-    grGimmickSimpleEffectData simpleEffectData;
+    SimpleEffectData simpleEffectData;
     this->createSimpleEffectData(&simpleEffectData, 0x1030001, "FighterPos");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[0].m_id = simpleEffectData.m_id;
-        this->m_effects->m_0x10 = simpleEffectData.m_0x4;
+        this->m_effects[0].m_0x10 = simpleEffectData.m_0x4;
         if (simpleEffectData.m_nodeIndex == 0) {
             this->m_effects[0].m_nodeIndex = this->getNodeIndex(0, "effect_locator");
         }
@@ -92,7 +92,8 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
         this->m_effects[0].m_0x20 = 0.0;
         this->m_effects[0].m_0x24 = 1.0;
     }
-    this->createSoundWork(2,1);
+
+    this->createSoundWork(3,1);
     this->m_soundEffects[0].m_id = snd_se_stage_Madein_01;
     this->m_soundEffects[0].m_0x10 = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
@@ -105,6 +106,12 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->m_soundEffects[1].m_0x14 = 0;
     this->m_soundEffects[1].m_0x1c = 0.0;
     this->m_soundEffects[1].m_0x20 = 0.0;
+    this->m_soundEffects[2].m_id = snd_se_stage_Madein_photo;
+    this->m_soundEffects[2].m_0x10 = 0;
+    this->m_soundEffects[2].m_nodeIndex = 0;
+    this->m_soundEffects[2].m_0x14 = 0;
+    this->m_soundEffects[2].m_0x1c = 0.0;
+    this->m_soundEffects[2].m_0x20 = 0.0;
     this->createSimpleEffectData(&simpleEffectData, 0x1030006, "effect_locator");
     u32 visProdIndex = 4;
     this->createEffectVisibleProductionForExcel(&simpleEffectData, &visProdIndex, this->m_visibleProductions);
@@ -128,18 +135,18 @@ void grAdventureBarrelCannon::createMotionPath()
         default:
             this->shootMotionPath = grGimmickMotionPath::create(this->cannonPathData->shootMotionPathData.m_mdlIndex, "path_locator", "grGimmickMotionPath");
             this->shootMotionPath->setGimmickData(&this->cannonPathData->shootMotionPathData);
-            this->shootMotionPath->unk_0x1c = this;
-            gfTask* task = this->unk_0x20;
+            this->shootMotionPath->m_connectedTask = this;
+            gfTask* task = this->m_attachedTask;
             if (task == NULL) {
-                this->unk_0x20 = this->shootMotionPath;
+                this->m_attachedTask = this->shootMotionPath;
             }
             else {
                 gfTask* lastTask;
                 while (task != NULL) {
                     lastTask = task;
-                    task = task->unk_0x24;
+                    task = task->m_nextTask;
                 }
-                lastTask->unk_0x24 = this->shootMotionPath;
+                lastTask->m_nextTask = this->shootMotionPath;
             }
             break;
     }
@@ -222,9 +229,10 @@ void grAdventureBarrelCannon::processFixPosition() {
                         this->isRotate = this->cannonData->alwaysRotate;
                         this->startGimmickEffect(0);
                         this->startGimmickSE(1);
+
                         Vec3f pos = {0,-100,0};
                         g_ecMgr->setDrawPrio(1);
-                        g_ecMgr->setEffect(0x3c0003, &pos);
+                        this->effectIndex = g_ecMgr->setEffect(0x3c0003, &pos);
                         g_ecMgr->setDrawPrio(0xffffffff);
                     }
                     break;
@@ -282,6 +290,7 @@ void grAdventureBarrelCannon::update(float frameDelta)
         this->enableArea();
         this->isInCooldown = false;
         this->cooldownTimer = 0.0;
+        g_ecMgr->endEffect(this->effectIndex);
     }
     grGimmick::updateCallback(0);
 }
@@ -345,6 +354,7 @@ void grAdventureBarrelCannon::onGimmickEvent(soGimmickEventInfo* eventInfo, int*
                 this->cannonState = BarrelCannon_State_Set;
             }
             this->startGimmickSE(0);
+            this->startGimmickSE(2);
             cannonEventInfo->m_20 = this->cannonData->field_0xce;
             cannonEventInfo->m_pos = pos;
             break;
@@ -405,16 +415,13 @@ void grAdventureBarrelCannon::presentShootEvent(int playerCannonIndex)
     attackData.m_bits.isCollisionCategory9 = true;
     attackData.m_bits.isCollisionCategory8 = true;
     attackData.m_bits.isCollisionCategory7 = true;
-    attackData.m_bits.isCollisionCategory6 = false;
+    attackData.m_bits.isCollisionCategory6 = true;
     attackData.m_bits.isCollisionCategory5 = true;
     attackData.m_bits.isCollisionCategory4 = true;
     attackData.m_bits.isCollisionCategory3 = true;
     attackData.m_bits.isCollisionCategory2 = true;
     attackData.m_bits.isCollisionCategory1 = true;
     attackData.m_bits.isCollisionCategory0 = true;
-    attackData.m_bits.isCollisionSituationUnk = true;
-    attackData.m_bits.isCollisionSituationAir = true;
-    attackData.m_bits.isCollisionSituationGround = true;
     attackData.m_bits.field_0x30_3 = false;
     attackData.m_bits.isCollisionPartRegion3 = true;
     attackData.m_bits.isCollisionPartRegion2 = true;
@@ -429,8 +436,11 @@ void grAdventureBarrelCannon::presentShootEvent(int playerCannonIndex)
     attackData.m_bits.isBlockable = true;
     attackData.m_bits.isReflectable = true;
     attackData.m_bits.isAbsorbable = false;
-    attackData.m_bits.field_0x34_8 = 0;
-    this->setSoCollisionAttackData(&attackData, &this->cannonData->attackData, 0);
+    attackData.m_bits.field_0x38_10 = 0;
+    this->setSoCollisionAttackData(&attackData, &this->cannonData->attackData, NULL);
+    attackData.m_bits.isCollisionSituationODD = true;
+    attackData.m_bits.isCollisionSituationAir = true;
+    attackData.m_bits.isCollisionSituationGround = true;
 
     grGimmickEventBarrelCannonInfo cannonEventInfo;
     cannonEventInfo.m_state = 4;

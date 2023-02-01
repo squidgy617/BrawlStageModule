@@ -20,73 +20,19 @@ void grFinal::setType(int type)
     this->type = type;
 }
 
-int grFinal::adventureEventGetItem()
-{
-    return 0;
-}
-int grFinal::getInitializeInfo()
-{
-    return 0;
-}
-// NEEDS PARAMS
-// not needed for stFinal though.
-void grFinal::setInitializeInfo()
-{
-    return;
-}
-// NEEDS PARAMS
-// not needed for stFinal though.
-void grFinal::setInitializeFlag()
-{
-    return;
-}
-void grFinal::disableCalcCollision()
-{
-    this->m_calcCollisionEnable &= 0xf7;
-}
-void grFinal::enableCalcCollision()
-{
-    this->m_calcCollisionEnable |= 8;
-}
-bool grFinal::isEnableCalcCollision()
-{
-    return this->m_calcCollisionEnable >> 3 & 1;
-}
-short grFinal::getMdlIndex()
-{
-    return this->m_mdlIndex;
-}
-// TODO
-// possibly has params. unused in stFinal though.
-void grFinal::initStageData()
-{
-    return;
-}
-void* grFinal::getStageData()
-{
-    return this->m_stageData;
-}
-int grFinal::getModelCount()
-{
-    if (m_resFile.IsValid())
-    {
-        return m_resFile.GetResMdlNumEntries();
+void grFinal::startup(gfArchive* data, u32 unk1, u32 unk2) {
+    grYakumono::startup(data, unk1, unk2);
+    if (this->type == 1) {
+        this->createEffectWork(1);
+        this->m_effects[0].m_id = 0x330004;
+        this->m_effects[0].m_0x10 = 0;
+        this->m_effects[0].m_nodeIndex = this->getNodeIndex(0, "effect_locator");
+        this->m_effects[0].m_0x14 = 0.0;
+        this->m_effects[0].m_0x1c = 0.0;
+        this->m_effects[0].m_0x20 = 0.0;
+        this->m_effects[0].m_0x24 = 0.0;
+        this->startGimmickEffect(0);
     }
-    return 0;
-}
-
-char grFinal::getTransparencyFlag()
-{
-    return this->m_transparencyFlag;
-}
-
-void* grFinal::getGimmickData()
-{
-    return this->m_gimmickData;
-}
-void grFinal::setGimmickData(void* gimmickData)
-{
-    this->m_gimmickData = gimmickData;
 }
 
 void grFinal::updateEff()

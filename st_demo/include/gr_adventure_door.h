@@ -15,7 +15,7 @@ enum DoorGimmickKind {
     Door_GimmickKind_Ground = 0x0,
     Door_GimmickKind_Air = 0x1,
     Door_GimmickKind_GroundAuto = 0x2,
-    Door_GimmickKind_Unk = 0x3,
+    Door_GimmickKind_AirAuto = 0x3,
 };
 
 enum DoorType {
@@ -31,10 +31,8 @@ enum DoorType {
 struct grGimmickDoorData {
     grGimmickMotionPathData motionPathData;
     char _spacer[20];
-    float field_0x20;
-    float field_0x24;
-    float field_0x28;
-    float field_0x2c;
+    Vec2f areaOffsetPos;
+    Vec2f areaRange;
     union {
         struct
         {
@@ -53,12 +51,12 @@ struct grGimmickDoorData {
     char mdlIndex;
     char field_0x37;
     Vec2f pos;
-    stTrigger::TriggerData openDoorTriggerData;
+    stTriggerData openDoorTriggerData;
     DoorType doorType : 8;
     char _spacer3[3];
     SndID sndID;
-    stTrigger::TriggerData motionPathTriggerData;
-    stTrigger::TriggerData isValidTriggerData;
+    stTriggerData motionPathTriggerData;
+    stTriggerData isValidTriggerData;
     float difficultyMotionRatios[15];
 };
 

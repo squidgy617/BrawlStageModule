@@ -58,7 +58,7 @@ void grQbertRed::setupAttack() {
     overwriteAttackData->m_bits.isCollisionCategory1 = true;
     overwriteAttackData->m_bits.isCollisionCategory0 = true;
 
-    overwriteAttackData->m_bits.isCollisionSituationUnk = true;
+    overwriteAttackData->m_bits.isCollisionSituationODD = true;
     overwriteAttackData->m_bits.isCollisionSituationAir = true;
     overwriteAttackData->m_bits.isCollisionSituationGround = true;
 
@@ -77,7 +77,7 @@ void grQbertRed::setupAttack() {
     overwriteAttackData->m_bits.isBlockable = true;
     overwriteAttackData->m_bits.isReflectable = true;
     overwriteAttackData->m_bits.isAbsorbable = false;
-    overwriteAttackData->m_bits.field_0x34_8 = 0;
+    overwriteAttackData->m_bits.field_0x38_10 = 0;
 
     overwriteAttackData->m_bits.detectionRate = 120;
     overwriteAttackData->m_bits.field_0x38_1 = false;
@@ -198,8 +198,16 @@ void grQbertRed::onDamage(int index, soDamage* damage, soDamageAttackerInfo* att
 
         this->prevPos = this->getPos();
         this->targetPos = (Vec3f){this->prevPos.m_x, this->stage->m_deadRange.m_bottom, 0};
-        if (damage->teamId < NUM_PLAYERS) {
-            this->teamScoresWork[damage->teamId] += RED_POINTS;
+
+        int teamId = damage->teamId;
+        if (attackerInfo->m_indirectAttackerSoKind == SoKind_Fighter) {
+            teamId = g_ftManager->getTeam(attackerInfo->m_indirectAttackerEntryId, false, false);
+            if (this->gameRule == Game_Rule_Coin) {
+                g_ftManager->pickupCoin(attackerInfo->m_indirectAttackerEntryId, RED_POINTS);
+            }
+        }
+        if (teamId < NUM_PLAYERS) {
+            this->teamScoresWork[teamId] += RED_POINTS;
         }
     }
 }

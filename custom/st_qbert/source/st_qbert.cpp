@@ -28,6 +28,11 @@ void stQbert::notifyEventInfoGo() {
 
 void stQbert::createObj() {
 
+    this->gameRule = g_ftManager->m_gameRule;
+    if (this->gameRule == Game_Rule_Coin) {
+        g_ftManager->m_gameRule = Game_Rule_Time;
+    }
+
     testStageParamInit(m_fileData, 210);
     testStageDataInit(m_fileData, 220, 1);
 
@@ -64,8 +69,8 @@ void stQbert::createObj() {
     }
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 230);
-    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
-    registSceneAnim(scnData, 0);
+    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe));
+    registScnAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 
@@ -117,7 +122,8 @@ void stQbert::createObjCube(int mdlIndex, int collIndex) {
         cube->initializeEntity();
         cube->startEntity();
         cube->setNumBlocksPerTeamWork(this->numBlocksPerTeam);
-        cube->setTeamScoresWork(this->teamScores);
+        cube->setLastLanderEntryIdForTeamWork(this->lastLanderEntryIdForTeam);
+        cube->setTeamScoresWork(this->teamScores, this->gameRule);
         createCollision(m_fileData, collIndex, cube);
     }
 }
@@ -146,7 +152,7 @@ grQbertAlien* stQbert::createObjAlien(int mdlIndex) {
         alien->initializeEntity();
         alien->startEntity();
         alien->setStartPos();
-        alien->setTeamScoresWork(this->teamScores);
+        alien->setTeamScoresWork(this->teamScores, this->gameRule);
     }
     return alien;
 }
@@ -160,7 +166,7 @@ void stQbert::createObjCoily(int mdlIndex, grQbertAlien* enemyTarget) {
         coily->initializeEntity();
         coily->startEntity();
         coily->setStartPos();
-        coily->setTeamScoresWork(this->teamScores);
+        coily->setTeamScoresWork(this->teamScores, this->gameRule);
     }
 }
 
@@ -174,7 +180,7 @@ void stQbert::createObjGreen(int mdlIndex) {
         green->startEntity();
         green->setStartPos();
         green->setImmobilizeStateWork(&this->immobilizeState);
-        green->setTeamScoresWork(this->teamScores);
+        green->setTeamScoresWork(this->teamScores, this->gameRule);
     }
 }
 
@@ -187,7 +193,7 @@ void stQbert::createObjRed(int mdlIndex) {
         red->initializeEntity();
         red->startEntity();
         red->setStartPos();
-        red->setTeamScoresWork(this->teamScores);
+        red->setTeamScoresWork(this->teamScores, this->gameRule);
     }
 }
 
@@ -229,9 +235,13 @@ void stQbert::updateCubes(float frameDelta) {
         this->winTimer -= frameDelta;
         if (this->winTimer <= 0) {
             if (this->winningTeamId > 0 && this->winningTeamId - 1 < NUM_PLAYERS) {
-                this->teamScores[this->winningTeamId - 1] += STARTING_COMPLETION_POINTS
-                        + ADDED_POINTS_PER_ROUND*this->round
-                        + REMAINING_DISKS_POINTS*this->numDisksActive;
+                u32 pointsWon = STARTING_COMPLETION_POINTS
+                                + ADDED_POINTS_PER_ROUND*this->round
+                                + REMAINING_DISKS_POINTS*this->numDisksActive;
+                this->teamScores[this->winningTeamId - 1] += pointsWon;
+                if (this->gameRule == Game_Rule_Coin && this->lastLanderEntryIdForTeam[this->winningTeamId] > -1) {
+                    g_ftManager->pickupCoin(this->lastLanderEntryIdForTeam[this->winningTeamId], pointsWon);
+                }
             }
         }
     }
@@ -249,8 +259,8 @@ void stQbert::updateCubes(float frameDelta) {
             for (u8 i = 0; i < g_ftManager->getEntryCount(); i++) {
                 // set reward for team
                 int entryId = g_ftManager->getEntryIdFromIndex(i);
-                int teamNumber = g_ftManager->getTeam(entryId, true, true) + 1;
-                if (teamNumber == team || team > 5) {
+                int teamNumber = g_ftManager->getTeam(entryId, false, false) + 1;
+                if (this->gameRule != Game_Rule_Coin && (teamNumber == team || team > 5)) {
                     g_ftManager->setCurry(entryId);
                 }
             }

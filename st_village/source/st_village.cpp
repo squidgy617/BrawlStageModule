@@ -3,7 +3,7 @@
 #include "gr_village_guest_path_move.h"
 #include "gr_village_sky.h"
 
-#include <gm/game_global.h>
+#include <gm/gm_global.h>
 #include <gr/gr_collision.h>
 #include <memory.h>
 #include <snd/snd_system.h>
@@ -70,8 +70,8 @@ void stVillage::createObj()
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 0x1E);
 
-    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
-    registSceneAnim(scnData, this->scene);
+    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe));
+    registScnAnim(scnData, this->scene);
 
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
@@ -221,7 +221,7 @@ void stVillage::initStageDataTbl()
 
 void stVillage::selectScene()
 {
-    gmGlobalModeMelee* globalMode = g_gameGlobal->m_globalMode;
+    gmGlobalModeMelee* globalMode = g_GameGlobal->m_modeMelee;
     if (globalMode == NULL)
     {
         return;

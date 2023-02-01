@@ -51,7 +51,7 @@ void grLava::setupAttack() {
     overwriteAttackData->m_bits.isCollisionCategory1 = true;
     overwriteAttackData->m_bits.isCollisionCategory0 = true;
 
-    overwriteAttackData->m_bits.isCollisionSituationUnk = true;
+    overwriteAttackData->m_bits.isCollisionSituationODD = true;
     overwriteAttackData->m_bits.isCollisionSituationAir = true;
     overwriteAttackData->m_bits.isCollisionSituationGround = true;
 
@@ -70,7 +70,7 @@ void grLava::setupAttack() {
     overwriteAttackData->m_bits.isBlockable = true;
     overwriteAttackData->m_bits.isReflectable = false;
     overwriteAttackData->m_bits.isAbsorbable = false;
-    overwriteAttackData->m_bits.field_0x34_8 = 0;
+    overwriteAttackData->m_bits.field_0x38_10 = 0;
 
     overwriteAttackData->m_bits.detectionRate = lavaData->detectionRate;
     overwriteAttackData->m_bits.field_0x38_1 = false;

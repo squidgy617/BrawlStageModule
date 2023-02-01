@@ -59,7 +59,7 @@ void grQbertCoily::setupAttack() {
     overwriteAttackData->m_bits.isCollisionCategory1 = true;
     overwriteAttackData->m_bits.isCollisionCategory0 = true;
 
-    overwriteAttackData->m_bits.isCollisionSituationUnk = true;
+    overwriteAttackData->m_bits.isCollisionSituationODD = true;
     overwriteAttackData->m_bits.isCollisionSituationAir = true;
     overwriteAttackData->m_bits.isCollisionSituationGround = true;
 
@@ -78,7 +78,7 @@ void grQbertCoily::setupAttack() {
     overwriteAttackData->m_bits.isBlockable = true;
     overwriteAttackData->m_bits.isReflectable = true;
     overwriteAttackData->m_bits.isAbsorbable = false;
-    overwriteAttackData->m_bits.field_0x34_8 = 0;
+    overwriteAttackData->m_bits.field_0x38_10 = 0;
 
     overwriteAttackData->m_bits.detectionRate = 120;
     overwriteAttackData->m_bits.field_0x38_1 = false;
@@ -131,8 +131,12 @@ void grQbertCoily::updateMove(float frameDelta) {
         if (this->timer == qbertStageData->knockoutFrames) {
             this->soundGenerator.playSE(snd_se_stage_Madein_08, 0x0, 0x0, 0xffffffff);
             cmReqQuake(1, &(Vec3f){0,0,0});
-            if (this->teamId > 0 && this->teamId - 1 < NUM_PLAYERS) {
-                this->teamScoresWork[teamId - 1] += COILY_POINTS;
+            if (this->attackerEntryId >= 0) {
+               int team = g_ftManager->getTeam(this->attackerEntryId, false, false);
+                this->teamScoresWork[team] += COILY_POINTS;
+                if (this->gameRule == Game_Rule_Coin) {
+                    g_ftManager->pickupCoin(this->attackerEntryId, COILY_POINTS);
+               }
             }
         }
         Vec3f pos = this->getPos();
@@ -221,12 +225,6 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
     damage->totalDamage = 0;
     this->damage += damage->damage;
     if ((!this->isHatched && this->damage > qbertStageData->coilyEggHP) || (this->isHatched && this->damage > qbertStageData->coilySnakeHP)) {
-        if (damage->teamId >= 0 && damage->teamId < NUM_TEAMS - 1) {
-            this->teamId = damage->teamId + 1;
-        }
-        else {
-            this->teamId = DEFAULT_TEAM_ID;
-        }
         this->timer = 0;
         this->setSleepAttack(true);
         this->setSleepHit(true);
@@ -248,6 +246,13 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->targetPos = (Vec3f){this->prevPos.m_x, this->stage->m_deadRange.m_bottom, 0};
         }
     }
+    if (attackerInfo->m_indirectAttackerSoKind == SoKind_Fighter) {
+        this->attackerEntryId = attackerInfo->m_indirectAttackerEntryId;
+    }
+    else {
+        this->attackerEntryId = -1;
+    }
+
 }
 
 void grQbertCoily::setTargetPos() {

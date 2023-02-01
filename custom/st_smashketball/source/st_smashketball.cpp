@@ -45,8 +45,8 @@ void stSmashketball::createObj() {
     }
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 30);
-    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
-    registSceneAnim(scnData, 0);
+    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe));
+    registScnAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 }
@@ -67,10 +67,9 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     stSmashketballData* smashketballData = (stSmashketballData*)this->m_stageData;
     this->cannonData[index].motionPathData.m_motionRatio = 1.0;
     this->cannonData[index].motionPathData.m_index = 0;
-    this->cannonData[index].motionPathData.m_0x5 = 1;
+    this->cannonData[index].motionPathData.m_pathMode = MotionPathMode_Loop;
     this->cannonData[index].motionPathData.m_mdlIndex = 0xFF;
     this->cannonData[index].motionPathData._padding = 0x0;
-    this->cannonData[index]._spacer[7] = 0x12;
     this->cannonData[index].areaPosOffset = (Vec2f){0.0, 0.0};
     this->cannonData[index].areaRange = (Vec2f){20.0, 15.0};
     this->cannonData[index].pos = smashketballData->cannonPosData[index].pos;
@@ -84,18 +83,18 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     this->cannonData[index].alwaysRotate = false;
     this->cannonData[index].mdlIndex = mdlIndex;
     this->cannonData[index].field_0xce = 0x8;
-    this->cannonData[index].enterCannonTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
-    this->cannonData[index].motionPathTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
-    this->cannonData[index].isValidTriggerData = (stTrigger::TriggerData){ 0, 1, 0 };
-    this->cannonData[index].attackData.m_unk1 = 0;
+    this->cannonData[index].enterCannonTriggerData = (stTriggerData){ 0, 0, 1, 0 };
+    this->cannonData[index].motionPathTriggerData = (stTriggerData){ 0, 0, 1, 0 };
+    this->cannonData[index].isValidTriggerData = (stTriggerData){ 0, 0, 1, 0 };
+    this->cannonData[index].attackData.m_damage = 0;
     this->cannonData[index].attackData.m_offsetPos.m_x = 0.0;
     this->cannonData[index].attackData.m_offsetPos.m_y = 0.0;
     this->cannonData[index].attackData.m_offsetPos.m_z = 0.0;
     this->cannonData[index].attackData.m_size = 10.0;
-    this->cannonData[index].attackData.m_vector = 169;
-    this->cannonData[index].attackData.m_reactionEffect = 19;
+    this->cannonData[index].attackData.m_vector = 0x169;
+    this->cannonData[index].attackData.m_reactionEffect = 0x19;
     this->cannonData[index].attackData.m_reactionFix = 0;
-    this->cannonData[index].attackData.m_reactionAdd = 5;
+    this->cannonData[index].attackData.m_reactionAdd = 0x5;
     this->cannonData[index].attackData.m_elementType = Element_Type_Normal;
     this->cannonData[index].attackData.m_isClankable = false;
     this->cannonData[index].attackData.m_unk2 = false;
@@ -130,8 +129,6 @@ void stSmashketball::createObjGlass(int mdlIndex, int collIndex, int index) {
         addGround(glass);
         glass->startup(m_fileData, 0, 0);
         glass->setStageData(m_stageData);
-        glass->initializeEntity();
-        glass->startEntity();
         glass->setPos(smashketballData->glassPos[index].m_x, smashketballData->glassPos[index].m_y, 0);
         createCollision(m_fileData, collIndex, glass);
     }

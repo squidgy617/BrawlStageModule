@@ -27,18 +27,18 @@ void stFinal::createObj()
     if (ground != NULL)
     {
         addGround(ground);
+        ground->setType(0);
         ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
-        ground->setType(0);
         ground->setDontMoveGround();
     }
     ground = grFinal::create(2, "", "grFinalStage");
     if (ground != NULL)
     {
         addGround(ground);
+        ground->setType(1);
         ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
-        ground->setType(1);
         ground->setDontMoveGround();
     }
     createCollision(m_fileData, 2, NULL);
@@ -56,8 +56,8 @@ void stFinal::createObj()
     }
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 0x1E);
-    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
-    registSceneAnim(scnData, 0);
+    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe));
+    registScnAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 }

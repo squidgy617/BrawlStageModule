@@ -10,6 +10,7 @@
 #include <if/if_mngr.h>
 #include <snd/snd_system.h>
 #include <mt/mt_prng.h>
+#include <ft/ft_manager.h>
 
 grQbertAlien* grQbertAlien::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage){
     grQbertAlien* alien = new(Heaps::StageInstance) grQbertAlien(taskName);
@@ -56,7 +57,7 @@ void grQbertAlien::setupAttack() {
     overwriteAttackData->m_bits.isCollisionCategory1 = true;
     overwriteAttackData->m_bits.isCollisionCategory0 = true;
 
-    overwriteAttackData->m_bits.isCollisionSituationUnk = true;
+    overwriteAttackData->m_bits.isCollisionSituationODD = true;
     overwriteAttackData->m_bits.isCollisionSituationAir = true;
     overwriteAttackData->m_bits.isCollisionSituationGround = true;
 
@@ -75,7 +76,7 @@ void grQbertAlien::setupAttack() {
     overwriteAttackData->m_bits.isBlockable = true;
     overwriteAttackData->m_bits.isReflectable = true;
     overwriteAttackData->m_bits.isAbsorbable = false;
-    overwriteAttackData->m_bits.field_0x34_8 = 0;
+    overwriteAttackData->m_bits.field_0x38_10 = 0;
 
     overwriteAttackData->m_bits.detectionRate = 0x3c;
     overwriteAttackData->m_bits.field_0x38_1 = false;
@@ -216,6 +217,10 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
         else {
             this->setTeam(DEFAULT_TEAM_ID);
         }
+        if (attackerInfo->m_indirectAttackerSoKind == SoKind_Fighter) {
+            this->setTeam(g_ftManager->getTeam(attackerInfo->m_indirectAttackerEntryId, false, false) + 1);
+        }
+
         this->lives--;
         this->angle = damage->vector;
         if (damage->side == -1) {

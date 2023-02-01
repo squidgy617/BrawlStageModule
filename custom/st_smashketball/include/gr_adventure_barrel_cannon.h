@@ -5,7 +5,7 @@
 #include <st/st_trigger.h>
 #include <snd/snd_system.h>
 
-#define NUM_PLAYERS 8
+#define NUM_PLAYERS 7
 
 enum BarrelCannonGimmickKind {
     BarrelCannon_GimmickKind_Static = 0x0,
@@ -22,7 +22,6 @@ enum BarrelCannonState {
 
 struct grGimmickBarrelCannnonData {
     grGimmickMotionPathData motionPathData;
-    char _spacer[24];
     Vec2f areaPosOffset;
     Vec2f areaRange;
     Vec2f pos;
@@ -41,9 +40,9 @@ struct grGimmickBarrelCannnonData {
     char _spacer5;
     unsigned short field_0xce;
     char _spacer6[8];
-    stTrigger::TriggerData enterCannonTriggerData;
-    stTrigger::TriggerData motionPathTriggerData;
-    stTrigger::TriggerData isValidTriggerData;
+    stTriggerData enterCannonTriggerData;
+    stTriggerData motionPathTriggerData;
+    stTriggerData isValidTriggerData;
     grYakumono::AttackData attackData;
     char _spacer7;
 };
@@ -92,7 +91,7 @@ protected:
     char isInCooldown;
     char _spacer3;
     float cooldownTimer;
-    BarrelCannonPlayerInfo cannonPlayerInfos[4];
+    BarrelCannonPlayerInfo cannonPlayerInfos[NUM_PLAYERS];
     BarrelCannonState cannonState : 8;
     char _spacer4[3];
     float animFrame;
@@ -102,6 +101,7 @@ protected:
     soAreaData areaData;
     soAreaInit areaInit;
     ykAreaData areaInfo;
+    u32 effectIndex;
 
 public:
     grAdventureBarrelCannon(char* taskName) : grYakumono(taskName) {
@@ -111,16 +111,16 @@ public:
         this->isMainPlayerIn = false;
         this->isInCooldown = false;
         this->cooldownTimer = 0.0;
-        this->cannonPlayerInfos[0] = (BarrelCannonPlayerInfo){false, 0, 0, -1, 0.0};
-        this->cannonPlayerInfos[1] = (BarrelCannonPlayerInfo){false, 0, 0, -1, 0.0};
-        this->cannonPlayerInfos[2] = (BarrelCannonPlayerInfo){false, 0, 0,-1, 0.0};
-        this->cannonPlayerInfos[3] = (BarrelCannonPlayerInfo){false, 0, 0, -1, 0.0};
+        for (int i = 0; i < NUM_PLAYERS; i++) {
+            this->cannonPlayerInfos[i] = (BarrelCannonPlayerInfo){false, 0, 0, -1, 0.0};
+        }
         this->cannonState = BarrelCannon_State_Rest;
         this->animFrame = 0.0;
         this->animSetLength = 60;
         this->animFireLength = 60;
         this->areaInfo.m_numHitGroups = 0;
         this->areaInfo.m_hitGroupsInfo = NULL;
+        this->effectIndex = 0;
 
     };
     virtual void processFixPosition();

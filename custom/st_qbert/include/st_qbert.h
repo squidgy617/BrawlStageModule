@@ -32,6 +32,7 @@ class stQbert : public stMelee {
     protected:
         snd3DGenerator soundGenerator;
         u8 numBlocksPerTeam[NUM_TEAMS];
+        int lastLanderEntryIdForTeam[NUM_TEAMS];
         bool disksActive[NUM_DISKS];
         ImmobilizeState immobilizeState;
         float winTimer;
@@ -43,11 +44,13 @@ class stQbert : public stMelee {
         u8 winningTeamId;
         u8 maxDisksActive;
         u8 numDisksActive;
+        GameRule gameRule : 8;
     public:
         stQbert(int stageID) : stMelee("stQbert", stageID) {
             numBlocksPerTeam[0] = NUM_BLOCKS;
             for (u8 team = 0; team < NUM_TEAMS; team++) {
                 numBlocksPerTeam[team] = 0;
+                lastLanderEntryIdForTeam[team] = -1;
             }
             __memfill(disksActive, false, NUM_DISKS);
             immobilizeState = Immobilize_None;

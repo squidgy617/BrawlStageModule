@@ -23,23 +23,11 @@ public:
     };
     virtual void update(float deltaFrame);
     virtual ~grFinal(){};
+    virtual void startup(gfArchive* data, u32 unk1, u32 unk2);
 
     virtual void updateEff();
     virtual void setType(int type);
 
     static grFinal* create(int mdlIndex, char* tgtNodeName, char* taskName);
-    int adventureEventGetItem();
-    int getInitializeInfo();
-    void setInitializeInfo();
-    void setInitializeFlag();
-    void disableCalcCollision();
-    void enableCalcCollision();
-    bool isEnableCalcCollision();
-    short getMdlIndex();
-    void initStageData();
-    void* getStageData();
-    char getTransparencyFlag();
-    void* getGimmickData();
-    void setGimmickData(void* gimmickData);
-    int getModelCount();
+
 };

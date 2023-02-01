@@ -2,17 +2,17 @@
 
 #include <gr/gr_madein.h>
 
-#define MAX_TARGETS 10
-
 class grTargetSmash : public grMadein
 {
     protected:
+        grGimmickMotionPathData motionPathData;
 
     public:
         grTargetSmash(char* taskName) : grMadein(taskName) {
         };
         virtual ~grTargetSmash() { };
-        virtual u32 getNumTargets();
+        virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
+        virtual void setMotionPathData(int mdlIndex);
 
         static grTargetSmash* create(int mdlIndex, char* tgtNodeName, char* taskName);
 

@@ -1,6 +1,8 @@
 #include "st_targetsmash.h"
 #include <memory.h>
 #include <st/st_class_info.h>
+#include <it/it_manager.h>
+#include <memory.h>
 
 static stClassInfoImpl<2, stTargetSmash> classInfo = stClassInfoImpl<2, stTargetSmash>();
 
@@ -15,16 +17,31 @@ bool stTargetSmash::loading()
 }
 void stTargetSmash::update(float deltaFrame)
 {
-    return;
+    if (!this->isItemsInitialized) {
+        Ground* ground = this->getGround(0);
+        u32 itemsIndex = ground->getNodeIndex(0, "Items");
+        u32 endIndex = ground->getNodeIndex(0, "End");
+        for (int i = itemsIndex + 1; i < endIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->putItem(resNodeData->m_scale.m_x, resNodeData->m_scale.m_y, &resNodeData->m_translation);
+        }
+        this->isItemsInitialized = true;
+    }
 }
 
 void stTargetSmash::createObj()
 {
+    this->patchInstructions();
+    // TODO: Look into switching UI to stock icon and number left if more than certain amount of targets (check IfCenter createModel functions)
+
+    this->level = 0; // TODO
+
     testStageParamInit(m_fileData, 0xA);
     testStageDataInit(m_fileData, 0x14, 1);
-    this->createObjAshiba(0);
 
+    this->createObjAshiba(0);
     createCollision(m_fileData, 2, NULL);
+
     initCameraParam();
     void* posData = m_fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
     if (posData == NULL)
@@ -39,10 +56,31 @@ void stTargetSmash::createObj()
     }
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 50);
-    void* scnData = m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe);
-    registSceneAnim(scnData, 0);
+    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe));
+    registScnAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
+
+    this->setStageAttackData((grGimmickDamageFloor*)this->m_stageData, 0);
+}
+
+void stTargetSmash::patchInstructions() {
+    // stOperatorRuleTargetBreak::checkExtraRule
+    // Give enough room on stack for increased number of targets
+
+    int *instructionAddr = (int*)0x8095d198;
+    *instructionAddr = 0x9421FC40; // stwu sp, -0x3C0(sp) Original: stwu sp, -0x60(sp)
+    TRK_flush_cache(instructionAddr - 4, 0x8);
+    instructionAddr = (int*)0x8095d1a4;
+    *instructionAddr = 0x900103C4; // stw r0, 0x3C4(sp) Original: stw r0, 0x64(sp)
+    TRK_flush_cache(instructionAddr - 4, 0x8);
+
+    instructionAddr = (int*)0x8095d2e0;
+    *instructionAddr = 0x800103C4; // lwz r0, 0x3C4(sp) Original: lwz r0, 0x64(sp)
+    TRK_flush_cache(instructionAddr - 4, 0x8);
+    instructionAddr = (int*)0x8095d2e8;
+    *instructionAddr = 0x382103C0; // addi sp, sp, 0x3C0 Original: addi sp, sp, 0x60
+    TRK_flush_cache(instructionAddr - 4, 0x8);
 }
 
 void stTargetSmash::createObjAshiba(int mdlIndex) {
@@ -50,25 +88,134 @@ void stTargetSmash::createObjAshiba(int mdlIndex) {
     if (ground != NULL)
     {
         addGround(ground);
+        ground->setMotionPathData(-1);
         ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
-        u32 numTargets = ground->getNumTargets();
-        for (int i = 0; i < numTargets; i++) {
-            Vec3f scale;
-            ground->getNodeScale(&scale, 0, i + 1);
-            this->createObjTarget(scale.m_x, ground, i + 1, scale.m_y);
+        u32 targetsIndex = ground->getNodeIndex(0, "Targets");
+        u32 disksIndex = ground->getNodeIndex(0, "Disks");
+        u32 platformIndex = ground->getNodeIndex(0, "Platforms");
+        u32 springsIndex = ground->getNodeIndex(0, "Springs");
+        u32 conveyorIndex = ground->getNodeIndex(0, "Conveyors");
+        u32 itemsIndex = ground->getNodeIndex(0, "Items");
+        // TODO: Optional targets (can select max targets in STDT)
+        for (int i = targetsIndex + 1; i < disksIndex; i++) {
+            this->targetsLeft++;
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjTarget(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy, &resNodeData->m_scale,
+                                  resNodeData->m_translation.m_z, resNodeData->m_rotation.m_z, resNodeData->m_rotation.m_y);
         }
-
+        for (int i = disksIndex + 1; i < platformIndex; i++) {
+            this->targetsLeft++;
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjDisk(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                                  resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x, resNodeData->m_scale.m_y,
+                                  resNodeData->m_translation.m_z, resNodeData->m_rotation.m_y, resNodeData->m_scale.m_z);
+        }
+        for (int i = platformIndex + 1; i < springsIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjPlatform(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                                resNodeData->m_rotation.m_z, &resNodeData->m_scale, resNodeData->m_translation.m_z,
+                                resNodeData->m_rotation.m_y);
+        }
+        for (int i = springsIndex + 1; i < conveyorIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjSpring(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y, &resNodeData->m_translation.m_xy,
+                                  resNodeData->m_rotation.m_z, &resNodeData->m_scale.m_xy, resNodeData->m_scale.m_z,
+                                  resNodeData->m_translation.m_z);
+        }
+        for (int i = conveyorIndex + 1; i < itemsIndex; i += 2) {
+            nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
+            this->createTriggerConveyor(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
+                                        resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y);
+        }
     }
 }
 
-void stTargetSmash::createObjTarget(int mdlIndex, grTargetSmash* targetPositions, u16 nodeIndex, int motionPathIndex) {
+void stTargetSmash::createObjTarget(int mdlIndex, Vec2f* pos, Vec3f* scale, int motionPathIndex, int effectIndex, int collIndex) {
     grTargetSmashTarget* target = grTargetSmashTarget::create(mdlIndex, "", "grTargetSmashTarget");
     if(target != NULL){
         addGround(target);
         target->setStageData(m_stageData);
-        target->setTargetPosition(targetPositions, nodeIndex, motionPathIndex);
+        target->setTargetInfo(motionPathIndex, effectIndex, &this->targetsHit, &this->targetsLeft, this->numTargetsHitPerPlayer, &this->totalDamage, 0);
         target->startup(this->m_fileData,0,0);
+        target->setPos(pos->m_x, pos->m_y, 0);
+        target->setScale(scale);
+        if (collIndex > 0) {
+            createCollision(m_fileData, collIndex, target);
+        }
+    }
+}
+
+// TODO: Maybe have target setting for item only hits?
+
+void stTargetSmash::createObjDisk(int mdlIndex, Vec2f* pos, float rot, float scaleX, float scaleZ, int motionPathIndex, int collIndex, int mode) {
+    grTargetSmashDisk* disk = grTargetSmashDisk::create(mdlIndex, "", "grTargetSmashDisk");
+    if(disk != NULL){
+        addGround(disk);
+        disk->setStageData(m_stageData);
+        disk->setTargetInfo(motionPathIndex, 0, &this->targetsHit, &this->targetsLeft, this->numTargetsHitPerPlayer, &this->totalDamage, mode);
+        disk->startup(this->m_fileData,0,0);
+        disk->setPos(pos->m_x, pos->m_y, 0.0);
+        disk->setScale(scaleX, 1.0, scaleZ);
+        disk->setRot(0.0, 0.0, rot);
+        createCollision(m_fileData, collIndex, disk);
+    }
+}
+
+void stTargetSmash::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, Vec3f* scale, int motionPathIndex, int collIndex) {
+    grTargetSmash* platform = grTargetSmash::create(mdlIndex, "", "grTargetSmashPlatform");
+    if(platform != NULL){
+        addGround(platform);
+        platform->setStageData(m_stageData);
+        platform->setMotionPathData(motionPathIndex);
+        platform->startup(this->m_fileData,0,0);
+        platform->setPos(pos->m_x, pos->m_y, 0.0);
+        platform->setScale(scale);
+        platform->setRot(0.0, 0.0, rot);
+        createCollision(m_fileData, collIndex, platform);
+
+    }
+}
+
+void stTargetSmash::createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, float rot, Vec2f* range, float bounce, int motionPathIndex) {
+    grTargetSmashSpring* spring = grTargetSmashSpring::create(mdlIndex, "grTargetSmashSpring");
+    if (spring != NULL) {
+        grGimmickSpringData springData;
+        __memfill(&springData, 0, sizeof(springData));
+        springData.m_motionPathData.m_mdlIndex = -1;
+        addGround(spring);
+        springData.m_pos = *pos;
+        springData.m_rot = rot;
+        springData.m_areaRange = *range;
+        springData.m_bounce = bounce;
+        spring->setMotionPathData(motionPathIndex);
+        spring->setGimmickData(&springData); // Note: gimmickData will only apply in next function since was allocated on the stack
+        spring->startup(this->m_fileData,0,0);
+        this->createGimmickCollision(collIndex, spring, this->m_fileData);
+    }
+}
+
+void stTargetSmash::createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed, bool isRightDirection) {
+    grGimmickBeltConveyorData beltConveyorAreaData;
+    __memfill(&beltConveyorAreaData, 0, sizeof(beltConveyorAreaData));
+    beltConveyorAreaData.m_conveyorPos = (Vec3f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0};
+    beltConveyorAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
+    beltConveyorAreaData.m_speed = speed;
+    beltConveyorAreaData.m_isRightDirection = isRightDirection;
+
+    this->createGimmickBeltConveyor2(&beltConveyorAreaData);
+}
+
+void stTargetSmash::putItem(int itemID, u32 variantID, Vec3f* pos) {
+    // TODO: Allow pokemon/assists/custom stage items
+    itManager* itemManager = itManager::getInstance();
+    if (itemManager->isCompItemKindArchive((itKind)itemID, variantID, true)) {
+        BaseItem* item = itemManager->createItem((itKind)itemID, variantID, -1, 0, 0, 0xffff, 0, 0xffff);
+        if (item != NULL) {
+            item->warp(pos);
+            item->setVanishMode(false);
+        }
     }
 }
 

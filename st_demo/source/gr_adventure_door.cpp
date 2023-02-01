@@ -25,8 +25,8 @@ void grAdventureDoor::startup(gfArchive* archive, u32 unk1, u32 unk2)
     case Door_GimmickKind_GroundAuto:
         this->gimmickKind = GimmickKind_DoorGroundAuto;
         break;
-    case Door_GimmickKind_Unk:
-        this->gimmickKind = GimmickKind_DoorUnk;
+    case Door_GimmickKind_AirAuto:
+        this->gimmickKind = GimmickKind_DoorAirAuto;
         break;
     default:
         break;
@@ -38,14 +38,11 @@ void grAdventureDoor::startup(gfArchive* archive, u32 unk1, u32 unk2)
     }
     this->makeCalcuCallback(1, Heaps::StageInstance);
     this->setCalcuCallbackRoot(7);
-    if (this->doorData->doorGimmickKind != Door_GimmickKind_Unk)
+    if (this->doorData->doorGimmickKind != Door_GimmickKind_AirAuto)
     {
         this->m_calcWorldCallBack.m_nodeCallbackDataArray->m_scale = (Vec3f){1.1, 1.1, 1.0};
     }
-    this->areaData = (soAreaData){ 0, 0x15, 0, 0, 0, 0, this->doorData->field_0x20,
-                                   this->doorData->field_0x24,
-                                   this->doorData->field_0x28,
-                                   this->doorData->field_0x2c };
+    this->areaData = (soAreaData){ 0, 0x15, 0, 0, 0, 0, this->doorData->areaOffsetPos, this->doorData->areaRange };
     this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
     grGimmickMotionPathInfo motionPathInfo = { archive, &this->doorData->motionPathData, 0x01000000, 0, 0, 0, 0, 0, 0 };
     this->createAttachMotionPath(&motionPathInfo, &this->doorData->motionPathTriggerData, "path_locator");
@@ -53,7 +50,7 @@ void grAdventureDoor::startup(gfArchive* archive, u32 unk1, u32 unk2)
     trigger->setObserveYakumono(this->m_yakumono);
     this->setPos(this->doorData->pos.m_x, this->doorData->pos.m_y, 0);
     this->setRot(0, 0, 0);
-    grGimmickSimpleEffectData simpleEffectData;
+    SimpleEffectData simpleEffectData;
     this->createSimpleEffectData(&simpleEffectData, 0x103001d, "effect_locator");
     u32 visProdIndex = 4;
     this->createEffectVisibleProductionForExcel(&simpleEffectData, &visProdIndex, this->m_visibleProductions);
@@ -110,7 +107,7 @@ void grAdventureDoor::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
 
     // grYakumono::onGimmickEvent(state, taskId);
 
-    if (this->doorData->doorGimmickKind == Door_GimmickKind_Unk)
+    if (this->doorData->doorGimmickKind == Door_GimmickKind_AirAuto)
     {
         if (doorEventInfo->m_state == 0x32)
         {
