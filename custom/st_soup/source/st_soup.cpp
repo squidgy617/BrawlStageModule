@@ -160,7 +160,7 @@ int stSoup::getDefaultLightSetIndex(){
    return 0x14;
 }
 stRange* stSoup::getAIRange() {
-   return &this->aiRange;
+   return &this->m_aiRange;
 }
 bool stSoup::isAdventureStage(){
    return false;
