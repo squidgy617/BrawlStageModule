@@ -68,7 +68,6 @@ void stFinal::createObj()
     camController->changeInput(CameraController::AnimationLocked);
     cmAnimationController* animController = static_cast<cmAnimationController*>(camController->m_currentController);
     animController->setScnAnmRes(&scn0, 0);
-    //animController->releaseScnAnmRes();
 
 }
 
