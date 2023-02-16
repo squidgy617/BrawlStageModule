@@ -120,7 +120,7 @@ Hitbox Parameters: In the target ModelData, node to follow must be called "Hitbo
 
 **Scale Z** - Max Rotation
 
-**Scale X** - Is Autofire (0 or 1)
+**Scale X** - Is Autofire (0 or 1) or number of frames before autofire
 
 **Scale Y** - 1 - Always Rotate (as opposed to only rotate when in the barrel), 2 - Full Rotate (as in do a full rotation rather than stop at Max rotation and turn the other way, 3 - Always Rotate and Full Rotate
 

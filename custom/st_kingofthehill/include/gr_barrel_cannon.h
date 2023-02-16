@@ -4,7 +4,7 @@
 #include <gr/gr_gimmick_motion_path.h>
 #include <st/st_trigger.h>
 #include <snd/snd_system.h>
-#include "st_kingofthehill_data.h"
+#include "st_gimmick_data.h"
 
 #define NUM_PLAYERS 7
 
@@ -27,7 +27,7 @@ struct grGimmickBarrelCannonData {
     float rot;
     float maxRot;
     u32 maxFrames;
-    bool isAutoFire;
+    float autoFireFrames;
     bool fullRotate;
     bool alwaysRotate;
     unsigned short field_0xce;
@@ -81,6 +81,7 @@ protected:
     char isInCooldown;
     char _spacer3;
     float cooldownTimer;
+    float autoFireTimer;
     BarrelCannonPlayerInfo cannonPlayerInfos[NUM_PLAYERS];
     BarrelCannonState cannonState : 8;
     char _spacer4[3];
@@ -102,6 +103,7 @@ public:
         this->isMainPlayerIn = false;
         this->isInCooldown = false;
         this->cooldownTimer = 0.0;
+        this->autoFireTimer = 0.0;
         for (int i = 0; i < NUM_PLAYERS; i++) {
             this->cannonPlayerInfos[i].isActive = false;
             this->cannonPlayerInfos[i].state = BarrelCannon_PlayerState_Invalid;
@@ -131,6 +133,6 @@ public:
     void presentShootEvent(int playerCannonIndex);
     void eraseSendID(int sendID);
 
-    void prepareCannonData(Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, bool isAutoFire);
+    void prepareCannonData(Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, float autoFireFrames);
 
 };
