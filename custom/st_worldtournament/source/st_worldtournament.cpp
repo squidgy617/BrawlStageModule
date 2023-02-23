@@ -8,10 +8,10 @@
 #include <OS/OSError.h>
 #include <hk/hk_math.h>
 
-static stClassInfoImpl<2, stWorldTournament> classInfo = stClassInfoImpl<2, stWorldTournament>();
+static stClassInfoImpl<Stages::Final, stWorldTournament> classInfo = stClassInfoImpl<Stages::Final, stWorldTournament>();
 
 stWorldTournament* stWorldTournament::create() {
-    stWorldTournament* stage = new(Heaps::StageInstance) stWorldTournament(0x2);
+    stWorldTournament* stage = new(Heaps::StageInstance) stWorldTournament(Stages::Final);
     return stage;
 }
 
@@ -187,18 +187,18 @@ int stWorldTournament::getFinalTechniqColor() {
    return 0x14000496;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 T* stClassInfoImpl<I, T>::create(){
     T* stage = new(Heaps::StageInstance) T(I);
     return stage;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 stClassInfoImpl<I, T>::~stClassInfoImpl() {
    setClassInfo(I,0);
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 void stClassInfoImpl<I, T>::preload() {
    return;
 }

@@ -23,7 +23,7 @@ class stGimmick : public stMelee {
     protected:
 
     public:
-        stGimmick(int stageID) : stMelee("stGimmick", stageID) {
+        stGimmick(srStageKind stageID) : stMelee("stGimmick", stageID) {
 
         };
         static stGimmick* create();

@@ -20,7 +20,7 @@ public:
     gfArchive* enemyCommonArchive;
     gfArchive* primFaceArchive;
 
-    stSkyPillar() : stMelee("stDemo", 0x02){
+    stSkyPillar() : stMelee("stDemo", Stages::Final){
         isGo = false;
         testCreated = false;
         timer = 0;

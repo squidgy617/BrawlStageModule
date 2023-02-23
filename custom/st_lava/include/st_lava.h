@@ -16,7 +16,7 @@ class stLava : public stMelee {
     protected:
 
     public:
-        stLava(int stageID) : stMelee("stLava", stageID) {
+        stLava(srStageKind stageID) : stMelee("stLava", stageID) {
 
         };
         static stLava* create();

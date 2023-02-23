@@ -16,7 +16,7 @@ class stWorldTournament : public stMelee {
     protected:
 
     public:
-        stWorldTournament(int stageID) : stMelee("stWorldTournament", stageID) {
+        stWorldTournament(srStageKind stageID) : stMelee("stWorldTournament", stageID) {
         };
         static stWorldTournament* create();
 

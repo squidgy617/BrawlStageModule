@@ -46,7 +46,7 @@ class stQbert : public stMelee {
         u8 numDisksActive;
         GameRule gameRule : 8;
     public:
-        stQbert(int stageID) : stMelee("stQbert", stageID) {
+        stQbert(srStageKind stageID) : stMelee("stQbert", stageID) {
             numBlocksPerTeam[0] = NUM_BLOCKS;
             for (u8 team = 0; team < NUM_TEAMS; team++) {
                 numBlocksPerTeam[team] = 0;

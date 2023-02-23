@@ -8,10 +8,10 @@
 #include <OS/OSError.h>
 #include <hk/hk_math.h>
 
-static stClassInfoImpl<2, stLava> classInfo = stClassInfoImpl<2, stLava>();
+static stClassInfoImpl<Stages::Final, stLava> classInfo = stClassInfoImpl<Stages::Final, stLava>();
 
 stLava* stLava::create() {
-    stLava* stage = new(Heaps::StageInstance) stLava(0x2);
+    stLava* stage = new(Heaps::StageInstance) stLava(Stages::Final);
     return stage;
 }
 
@@ -180,18 +180,18 @@ int stLava::getFinalTechniqColor() {
    return 0x14000496;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 T* stClassInfoImpl<I, T>::create(){
     T* stage = new(Heaps::StageInstance) T(I);
     return stage;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 stClassInfoImpl<I, T>::~stClassInfoImpl() {
    setClassInfo(I,0);
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 void stClassInfoImpl<I, T>::preload() {
    return;
 }

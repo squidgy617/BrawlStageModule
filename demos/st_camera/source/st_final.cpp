@@ -4,7 +4,7 @@
 #include <st/st_class_info.h>
 #include <cm/cm_camera_controller.h>
 
-static stClassInfoImpl<2, stFinal> classInfo = stClassInfoImpl<2, stFinal>();
+static stClassInfoImpl<Stages::Final, stFinal> classInfo = stClassInfoImpl<Stages::Final, stFinal>();
 
 stFinal* stFinal::create()
 {

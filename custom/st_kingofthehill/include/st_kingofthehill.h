@@ -24,7 +24,7 @@ class stKingOfTheHill : public stMelee {
     protected:
 
     public:
-        stKingOfTheHill(int stageID) : stMelee("stKingOfTheHill", stageID) {
+        stKingOfTheHill(srStageKind stageID) : stMelee("stKingOfTheHill", stageID) {
 
         };
         static stKingOfTheHill* create();

@@ -19,7 +19,7 @@ class stSmashketball : public stMelee {
         grGimmickBarrelCannnonStaticData cannonData[2];
 
     public:
-        stSmashketball(int stageID) : stMelee("stSmashketball", stageID) {
+        stSmashketball(srStageKind stageID) : stMelee("stSmashketball", stageID) {
 
         };
         static stSmashketball* create();
