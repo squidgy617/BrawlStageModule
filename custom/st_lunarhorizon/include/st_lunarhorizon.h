@@ -21,7 +21,7 @@ class stLunarHorizon : public stMelee {
         int numColourPlatforms;
         float cooldownTimer;
     public:
-        stLunarHorizon(int stageID) : stMelee("stLunarHorizon", stageID) {
+        stLunarHorizon(srStageKind stageID) : stMelee("stLunarHorizon", stageID) {
             cooldownTimer = 0.0;
             isReset = false;
             numColourPlatforms = 0;

@@ -20,7 +20,7 @@ class stCheeseBridge : public stMelee {
         float sawCooldownRailTimers[NUM_RAILS];
         float ropeCooldownRailTimers[NUM_RAILS];
     public:
-        stCheeseBridge(int stageID) : stMelee("stCheeseBridge", stageID) {
+        stCheeseBridge(srStageKind stageID) : stMelee("stCheeseBridge", stageID) {
             __memfill(&platformCooldownRailTimers, 0, NUM_RAILS*4*3);
         };
         static stCheeseBridge* create();

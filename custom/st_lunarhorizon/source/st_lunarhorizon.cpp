@@ -11,10 +11,10 @@
 #include <sc/sc_melee.h>
 #include <gf/gf_3d_scene.h>
 
-static stClassInfoImpl<2, stLunarHorizon> classInfo = stClassInfoImpl<2, stLunarHorizon>();
+static stClassInfoImpl<Stages::Final, stLunarHorizon> classInfo = stClassInfoImpl<Stages::Final, stLunarHorizon>();
 
 stLunarHorizon* stLunarHorizon::create() {
-    stLunarHorizon* stage = new(Heaps::StageInstance) stLunarHorizon(0x2);
+    stLunarHorizon* stage = new(Heaps::StageInstance) stLunarHorizon(Stages::Final);
     return stage;
 }
 
@@ -270,18 +270,18 @@ int stLunarHorizon::getFinalTechniqColor() {
    return 0x14000496;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 T* stClassInfoImpl<I, T>::create(){
     T* stage = new(Heaps::StageInstance) T(I);
     return stage;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 stClassInfoImpl<I, T>::~stClassInfoImpl() {
    setClassInfo(I,0);
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 void stClassInfoImpl<I, T>::preload() {
    return;
 }

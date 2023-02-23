@@ -9,10 +9,10 @@
 #include <hk/hk_math.h>
 #include <ft/ft_manager.h>
 
-static stClassInfoImpl<2, stSmashketball> classInfo = stClassInfoImpl<2, stSmashketball>();
+static stClassInfoImpl<Stages::Final, stSmashketball> classInfo = stClassInfoImpl<Stages::Final, stSmashketball>();
 
 stSmashketball* stSmashketball::create() {
-    stSmashketball* stage = new(Heaps::StageInstance) stSmashketball(0x2);
+    stSmashketball* stage = new(Heaps::StageInstance) stSmashketball(Stages::Final);
     return stage;
 }
 
@@ -253,18 +253,18 @@ int stSmashketball::getFinalTechniqColor() {
    return 0x14000496;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 T* stClassInfoImpl<I, T>::create(){
     T* stage = new(Heaps::StageInstance) T(I);
     return stage;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 stClassInfoImpl<I, T>::~stClassInfoImpl() {
    setClassInfo(I,0);
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 void stClassInfoImpl<I, T>::preload() {
    return;
 }

@@ -23,25 +23,38 @@ void grCapturePoint::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
     stKingOfTheHillData* stageData = (stKingOfTheHillData*)this->getStageData();
 
-    this->createSoundWork(3,1);
-    this->m_soundEffects[0].m_id = snd_se_common_coin;
+    this->createSoundWork(5,1);
+    this->m_soundEffects[0].m_id = snd_se_ADVstage_common_63;
     this->m_soundEffects[0].m_0x10 = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
     this->m_soundEffects[0].m_0x14 = 0;
     this->m_soundEffects[0].m_0x1c = 0.0;
     this->m_soundEffects[0].m_0x20 = 0.0;
-    this->m_soundEffects[1].m_id = snd_se_common_Countdown;
+    this->m_soundEffects[1].m_id = snd_se_ADVstage_common_LIFE_BALL_2;
     this->m_soundEffects[1].m_0x10 = 0;
     this->m_soundEffects[1].m_nodeIndex = 0;
     this->m_soundEffects[1].m_0x14 = 0;
     this->m_soundEffects[1].m_0x1c = 0.0;
     this->m_soundEffects[1].m_0x20 = 0.0;
-    this->m_soundEffects[2].m_id = snd_se_AllStar_Heal_Warp;
+    this->m_soundEffects[2].m_id = snd_se_ADVstage_common_TOROKKO_FIRE;
     this->m_soundEffects[2].m_0x10 = 0;
     this->m_soundEffects[2].m_nodeIndex = 0;
     this->m_soundEffects[2].m_0x14 = 0;
     this->m_soundEffects[2].m_0x1c = 0.0;
     this->m_soundEffects[2].m_0x20 = 0.0;
+    this->m_soundEffects[3].m_id = snd_se_common_Countdown;
+    this->m_soundEffects[3].m_0x10 = 0;
+    this->m_soundEffects[3].m_nodeIndex = 0;
+    this->m_soundEffects[3].m_0x14 = 0;
+    this->m_soundEffects[3].m_0x1c = 0.0;
+    this->m_soundEffects[3].m_0x20 = 0.0;
+    this->m_soundEffects[4].m_id = snd_se_ADVstage_common_55;
+    this->m_soundEffects[4].m_0x10 = 0;
+    this->m_soundEffects[4].m_nodeIndex = 0;
+    this->m_soundEffects[4].m_0x14 = 0;
+    this->m_soundEffects[4].m_0x1c = 0.0;
+    this->m_soundEffects[4].m_0x20 = 0.0;
+
 
     this->areaData = (soAreaData){ 0, 0x15, 0, 0, 0, 0, stageData->areaOffsetPos, stageData->areaRange};
     this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
@@ -90,6 +103,7 @@ void grCapturePoint::update(float deltaFrame)
                     this->consecutiveFramesCaptured = 0;
                     this->bonusMultiplier = 1;
                     this->applyMotionRate(1.0);
+                    this->stopGimmickSE(1);
                 }
                 else {
                     this->consecutiveFramesCaptured += deltaFrame;
@@ -100,7 +114,7 @@ void grCapturePoint::update(float deltaFrame)
             }
 
             if (int(this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame()) % 45 == 0) {
-                this->startGimmickSE(1);
+                this->startGimmickSE(3);
             }
             if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
                 this->setNewCapturePosition();
@@ -119,6 +133,7 @@ void grCapturePoint::update(float deltaFrame)
                 if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
                     this->state = State_Capturing;
                     this->setMotionDetails(0, 0, 0, 0, State_Capturing);
+                    this->startGimmickSE(1);
                 }
             }
             if (this->stayCapturedTimer > 0.0) {
@@ -129,6 +144,8 @@ void grCapturePoint::update(float deltaFrame)
                     this->consecutiveFramesCaptured = 0;
                     this->bonusMultiplier = 1;
                     this->applyMotionRate(1.0);
+                    this->stopGimmickSE(1);
+                    this->startGimmickSE(2);
                 }
                 else {
                     this->consecutiveFramesCaptured += deltaFrame;
@@ -158,7 +175,6 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
 
                 if (this->gameRule == Game_Rule_Coin) {
                     g_ftManager->pickupCoin(entryId, lastChanceMultiplier*this->bonusMultiplier);
-                    this->startGimmickSE(0);
                 } else {
                     g_ftManager->setHeal(entryId, lastChanceMultiplier*stageData->healAmount*this->bonusMultiplier);
                 }
@@ -184,6 +200,12 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
                 if (this->stayCapturedTimer <= 0.0) {
                     this->state = State_In;
                     this->setMotionDetails(0, 0, 0, 0, State_In);
+                    this->startGimmickSE(0);
+                }
+            }
+            else {
+                if (this->stayCapturedTimer <= 0.0) {
+                    this->startGimmickSE(1);
                 }
             }
             this->stayCapturedTimer = stageData->framesBeforeStopCapture;
@@ -221,7 +243,8 @@ void grCapturePoint::setNewCapturePosition() {
     this->setScale(&resNodeData->m_scale);
     this->setEnableCollisionStatus(false);
     this->collisionMode = static_cast<CollisionMode>(int(resNodeData->m_rotation.m_y));
-    this->startGimmickSE(2);
+    this->stopGimmickSE(1);
+    this->startGimmickSE(4);
 
     this->motionPathData.m_motionRatio = 1.0;
     this->motionPathData.m_index = 0;

@@ -15,8 +15,8 @@ grAdventureBarrelCannon* grAdventureBarrelCannon::create(int mdlIndex, BarrelCan
     return cannon;
 }
 
-void grAdventureBarrelCannon::prepareCannonData(Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, bool isAutoFire) {
-    stKingOfTheHillData* stageData = static_cast<stKingOfTheHillData*>(this->getStageData());
+void grAdventureBarrelCannon::prepareCannonData(Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, float autoFireFrames) {
+    stGimmickData* stageData = static_cast<stGimmickData*>(this->getStageData());
 
     this->_cannonData.motionPathData.m_motionRatio = 1.0;
     this->_cannonData.motionPathData.m_index = 0;
@@ -27,7 +27,7 @@ void grAdventureBarrelCannon::prepareCannonData(Vec2f* pos, float rot, float rot
     this->_cannonData.rot = rot;
     this->_cannonData.maxRot = maxRot;
     this->_cannonData.maxFrames = 0;
-    this->_cannonData.isAutoFire = isAutoFire;
+    this->_cannonData.autoFireFrames = autoFireFrames;
     this->_cannonData.fullRotate = fullRotate;
     this->_cannonData.alwaysRotate = alwaysRotate;
     this->_cannonData.field_0xce = 0x8;
@@ -52,13 +52,13 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     switch (this->kind) {
         case BarrelCannon_GimmickKind_Static:
             this->cannonStaticData = (grGimmickBarrelCannonStaticData*)this->getGimmickData();
-            if (this->cannonData->isAutoFire) {
+            if (this->cannonData->autoFireFrames == 1.0) {
                 this->kind = BarrelCannon_GimmickKind_StaticAuto;
             }
             break;
         case BarrelCannon_GimmickKind_Path:
             this->cannonPathData = (grGimmickBarrelCannonPathData*)this->getGimmickData();
-            if (this->cannonData->isAutoFire) {
+            if (this->cannonData->autoFireFrames == 1.0) {
                 this->kind = BarrelCannon_GimmickKind_PathAuto;
             }
             this->createMotionPath();
@@ -195,7 +195,7 @@ void grAdventureBarrelCannon::processFixPosition() {
                         }
                     }
                     if (this->isMainPlayerIn) {
-                       //g_stAdventure2->setCameraAdvCameraOffset(&this->cannonData->cameraOffset);
+                        //g_stAdventure2->setCameraAdvCameraOffset(&this->cannonData->cameraOffset);
                     }
                     cannonEventInfo.m_state = 9;
                     cannonEventInfo.m_sendID = 0;
@@ -298,9 +298,23 @@ void grAdventureBarrelCannon::update(float frameDelta)
         case BarrelCannon_State_Set:
             this->m_modelAnims[0]->m_anmObjChrRes->SetFrame(this->animFrame);
             this->animFrame += frameDelta;
-            if (this->animFrame >= this->animFireLength) {
+            if (this->animFrame >= this->animSetLength) {
                 this->cannonState = BarrelCannon_State_Rest;
                 this->animFrame = 0.0;
+            }
+        case BarrelCannon_State_Rest:
+            if (this->autoFireTimer > 0) {
+                this->autoFireTimer -= frameDelta;
+                if (this->autoFireTimer <= 0) {
+                    this->isRotate = this->cannonData->alwaysRotate;
+                    for (int i = 0; i < NUM_PLAYERS; i++) {
+                        if (this->cannonPlayerInfos[i].isActive && this->cannonPlayerInfos[i].state != BarrelCannon_PlayerState_Path) {
+                            this->cannonPlayerInfos[i].state = BarrelCannon_PlayerState_Fire;
+                        }
+                    }
+                    this->changeNodeAnim(1,0);
+                    this->cannonState = BarrelCannon_State_Fire;
+                }
             }
             break;
         default:
@@ -377,6 +391,9 @@ void grAdventureBarrelCannon::onGimmickEvent(soGimmickEventInfo* eventInfo, int*
             this->startGimmickSE(0);
             cannonEventInfo->m_20 = this->cannonData->field_0xce;
             cannonEventInfo->m_pos = pos;
+            if (this->autoFireTimer <= 0 && this->cannonData->autoFireFrames > 0.0 && this->cannonData->autoFireFrames != 1.0) {
+                this->autoFireTimer = this->cannonData->autoFireFrames;
+            }
             break;
         case 0x3:
             this->isRotate = this->cannonData->alwaysRotate;
@@ -472,6 +489,7 @@ void grAdventureBarrelCannon::presentShootEvent(int playerCannonIndex)
 
     this->isInCooldown = true;
     this->cooldownTimer = 30.0;
+    this->autoFireTimer = 0.0;
     this->disableArea();
 
 }

@@ -10,10 +10,10 @@
 #include <gm/gm_global.h>
 #include <sc/sc_melee.h>
 
-static stClassInfoImpl<2, stKingOfTheHill> classInfo = stClassInfoImpl<2, stKingOfTheHill>();
+static stClassInfoImpl<Stages::Final, stKingOfTheHill> classInfo = stClassInfoImpl<Stages::Final, stKingOfTheHill>();
 
 stKingOfTheHill* stKingOfTheHill::create() {
-    stKingOfTheHill* stage = new(Heaps::StageInstance) stKingOfTheHill(0x2);
+    stKingOfTheHill* stage = new(Heaps::StageInstance) stKingOfTheHill(Stages::Final);
     return stage;
 }
 
@@ -281,14 +281,14 @@ void stKingOfTheHill::createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, f
     }
 }
 
-void stKingOfTheHill::createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, bool isAutoFire) {
+void stKingOfTheHill::createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, float autoFireFrames) {
 
     grAdventureBarrelCannon* cannon = grAdventureBarrelCannon::create(mdlIndex, BarrelCannon_GimmickKind_Static, "grAdventureBarrelCannon");
     if (cannon != NULL)
     {
         addGround(cannon);
         cannon->setStageData(m_stageData);
-        cannon->prepareCannonData(pos, rot, rotSpeed, maxRot, motionPathIndex, alwaysRotate, fullRotate, isAutoFire);
+        cannon->prepareCannonData(pos, rot, rotSpeed, maxRot, motionPathIndex, alwaysRotate, fullRotate, autoFireFrames);
         cannon->startup(m_fileData, 0, 0);
     }
 }
@@ -511,18 +511,18 @@ int stKingOfTheHill::getFinalTechniqColor() {
    return 0x14000496;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 T* stClassInfoImpl<I, T>::create(){
     T* stage = new(Heaps::StageInstance) T(I);
     return stage;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 stClassInfoImpl<I, T>::~stClassInfoImpl() {
    setClassInfo(I,0);
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 void stClassInfoImpl<I, T>::preload() {
    return;
 }

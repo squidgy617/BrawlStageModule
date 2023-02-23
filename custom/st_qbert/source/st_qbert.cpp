@@ -8,10 +8,10 @@
 #include <OS/OSError.h>
 #include <hk/hk_math.h>
 
-static stClassInfoImpl<2, stQbert> classInfo = stClassInfoImpl<2, stQbert>();
+static stClassInfoImpl<Stages::Final, stQbert> classInfo = stClassInfoImpl<Stages::Final, stQbert>();
 
 stQbert* stQbert::create() {
-    stQbert* stage = new(Heaps::StageInstance) stQbert(0x2);
+    stQbert* stage = new(Heaps::StageInstance) stQbert(Stages::Final);
     return stage;
 }
 bool stQbert::loading(){
@@ -434,18 +434,18 @@ int stQbert::getFinalTechniqColor() {
    return 0x14000496;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 T* stClassInfoImpl<I, T>::create(){
     T* stage = new(Heaps::StageInstance) T(I);
     return stage;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 stClassInfoImpl<I, T>::~stClassInfoImpl() {
    setClassInfo(I,0);
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 void stClassInfoImpl<I, T>::preload() {
    return;
 }

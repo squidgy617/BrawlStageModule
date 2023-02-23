@@ -11,7 +11,7 @@
 // TODO: Destroy enemy if they go past blast zone
 // TODO: Test different enemies
 
-static stClassInfoImpl<2, stSkyPillar> classInfo = stClassInfoImpl<2, stSkyPillar>();
+static stClassInfoImpl<Stages::Final, stSkyPillar> classInfo = stClassInfoImpl<Stages::Final, stSkyPillar>();
 
 stSkyPillar* stSkyPillar::create()
 {

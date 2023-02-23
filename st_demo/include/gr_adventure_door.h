@@ -24,13 +24,14 @@ enum DoorType {
     Ura_Omote_Door = 0x2,
     Moya_Door = 0x3,
     Save_Door = 0x4,
-    Effect_Door = 0x5,
-    Unk_Door = 0x7,
+    Warp_Door = 0x5,
+    Factory_Door = 0x6,
+    Factory_Yellow_Door = 0x7,
 };
 
 struct grGimmickDoorData {
     grGimmickMotionPathData motionPathData;
-    char _spacer[20];
+    char _spacer[24];
     Vec2f areaOffsetPos;
     Vec2f areaRange;
     union {
@@ -40,7 +41,7 @@ struct grGimmickDoorData {
             char levelSequenceId;
             char levelSegmentId;
             char doorIndex;
-        };
+        } jump;
         struct
         {
             unsigned int jumpData;
@@ -49,7 +50,7 @@ struct grGimmickDoorData {
     DoorGimmickKind doorGimmickKind : 8;
     char _spacer2;
     char mdlIndex;
-    char field_0x37;
+    bool useOpenDoorTypeEffect;
     Vec2f pos;
     stTriggerData openDoorTriggerData;
     DoorType doorType : 8;

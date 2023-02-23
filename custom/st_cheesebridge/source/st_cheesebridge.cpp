@@ -8,10 +8,10 @@
 #include <OS/OSError.h>
 #include <hk/hk_math.h>
 
-static stClassInfoImpl<2, stCheeseBridge> classInfo = stClassInfoImpl<2, stCheeseBridge>();
+static stClassInfoImpl<Stages::Final, stCheeseBridge> classInfo = stClassInfoImpl<Stages::Final, stCheeseBridge>();
 
 stCheeseBridge* stCheeseBridge::create() {
-    stCheeseBridge* stage = new(Heaps::StageInstance) stCheeseBridge(0x2);
+    stCheeseBridge* stage = new(Heaps::StageInstance) stCheeseBridge(Stages::Final);
     return stage;
 }
 
@@ -233,18 +233,18 @@ int stCheeseBridge::getFinalTechniqColor() {
    return 0x14000496;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 T* stClassInfoImpl<I, T>::create(){
     T* stage = new(Heaps::StageInstance) T(I);
     return stage;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 stClassInfoImpl<I, T>::~stClassInfoImpl() {
    setClassInfo(I,0);
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 void stClassInfoImpl<I, T>::preload() {
    return;
 }

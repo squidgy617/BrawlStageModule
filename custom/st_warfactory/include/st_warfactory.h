@@ -16,7 +16,7 @@ class stWarFactory : public stMelee {
     protected:
 
     public:
-        stWarFactory(int stageID) : stMelee("stWarFactory", stageID) {
+        stWarFactory(srStageKind stageID) : stMelee("stWarFactory", stageID) {
 
         };
         static stWarFactory* create();

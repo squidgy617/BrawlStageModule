@@ -8,10 +8,10 @@
 #include <OS/OSError.h>
 #include <hk/hk_math.h>
 
-static stClassInfoImpl<2, stSoup> classInfo = stClassInfoImpl<2, stSoup>();
+static stClassInfoImpl<Stages::Final, stSoup> classInfo = stClassInfoImpl<Stages::Final, stSoup>();
 
 stSoup* stSoup::create() {
-    stSoup* stage = new(Heaps::StageInstance) stSoup(0x2);
+    stSoup* stage = new(Heaps::StageInstance) stSoup(Stages::Final);
     return stage;
 }
 bool stSoup::loading(){
@@ -190,18 +190,18 @@ int stSoup::getFinalTechniqColor() {
    return 0x14000496;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 T* stClassInfoImpl<I, T>::create(){
     T* stage = new(Heaps::StageInstance) T(I);
     return stage;
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 stClassInfoImpl<I, T>::~stClassInfoImpl() {
    setClassInfo(I,0);
 }
 
-template<int I, typename T>
+template<srStageKind I, typename T>
 void stClassInfoImpl<I, T>::preload() {
    return;
 }
