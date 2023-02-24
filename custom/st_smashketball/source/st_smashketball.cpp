@@ -70,7 +70,7 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     this->cannonData[index].motionPathData.m_pathMode = MotionPathMode_Loop;
     this->cannonData[index].motionPathData.m_mdlIndex = 0xFF;
     this->cannonData[index].motionPathData._padding = 0x0;
-    this->cannonData[index].areaPosOffset = (Vec2f){0.0, 0.0};
+    this->cannonData[index].areaOffsetPos = (Vec2f){0.0, 0.0};
     this->cannonData[index].areaRange = (Vec2f){20.0, 15.0};
     this->cannonData[index].pos = smashketballData->cannonPosData[index].pos;
     this->cannonData[index].rot = smashketballData->cannonPosData[index].rot;
@@ -112,7 +112,7 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     this->cannonData[index].shootAngleOffset = 0.0;
     this->cannonData[index].shootStunTimerSpeed = smashketballData->shootStunTimerSpeed;
 
-    grAdventureBarrelCannon* cannon = grAdventureBarrelCannon::create(this->cannonData[index].mdlIndex, BarrelCannon_GimmickKind_Static, "grAdventureBarrelCannon");
+    grAdventureBarrelCannon* cannon = grAdventureBarrelCannon::create(this->cannonData[index].mdlIndex, BarrelCannon_Static, "grAdventureBarrelCannon");
     if (cannon != NULL)
     {
         addGround(cannon);
