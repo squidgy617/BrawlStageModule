@@ -63,7 +63,7 @@ void stSkyPillar::update(float frameDiff)
             emCreate create;
             create.m_8 = 10000;
             create.m_difficultyLevel = 15;
-            create.m_enemyID = Enemy_Kuribo;
+            create.m_enemyKind = Enemy_Kuribo;
             create.m_startingAction = 2;
             create.m_spawnPos = (Vec3f){70.0, 0.01, 0.0};
             create.m_facingDirection = -1.0; //1.0;
@@ -73,7 +73,7 @@ void stSkyPillar::update(float frameDiff)
             create.m_posX2 = -create.m_spawnPos.m_x;
             create.m_posY1 = -create.m_spawnPos.m_y;
             create.m_posY1 = -create.m_spawnPos.m_y;
-            create.m_connectedEnemyID = (EnemyID)0;
+            create.m_connectedEnemyKind = (EnemyKind)0;
             create.m_epbm = NULL;
             create.m_motionPath = NULL;
             create.m_epsp = NULL;
@@ -82,7 +82,7 @@ void stSkyPillar::update(float frameDiff)
             //int result = enemyManager->createEnemy(&create);
 
             create.m_startingAction = 2;
-            create.m_enemyID = Enemy_Rayquaza;
+            create.m_enemyKind = Enemy_Rayquaza;
             int result = enemyManager->createEnemy(&create);
             OSReport("Enemy Create result: %d \n", result);
            /* create.m_spawnPos.x = -2.0;
@@ -155,7 +155,7 @@ void stSkyPillar::createObjGround(int mdlIndex) {
 }
 
 
-void stSkyPillar::getEnemyPac(gfArchive **brres, gfArchive **param, gfArchive **enmCommon, gfArchive **primFaceBrres, EnemyID enemyID) {
+void stSkyPillar::getEnemyPac(gfArchive **brres, gfArchive **param, gfArchive **enmCommon, gfArchive **primFaceBrres, EnemyKind enemyID) {
     int fileIndex = enemyID * 2;
     int nodeSize;
     *brres = NULL;

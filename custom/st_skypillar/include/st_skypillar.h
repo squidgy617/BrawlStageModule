@@ -66,7 +66,7 @@ public:
     virtual void notifyEventInfoGo();
     virtual int getFinalTechniqColor();
     virtual bool isBamperVector();
-    virtual void getEnemyPac(gfArchive **brres, gfArchive **param, gfArchive **enmCommon, gfArchive **primFaceBrres, EnemyID enemyID);
+    virtual void getEnemyPac(gfArchive **brres, gfArchive **param, gfArchive **enmCommon, gfArchive **primFaceBrres, EnemyKind enemyID);
     virtual ~stSkyPillar() {
         this->clearHeap();
         this->releaseArchive();
