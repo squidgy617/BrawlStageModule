@@ -40,7 +40,7 @@ void stLunarHorizon::createObj() {
     createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
-    void* posData = m_fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
+    void* posData = m_fileData->getData(Data_Type_Model, 0x64, 0xfffe);
     if(posData == NULL){
       // if no stgPos model in pac, use defaults
       createStagePositions();
@@ -51,7 +51,7 @@ void stLunarHorizon::createObj() {
     }
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 30);
-    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe));
+    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(Data_Type_Scene, 0, 0xfffe));
     nw4r::g3d::ResFile resFile(scnData);
     this->scnAnimLength = resFile.GetResAnmScn(0)->m_animLength;
     registScnAnim(scnData, 0);

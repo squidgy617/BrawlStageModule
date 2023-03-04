@@ -7,22 +7,17 @@
 
 #define NUM_PLAYERS 7
 
-enum BarrelCannonGimmickKind {
-    BarrelCannon_GimmickKind_Static = 0x0,
-    BarrelCannon_GimmickKind_Path = 0x1,
-    BarrelCannon_GimmickKind_StaticAuto = 0x2,
-    BarrelCannon_GimmickKind_PathAuto = 0x3,
-};
-
-enum BarrelCannonState {
-    BarrelCannon_State_Set = 0x0,
-    BarrelCannon_State_Fire = 0x1,
-    BarrelCannon_State_Rest = 0x2,
+enum BarrelCannonKind {
+    BarrelCannon_Static = 0x0,
+    BarrelCannon_Path = 0x1,
+    BarrelCannon_StaticAuto = 0x2,
+    BarrelCannon_PathAuto = 0x3,
 };
 
 struct grGimmickBarrelCannnonData {
     grGimmickMotionPathData motionPathData;
-    Vec2f areaPosOffset;
+    char _spacer[24];
+    Vec2f areaOffsetPos;
     Vec2f areaRange;
     Vec2f pos;
     float rot;
@@ -58,32 +53,38 @@ struct grGimmickBarrelCannnonPathData : grGimmickBarrelCannnonData {
     grGimmickMotionPathData shootMotionPathData;
 };
 
-enum BarrelCannonPlayerState {
-    BarrelCannon_PlayerState_Invalid = 0x0,
-    BarrelCannon_PlayerState_Enter = 0x1,
-    BarrelCannon_PlayerState_Set = 0x2,
-    BarrelCannon_PlayerState_Fire = 0x3,
-    BarrelCannon_PlayerState_Path = 0x4
-};
-
-
-struct BarrelCannonPlayerInfo {
-    bool isActive;
-    BarrelCannonPlayerState state : 8;
-    char playerNumber;
-    int sendID;
-    float frame;
-};
-
 class grAdventureBarrelCannon : public grYakumono
 {
 protected:
+
+    enum State {
+        State_Set = 0x0,
+        State_Fire = 0x1,
+        State_Rest = 0x2,
+    };
+
+    enum PlayerState {
+        PlayerState_Invalid = 0x0,
+        PlayerState_Enter = 0x1,
+        PlayerState_Set = 0x2,
+        PlayerState_Fire = 0x3,
+        PlayerState_Path = 0x4
+    };
+
+    struct PlayerInfo {
+        bool isActive;
+        PlayerState state : 8;
+        char playerNumber;
+        int sendID;
+        float frame;
+    };
+
     grGimmickBarrelCannnonData* cannonData;
     grGimmickBarrelCannnonStaticData* cannonStaticData;
     grGimmickBarrelCannnonPathData* cannonPathData;
     grGimmickMotionPath* shootMotionPath;
     int nodeIndex;
-    BarrelCannonGimmickKind kind : 8;
+    BarrelCannonKind kind : 8;
     char _spacer2[3];
     float rotateSpeed;
     bool isRotate;
@@ -91,8 +92,8 @@ protected:
     char isInCooldown;
     char _spacer3;
     float cooldownTimer;
-    BarrelCannonPlayerInfo cannonPlayerInfos[NUM_PLAYERS];
-    BarrelCannonState cannonState : 8;
+    PlayerInfo cannonPlayerInfos[NUM_PLAYERS];
+    State cannonState : 8;
     char _spacer4[3];
     float animFrame;
     unsigned int animSetLength;
@@ -101,7 +102,6 @@ protected:
     soAreaData areaData;
     soAreaInit areaInit;
     ykAreaData areaInfo;
-    u32 effectIndex;
 
 public:
     grAdventureBarrelCannon(char* taskName) : grYakumono(taskName) {
@@ -112,15 +112,14 @@ public:
         this->isInCooldown = false;
         this->cooldownTimer = 0.0;
         for (int i = 0; i < NUM_PLAYERS; i++) {
-            this->cannonPlayerInfos[i] = (BarrelCannonPlayerInfo){false, 0, 0, -1, 0.0};
+            this->cannonPlayerInfos[i] = (PlayerInfo){false, 0, 0, -1, 0.0};
         }
-        this->cannonState = BarrelCannon_State_Rest;
+        this->cannonState = State_Rest;
         this->animFrame = 0.0;
         this->animSetLength = 60;
         this->animFireLength = 60;
         this->areaInfo.m_numHitGroups = 0;
         this->areaInfo.m_hitGroupsInfo = NULL;
-        this->effectIndex = 0;
 
     };
     virtual void processFixPosition();
@@ -132,7 +131,7 @@ public:
     virtual void createMotionPath();
     virtual void updateMove(float frameDiff);
 
-    static grAdventureBarrelCannon* create(int mdlIndex, BarrelCannonGimmickKind cannonType, char* taskName);
+    static grAdventureBarrelCannon* create(int mdlIndex, BarrelCannonKind cannonType, char* taskName);
     void presentShootEvent(int playerCannonIndex);
     void eraseSendID(int sendID);
 

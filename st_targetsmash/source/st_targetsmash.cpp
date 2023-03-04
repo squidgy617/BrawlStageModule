@@ -44,7 +44,7 @@ void stTargetSmash::createObj()
     createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
-    void* posData = m_fileData->getData(DATA_TYPE_MODEL, 0x64, 0xfffe);
+    void* posData = m_fileData->getData(Data_Type_Model, 0x64, 0xfffe);
     if (posData == NULL)
     {
         // if no stgPos model in pac, use defaults
@@ -57,13 +57,17 @@ void stTargetSmash::createObj()
     }
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 50);
-    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(DATA_TYPE_SCENE, 0, 0xfffe));
+    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(Data_Type_Scene, 0, 0xfffe));
     registScnAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 
     stTargetSmashData* stageData = static_cast<stTargetSmashData*>(this->m_stageData);
     this->setStageAttackData(&stageData->damageFloor, 0);
+}
+
+void stTargetSmash::getItemPac(gfArchive** brres, gfArchive** param, int itemID, int variantID) {
+
 }
 
 void stTargetSmash::patchInstructions() {
@@ -337,7 +341,7 @@ void stTargetSmash::createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, flo
 
 void stTargetSmash::createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rotSpeed, float maxRot, int motionPathIndex, bool alwaysRotate, bool fullRotate, float autoFireFrames) {
 
-    grAdventureBarrelCannon* cannon = grAdventureBarrelCannon::create(mdlIndex, BarrelCannon_GimmickKind_Static, "grAdventureBarrelCannon");
+    grAdventureBarrelCannon* cannon = grAdventureBarrelCannon::create(mdlIndex, BarrelCannon_Static, "grAdventureBarrelCannon");
     if (cannon != NULL)
     {
         addGround(cannon);
