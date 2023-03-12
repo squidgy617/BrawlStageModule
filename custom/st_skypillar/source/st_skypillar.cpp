@@ -336,9 +336,9 @@ bool stSkyPillar::isReStartSamePoint()
 {
     return true;
 }
-int stSkyPillar::getWind2ndOnlyData()
+grGimmickWindData2nd* stSkyPillar::getWind2ndOnlyData()
 {
-    return (u32) & this->wndOnlyData2;
+    return m_windAreaData2nd;
 }
 bool stSkyPillar::isBamperVector()
 {

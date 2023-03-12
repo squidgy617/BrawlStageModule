@@ -243,8 +243,8 @@ int stSmashketball::getPokeTrainerPointNum() {
 bool stSmashketball::isReStartSamePoint() {
    return true;
 }
-int stSmashketball::getWind2ndOnlyData() {
-   return (u32) &this->wndOnlyData2;
+grGimmickWindData2nd* stSmashketball::getWind2ndOnlyData() {
+    return m_windAreaData2nd;
 }
 bool stSmashketball::isBamperVector() {
    return true;

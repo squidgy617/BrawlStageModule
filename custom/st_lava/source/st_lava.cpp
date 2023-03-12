@@ -170,8 +170,8 @@ int stLava::getPokeTrainerPointNum() {
 bool stLava::isReStartSamePoint() {
    return true;
 }
-int stLava::getWind2ndOnlyData() {
-   return (u32) &this->wndOnlyData2;
+grGimmickWindData2nd* stLava::getWind2ndOnlyData() {
+    return m_windAreaData2nd;
 }
 bool stLava::isBamperVector() {
    return true;

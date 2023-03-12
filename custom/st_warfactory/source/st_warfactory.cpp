@@ -173,8 +173,8 @@ int stWarFactory::getPokeTrainerPointNum() {
 bool stWarFactory::isReStartSamePoint() {
    return true;
 }
-int stWarFactory::getWind2ndOnlyData() {
-   return (u32) &this->wndOnlyData2;
+grGimmickWindData2nd* stWarFactory::getWind2ndOnlyData() {
+    return m_windAreaData2nd;
 }
 bool stWarFactory::isBamperVector() {
    return true;

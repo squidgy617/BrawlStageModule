@@ -24,7 +24,7 @@ class stSmashketball : public stMelee {
         };
         static stSmashketball* create();
 
-        int getWind2ndOnlyData();
+        grGimmickWindData2nd* getWind2ndOnlyData();
         bool isReStartSamePoint();
         int getPokeTrainerPointNum();
         void startFighterEvent();

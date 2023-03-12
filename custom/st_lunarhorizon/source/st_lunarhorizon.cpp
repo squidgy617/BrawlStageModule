@@ -261,8 +261,8 @@ int stLunarHorizon::getPokeTrainerPointNum() {
 bool stLunarHorizon::isReStartSamePoint() {
    return true;
 }
-int stLunarHorizon::getWind2ndOnlyData() {
-   return (u32) &this->wndOnlyData2;
+grGimmickWindData2nd* stLunarHorizon::getWind2ndOnlyData() {
+    return m_windAreaData2nd;
 }
 bool stLunarHorizon::isBamperVector() {
    return true;

@@ -21,7 +21,7 @@ class stLava : public stMelee {
         };
         static stLava* create();
 
-        int getWind2ndOnlyData();
+        grGimmickWindData2nd* getWind2ndOnlyData();
         bool isReStartSamePoint();
         int getPokeTrainerPointNum();
         void startFighterEvent();
