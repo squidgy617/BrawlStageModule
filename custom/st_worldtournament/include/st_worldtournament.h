@@ -20,7 +20,7 @@ class stWorldTournament : public stMelee {
         };
         static stWorldTournament* create();
 
-        int getWind2ndOnlyData();
+        grGimmickWindData2nd* getWind2ndOnlyData();
         bool isReStartSamePoint();
         int getPokeTrainerPointNum();
         void startFighterEvent();

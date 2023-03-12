@@ -31,12 +31,12 @@ void grLunarHorizonYellow::update(float deltaFrame)
         this->turnOffTimer -= deltaFrame;
     }
     else {
-        if (*this->cooldownTimerWork <= 0 && !this->isActive && (g_Gravity->m_up >= stageData->maxGravityUpBeforeResetAvailable || g_Gravity->m_up <= stageData->minGravityUpBeforeResetAvailable)) {
+        if (*this->cooldownTimerWork <= 0 && !this->isActive && (g_soWorld->m_gravityUp >= stageData->maxGravityUpBeforeResetAvailable || g_soWorld->m_gravityUp <= stageData->minGravityUpBeforeResetAvailable)) {
             this->isActive = true;
             this->setMotion(1);
         }
     }
-    if (this->isActive && (*this->cooldownTimerWork > 0 || (g_Gravity->m_up < stageData->maxGravityUpBeforeResetAvailable && g_Gravity->m_up > stageData->minGravityUpBeforeResetAvailable))) {
+    if (this->isActive && (*this->cooldownTimerWork > 0 || (g_soWorld->m_gravityUp < stageData->maxGravityUpBeforeResetAvailable && g_soWorld->m_gravityUp > stageData->minGravityUpBeforeResetAvailable))) {
         this->isActive = false;
         this->setMotion(0);
     }
@@ -51,7 +51,8 @@ void grLunarHorizonYellow::receiveCollMsg_Landing(grCollStatus* collStatus, grCo
         this->isActive = false;
         this->setMotion(0);
         this->startGimmickSE(0);
-        *g_Gravity = stageData->startingGravity;
+        g_soWorld->m_gravityUp = stageData->startingGravityUp;
+        g_soWorld->m_gravityDown = stageData->startingGravityDown;
         *this->cooldownTimerWork = stageData->cooldownFrames;
         *this->isResetWork = true;
     }

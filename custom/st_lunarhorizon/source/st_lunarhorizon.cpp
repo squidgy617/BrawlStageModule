@@ -59,7 +59,8 @@ void stLunarHorizon::createObj() {
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(m_stageData);
-    *g_Gravity = stageData->startingGravity;
+    g_soWorld->m_gravityUp = stageData->startingGravityUp;
+    g_soWorld->m_gravityDown = stageData->startingGravityDown;
     this->cooldownTimer = stageData->cooldownFrames;
 }
 
@@ -149,7 +150,7 @@ void stLunarHorizon::createObjSun(int mdlIndex) {
 
 void stLunarHorizon::update(float deltaFrame){
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(m_stageData);
-    float currentFrame = this->scnAnimLength*(g_Gravity->m_up - stageData->minGravityUp)/(stageData->maxGravityUp - stageData->minGravityUp);
+    float currentFrame = this->scnAnimLength*(g_soWorld->m_gravityUp - stageData->minGravityUp)/(stageData->maxGravityUp - stageData->minGravityUp);
     g_gfSceneRoot->setCurrentFrame(currentFrame);
 
     if (this->cooldownTimer > 0) {
@@ -260,8 +261,8 @@ int stLunarHorizon::getPokeTrainerPointNum() {
 bool stLunarHorizon::isReStartSamePoint() {
    return true;
 }
-int stLunarHorizon::getWind2ndOnlyData() {
-   return (u32) &this->wndOnlyData2;
+grGimmickWindData2nd* stLunarHorizon::getWind2ndOnlyData() {
+    return m_windAreaData2nd;
 }
 bool stLunarHorizon::isBamperVector() {
    return true;

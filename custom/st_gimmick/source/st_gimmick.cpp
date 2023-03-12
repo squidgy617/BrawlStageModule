@@ -475,8 +475,8 @@ int stGimmick::getPokeTrainerPointNum() {
 bool stGimmick::isReStartSamePoint() {
    return true;
 }
-int stGimmick::getWind2ndOnlyData() {
-   return (u32) &this->wndOnlyData2;
+grGimmickWindData2nd* stGimmick::getWind2ndOnlyData() {
+    return m_windAreaData2nd;
 }
 bool stGimmick::isBamperVector() {
    return true;

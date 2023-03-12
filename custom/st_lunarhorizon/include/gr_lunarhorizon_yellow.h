@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gr/gr_madein.h>
+#include <so/so_world.h>
 #include "st_lunarhorizon_data.h"
 
 class grLunarHorizonYellow : public grMadein {

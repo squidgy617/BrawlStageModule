@@ -28,7 +28,7 @@ class stGimmick : public stMelee {
         };
         static stGimmick* create();
 
-        int getWind2ndOnlyData();
+        grGimmickWindData2nd* getWind2ndOnlyData();
         bool isReStartSamePoint();
         int getPokeTrainerPointNum();
         void startFighterEvent();

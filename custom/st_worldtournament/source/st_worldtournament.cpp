@@ -177,8 +177,8 @@ int stWorldTournament::getPokeTrainerPointNum() {
 bool stWorldTournament::isReStartSamePoint() {
    return true;
 }
-int stWorldTournament::getWind2ndOnlyData() {
-   return (u32) &this->wndOnlyData2;
+grGimmickWindData2nd* stWorldTournament::getWind2ndOnlyData() {
+    return m_windAreaData2nd;
 }
 bool stWorldTournament::isBamperVector() {
    return true;

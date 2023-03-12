@@ -424,8 +424,8 @@ int stQbert::getPokeTrainerPointNum() {
 bool stQbert::isReStartSamePoint() {
    return true;
 }
-int stQbert::getWind2ndOnlyData() {
-   return (u32) &this->wndOnlyData2;
+grGimmickWindData2nd* stQbert::getWind2ndOnlyData() {
+    return m_windAreaData2nd;
 }
 bool stQbert::isBamperVector() {
    return true;

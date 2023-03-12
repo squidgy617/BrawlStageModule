@@ -46,13 +46,13 @@ void grLunarHorizonColour::update(float deltaFrame)
     if (!this->isActive) {
         if (*this->cooldownTimerWork <= 0) {
             if (this->type > 0) {
-                if (g_Gravity->m_up < stageData->maxGravityUp && g_Gravity->m_down < stageData->maxGravityDown) {
+                if (g_soWorld->m_gravityUp < stageData->maxGravityUp && g_soWorld->m_gravityDown < stageData->maxGravityDown) {
                     this->isActive = true;
                     this->setMotionDetails(1, 0, 0, 1, 1);
                 }
             }
             else {
-                if (g_Gravity->m_up > stageData->minGravityUp && g_Gravity->m_down > stageData->minGravityDown) {
+                if (g_soWorld->m_gravityUp > stageData->minGravityUp && g_soWorld->m_gravityDown > stageData->minGravityDown) {
                     this->isActive = true;
                     this->setMotionDetails(4, 0, 1, 4, 4);
                 }
@@ -77,8 +77,8 @@ void grLunarHorizonColour::update(float deltaFrame)
 void grLunarHorizonColour::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(this->getStageData());
 
-    if (this->isActive && ((this->type > 0 && g_Gravity->m_up < stageData->maxGravityUp && g_Gravity->m_down < stageData->maxGravityDown) ||
-                              (this->type < 0 && g_Gravity->m_up > stageData->minGravityUp && g_Gravity->m_down > stageData->minGravityDown))) {
+    if (this->isActive && ((this->type > 0 && g_soWorld->m_gravityUp < stageData->maxGravityUp && g_soWorld->m_gravityDown < stageData->maxGravityDown) ||
+                              (this->type < 0 && g_soWorld->m_gravityUp > stageData->minGravityUp && g_soWorld->m_gravityDown > stageData->minGravityDown))) {
         if (this->turnOffTimer <= 0) {
             if (this->type > 0) {
                 this->setMotionDetails(2, 0, 0, 2, 2);
@@ -90,25 +90,25 @@ void grLunarHorizonColour::receiveCollMsg_Landing(grCollStatus* collStatus, grCo
         }
 
         if (int(this->consecutiveFrames) % stageData->gravityUpdateFrames) {
-            float gravityUp = g_Gravity->m_up + this->type*stageData->gravityUpRate;
+            float gravityUp = g_soWorld->m_gravityUp + this->type*stageData->gravityUpRate;
             if (gravityUp > stageData->maxGravityUp) {
-                g_Gravity->m_up = stageData->maxGravityUp;
+                g_soWorld->m_gravityUp = stageData->maxGravityUp;
             }
             else if (gravityUp < stageData->minGravityUp) {
-                g_Gravity->m_up = stageData->minGravityUp;
+                g_soWorld->m_gravityUp = stageData->minGravityUp;
             }
             else {
-                g_Gravity->m_up = gravityUp;
+                g_soWorld->m_gravityUp = gravityUp;
             }
-            float gravityDown = g_Gravity->m_down + this->type*stageData->gravityDownRate;
+            float gravityDown = g_soWorld->m_gravityDown + this->type*stageData->gravityDownRate;
             if (gravityDown > stageData->maxGravityDown) {
-                g_Gravity->m_down = stageData->maxGravityDown;
+                g_soWorld->m_gravityDown = stageData->maxGravityDown;
             }
             else if (gravityDown < stageData->minGravityDown) {
-                g_Gravity->m_down = stageData->minGravityDown;
+                g_soWorld->m_gravityDown = stageData->minGravityDown;
             }
             else {
-                g_Gravity->m_down = gravityDown;
+                g_soWorld->m_gravityDown = gravityDown;
             }
 
             this->consecutiveFrames += 1.0;

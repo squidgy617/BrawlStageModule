@@ -2,10 +2,10 @@
 
 #include <types.h>
 #include <StaticAssert.h>
-#include <st/st_melee.h>
 
 struct stLunarHorizonData {
-    Gravity startingGravity;
+    float startingGravityUp;
+    float startingGravityDown;
     u32 gravityUpdateFrames;
     float gravityUpRate;
     float gravityDownRate;

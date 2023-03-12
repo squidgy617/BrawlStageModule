@@ -28,7 +28,7 @@ class stLunarHorizon : public stMelee {
         };
         static stLunarHorizon* create();
 
-        int getWind2ndOnlyData();
+        grGimmickWindData2nd* getWind2ndOnlyData();
         bool isReStartSamePoint();
         int getPokeTrainerPointNum();
         void startFighterEvent();

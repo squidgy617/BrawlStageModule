@@ -223,8 +223,8 @@ int stCheeseBridge::getPokeTrainerPointNum() {
 bool stCheeseBridge::isReStartSamePoint() {
    return true;
 }
-int stCheeseBridge::getWind2ndOnlyData() {
-   return (u32) &this->wndOnlyData2;
+grGimmickWindData2nd* stCheeseBridge::getWind2ndOnlyData() {
+    return m_windAreaData2nd;
 }
 bool stCheeseBridge::isBamperVector() {
    return true;

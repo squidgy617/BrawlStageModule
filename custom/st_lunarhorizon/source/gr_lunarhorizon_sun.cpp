@@ -17,7 +17,7 @@ void grLunarHorizonSun::update(float deltaFrame)
 {
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(this->getStageData());
     this->setMotionRatio(0.0);
-    float currentFrame = this->m_modelAnims[0]->getFrameCount()*(g_Gravity->m_up - stageData->minGravityUp)/(stageData->maxGravityUp - stageData->minGravityUp);
+    float currentFrame = this->m_modelAnims[0]->getFrameCount()*(g_soWorld->m_gravityUp - stageData->minGravityUp)/(stageData->maxGravityUp - stageData->minGravityUp);
     this->setMotionFrame(currentFrame,0);
 }
 

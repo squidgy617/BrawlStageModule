@@ -25,7 +25,7 @@ class stCheeseBridge : public stMelee {
         };
         static stCheeseBridge* create();
 
-        int getWind2ndOnlyData();
+        grGimmickWindData2nd* getWind2ndOnlyData();
         bool isReStartSamePoint();
         int getPokeTrainerPointNum();
         void startFighterEvent();

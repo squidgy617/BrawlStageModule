@@ -29,7 +29,7 @@ class stKingOfTheHill : public stMelee {
         };
         static stKingOfTheHill* create();
 
-        int getWind2ndOnlyData();
+        grGimmickWindData2nd* getWind2ndOnlyData();
         bool isReStartSamePoint();
         int getPokeTrainerPointNum();
         void startFighterEvent();

@@ -501,8 +501,8 @@ int stKingOfTheHill::getPokeTrainerPointNum() {
 bool stKingOfTheHill::isReStartSamePoint() {
    return true;
 }
-int stKingOfTheHill::getWind2ndOnlyData() {
-   return (u32) &this->wndOnlyData2;
+grGimmickWindData2nd* stKingOfTheHill::getWind2ndOnlyData() {
+    return m_windAreaData2nd;
 }
 bool stKingOfTheHill::isBamperVector() {
    return true;

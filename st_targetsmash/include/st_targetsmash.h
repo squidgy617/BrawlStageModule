@@ -47,7 +47,7 @@ public:
         __memfill(&numTargetsHitPerPlayer, 0, sizeof(numTargetsHitPerPlayer));
     };
     static stTargetSmash* create();
-    int getWind2ndOnlyData();
+    grGimmickWindData2nd* getWind2ndOnlyData();
     bool isReStartSamePoint();
     int getPokeTrainerPointNum();
     void startFighterEvent();
@@ -83,7 +83,7 @@ public:
     virtual void update(float deltaFrame);
     virtual int getFinalTechniqColor();
     virtual bool isBamperVector();
-    virtual void getItemPac(gfArchive** brres, gfArchive** param, int itemID, int variantID);
+    virtual void getItemPac(gfArchive** brres, gfArchive** param, itKind itemID, int variantID);
     virtual ~stTargetSmash() { this->releaseArchive(); };
 
     void patchInstructions();
