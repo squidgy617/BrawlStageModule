@@ -180,8 +180,8 @@ int stSoup::getPokeTrainerPointNum() {
 bool stSoup::isReStartSamePoint() {
    return true;
 }
-int stSoup::getWind2ndOnlyData() {
-   return (u32) &this->wndOnlyData2;
+grGimmickWindData2nd* stSoup::getWind2ndOnlyData() {
+    return m_windAreaData2nd;
 }
 bool stSoup::isBamperVector() {
    return true;
