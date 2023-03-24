@@ -47,9 +47,9 @@ void stSkyPillar::notifyEventInfoGo() {
     gfArchive* param;
     gfArchive* enmCommon;
     gfArchive* primFaceBrres;
-    this->getEnemyPac(&brres, &param, &enmCommon, &primFaceBrres, Enemy_Rayquaza); // Enemy_Kuribo
+    this->getEnemyPac(&brres, &param, &enmCommon, &primFaceBrres, Enemy_Boss_Rayquaza); // Enemy_Kuribo
     emManager* enemyManager = emManager::getInstance();
-    int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, Enemy_Rayquaza, true); // Enemy_Kuribo
+    int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, Enemy_Boss_Rayquaza, true); // Enemy_Kuribo
     OSReport("Enemy archive preloaded result: %d \n", result);
     this->isGo = true;
 };
@@ -82,7 +82,7 @@ void stSkyPillar::update(float frameDiff)
             //int result = enemyManager->createEnemy(&create);
 
             create.m_startingAction = 2;
-            create.m_enemyKind = Enemy_Rayquaza;
+            create.m_enemyKind = Enemy_Boss_Rayquaza;
             int result = enemyManager->createEnemy(&create);
             OSReport("Enemy Create result: %d \n", result);
            /* create.m_spawnPos.x = -2.0;
