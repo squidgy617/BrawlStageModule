@@ -2,7 +2,52 @@
 #include "gr_qbert_score.h"
 #include <OS/OSError.h>
 #include <hk/hk_math.h>
-#include <string.h>
+#include <extras.h>
+//#include <strtoul.h>
+#include <cstring>
+
+// TODO: Remove when merged into OpenRVL
+int atoi(const char* str);
+char* itoa(int value, char* str, int base);
+
+class String {
+    char* m_string;
+
+public:
+    int strcmp(const String str2);
+    static String strncpy(String destination, char* source, size_t num);
+
+    inline String(char* ss)
+    {
+        m_string = ss;
+    };
+
+    // bool operator==(const String str2);
+
+    inline String operator[](const u32 index)
+    {
+        String out = " ";
+        return strncpy(out, &m_string[index], 1);
+    };
+
+    inline int length()
+    {
+        return strlen(m_string);
+    }
+    inline int stoi()
+    {
+        return atoi(m_string);
+    };
+
+    template <int I>
+    inline static String to_string(int ii)
+    {
+        char ss[I];
+        itoa(ii, ss, 10);
+        String scoreStr(ss);
+        return scoreStr;
+    };
+};
 
 grQbertScore* grQbertScore::create(int mdlIndex, char* tgtNodeName, char* taskName){
     grQbertScore* ground = new(Heaps::StageInstance) grQbertScore(taskName);
