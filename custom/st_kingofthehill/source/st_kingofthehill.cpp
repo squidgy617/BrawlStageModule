@@ -41,14 +41,15 @@ void stKingOfTheHill::createObj() {
     createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
-    void* posData = m_fileData->getData(Data_Type_Model, 0x64, 0xfffe);
-    if(posData == NULL){
-      // if no stgPos model in pac, use defaults
-      createStagePositions();
+    nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 0x64, 0xfffe));
+    if (posData.ptr() == NULL)
+    {
+        // if no stgPos model in pac, use defaults
+        createStagePositions();
     }
-    else {
-      //stgPosWrapper stgPos = {posData}; // creates wrapper on the stack
-      createStagePositions(&posData);
+    else
+    {
+        createStagePositions(&posData);
     }
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 30);
