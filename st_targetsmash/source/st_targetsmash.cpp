@@ -39,15 +39,15 @@ void stTargetSmash::createObj()
     // TODO: Look into switching UI to stock icon and number left if more than certain amount of targets (check IfCenter createModel functions)
 
     int nodeSize;
-    void* data = m_fileData->getData(Data_Type_Misc, 0x2711, &nodeSize, 0xfffe);;
+    void* data = m_fileData->getData(Data_Type_Misc, 0x2711, &nodeSize, 0xfffe);
     if (data != NULL) {
         itemBrres.setFileImage(data, nodeSize, Heaps::StageResource);
     }
-    data = m_fileData->getData(Data_Type_Misc, 0x2712, &nodeSize, 0xfffe);;
+    data = m_fileData->getData(Data_Type_Misc, 0x2712, &nodeSize, 0xfffe);
     if (data != NULL) {
         itemParam.setFileImage(data, nodeSize, Heaps::StageResource);
     }
-    data = m_fileData->getData(Data_Type_Misc, 0x2713, &nodeSize, 0xfffe);;
+    data = m_fileData->getData(Data_Type_Misc, 0x2713, &nodeSize, 0xfffe);
     if (data != NULL) {
         itemCommonParam.setFileImage(data, nodeSize, Heaps::StageResource);
     }
@@ -61,15 +61,14 @@ void stTargetSmash::createObj()
     createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
-    void* posData = m_fileData->getData(Data_Type_Model, 0x64, 0xfffe);
-    if (posData == NULL)
+    nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 0x64, 0xfffe));
+    if (posData.ptr() == NULL)
     {
         // if no stgPos model in pac, use defaults
         createStagePositions();
     }
     else
     {
-        // stgPosWrapper stgPos = {posData}; // creates wrapper on the stack
         createStagePositions(&posData);
     }
     createWind2ndOnly();
