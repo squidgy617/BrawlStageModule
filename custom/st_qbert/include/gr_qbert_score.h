@@ -19,8 +19,8 @@ class grQbertScore : public grYakumono
             if (&m_calcWorldCallBack != NULL) {
                 m_calcWorldCallBack.m_numNodeCallbackData = 1;
                 m_calcWorldCallBack.initialize(false, Heaps::StageInstance);
-                m_calcWorldCallBack.m_nodeCallbackDataArray[0].m_flag1 = true;
-                m_calcWorldCallBack.m_nodeCallbackDataArray[0].m_flag3 = true;
+                m_calcWorldCallBack.m_nodeCallbackDataArray[0].m_flag0 = true;
+                m_calcWorldCallBack.m_nodeCallbackDataArray[0].m_flag2 = true;
                 this->setupMelee();
             }
 
