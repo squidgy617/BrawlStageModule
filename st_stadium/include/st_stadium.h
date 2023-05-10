@@ -9,6 +9,7 @@
 #include <gm/gm_global.h>
 #include <mt/mt_prng.h>
 #include <types.h>
+#include <gf/gf_copyefb.h>
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -102,10 +103,13 @@ protected:
     grTenganEvent m_displayEvent;
     float m_targetZoom;
     float m_zoom;
-    Vec3f m_0x79c;
-    Vec3f m_0x7a8;
+    Vec3f m_cameraPos1;
+    Vec3f m_cameraPos2;
     Vec2f m_visionScreenPos1;
     Vec2f m_visionScreenPos2;
+
+//    gfCopyEFBMgr m_copyEFBMgr;
+//    float m_test;
 
 public:
     void prepareNextTransformTypes() {
@@ -132,7 +136,7 @@ public:
         stadiumVision->setDisplay(false);
     }
 
-    stStadium() : stMelee("stStadium", Stages::Final){
+    stStadium() : stMelee("stStadium", Stages::Stadium){
         m_typeSfx1Index = -1;
         m_typeSfx2Index = -1;
         prepareNextTransformTypes();
@@ -146,8 +150,8 @@ public:
         m_displayState = 0;
         m_currentDisplayIndex = -1;
         m_zoom = 1.0;
-        m_0x79c = (Vec3f){0.0, 0.0, 0.0};
-        m_0x7a8 = (Vec3f){0.0, 0.0, 0.0};
+        m_cameraPos1 = (Vec3f){0.0, 0.0, 0.0};
+        m_cameraPos2 = (Vec3f){0.0, 0.0, 0.0};
         m_visionScreenPos1 = (Vec2f){0.0, 0.0};
         m_visionScreenPos2 = (Vec2f){1.0, 1.0};
         m_flyingPokemon1PosY = 0.0;
@@ -159,6 +163,14 @@ public:
         m_0x6a0 = 0;
         m_0x6a4 = 0.0;
         m_0x6a8 = 0;
+
+//        m_copyEFBMgr.m_104 = false;
+//        m_copyEFBMgr.m_108 = 200;
+//        m_copyEFBMgr.m_copyEFBs[0].m_texBuffer = NULL;
+//        m_copyEFBMgr.m_copyEFBs[0].m_isValid = false;
+//        m_copyEFBMgr.m_copyEFBs[1].m_texBuffer = NULL;
+//        m_copyEFBMgr.m_copyEFBs[1].m_isValid = false;
+//        m_test = 0;
 
     };
     static stStadium* create();

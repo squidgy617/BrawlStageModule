@@ -3,9 +3,11 @@
 #include <st/st_class_info.h>
 #include <gm/gm_global.h>
 #include <ec/ec_mgr.h>
+#include <cm/cm_subject.h>
+#include <gf/gf_camera.h>
 #include <OS/OSError.h>
 
-static stClassInfoImpl<Stages::Final, stStadium> classInfo = stClassInfoImpl<Stages::Final, stStadium>();
+static stClassInfoImpl<Stages::Stadium, stStadium> classInfo = stClassInfoImpl<Stages::Stadium, stStadium>();
 
 stStadium* stStadium::create()
 {
@@ -132,6 +134,9 @@ void stStadium::createObj()
 
     this->setDefaultDisplay();
     this->playSeBasic(snd_se_stage_Stadium_02, 0);
+
+//    m_copyEFBMgr.createCopyEFB(0, Heaps::Fighter4Resource);
+//    m_copyEFBMgr.createCopyEFB(1, Heaps::Fighter4Resource);
 }
 
 void stStadium::createObjDetails() {
@@ -140,6 +145,13 @@ void stStadium::createObjDetails() {
 
 void stStadium::update(float deltaFrame)
 {
+//    if (m_test < 600) {
+//        m_copyEFBMgr.getEFB(0);
+//        m_copyEFBMgr.drawCopyEFB(0, &(GXColor){0, 0, 0, 255});
+//    }
+//
+//    m_test += deltaFrame;
+
     if (this->m_normalEvent.isReadyEnd() && !this->m_phaseEvent.isEvent()) {
         switch(this->m_transformTypes[this->m_transformTypeIndex]) {
             case Type_Electric:
@@ -776,11 +788,122 @@ void stStadium::updateVisionScreen() {
     if (this->m_visionScreenState) {
         Vec2f pos = (this->m_visionScreenPos1 + this->m_visionScreenPos2)*0.5;
         Vec2f range = this->m_visionScreenPos2 - this->m_visionScreenPos1;
-        this->getGround(0)->m_sceneModels[0]->m_resMdl.GetResMat("MoniterDummy1");
+        nw4r::g3d::ResMatData* resMatData = this->getGround(0)->m_sceneModels[0]->m_resMdl.GetResMat("MoniterDummy1").ptr();
+        nw4r::g3d::ResTexObj resTexObj(&resMatData->m_resTexObjData);
+        GXTexObj* tex = resTexObj.GetTexObj(GX_TEXMAP0);
+
+        gfCopyEFBMgr* copyEFBMgr = gfCopyEFBMgr::getInstance();
+        if (copyEFBMgr->isValid(0)) {
+            GXTexObj* efbTex = copyEFBMgr->getCopyEFBTex(0);
+            *tex = *efbTex;
+        }
+//        if (m_copyEFBMgr.isValid(0)) {
+//            GXTexObj* efbTex = m_copyEFBMgr.getCopyEFBTex(0);
+//            *tex = *efbTex;
+//        }
+        nw4r::g3d::ResTexSrt resTexSrt(&resMatData->m_resTexSrtData);
+        resTexSrt.SetMapMode(0, 0, -1, -1);
+        resTexSrt.ptr()->m_range = range;
+        resTexSrt.ptr()->m_pos = (Vec2f){-(pos.m_x - range.m_x*0.5)/range.m_x, -(pos.m_y - range.m_y*0.5)/range.m_y};
+        resTexSrt.ptr()->m_flag3 = false;
+        resTexSrt.ptr()->m_flag2 = true;
+        resTexSrt.ptr()->m_flag1 = false;
+        resTexSrt.ptr()->m_flag0 = true;
+        this->updateVisionScreenPos();
     }
 }
 
 void stStadium::updateVisionScreenPos() {
+    cmSubject* camSubject = cmSubjectList::getSubjectByPlayerNo(this->m_focusedPlayerNo);
+    if (camSubject != NULL) {
+        this->m_zoom += (this->m_targetZoom - this->m_zoom) / 10.0;
+        stRange range = (stRange){camSubject->m_range.m_left*this->m_zoom, camSubject->m_range.m_right*this->m_zoom, camSubject->m_range.m_top*this->m_zoom, camSubject->m_range.m_bottom*this->m_zoom};
+        Vec3f rangePos1 = (Vec3f){camSubject->m_pos.m_x + range.m_left - this->m_cameraPos1.m_x, camSubject->m_pos.m_y + range.m_bottom - this->m_cameraPos1.m_y, camSubject->m_pos.m_z - this->m_cameraPos1.m_z}*0.25;
+        this->m_cameraPos1 += rangePos1;
+        Vec3f rangePos2 = (Vec3f){camSubject->m_pos.m_x + range.m_right - this->m_cameraPos2.m_x, camSubject->m_pos.m_y + range.m_top - this->m_cameraPos2.m_y, camSubject->m_pos.m_z - this->m_cameraPos2.m_z}*0.25;
+        this->m_cameraPos2 += rangePos2;
+
+        Vec2f projPos1;
+        Vec2f projPos2;
+        gfCameraManager* cameraManager = gfCameraManager::getManager();
+        cameraManager->m_cameras[0].calcProjection3Dto2D(&this->m_cameraPos1, &projPos1);
+        cameraManager->m_cameras[0].calcProjection3Dto2D(&this->m_cameraPos2, &projPos2);
+        projPos1.m_x = projPos1.m_x / 640.0;
+        float fVar6 = projPos2.m_x / 640.0;
+        projPos1.m_y = 1.0 - projPos1.m_y / 480.0;
+        float fVar5 = 1.0 - projPos2.m_y / 480.0;
+        projPos2.m_x = fVar6;
+        if (fVar6 < projPos1.m_x) {
+            projPos2.m_x = projPos1.m_x;
+            projPos1.m_x = fVar6;
+        }
+        projPos2.m_y = fVar5;
+        if (fVar5 < projPos1.m_y) {
+            projPos2.m_y = projPos1.m_y;
+            projPos1.m_y = fVar5;
+        }
+        Vec2f projPosDiff;
+        projPosDiff.m_x = projPos2.m_x - projPos1.m_x;
+        if (projPosDiff.m_x < 0.08) {
+            projPosDiff.m_x = 0.08;
+        }
+        projPosDiff.m_y = projPos2.m_y - projPos1.m_y;
+        if (projPosDiff.m_y < 0.08) {
+            projPosDiff.m_y = 0.08;
+        }
+
+        float ratio = 1.0;
+        if (g_GameGlobal->getGlobalRecordMenuDatap()->m_isWidescreen) {
+            ratio = 1.333333;
+        }
+
+        if (projPosDiff.m_x / projPosDiff.m_y <= 1.57143) {
+            projPosDiff.m_x = projPosDiff.m_y * 1.57143 / ratio;
+            if (1.0 < projPosDiff.m_x) {
+                projPosDiff.m_y = projPosDiff.m_y / projPosDiff.m_x;
+                projPosDiff.m_x = 1.0;
+            }
+            if (1.0 < projPosDiff.m_y) {
+                projPosDiff.m_x = projPosDiff.m_x / projPosDiff.m_y;
+                projPosDiff.m_y = 1.0;
+            }
+        }
+        else {
+            projPosDiff.m_y = projPosDiff.m_x * ratio / 1.57143;
+            if (1.0 < projPosDiff.m_y) {
+                projPosDiff.m_x = projPosDiff.m_x / projPosDiff.m_y;
+                projPosDiff.m_y = 1.0;
+            }
+            if (1.0 < projPosDiff.m_x) {
+                projPosDiff.m_y = projPosDiff.m_y / projPosDiff.m_x;
+                projPosDiff.m_x = 1.0;
+            }
+        }
+
+        Vec2f projMidPos = (projPos1 + projPos2)*0.5;
+        projPos1 = projMidPos - projPosDiff*0.5;
+        projPos2 = projMidPos + projPosDiff*0.5;
+        if (projPos1.m_x < 0.0) {
+            projPos1.m_x = 0.0;
+            projPos2.m_x = projPosDiff.m_x;
+        }
+        if (projPos1.m_y < 0.0) {
+            projPos1.m_y = 0.0;
+            projPos2.m_y = projPosDiff.m_y;
+        }
+        if (projPos2.m_x >= 1.0) {
+            projPos1.m_x = 1.0 - projPosDiff.m_x;
+            projPos2.m_x = 1.0;
+        }
+        if (projPos2.m_y >= 1.0) {
+            projPos1.m_y = 1.0 - projPosDiff.m_y;
+            projPos2.m_y = 1.0;
+        }
+
+        this->m_visionScreenPos1 = projPos1;
+        this->m_visionScreenPos2 = projPos2;
+
+    }
 
 }
 
