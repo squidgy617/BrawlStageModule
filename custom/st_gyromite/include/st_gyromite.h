@@ -12,13 +12,6 @@ const float BGM_VOLUME = 1.0f;
 const float SCROLL_DIR = 0.0f;
 const float POKETRAINER_Z = 0.0f;
 
-struct stGyromiteData {
-    float minMoveTime;
-    float maxMoveTime;
-
-    STATIC_CHECK(sizeof(stGyromiteData) == 8)
-};
-
 class stGyromite : public stMelee {
     protected:
 
@@ -68,7 +61,6 @@ class stGyromite : public stMelee {
         virtual ~stGyromite() {this->releaseArchive(); };
 
         virtual Ground* createObjGround(int mdlIndex);
-        void createObjPipe(int mdlIndex, Vec2f* pos, int motionPathIndex);
         void createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex, bool restrictUpExit, bool);
 
 };
