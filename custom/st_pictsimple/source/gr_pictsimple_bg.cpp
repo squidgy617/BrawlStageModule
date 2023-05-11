@@ -62,5 +62,4 @@ void grPictSimpleBg::updateMessage(float deltaFrame) {
     this->message->printf(muMenu::exchangeMuStockchkind2MuCharName(kind));
 }
 
-
-
+// TODO: Update based on who is spawning/respawning in
