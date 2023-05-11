@@ -9,8 +9,9 @@
 #include <hk/hk_math.h>
 #include <gm/gm_global.h>
 #include <sc/sc_melee.h>
+#include <OS/__ppc_eabi_init.h>
 
-static stClassInfoImpl<Stages::Final, stPictSimple> classInfo = stClassInfoImpl<Stages::Final, stPictSimple>();
+static stClassInfoImpl<Stages::PictChat, stPictSimple> classInfo = stClassInfoImpl<Stages::PictChat, stPictSimple>();
 
 stPictSimple* stPictSimple::create() {
     stPictSimple* stage = new(Heaps::StageInstance) stPictSimple(Stages::Final);
@@ -21,7 +22,16 @@ bool stPictSimple::loading(){
     return true;
 }
 
+void stPictSimple::patchInstructions() {
+    int *instructionAddr = (int*)0x809582d8;
+    *instructionAddr = 0x60000000; // nop Original: bne-
+    __flush_cache(instructionAddr - 4, 0x8);
+}
+
 void stPictSimple::createObj() {
+
+    this->patchInstructions();
+    g_sndSystem->playSE(snd_se_stage_Pictchat_in,-1,0,0,-1);
 
     testStageParamInit(m_fileData, 10);
     testStageDataInit(m_fileData, 20, 1);

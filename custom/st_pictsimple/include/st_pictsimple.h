@@ -62,5 +62,5 @@ class stPictSimple : public stMelee {
         virtual void createObjGround(int mdlIndex);
         virtual void createObjBg(int mdlIndex);
 
-
+        void patchInstructions();
 };
