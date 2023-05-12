@@ -61,5 +61,5 @@ class stPointlessExpress : public stMelee {
 
         virtual void createObjGround(int mdlIndex);
         virtual void createObjSky(int mdlIndex);
-        virtual void createObjFire(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, Vec3f* scale, int vector);
+        virtual void createObjFire(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, float size, int vector, bool isCapsule);
 };

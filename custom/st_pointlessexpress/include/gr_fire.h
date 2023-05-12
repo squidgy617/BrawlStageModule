@@ -16,6 +16,8 @@ class grFire : public grMadein {
 protected:
     grGimmickMotionPathData motionPathData;
     int vector;
+    float size;
+    bool isCapsule;
 
 public:
     grFire(char* taskName) : grMadein(taskName)
@@ -25,7 +27,7 @@ public:
     virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
     virtual ~grFire(){};
     virtual void setMotionPathData(int mdlIndex);
-    virtual void setVector(int vector);
+    virtual void setSizeAndVector(float size, int vector, bool isCapsule);
 
     static grFire* create(int mdlIndex, char* tgtNodeName, char* taskName);
 };

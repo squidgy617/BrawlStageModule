@@ -14,8 +14,10 @@ grFire* grFire::create(int mdlIndex, char* tgtNodeName, char* taskName)
     return lava;
 }
 
-void grFire::setVector(int vector) {
+void grFire::setSizeAndVector(float size, int vector, bool isCapsule) {
+    this->size = size;
     this->vector = vector;
+    this->isCapsule = isCapsule;
 }
 
 void grFire::setMotionPathData(int mdlIndex) {
@@ -35,14 +37,13 @@ void grFire::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     grFireData* lavaData = (grFireData*)this->getStageData();
 
     u32 startHitboxNode = this->getNodeIndex(0, "HitboxStart");
-    float size = 1.0;
 
     Vec3f startPos;
     Vec3f endPos;
     this->getNodePosition(&startPos, 0, startHitboxNode);
     this->getNodePosition(&endPos, 0, "HitboxEnd");
     Vec3f offsetPos = endPos - startPos;
-    this->setAttack(size, &offsetPos);
+    this->setAttack(this->size, &offsetPos);
     this->m_attackInfo->m_preset = 4;
 
     soCollisionAttackData* overwriteAttackData = this->getOverwriteAttackData();
@@ -102,5 +103,5 @@ void grFire::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     overwriteAttackData->m_bits.disableFlinch = false;
     overwriteAttackData->m_bits.addedShieldDamage = lavaData->addedShieldDamage;
 
-    overwriteAttackData->m_bits.isShapeCapsule = true;
+    overwriteAttackData->m_bits.isShapeCapsule = this->isCapsule;
 }
