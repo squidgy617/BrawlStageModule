@@ -1,0 +1,34 @@
+Added Shield Damage
+Default: 0
+	/EndDescription
+0
+
+Reaction Effect
+Default (Integer): 144 (0x00000090)
+	/EndDescription
+1
+
+Reaction Fix
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Reaction Add
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Power
+Default (Integer): 10 (0x0000000A)
+	/EndDescription
+1
+
+Hitstop Multiplier
+Default (Float): 1 (0x3F800000)
+	/EndDescription
+0
+
+Detection Rate
+Default (Integer): 30 (0x0000001E)
+	/EndDescription
+1
