@@ -109,6 +109,3 @@ template<Stages::srStageKind I, typename T>
 void stClassInfoImpl<I, T>::preload() {
    return;
 }
-
-// TODO:
-// Fireworks after ko? coins? hidden blocks randomly moving/item box appearing with item (maybe can spawn from taking the bad pipe)?
