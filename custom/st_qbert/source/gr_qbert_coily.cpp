@@ -222,18 +222,18 @@ void grQbertCoily::onInflictEach(soCollisionLog* collisionLog, float power) {
 
 void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
     stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
-    damage->totalDamage = 0;
-    this->damage += damage->damage;
+    damage->m_totalDamage = 0;
+    this->damage += damage->m_damage;
     if ((!this->isHatched && this->damage > qbertStageData->coilyEggHP) || (this->isHatched && this->damage > qbertStageData->coilySnakeHP)) {
         this->timer = 0;
         this->setSleepAttack(true);
         this->setSleepHit(true);
         this->isDead = true;
-        this->angle = damage->vector;
-        if (damage->side == -1) {
-            this->angle = 180 - damage->vector;
+        this->angle = damage->m_vector;
+        if (damage->m_side == -1) {
+            this->angle = 180 - damage->m_vector;
         }
-        this->velocity = damage->reaction / 60;
+        this->velocity = damage->m_reaction / 60;
 
         this->prevPos = this->getPos();
         if (this->isHatched) {

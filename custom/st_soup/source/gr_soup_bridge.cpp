@@ -73,8 +73,8 @@ void grSoupBridge::updateShake(float frameDelta) {
 }
 
 void grSoupBridge::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
-    if (damage->totalDamage >= BRIDGE_HP) {
-        damage->totalDamage = 0;
+    if (damage->m_totalDamage >= BRIDGE_HP) {
+        damage->m_totalDamage = 0;
         this->setMotionDetails(1, 0, 0, 0, 0);
         this->setEnableCollisionStatus(false);
         this->setSleepHit(true);

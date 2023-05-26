@@ -206,13 +206,13 @@ void grQbertAlien::updateMove(float frameDelta) {
 
 void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
     stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
-    if (this->timer > 0 && damage->teamId != 15) {
-        damage->totalDamage = 0;
+    if (this->timer > 0 && damage->m_teamId != 15) {
+        damage->m_totalDamage = 0;
     }
-    else if (damage->totalDamage >= qbertStageData->qbertHPPerLife) {
-        damage->totalDamage = 0;
-        if (damage->teamId >= 0 && damage->teamId < NUM_TEAMS - 1) {
-            this->setTeam(damage->teamId + 1);
+    else if (damage->m_totalDamage >= qbertStageData->qbertHPPerLife) {
+        damage->m_totalDamage = 0;
+        if (damage->m_teamId >= 0 && damage->m_teamId < NUM_TEAMS - 1) {
+            this->setTeam(damage->m_teamId + 1);
         }
         else {
             this->setTeam(DEFAULT_TEAM_ID);
@@ -222,11 +222,11 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
         }
 
         this->lives--;
-        this->angle = damage->vector;
-        if (damage->side == -1) {
-            this->angle = 180 - damage->vector;
+        this->angle = damage->m_vector;
+        if (damage->m_side == -1) {
+            this->angle = 180 - damage->m_vector;
         }
-        this->velocity = damage->reaction / 60;
+        this->velocity = damage->m_reaction / 60;
         if (this->lives > 0) {
             this->timer = qbertStageData->qbertSwearFrames;
         }
