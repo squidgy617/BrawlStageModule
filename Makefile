@@ -6,7 +6,7 @@ ifeq ($(strip $(DEVKITPRO)),)
 $(error "Please set DEVKITPRO in your environment. export DEVKITPRO=<path to>/devkitpro")
 endif
 
-all: st_final.rel st_village.rel st_qbert.rel st_warfactory.rel st_skypillar.rel st_pictsimple.rel st_soup.rel st_gyromite.rel st_gimmick.rel st_pointlessexpress.rel
+all: st_final.rel st_village.rel st_qbert.rel st_warfactory.rel st_skypillar.rel st_pictsimple.rel st_soup.rel st_gyromite.rel st_gimmick.rel st_finkrat.rel
 
 st_final.rel:
 	@cd st_final && make
@@ -35,8 +35,8 @@ st_gyromite.rel:
 st_gimmick.rel:
 	@cd custom/st_gimmick && make
 
-st_pointlessexpress.rel:
-	@cd custom/st_pointlessexpress && make
+st_finkrat.rel:
+	@cd custom/st_finkrat && make
 
 clean:
 	@cd st_final && make clean
@@ -48,4 +48,4 @@ clean:
 	@cd custom/st_pictsimple && make clean
 	@cd custom/st_gyromite && make clean
 	@cd custom/st_gimmick && make clean
-	@cd custom/st_pointlessexpress && make clean
+	@cd custom/st_finkrat && make clean

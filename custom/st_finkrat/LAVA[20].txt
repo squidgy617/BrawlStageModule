@@ -1,0 +1,34 @@
+Width
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+ReactionEffect
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+ReactionFix
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+ReactionAdd
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+Power
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+HitstopMultiplier
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+DetectionRate
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
