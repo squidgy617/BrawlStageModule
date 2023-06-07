@@ -95,17 +95,17 @@ void grQbertScore::updateCallback(float frameDelta) {
     if (calcWorldCallBack != NULL && scnMdl != NULL) {
         if (scnMdl->m_calcWorldCallBack == NULL) {
             calcWorldCallBack->m_index = 0;
-            calcWorldCallBack->m_nodeCallbackDataArray[0].m_nodeIndex = this->m_nodeIndex;
+            calcWorldCallBack->m_nodeCallbackDatas[0].m_nodeIndex = this->m_nodeIndex;
             scnMdl->m_calcWorldCallBack = calcWorldCallBack;
             scnMdl->EnableScnMdlCallbackTiming(1);
-            scnMdl->m_nodeIndex = calcWorldCallBack->m_nodeCallbackDataArray[0].m_nodeIndex;
+            scnMdl->m_nodeIndex = calcWorldCallBack->m_nodeCallbackDatas[0].m_nodeIndex;
         }
     }
     if (this->posWork != NULL) {
-        calcWorldCallBack->m_nodeCallbackDataArray[0].m_pos = *this->posWork;
+        calcWorldCallBack->m_nodeCallbackDatas[0].m_pos = *this->posWork;
     }
 
-    calcWorldCallBack->m_nodeCallbackDataArray[0].m_scale = 1.85*this->scaleBase;
+    calcWorldCallBack->m_nodeCallbackDatas[0].m_scale = 1.85*this->scaleBase;
 }
 
 void grQbertScore::updateNumber(float frameDelta) {
