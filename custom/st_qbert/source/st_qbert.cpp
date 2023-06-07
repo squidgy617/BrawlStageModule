@@ -82,11 +82,11 @@ void stQbert::createObj() {
     // setup orthogonal camera
     gfCameraManager* cameraManager = gfCameraManager::getManager();
     gfCamera* camera = &cameraManager->m_cameras[0];
-    camera->m_projection = Camera_Projection_Orthogonal;
-    camera->m_ortho.m_top = qbertStageData->orthogonalCameraZoom/2;
-    camera->m_ortho.m_bottom = -qbertStageData->orthogonalCameraZoom/2;
-    camera->m_ortho.m_left = -(4.0/3.0)*qbertStageData->orthogonalCameraZoom/2.0;
-    camera->m_ortho.m_right = (4.0/3.0)*qbertStageData->orthogonalCameraZoom/2.0;
+    camera->m_projectionType = gfCamera::Projection_Orthogonal;
+    camera->m_orthoParam.m_top = qbertStageData->orthogonalCameraZoom/2;
+    camera->m_orthoParam.m_bottom = -qbertStageData->orthogonalCameraZoom/2;
+    camera->m_orthoParam.m_left = -(4.0/3.0)*qbertStageData->orthogonalCameraZoom/2.0;
+    camera->m_orthoParam.m_right = (4.0/3.0)*qbertStageData->orthogonalCameraZoom/2.0;
 
     this->soundGenerator.playSE(snd_se_stage_Madein_01, 0x0, 0x0, 0xffffffff);
 }
