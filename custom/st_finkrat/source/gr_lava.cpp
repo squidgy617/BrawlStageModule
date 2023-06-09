@@ -20,23 +20,23 @@ void grLava::update(float deltaFrame)
 }
 
 void grLava::setupAttack() {
-    grLavaData* lavaData = (grLavaData*)this->getStageData();
+    grFinkratData* finkratData = static_cast<grFinkratData*>(this->getStageData());
 
     float size = 1.0;
-    Vec3f offsetPos = {lavaData->width, 0.0, 0.0};
+    Vec3f offsetPos = {finkratData->lavaWidth, 0.0, 0.0};
     this->setAttack(size, &offsetPos);
     this->m_attackInfo->m_preset = 4;
 
     soCollisionAttackData* overwriteAttackData = this->getOverwriteAttackData();
     this->createAttackPointNormal(overwriteAttackData);
-    overwriteAttackData->m_reactionEffect = lavaData->reactionEffect;
-    overwriteAttackData->m_reactionFix = lavaData->reactionFix;
-    overwriteAttackData->m_reactionAdd = lavaData->reactionAdd;
-    overwriteAttackData->m_power = lavaData->power;
+    overwriteAttackData->m_reactionEffect = finkratData->lavaReactionEffect;
+    overwriteAttackData->m_reactionFix = finkratData->lavaReactionFix;
+    overwriteAttackData->m_reactionAdd = finkratData->lavaReactionAdd;
+    overwriteAttackData->m_power = finkratData->lavaPower;
     overwriteAttackData->m_vector = 90;
     overwriteAttackData->m_size = size;
     overwriteAttackData->m_offsetPos = offsetPos;
-    overwriteAttackData->m_hitstopMultiplier = lavaData->hitstopMultiplier;
+    overwriteAttackData->m_hitstopMultiplier = finkratData->lavaHitstopMultiplier;
 
     overwriteAttackData->m_bits.nodeIndex = 0x1;
 
@@ -72,7 +72,7 @@ void grLava::setupAttack() {
     overwriteAttackData->m_bits.isAbsorbable = false;
     overwriteAttackData->m_bits.field_0x38_10 = 0;
 
-    overwriteAttackData->m_bits.detectionRate = lavaData->detectionRate;
+    overwriteAttackData->m_bits.detectionRate = finkratData->lavaDetectionRate;
     overwriteAttackData->m_bits.field_0x38_1 = false;
     overwriteAttackData->m_bits.ignoreInvincibility = false;
     overwriteAttackData->m_bits.ignoreIntangibility = false;

@@ -24,8 +24,10 @@ void stFinkrat::createObj() {
     testStageParamInit(m_fileData, 10);
     testStageDataInit(m_fileData, 20, 1);
 
-    createObjGround(0);
-    createObjLava(1);
+    this->createObjGround(0);
+    this->createObjLava(1);
+    this->createObjElevate(2, 3);
+    this->createObjElevate(3, 4);
     createCollision(m_fileData, 2, NULL);
 
     initCameraParam();
@@ -69,6 +71,19 @@ void stFinkrat::createObjLava(int mdlIndex) {
         lava->initializeEntity();
         lava->startEntity();
         lava->setDontMoveGround();
+    }
+}
+
+void stFinkrat::createObjElevate(int mdlIndex, int collIndex) {
+    grElevate* elevate = grElevate::create(mdlIndex, "", "grElevate");
+    if (elevate != NULL)
+    {
+        addGround(elevate);
+        elevate->setStageData(m_stageData);
+        elevate->startup(m_fileData, 0, 0);
+        elevate->initializeEntity();
+        elevate->startEntity();
+        createCollision(m_fileData, collIndex, elevate);
     }
 }
 

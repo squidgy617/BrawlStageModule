@@ -1,16 +1,7 @@
 #pragma once
 
 #include <gr/gr_madein.h>
-
-struct grLavaData {
-    float width;
-    int reactionEffect;
-    int reactionFix;
-    int reactionAdd;
-    int power;
-    float hitstopMultiplier;
-    int detectionRate;
-};
+#include "st_finkrat_data.h"
 
 class grLava : public grMadein {
 protected:
