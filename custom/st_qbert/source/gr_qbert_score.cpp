@@ -3,12 +3,8 @@
 #include <OS/OSError.h>
 #include <hk/hk_math.h>
 #include <extras.h>
-//#include <strtoul.h>
+#include <stdlib.h>
 #include <cstring>
-
-// TODO: Remove when merged into OpenRVL
-int atoi(const char* str);
-char* itoa(int value, char* str, int base);
 
 class String {
     char* m_string;
