@@ -21,6 +21,15 @@ void grElevate::startup(gfArchive* archive, u32 unk1, u32 unk2)
     grFinkratData* finkratData = static_cast<grFinkratData*>(this->getStageData());
     this->elevateTimer = finkratData->platformElevateFrames;
 
+    this->createEffectWork(1);
+    this->m_effects[0].m_id = 0x330001;
+    this->m_effects[0].m_0x10 = 0;
+    this->m_effects[0].m_nodeIndex = this->getNodeIndex(0, "effect_locator");
+    this->m_effects[0].m_0x14 = 0.0;
+    this->m_effects[0].m_0x1c = 0.0;
+    this->m_effects[0].m_0x20 = 0.0;
+    this->m_effects[0].m_0x24 = 0.0;
+
     this->createSoundWork(2,1);
     this->m_soundEffects[0].m_id = snd_se_stage_Ice_IceFloor_01;
     this->m_soundEffects[0].m_0x10 = 0;
@@ -50,11 +59,13 @@ void grElevate::update(float deltaFrame)
                     this->setMotion(State_Down);
                     this->state = State_Down;
                     this->startGimmickSE(1);
+                    this->startGimmickEffect(0);
                     break;
                 case State_Down:
                     this->setMotion(State_Up);
                     this->state = State_Up;
                     this->startGimmickSE(0);
+                    this->startGimmickEffect(0);
                     break;
                 default:
                     break;
