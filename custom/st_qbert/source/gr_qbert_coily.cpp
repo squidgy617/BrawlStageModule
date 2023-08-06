@@ -246,7 +246,7 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->targetPos = (Vec3f){this->prevPos.m_x, this->stage->m_deadRange.m_bottom, 0};
         }
     }
-    if (attackerInfo->m_indirectAttackerSoKind == SoKind_Fighter) {
+    if (attackerInfo->m_indirectAttackerSoKind == StageObject_Fighter) {
         this->attackerEntryId = attackerInfo->m_indirectAttackerEntryId;
     }
     else {

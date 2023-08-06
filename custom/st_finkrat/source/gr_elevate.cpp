@@ -22,7 +22,7 @@ void grElevate::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->elevateTimer = finkratData->platformElevateFrames;
 
     this->createEffectWork(1);
-    this->m_effects[0].m_id = 0x330001;
+    this->m_effects[0].m_id = 0x4F0001;
     this->m_effects[0].m_0x10 = 0;
     this->m_effects[0].m_nodeIndex = this->getNodeIndex(0, "effect_locator");
     this->m_effects[0].m_0x14 = 0.0;

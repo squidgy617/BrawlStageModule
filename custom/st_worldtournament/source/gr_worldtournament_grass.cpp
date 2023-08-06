@@ -80,7 +80,7 @@ void grWorldTournamentGrass::toKnockOut(Fighter* fighter) {
         //int ivar6 = soValueAccesser::getConstantInt(moduleAccesser, 0x5a4e, 0);
         //moduleAccesser->getSlowModule()->setWhole(ivar6, wholeFrame);
         moduleAccesser->getDamageModule()->getAttackerInfo(&attackerInfo);
-        if (attackerInfo.m_indirectAttackerSoKind == SoKind_Fighter && g_ftManager->isValidEntryId(attackerInfo.m_indirectAttackerEntryId)) {
+        if (attackerInfo.m_indirectAttackerSoKind == StageObject_Fighter && g_ftManager->isValidEntryId(attackerInfo.m_indirectAttackerEntryId)) {
             g_ftAudienceManager->m_audience->checkCheerDefeat(attackerInfo.m_indirectAttackerEntryId);
             g_ftManager->setBeat(fighter->m_entryId, attackerInfo.m_indirectAttackerEntryId);
         }

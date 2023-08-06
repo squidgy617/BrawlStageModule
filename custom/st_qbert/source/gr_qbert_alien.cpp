@@ -217,7 +217,7 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
         else {
             this->setTeam(DEFAULT_TEAM_ID);
         }
-        if (attackerInfo->m_indirectAttackerSoKind == SoKind_Fighter) {
+        if (attackerInfo->m_indirectAttackerSoKind == StageObject_Fighter) {
             this->setTeam(g_ftManager->getTeam(attackerInfo->m_indirectAttackerEntryId, false, false) + 1);
         }
 
