@@ -5,7 +5,7 @@
 #include <memory.h>
 #include <hk/hk_math.h>
 #include <gf/gf_heap_manager.h>
-#include <ft/fighter.h>
+#include <ft/ft_manager.h>
 
 grAdventureBarrelCannon* grAdventureBarrelCannon::create(int mdlIndex, BarrelCannonKind cannonKind, char* taskName)
 {
@@ -248,6 +248,7 @@ void grAdventureBarrelCannon::processFixPosition() {
                             this->cannonPlayerInfos[i].frame += cannonPathData->shootMotionPathData.m_motionRatio;
                         }
                         this->isRotate = this->cannonData->alwaysRotate;
+                        this->m_gimmickMotionPath->setFrameUpdate(1.0);
                         this->startGimmickEffect(0);
                         this->startGimmickSE(1);
 
@@ -285,6 +286,8 @@ void grAdventureBarrelCannon::processFixPosition() {
 void grAdventureBarrelCannon::update(float frameDelta)
 {
     grGimmick::update(frameDelta);
+
+    stGimmickData* stageData = static_cast<stGimmickData*>(this->getStageData());
     switch(this->cannonState) {
         case State_Fire:
             this->m_modelAnims[0]->m_anmObjChrRes->SetFrame(this->animFrame);
@@ -307,6 +310,7 @@ void grAdventureBarrelCannon::update(float frameDelta)
                 this->autoFireTimer -= frameDelta;
                 if (this->autoFireTimer <= 0) {
                     this->isRotate = this->cannonData->alwaysRotate;
+                    this->m_gimmickMotionPath->setFrameUpdate(1.0);
                     for (int i = 0; i < NUM_PLAYERS; i++) {
                         if (this->cannonPlayerInfos[i].isActive && this->cannonPlayerInfos[i].state != PlayerState_Path) {
                             this->cannonPlayerInfos[i].state = PlayerState_Fire;
@@ -327,12 +331,38 @@ void grAdventureBarrelCannon::update(float frameDelta)
         this->cooldownTimer = 0.0;
         g_ecMgr->endEffect(this->effectIndex);
     }
+
+    if (!stageData->isCannonInvincibility) {
+        for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
+            int entryId = g_ftManager->getEntryIdFromIndex(i);
+            if (g_ftManager->isFighterActivate(entryId, -1)) {
+                Fighter* fighter = g_ftManager->getFighter(entryId, -1);
+                if (fighter->m_moduleAccesser->getStatusModule()->getStatusKind() == 192 && fighter->m_moduleAccesser->getWorkManageModule()->getInt(0x20000000) != 0) {
+                    fighter->m_moduleAccesser->getCollisionHitModule()->setWhole(0, 0);
+                }
+            }
+        }
+    }
+
     grGimmick::updateCallback(0);
 }
 
 void grAdventureBarrelCannon::updateMove(float frameDelta)
 {
-    if (this->isRotate) {
+    stGimmickData* stageData = static_cast<stGimmickData*>(this->getStageData());
+
+    Vec3f pos = (Vec3f){0, 0, 0};
+    Vec3f rot = (Vec3f){0, 0, 0};
+    Vec3f scale = (Vec3f){0, 0, 0};
+    if (this->m_gimmickMotionPath != NULL) {
+        this->m_gimmickMotionPath->getTRS(&pos, &rot, &scale);
+    }
+
+    if (this->cannonData->alwaysRotate && this->rotateSpeed == 0.0)
+    {
+        this->setRot(&rot);
+    }
+    else if (this->isRotate) {
         Vec3f rot = this->getRot();
         this->setRot(rot.m_x, rot.m_y, rot.m_z += this->rotateSpeed);
         if (!this->cannonData->fullRotate) {
@@ -347,7 +377,12 @@ void grAdventureBarrelCannon::updateMove(float frameDelta)
             this->setRot(rot.m_x, rot.m_y, rot.m_z + 360.0);
         }
     }
-
+    if (pos.m_z > stageData->cannonActiveMinZ && pos.m_z < stageData->cannonActiveMaxZ) {
+        this->setSleepArea(false);
+    }
+    else {
+        this->setSleepArea(true);
+    }
 }
 
 void grAdventureBarrelCannon::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
@@ -355,12 +390,16 @@ void grAdventureBarrelCannon::onGimmickEvent(soGimmickEventInfo* eventInfo, int*
     int newPlayerIndex = 0;
     Vec3f pos = this->getPos();
     grGimmickEventBarrelCannonInfo* cannonEventInfo = (grGimmickEventBarrelCannonInfo*)eventInfo;
+    stGimmickData* stageData = static_cast<stGimmickData*>(this->getStageData());
     int playerNumber = this->getPlayerNumber(taskId);
     if (playerNumber == 0 && !this->isSubFighter(taskId)) {
         this->isMainPlayerIn = true;
     }
     switch (cannonEventInfo->m_state) {
         case 0x2:
+            if (stageData->isCannonShootStop) {
+                this->m_gimmickMotionPath->setFrameUpdate(0);
+            }
             this->isRotate = true;
             for (int i = 0; i < NUM_PLAYERS; i++) {
                 if (this->cannonPlayerInfos[i].isActive) {
@@ -397,6 +436,7 @@ void grAdventureBarrelCannon::onGimmickEvent(soGimmickEventInfo* eventInfo, int*
             break;
         case 0x3:
             this->isRotate = this->cannonData->alwaysRotate;
+            this->m_gimmickMotionPath->setFrameUpdate(1.0);
             for (int i = 0; i < NUM_PLAYERS; i++) {
                 if (this->cannonPlayerInfos[i].isActive && this->cannonPlayerInfos[i].state != PlayerState_Path) {
                     this->cannonPlayerInfos[i].state = PlayerState_Fire;

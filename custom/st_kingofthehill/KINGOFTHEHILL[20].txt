@@ -328,6 +328,23 @@ Default: 15
 	/EndDescription
 1
 
+isCannonInvincibility, isCannonShootStop, _, _
+Default: true, false, false, false
+	/EndDescription
+6
+
+Cannon Active Min Z
+Cannon Active Min Z
+Default: -15
+	/EndDescription
+0
+
+Cannon Active Max Z
+Cannon Active Max Z
+Default: 5
+	/EndDescription
+0
+
 Cannon Shoot Speed
 Cannon Shoot Speed
 Default: 5

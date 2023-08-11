@@ -237,7 +237,7 @@ void grCapturePoint::setNewCapturePosition() {
         }
     }
     this->selectedNodeIndex = nodeIndex;
-    nw4r::g3d::ResNodeData* resNodeData = this->capturePointPositions->m_sceneModels[0]->m_resMdl.GetResNode(nodeIndex).ptr();
+    nw4r::g3d::ResNodeData* resNodeData = this->capturePointPositions->m_sceneModels[0]->m_resMdl.GetResNode((int)nodeIndex).ptr();
     this->setPos(resNodeData->m_translation.m_x, resNodeData->m_translation.m_y, 0.0);
     this->setRot(0.0, 0.0, resNodeData->m_rotation.m_z);
     this->setScale(&resNodeData->m_scale);
