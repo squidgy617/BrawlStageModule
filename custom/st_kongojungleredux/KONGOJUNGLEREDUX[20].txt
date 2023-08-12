@@ -1,0 +1,152 @@
+Cannon Attack Damage
+Default: 15.0
+
+	/EndDescription
+0
+
+Cannon Attack OffsetPosX
+Default: 0.0
+	/EndDescription
+0
+
+Cannon Attack OffsetPosY
+Default: 0.0
+	/EndDescription
+0
+
+Cannon Attack OffsetPosZ
+Default: 0.0
+	/EndDescription
+0
+
+Cannon Attack Size
+Default: 10.0
+
+	/EndDescription
+0
+
+Cannon Attack Vector
+Angle
+
+Default: 361
+	/EndDescription
+1
+
+Cannon Attack ReactionEffect
+Knockback Growth
+
+Default: 50
+	/EndDescription
+1
+
+Cannon Attack ReactionFix
+Default: 0 
+
+	/EndDescription
+1
+
+Cannon Attack ReactionAdd
+Base Knockback
+
+Default: 100
+	/EndDescription
+1
+
+Cannon Attack 0x038
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+1
+
+Cannon Attack ElementType
+Default: 0 (Element_Type_Normal)
+	/EndDescription
+1
+
+isClankable, 0x041, 0x042, 0x043
+Default: false, false, true, true
+	/EndDescription
+6
+
+Cannon Attack 0x044
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Cannon Attack 0x048
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Cannon Attack 0x04C
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Cannon Attack DetectionRate
+Default: 60
+	/EndDescription
+1
+
+Cannon Attack HitSoundLevel
+Default: 1 (Hit_Sound_Level_Medium)
+	/EndDescription
+1
+
+Cannon Attack HitSoundType
+Default: 1 (Hit_Sound_Type_Punch)
+	/EndDescription
+1
+
+0x05C, isShapeCapsule, 0x05E, 0x05F
+Default: false, false, 0, 0
+	/EndDescription
+6
+
+Cannon Attack 0x060
+Default: 0 (Could be int or float - be careful)
+	/EndDescription
+0
+
+Cannon Attack NodeIndex
+Default: 0
+	/EndDescription
+1
+
+Cannon Attack Power
+Default: 15
+	/EndDescription
+1
+
+isCannonInvincibility, isCannonShootStop, isCannonSingleRider, _
+Default: true, false, false, false
+	/EndDescription
+6
+
+Cannon Active Min Z
+Cannon Active Min Z
+Default: -15
+	/EndDescription
+0
+
+Cannon Active Max Z
+Cannon Active Max Z
+Default: 5
+	/EndDescription
+0
+
+Cannon Shoot Speed
+Cannon Shoot Speed
+Default: 5
+	/EndDescription
+0
+
+Cannon Shoot Time Speed
+Default: 0.075
+
+	/EndDescription
+0
+
+Cannon Shoot Stun Timer Speed
+Default: 0.25
+	/EndDescription
+0
