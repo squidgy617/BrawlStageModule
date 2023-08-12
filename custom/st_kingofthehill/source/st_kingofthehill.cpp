@@ -210,7 +210,9 @@ void stKingOfTheHill::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, flo
         platform->setPos(pos->m_x, pos->m_y, 0.0);
         platform->setScale(scale, scale, scale);
         platform->setRot(0.0, 0.0, rot);
-        createCollision(m_fileData, collIndex, platform);
+        if (collIndex >= 0) {
+            createCollision(m_fileData, collIndex, platform);
+        }
     }
 }
 
@@ -226,7 +228,9 @@ void stKingOfTheHill::createObjBreak(int mdlIndex, Vec2f* pos, float rot, int mo
         platform->startEntity();
         platform->setPos(pos->m_x, pos->m_y, 0.0);
         platform->setRot(0.0, 0.0, rot);
-        createCollision(m_fileData, collIndex, platform);
+        if (collIndex >= 0) {
+            createCollision(m_fileData, collIndex, platform);
+        }
     }
 }
 

@@ -184,7 +184,9 @@ void stGimmick::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, float sca
         platform->setPos(pos->m_x, pos->m_y, 0.0);
         platform->setScale(scale, scale, scale);
         platform->setRot(0.0, 0.0, rot);
-        createCollision(m_fileData, collIndex, platform);
+        if (collIndex >= 0) {
+            createCollision(m_fileData, collIndex, platform);
+        }
     }
 }
 
@@ -200,7 +202,9 @@ void stGimmick::createObjBreak(int mdlIndex, Vec2f* pos, float rot, int motionPa
         platform->startEntity();
         platform->setPos(pos->m_x, pos->m_y, 0.0);
         platform->setRot(0.0, 0.0, rot);
-        createCollision(m_fileData, collIndex, platform);
+        if (collIndex >= 0) {
+            createCollision(m_fileData, collIndex, platform);
+        }
     }
 }
 
