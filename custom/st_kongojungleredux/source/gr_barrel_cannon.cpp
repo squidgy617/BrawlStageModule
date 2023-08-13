@@ -51,6 +51,7 @@ void grAdventureBarrelCannon::attachGround(grYakumono* ground) {
 void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
 {
     grYakumono::startup(archive, unk1, unk2);
+    this->changeMatColAnim(0, 0);
     this->cannonData = (grGimmickBarrelCannonData*)this->m_gimmickData;
     this->isRotate = this->cannonData->alwaysRotate;
     switch (this->kind) {
@@ -390,10 +391,16 @@ void grAdventureBarrelCannon::updateMove(float frameDelta)
 
     if ((pos.m_z > stageData->cannonActiveMinZ && pos.m_z < stageData->cannonActiveMaxZ) && !(stageData->isCannonSingleRider && this->isPlayerIn) && !this->isInCooldown) {
         this->enableArea();
+        this->changeMatColAnim(0, 0);
     }
     else {
         this->disableArea();
+        if (pos.m_z <= stageData->cannonActiveMinZ || pos.m_z >= stageData->cannonActiveMaxZ) {
+            this->changeMatColAnim(1, 0);
+        }
     }
+
+
 }
 
 void grAdventureBarrelCannon::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
