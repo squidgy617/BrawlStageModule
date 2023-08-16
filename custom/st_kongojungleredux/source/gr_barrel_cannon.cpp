@@ -6,6 +6,7 @@
 #include <hk/hk_math.h>
 #include <gf/gf_heap_manager.h>
 #include <ft/ft_manager.h>
+#include <so/so_value_accesser.h>
 
 grAdventureBarrelCannon* grAdventureBarrelCannon::create(int mdlIndex, BarrelCannonKind cannonKind, char* taskName)
 {
@@ -343,17 +344,36 @@ void grAdventureBarrelCannon::update(float frameDelta)
         g_ecMgr->endEffect(this->effectIndex);
     }
 
-    if (!stageData->isCannonInvincibility) {
-        for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
-            int entryId = g_ftManager->getEntryIdFromIndex(i);
-            if (g_ftManager->isFighterActivate(entryId, -1)) {
-                Fighter* fighter = g_ftManager->getFighter(entryId, -1);
-                if (fighter->m_moduleAccesser->getStatusModule()->getStatusKind() == 192 && fighter->m_moduleAccesser->getWorkManageModule()->getInt(0x20000000) != 0) {
+
+
+    for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
+        int entryId = g_ftManager->getEntryIdFromIndex(i);
+        if (g_ftManager->isFighterActivate(entryId, -1)) {
+            Fighter* fighter = g_ftManager->getFighter(entryId, -1);
+            if (!stageData->isCannonTether) {
+                if (fighter->m_moduleAccesser->getStatusModule()->getStatusKind() == 129) {
+                    fighter->m_moduleAccesser->getWorkManageModule()->setInt(2, 0x1000000e);
+                };
+            }
+
+            if (fighter->m_moduleAccesser->getStatusModule()->getStatusKind() == 192 && fighter->m_moduleAccesser->getWorkManageModule()->getInt(0x20000000) != 0) {
+                if (!stageData->isCannonInvincibility) {
                     fighter->m_moduleAccesser->getCollisionHitModule()->setWhole(0, 0);
                 }
+                int maxJumps = soValueAccesser::getValueInt(fighter->m_moduleAccesser, 0x59db, 0);
+                if (stageData->cannonNumJumps != 0xff) {
+                    int jumps = maxJumps - stageData->cannonNumJumps;
+                    if (jumps < 0) {
+                        jumps = 0;
+                    }
+                    fighter->m_moduleAccesser->getWorkManageModule()->setInt(jumps, 0x10000001);
+                }
             }
+
         }
     }
+
+
 
     grGimmick::updateCallback(0);
 }

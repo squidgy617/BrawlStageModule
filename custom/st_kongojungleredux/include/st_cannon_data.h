@@ -9,7 +9,9 @@ struct stCannonData {
     bool isCannonInvincibility;
     bool isCannonShootStop;
     bool isCannonSingleRider;
-    char _;
+    bool isCannonTether;
+    u8 cannonNumJumps;
+    char _[3];
     float cannonActiveMinZ;
     float cannonActiveMaxZ;
     float cannonShootSpeed;
