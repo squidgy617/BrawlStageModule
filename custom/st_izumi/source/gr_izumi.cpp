@@ -51,6 +51,7 @@ void grIzumi::updateEff()
 			if (bonepos.m_y < 1.25 && fountain[i])
 			{
 				stopfountainEffect(i);
+				fountainStep[i] = 0;
 				fountain[i] = false;
 			}
 			else if (bonepos.m_y > 1.3 && !fountain[i])
