@@ -48,12 +48,12 @@ void grIzumi::updateEff()
 		{
 			Vec3f bonepos; 
 			this->getNodePosition(&bonepos,4+i,"splash");
-			if (bonepos.m_y < 3.25 && fountain[i])
+			if (bonepos.m_y < 1.25 && fountain[i])
 			{
 				stopfountainEffect(i);
 				fountain[i] = false;
 			}
-			else if (bonepos.m_y > 3.3 && !fountain[i])
+			else if (bonepos.m_y > 1.3 && !fountain[i])
 			{
 				startfountainEffect(i);
 				fountain[i] = true;
