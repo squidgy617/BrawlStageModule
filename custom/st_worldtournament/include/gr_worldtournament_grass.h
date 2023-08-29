@@ -11,7 +11,7 @@ protected:
     float collTimer;
 
 public:
-    grWorldTournamentGrass(char* taskName) : grYakumono(taskName)
+    grWorldTournamentGrass(const char* taskName) : grYakumono(taskName)
     {
         areaInfo.m_numHitGroups = 0;
         areaInfo.m_hitGroupsInfo = NULL;
@@ -24,5 +24,5 @@ public:
     virtual ~grWorldTournamentGrass(){};
     virtual void toKnockOut(Fighter* fighter);
 
-    static grWorldTournamentGrass* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grWorldTournamentGrass* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

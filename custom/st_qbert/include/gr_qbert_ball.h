@@ -8,7 +8,7 @@ class grQbertBall : public grQbertEnemy
 {
     protected:
     public:
-        grQbertBall(char* taskName) : grQbertEnemy(taskName) {
+        grQbertBall(const char* taskName) : grQbertEnemy(taskName) {
         };
         virtual void onInflictEach(soCollisionLog* collisionLog, float power);
         virtual ~grQbertBall() { };

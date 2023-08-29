@@ -13,7 +13,7 @@ class grQbertDisk : public grMadein
         bool prevIsActive;
         bool isMoving;
     public:
-        grQbertDisk(char* taskName) : grMadein(taskName) {
+        grQbertDisk(const char* taskName) : grMadein(taskName) {
             timer = 0;
             isMoving = false;
         };
@@ -22,6 +22,6 @@ class grQbertDisk : public grMadein
         virtual void receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3);
         virtual void setIsActiveWork(bool* isActiveWork);
 
-        static grQbertDisk* create(int mdlIndex, char* tgtNodeName, char* taskName);
+        static grQbertDisk* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 
 };

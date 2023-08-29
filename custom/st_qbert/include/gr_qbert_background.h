@@ -8,12 +8,12 @@ class grQbertBackground : public grMadein
     protected:
         float immobilizeTimer;
     public:
-        grQbertBackground(char* taskName) : grMadein(taskName) {
+        grQbertBackground(const char* taskName) : grMadein(taskName) {
             immobilizeTimer = 0;
         };
         virtual void update(float frameDiff);
         virtual ~grQbertBackground() { };
         virtual void setImmobilize(float immobilizeDuration);
 
-        static grQbertBackground* create(int mdlIndex, char* tgtNodeName, char* taskName);
+        static grQbertBackground* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

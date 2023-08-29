@@ -2,7 +2,7 @@
 #include "gr_qbert_hud.h"
 #include <OS/OSError.h>
 
-grQbertHud* grQbertHud::create(int mdlIndex, char* tgtNodeName, char* taskName){
+grQbertHud* grQbertHud::create(int mdlIndex, const char* tgtNodeName, const char* taskName){
     grQbertHud* hud = new(Heaps::StageInstance) grQbertHud(taskName);
     hud->setMdlIndex(mdlIndex);
     hud->m_heapType = Heaps::StageInstance;

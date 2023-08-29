@@ -3,7 +3,7 @@
 #include <memory.h>
 #include <OS/OSError.h>
 
-grCheeseBridgeSaw* grCheeseBridgeSaw::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grCheeseBridgeSaw* grCheeseBridgeSaw::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grCheeseBridgeSaw* saw = new (Heaps::StageInstance) grCheeseBridgeSaw(taskName);
     saw->setMdlIndex(mdlIndex);

@@ -8,7 +8,7 @@ class grSmashketballGlass : public grMadein {
         float timer;
 
     public:
-        grSmashketballGlass(char* taskName) : grMadein(taskName)
+        grSmashketballGlass(const char* taskName) : grMadein(taskName)
         {
             yakumonoData.m_numHitGroups = 1;
             yakumonoData.m_hitGroupsInfo = NULL;
@@ -22,6 +22,6 @@ class grSmashketballGlass : public grMadein {
         virtual void setupHitPoint();
         virtual void setHit();
 
-        static grSmashketballGlass* create(int mdlIndex, char* tgtNodeName, char* taskName);
+        static grSmashketballGlass* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };
 

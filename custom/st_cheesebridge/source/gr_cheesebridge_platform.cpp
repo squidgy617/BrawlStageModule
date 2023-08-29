@@ -3,7 +3,7 @@
 #include <OS/OSError.h>
 #include <memory.h>
 
-grCheeseBridgePlatform* grCheeseBridgePlatform::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grCheeseBridgePlatform* grCheeseBridgePlatform::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grCheeseBridgePlatform* platform = new (Heaps::StageInstance) grCheeseBridgePlatform(taskName);
     platform->setMdlIndex(mdlIndex);

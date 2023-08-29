@@ -20,7 +20,7 @@ protected:
 public:
 	
 	
-    grIzumi(char* taskName) : grYakumono(taskName)
+    grIzumi(const char* taskName) : grYakumono(taskName)
     {
         unk1 = 0;
         unk_float = EFF_SOMETHING;
@@ -36,6 +36,6 @@ public:
     virtual void updateEff();
     virtual void setType(int type);
 
-    static grIzumi* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grIzumi* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 
 };

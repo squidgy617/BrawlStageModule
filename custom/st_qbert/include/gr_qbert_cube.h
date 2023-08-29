@@ -24,7 +24,7 @@ class grQbertCube : public grMadein
         GameRule gameRule : 8;
         u8 teamId;
     public:
-        grQbertCube(char* taskName) : grMadein(taskName) {
+        grQbertCube(const char* taskName) : grMadein(taskName) {
             for (u8 team = 0; team < NUM_TEAMS; team++) {
                 numMembersOnTeamLanded[team] = 0;
                 prevNumMembersOnTeamLanded[team] = 0;
@@ -45,6 +45,6 @@ class grQbertCube : public grMadein
         virtual void setTeamScoresWork(u32* teamScoresWork, GameRule gameRule);
         virtual void setWin();
 
-        static grQbertCube* create(int mdlIndex, char* tgtNodeName, char* taskName);
+        static grQbertCube* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 
 };

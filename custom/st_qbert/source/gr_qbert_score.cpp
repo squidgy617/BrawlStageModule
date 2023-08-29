@@ -7,13 +7,13 @@
 #include <cstring>
 
 class String {
-    char* m_string;
+    const char* m_string;
 
 public:
     int strcmp(const String str2);
-    static String strncpy(String destination, char* source, size_t num);
+    static String strncpy(String destination, const char* source, size_t num);
 
-    inline String(char* ss)
+    inline String(const char* ss)
     {
         m_string = ss;
     };
@@ -45,7 +45,7 @@ public:
     };
 };
 
-grQbertScore* grQbertScore::create(int mdlIndex, char* tgtNodeName, char* taskName){
+grQbertScore* grQbertScore::create(int mdlIndex, const char* tgtNodeName, const char* taskName){
     grQbertScore* ground = new(Heaps::StageInstance) grQbertScore(taskName);
     ground->setMdlIndex(mdlIndex);
     ground->setTgtNode(tgtNodeName);

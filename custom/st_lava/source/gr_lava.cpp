@@ -2,7 +2,7 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 
-grLava* grLava::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grLava* grLava::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grLava* lava = new (Heaps::StageInstance) grLava(taskName);
     lava->setMdlIndex(mdlIndex);

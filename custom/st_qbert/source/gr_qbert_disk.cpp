@@ -3,7 +3,7 @@
 #include <mt/mt_prng.h>
 #include <OS/OSError.h>
 
-grQbertDisk* grQbertDisk::create(int mdlIndex, char* tgtNodeName, char* taskName){
+grQbertDisk* grQbertDisk::create(int mdlIndex, const char* tgtNodeName, const char* taskName){
     grQbertDisk* ground = new(Heaps::StageInstance) grQbertDisk(taskName);
     ground->setMdlIndex(mdlIndex);
     ground->m_heapType = Heaps::StageInstance;

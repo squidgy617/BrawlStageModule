@@ -13,7 +13,7 @@
 #include <ft/ft_manager.h>
 #include <string.h>
 
-grQbertCoily* grQbertCoily::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage, grQbertAlien* enemyTarget){
+grQbertCoily* grQbertCoily::create(int mdlIndex, const char* tgtNodeName, const char* taskName, stMelee* stage, grQbertAlien* enemyTarget){
     grQbertCoily* coily = new(Heaps::StageInstance) grQbertCoily(taskName);
     coily->setMdlIndex(mdlIndex);
     coily->m_heapType = Heaps::StageInstance;

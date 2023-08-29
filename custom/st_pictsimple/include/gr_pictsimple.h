@@ -6,12 +6,12 @@ class grPictSimple : public grYakumono {
 protected:
 
 public:
-    grPictSimple(char* taskName) : grYakumono(taskName)
+    grPictSimple(const char* taskName) : grYakumono(taskName)
     {
 
     };
     virtual void update(float deltaFrame);
     virtual ~grPictSimple(){};
 
-    static grPictSimple* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grPictSimple* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

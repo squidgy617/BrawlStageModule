@@ -31,7 +31,7 @@ public:
     Vec3f midpointPos;
     bool isDead;
 
-    grQbertEnemy(char* taskName) : grMadein(taskName) {
+    grQbertEnemy(const char* taskName) : grMadein(taskName) {
         timer = 0;
         angle = 0;
         velocity = 0;

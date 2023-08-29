@@ -4,7 +4,7 @@
 #include <mt/mt_prng.h>
 #include <mt/mt_trig.h>
 
-grSoupRocket* grSoupRocket::create(int mdlIndex, char* tgtNodeName, char* taskName){
+grSoupRocket* grSoupRocket::create(int mdlIndex, const char* tgtNodeName, const char* taskName){
     grSoupRocket* rocket = new(Heaps::StageInstance) grSoupRocket(taskName);
     rocket->setMdlIndex(mdlIndex);
     rocket->m_heapType = Heaps::StageInstance;

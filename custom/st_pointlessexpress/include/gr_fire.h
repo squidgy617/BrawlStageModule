@@ -20,7 +20,7 @@ protected:
     bool isCapsule;
 
 public:
-    grFire(char* taskName) : grMadein(taskName)
+    grFire(const char* taskName) : grMadein(taskName)
     {
 
     };
@@ -29,5 +29,5 @@ public:
     virtual void setMotionPathData(int mdlIndex);
     virtual void setSizeAndVector(float size, int vector, bool isCapsule);
 
-    static grFire* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grFire* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

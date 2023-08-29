@@ -13,7 +13,7 @@ protected:
     bool isActive;
     grGimmickMotionPathData motionPathData;
 public:
-    grLunarHorizonColour(char* taskName) : grMadein(taskName)
+    grLunarHorizonColour(const char* taskName) : grMadein(taskName)
     {
         turnOffTimer = 0.0;
         consecutiveFrames = 0.0;
@@ -29,5 +29,5 @@ public:
     virtual void setCooldownWork(float* cooldownTimerWork);
     virtual void reverseType();
 
-    static grLunarHorizonColour* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grLunarHorizonColour* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

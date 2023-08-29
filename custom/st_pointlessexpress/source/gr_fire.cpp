@@ -2,7 +2,7 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 
-grFire* grFire::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grFire* grFire::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grFire* lava = new (Heaps::StageInstance) grFire(taskName);
     lava->setMdlIndex(mdlIndex);

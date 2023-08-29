@@ -4,7 +4,7 @@
 #include <mt/mt_prng.h>
 #include <mt/mt_trig.h>
 
-grSoupBridge* grSoupBridge::create(int mdlIndex, char* tgtNodeName, char* taskName){
+grSoupBridge* grSoupBridge::create(int mdlIndex, const char* tgtNodeName, const char* taskName){
     grSoupBridge* bridge = new(Heaps::StageInstance) grSoupBridge(taskName);
     bridge->setMdlIndex(mdlIndex);
     bridge->m_heapType = Heaps::StageInstance;

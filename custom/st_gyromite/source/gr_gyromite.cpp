@@ -5,7 +5,7 @@
 #include <ft/ft_manager.h>
 #include <OS/OSError.h>
 
-grGyromite* grGyromite::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grGyromite* grGyromite::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grGyromite* ground = new (Heaps::StageInstance) grGyromite(taskName);
     ground->setupMelee();

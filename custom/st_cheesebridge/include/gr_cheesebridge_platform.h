@@ -12,7 +12,7 @@ protected:
     float respawnTimer;
     float* cooldownTimerWork;
 public:
-    grCheeseBridgePlatform(char* taskName) : grMadein(taskName)
+    grCheeseBridgePlatform(const char* taskName) : grMadein(taskName)
     {
         respawnTimer = 0.0;
     };
@@ -24,5 +24,5 @@ public:
     virtual void setCooldownTimerWork(float* cooldownTimerWork);
     virtual void setOrientation();
 
-    static grCheeseBridgePlatform* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grCheeseBridgePlatform* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

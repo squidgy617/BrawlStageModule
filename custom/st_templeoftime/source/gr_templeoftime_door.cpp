@@ -5,7 +5,7 @@
 #include <OS/OSError.h>
 #include <sc/sc_melee.h>
 
-grTempleOfTimeDoor* grTempleOfTimeDoor::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grTempleOfTimeDoor* grTempleOfTimeDoor::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grTempleOfTimeDoor* ground = new (Heaps::StageInstance) grTempleOfTimeDoor(taskName);
     ground->setupMelee();

@@ -2,7 +2,7 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 
-grSkyPillar* grSkyPillar::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grSkyPillar* grSkyPillar::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grSkyPillar* ground = new (Heaps::StageInstance) grSkyPillar(taskName);
     ground->setupMelee();

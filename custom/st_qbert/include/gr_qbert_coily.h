@@ -15,7 +15,7 @@ class grQbertCoily : public grQbertEnemy
         int attackerEntryId;
         bool isHatched;
     public:
-        grQbertCoily(char* taskName) : grQbertEnemy(taskName) {
+        grQbertCoily(const char* taskName) : grQbertEnemy(taskName) {
             isHatched = false;
             damage = 0;
             attackerEntryId = -1;
@@ -32,6 +32,6 @@ class grQbertCoily : public grQbertEnemy
         virtual void updateMove(float frameDelta);
         virtual void setAnim();
 
-        static grQbertCoily* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage, grQbertAlien* enemyTarget);
+        static grQbertCoily* create(int mdlIndex, const char* tgtNodeName, const char* taskName, stMelee* stage, grQbertAlien* enemyTarget);
 
 };

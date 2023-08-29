@@ -2,7 +2,7 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 
-grWarFactoryWall* grWarFactoryWall::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grWarFactoryWall* grWarFactoryWall::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grWarFactoryWall* ground = new (Heaps::StageInstance) grWarFactoryWall(taskName);
     ground->setupMelee();

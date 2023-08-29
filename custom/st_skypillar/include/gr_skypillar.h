@@ -6,12 +6,12 @@ class grSkyPillar : public grYakumono {
 protected:
 
 public:
-    grSkyPillar(char* taskName) : grYakumono(taskName)
+    grSkyPillar(const char* taskName) : grYakumono(taskName)
     {
 
     };
     virtual void update(float deltaFrame);
     virtual ~grSkyPillar(){};
 
-    static grSkyPillar* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grSkyPillar* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

@@ -6,7 +6,7 @@
 #include <OS/OSError.h>
 #include <ft/ft_manager.h>
 
-grQbertCube* grQbertCube::create(int mdlIndex, char* tgtNodeName, char* taskName){
+grQbertCube* grQbertCube::create(int mdlIndex, const char* tgtNodeName, const char* taskName){
     grQbertCube* ground = new(Heaps::StageInstance) grQbertCube(taskName);
     ground->setMdlIndex(mdlIndex);
     ground->m_heapType = Heaps::StageInstance;

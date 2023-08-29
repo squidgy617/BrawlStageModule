@@ -14,7 +14,7 @@ protected:
     State state;
 
 public:
-    grElevate(char* taskName) : grMadein(taskName)
+    grElevate(const char* taskName) : grMadein(taskName)
     {
         state = State_Up;
     };
@@ -22,5 +22,5 @@ public:
     virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
     virtual ~grElevate(){};
 
-    static grElevate* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grElevate* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

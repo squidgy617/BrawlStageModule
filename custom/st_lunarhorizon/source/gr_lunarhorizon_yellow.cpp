@@ -2,7 +2,7 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 
-grLunarHorizonYellow* grLunarHorizonYellow::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grLunarHorizonYellow* grLunarHorizonYellow::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grLunarHorizonYellow* ground = new (Heaps::StageInstance) grLunarHorizonYellow(taskName);
     ground->setupMelee();

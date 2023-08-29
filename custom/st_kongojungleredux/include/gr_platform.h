@@ -10,7 +10,7 @@ class grPlatform : public grMadein
         grGimmickMotionPathData motionPathData;
 
     public:
-        grPlatform(char* taskName) : grMadein(taskName) {
+        grPlatform(const char* taskName) : grMadein(taskName) {
 
         };
         virtual ~grPlatform() { };
@@ -19,6 +19,6 @@ class grPlatform : public grMadein
 
         virtual void setMotionPathData(int mdlIndex);
 
-        static grPlatform* create(int mdlIndex, char* tgtNodeName, char* taskName);
+        static grPlatform* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 
 };

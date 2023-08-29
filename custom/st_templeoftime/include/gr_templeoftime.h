@@ -62,7 +62,7 @@ protected:
     OcarinaSongInterface* ocarinaSong;
 
 public:
-    grTempleOfTime(char* taskName) : grMadein(taskName)
+    grTempleOfTime(const char* taskName) : grMadein(taskName)
     {
         buttonMask.m_bits = 0;
         buttonMask.m_rightTaunt = true;

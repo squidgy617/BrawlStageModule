@@ -2,7 +2,7 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 
-grCheeseBridge* grCheeseBridge::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grCheeseBridge* grCheeseBridge::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grCheeseBridge* ground = new (Heaps::StageInstance) grCheeseBridge(taskName);
     ground->setupMelee();

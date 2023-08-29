@@ -4,7 +4,7 @@
 #include <mt/mt_prng.h>
 #include <OS/OSError.h>
 
-grCapturePoint* grCapturePoint::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage)
+grCapturePoint* grCapturePoint::create(int mdlIndex, const char* tgtNodeName, const char* taskName, stMelee* stage)
 {
     grCapturePoint* ground = new (Heaps::StageInstance) grCapturePoint(taskName);
     ground->setMdlIndex(mdlIndex);

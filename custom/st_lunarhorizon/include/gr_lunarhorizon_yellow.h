@@ -12,7 +12,7 @@ protected:
     bool* isResetWork;
 public:
 
-    grLunarHorizonYellow(char* taskName) : grMadein(taskName)
+    grLunarHorizonYellow(const char* taskName) : grMadein(taskName)
     {
         turnOffTimer = 0.0;
         isActive = false;
@@ -25,5 +25,5 @@ public:
     virtual void setCooldownWork(float* cooldownTimerWork);
     virtual void setIsResetWork(bool* isResetWork);
 
-    static grLunarHorizonYellow* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grLunarHorizonYellow* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

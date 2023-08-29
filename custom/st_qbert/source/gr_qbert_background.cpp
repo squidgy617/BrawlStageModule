@@ -2,7 +2,7 @@
 #include "gr_qbert_background.h"
 #include <OS/OSError.h>
 
-grQbertBackground* grQbertBackground::create(int mdlIndex, char* tgtNodeName, char* taskName){
+grQbertBackground* grQbertBackground::create(int mdlIndex, const char* tgtNodeName, const char* taskName){
     grQbertBackground* background = new(Heaps::StageInstance) grQbertBackground(taskName);
     background->setMdlIndex(mdlIndex);
     background->m_heapType = Heaps::StageInstance;

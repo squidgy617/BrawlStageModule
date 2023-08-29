@@ -42,7 +42,7 @@ protected:
     CollisionMode collisionMode : 8;
 
 public:
-    grCapturePoint(char* taskName) : grMadein(taskName)
+    grCapturePoint(const char* taskName) : grMadein(taskName)
     {
         areaInfo.m_numHitGroups = 0;
         areaInfo.m_hitGroupsInfo = NULL;
@@ -63,5 +63,5 @@ public:
     virtual void setNewCapturePosition();
     virtual void applyMotionRate(float motionRate);
 
-    static grCapturePoint* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
+    static grCapturePoint* create(int mdlIndex, const char* tgtNodeName, const char* taskName, stMelee* stage);
 };

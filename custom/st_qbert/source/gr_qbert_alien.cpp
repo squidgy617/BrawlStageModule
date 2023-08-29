@@ -12,7 +12,7 @@
 #include <mt/mt_prng.h>
 #include <ft/ft_manager.h>
 
-grQbertAlien* grQbertAlien::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage){
+grQbertAlien* grQbertAlien::create(int mdlIndex, const char* tgtNodeName, const char* taskName, stMelee* stage){
     grQbertAlien* alien = new(Heaps::StageInstance) grQbertAlien(taskName);
     alien->setMdlIndex(mdlIndex);
     alien->m_heapType = Heaps::StageInstance;

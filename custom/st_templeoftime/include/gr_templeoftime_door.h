@@ -17,7 +17,7 @@ protected:
     OcarinaSong<6> songOfTime;
 
 public:
-    grTempleOfTimeDoor(char* taskName) : grTempleOfTime(taskName)
+    grTempleOfTimeDoor(const char* taskName) : grTempleOfTime(taskName)
     {
         openedWithOcarina = false;
         state = State_Closed;
@@ -35,5 +35,5 @@ public:
 
     virtual void playOcarinaSong();
 
-    static grTempleOfTimeDoor* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grTempleOfTimeDoor* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

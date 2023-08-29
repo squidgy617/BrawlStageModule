@@ -12,7 +12,7 @@ class grQbertRed : public grQbertBall
     protected:
         float damage;
     public:
-        grQbertRed(char* taskName) : grQbertBall(taskName) {
+        grQbertRed(const char* taskName) : grQbertBall(taskName) {
             damage = 0;
         };
         virtual void onInflictEach(soCollisionLog* collisionLog, float power);
@@ -24,6 +24,6 @@ class grQbertRed : public grQbertBall
         virtual void setStart();
         virtual void updateMove(float frameDelta);
 
-        static grQbertRed* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
+        static grQbertRed* create(int mdlIndex, const char* tgtNodeName, const char* taskName, stMelee* stage);
 
 };

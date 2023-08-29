@@ -3,7 +3,7 @@
 #include <memory.h>
 #include <mt/mt_vector.h>
 
-grIzumi* grIzumi::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grIzumi* grIzumi::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grIzumi* ground = new (Heaps::StageInstance) grIzumi(taskName);
     ground->setupMelee();

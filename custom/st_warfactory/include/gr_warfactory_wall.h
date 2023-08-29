@@ -6,12 +6,12 @@ class grWarFactoryWall : public grYakumono {
 protected:
 
 public:
-    grWarFactoryWall(char* taskName) : grYakumono(taskName)
+    grWarFactoryWall(const char* taskName) : grYakumono(taskName)
     {
 
     };
     virtual void update(float deltaFrame);
     virtual ~grWarFactoryWall(){};
 
-    static grWarFactoryWall* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grWarFactoryWall* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

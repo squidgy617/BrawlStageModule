@@ -8,7 +8,7 @@ class grLunarHorizonSun : public grMadein {
 protected:
 
 public:
-    grLunarHorizonSun(char* taskName) : grMadein(taskName)
+    grLunarHorizonSun(const char* taskName) : grMadein(taskName)
     {
 
     };
@@ -16,5 +16,5 @@ public:
     virtual ~grLunarHorizonSun(){};
 
 
-    static grLunarHorizonSun* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grLunarHorizonSun* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

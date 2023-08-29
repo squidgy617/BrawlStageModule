@@ -9,12 +9,12 @@ class grCatapult : public grGimmickCatapult {
     grGimmickCatapultData _catapultData;
 
 public:
-    grCatapult(char* taskName) : grGimmickCatapult(taskName) {
+    grCatapult(const char* taskName) : grGimmickCatapult(taskName) {
 
     };
     virtual ~grCatapult() {}
 
-    static grCatapult* create(int mdlIndex, char* taskName);
+    static grCatapult* create(int mdlIndex, const char* taskName);
 
     void prepareCatapultData(float vector, float motionRatio, int motionPathIndex, float framesBeforeStartMove, float unk1, float unk2);
 };

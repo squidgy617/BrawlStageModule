@@ -12,7 +12,7 @@ class grQbertScore : public grYakumono
         u32 prevScore;
         u8 type;
     public:
-        grQbertScore(char* taskName) : grYakumono(taskName) {
+        grQbertScore(const char* taskName) : grYakumono(taskName) {
             prevScore = 999999;
             m_motionRatio = 0.0;
             scaleBase = (Vec3f){0.0, 0.0, 0.0};
@@ -34,6 +34,6 @@ class grQbertScore : public grYakumono
         virtual void updateCallback(float frameDelta);
         virtual void updateNumber(float frameDelta);
 
-        static grQbertScore* create(int mdlIndex, char* tgtNodeName, char* taskName);
+        static grQbertScore* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 
 };

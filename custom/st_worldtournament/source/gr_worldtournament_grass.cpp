@@ -6,7 +6,7 @@
 #include <ft/ft_audience_manager.h>
 #include <ai/ai_mgr.h>
 
-grWorldTournamentGrass* grWorldTournamentGrass::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grWorldTournamentGrass* grWorldTournamentGrass::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grWorldTournamentGrass* ground = new (Heaps::StageInstance) grWorldTournamentGrass(taskName);
     ground->setupMelee();

@@ -2,7 +2,7 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 
-grLunarHorizonSun* grLunarHorizonSun::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grLunarHorizonSun* grLunarHorizonSun::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grLunarHorizonSun* ground = new (Heaps::StageInstance) grLunarHorizonSun(taskName);
     ground->setupMelee();

@@ -8,7 +8,7 @@
 #include <mu/mu_menu.h>
 #include <OS/OSError.h>
 
-grPictSimpleBg* grPictSimpleBg::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grPictSimpleBg* grPictSimpleBg::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grPictSimpleBg* ground = new (Heaps::StageInstance) grPictSimpleBg(taskName);
     ground->setupMelee();

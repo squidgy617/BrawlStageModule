@@ -8,7 +8,7 @@ protected:
     soAreaInit m_areaInit;
     ykAreaData m_ykData;
 public:
-    grCheeseBridgeRope(char* taskName) : grCheeseBridgePlatform(taskName)
+    grCheeseBridgeRope(const char* taskName) : grCheeseBridgePlatform(taskName)
     {
 
     };
@@ -18,5 +18,5 @@ public:
     virtual void getUpperNode(Vec3f* pos);
     virtual void getUnderNode(Vec3f* pos);
 
-    static grCheeseBridgeRope* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grCheeseBridgeRope* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

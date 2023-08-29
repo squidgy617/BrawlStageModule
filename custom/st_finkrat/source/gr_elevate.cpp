@@ -3,7 +3,7 @@
 #include <memory.h>
 #include <mt/mt_prng.h>
 
-grElevate* grElevate::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grElevate* grElevate::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grElevate* elevate = new (Heaps::StageInstance) grElevate(taskName);
     elevate->setMdlIndex(mdlIndex);

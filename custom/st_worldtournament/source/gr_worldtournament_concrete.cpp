@@ -4,7 +4,7 @@
 #include <ft/ft_manager.h>
 #include <so/so_external_value_accesser.h>
 
-grWorldTournamentConcrete* grWorldTournamentConcrete::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grWorldTournamentConcrete* grWorldTournamentConcrete::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grWorldTournamentConcrete* ground = new (Heaps::StageInstance) grWorldTournamentConcrete(taskName);
     ground->setupMelee();

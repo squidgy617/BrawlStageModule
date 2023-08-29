@@ -16,7 +16,7 @@ class grLava : public grMadein {
 protected:
 
 public:
-    grLava(char* taskName) : grMadein(taskName)
+    grLava(const char* taskName) : grMadein(taskName)
     {
 
     };
@@ -24,5 +24,5 @@ public:
     virtual ~grLava(){};
     virtual void setupAttack();
 
-    static grLava* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grLava* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

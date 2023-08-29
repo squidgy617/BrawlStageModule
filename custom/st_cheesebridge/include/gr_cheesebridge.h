@@ -6,12 +6,12 @@ class grCheeseBridge : public grYakumono {
 protected:
 
 public:
-    grCheeseBridge(char* taskName) : grYakumono(taskName)
+    grCheeseBridge(const char* taskName) : grYakumono(taskName)
     {
 
     };
     virtual void update(float deltaFrame);
     virtual ~grCheeseBridge(){};
 
-    static grCheeseBridge* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grCheeseBridge* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

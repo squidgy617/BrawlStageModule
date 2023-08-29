@@ -6,7 +6,7 @@
 #include <sc/sc_melee.h>
 #include <snd/snd_system.h>
 
-grTempleOfTimeMedallion* grTempleOfTimeMedallion::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grTempleOfTimeMedallion* grTempleOfTimeMedallion::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grTempleOfTimeMedallion* ground = new (Heaps::StageInstance) grTempleOfTimeMedallion(taskName);
     ground->setupMelee();

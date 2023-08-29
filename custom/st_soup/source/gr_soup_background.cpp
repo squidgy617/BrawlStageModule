@@ -2,7 +2,7 @@
 #include "gr_soup_background.h"
 #include <OS/OSError.h>
 
-grSoupBackground* grSoupBackground::create(int mdlIndex, char* tgtNodeName, char* taskName){
+grSoupBackground* grSoupBackground::create(int mdlIndex, const char* tgtNodeName, const char* taskName){
     grSoupBackground* background = new(Heaps::StageInstance) grSoupBackground(taskName);
     background->setMdlIndex(mdlIndex);
     background->m_heapType = Heaps::StageInstance;

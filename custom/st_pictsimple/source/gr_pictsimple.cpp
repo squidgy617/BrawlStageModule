@@ -5,7 +5,7 @@
 #include <ft/ft_manager.h>
 #include <OS/OSError.h>
 
-grPictSimple* grPictSimple::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grPictSimple* grPictSimple::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grPictSimple* ground = new (Heaps::StageInstance) grPictSimple(taskName);
     ground->setupMelee();

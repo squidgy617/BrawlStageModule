@@ -7,10 +7,10 @@ class grSoupBackground : public grMadein
     protected:
 
     public:
-        grSoupBackground(char* taskName) : grMadein(taskName) {
+        grSoupBackground(const char* taskName) : grMadein(taskName) {
 
         };
         virtual ~grSoupBackground() { };
 
-        static grSoupBackground* create(int mdlIndex, char* tgtNodeName, char* taskName);
+        static grSoupBackground* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

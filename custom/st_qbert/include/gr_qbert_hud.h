@@ -11,12 +11,12 @@ class grQbertHud : public grMadein
     protected:
         Vec3f* positionsWork;
     public:
-        grQbertHud(char* taskName) : grMadein(taskName) {
+        grQbertHud(const char* taskName) : grMadein(taskName) {
 
         };
         virtual ~grQbertHud() { };
         virtual void processAnim();
         virtual void setScorePosWork(Vec3f* positionsWork);
 
-        static grQbertHud* create(int mdlIndex, char* tgtNodeName, char* taskName);
+        static grQbertHud* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

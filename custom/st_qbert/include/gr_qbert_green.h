@@ -18,7 +18,7 @@ class grQbertGreen : public grQbertBall
     protected:
         ImmobilizeState* immobilizeStateWork;
     public:
-        grQbertGreen(char* taskName) : grQbertBall(taskName) {
+        grQbertGreen(const char* taskName) : grQbertBall(taskName) {
         };
         virtual void onInflictEach(soCollisionLog* collisionLog, float power);
         virtual ~grQbertGreen() { };
@@ -28,6 +28,6 @@ class grQbertGreen : public grQbertBall
         virtual void updateMove(float frameDelta);
         virtual void setImmobilizeStateWork(ImmobilizeState* immobilizeStateWork);
 
-        static grQbertGreen* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
+        static grQbertGreen* create(int mdlIndex, const char* tgtNodeName, const char* taskName, stMelee* stage);
 
 };

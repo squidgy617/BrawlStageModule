@@ -2,7 +2,7 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 
-grCheeseBridgeRope* grCheeseBridgeRope::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grCheeseBridgeRope* grCheeseBridgeRope::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grCheeseBridgeRope* rope = new (Heaps::StageInstance) grCheeseBridgeRope(taskName);
     rope->setMdlIndex(mdlIndex);

@@ -8,7 +8,7 @@ protected:
     soAreaInit areaInit;
     ykAreaData areaInfo;
 public:
-    grWorldTournamentConcrete(char* taskName) : grYakumono(taskName)
+    grWorldTournamentConcrete(const char* taskName) : grYakumono(taskName)
     {
         areaInfo.m_numHitGroups = 0;
         areaInfo.m_hitGroupsInfo = NULL;
@@ -19,5 +19,5 @@ public:
     virtual void onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId);
     virtual ~grWorldTournamentConcrete(){};
 
-    static grWorldTournamentConcrete* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grWorldTournamentConcrete* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

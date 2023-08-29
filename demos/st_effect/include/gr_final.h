@@ -10,7 +10,7 @@ protected:
 
 
 public:
-    grFinal(char* taskName) : grYakumono(taskName)
+    grFinal(const char* taskName) : grYakumono(taskName)
     {
 
     };
@@ -18,6 +18,6 @@ public:
     virtual void receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3);
     virtual ~grFinal(){};
 
-    static grFinal* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grFinal* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 
 };

@@ -6,7 +6,7 @@ class grGyromite : public grYakumono {
 protected:
 
 public:
-    grGyromite(char* taskName) : grYakumono(taskName)
+    grGyromite(const char* taskName) : grYakumono(taskName)
     {
 
     };
@@ -14,5 +14,5 @@ public:
     virtual void receiveCollMsg_Heading(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3);
     virtual ~grGyromite(){};
 
-    static grGyromite* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grGyromite* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

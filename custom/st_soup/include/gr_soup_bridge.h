@@ -20,7 +20,7 @@ class grSoupBridge : public grMadein
         float shakeTimer;
         BridgeState bridgeState;
     public:
-        grSoupBridge(char* taskName) : grMadein(taskName) {
+        grSoupBridge(const char* taskName) : grMadein(taskName) {
             yakumonoData.m_numHitGroups = 1;
             yakumonoData.m_hitGroupsInfo = NULL;
             breakTimer = 0;
@@ -35,6 +35,6 @@ class grSoupBridge : public grMadein
         virtual void updateBreak(float deltaFrame);
         virtual void updateShake(float frameDelta);
 
-        static grSoupBridge* create(int mdlIndex, char* tgtNodeName, char* taskName);
+        static grSoupBridge* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 
 };

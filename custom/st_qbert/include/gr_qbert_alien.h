@@ -18,7 +18,7 @@ class grQbertAlien : public grQbertEnemy
         SndID swearSndIds[8];
 
     public:
-        grQbertAlien(char* taskName) : grQbertEnemy(taskName) {
+        grQbertAlien(const char* taskName) : grQbertEnemy(taskName) {
             swearSndIds[0] = snd_se_stage_Madein_05;
             swearSndIds[1] = snd_se_stage_Madein_06;
             swearSndIds[2] = snd_se_stage_Madein_good_07;
@@ -40,6 +40,6 @@ class grQbertAlien : public grQbertEnemy
         virtual void updateMove(float frameDelta);
         virtual void setTeam(u8 teamId);
 
-        static grQbertAlien* create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage);
+        static grQbertAlien* create(int mdlIndex, const char* tgtNodeName, const char* taskName, stMelee* stage);
 
 };

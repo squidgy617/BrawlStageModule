@@ -3,7 +3,7 @@
 #include <memory.h>
 #include "st_smashketball_data.h"
 
-grSmashketballGlass* grSmashketballGlass::create(int mdlIndex, char* tgtNodeName, char* taskName){
+grSmashketballGlass* grSmashketballGlass::create(int mdlIndex, const char* tgtNodeName, const char* taskName){
     grSmashketballGlass* glass = new(Heaps::StageInstance) grSmashketballGlass(taskName);
     glass->setupMelee();
     glass->setMdlIndex(mdlIndex);

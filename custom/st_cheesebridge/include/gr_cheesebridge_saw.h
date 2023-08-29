@@ -6,7 +6,7 @@ class grCheeseBridgeSaw : public grCheeseBridgePlatform {
 protected:
 
 public:
-    grCheeseBridgeSaw(char* taskName) : grCheeseBridgePlatform(taskName)
+    grCheeseBridgeSaw(const char* taskName) : grCheeseBridgePlatform(taskName)
     {
 
     };
@@ -15,5 +15,5 @@ public:
 
     virtual void setOrientation();
 
-    static grCheeseBridgeSaw* create(int mdlIndex, char* tgtNodeName, char* taskName);
+    static grCheeseBridgeSaw* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

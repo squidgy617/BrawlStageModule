@@ -13,7 +13,7 @@
 #include <ft/ft_manager.h>
 #include <string.h>
 
-grQbertRed* grQbertRed::create(int mdlIndex, char* tgtNodeName, char* taskName, stMelee* stage){
+grQbertRed* grQbertRed::create(int mdlIndex, const char* tgtNodeName, const char* taskName, stMelee* stage){
     grQbertRed* ball = new(Heaps::StageInstance) grQbertRed(taskName);
     ball->setMdlIndex(mdlIndex);
     ball->m_heapType = Heaps::StageInstance;

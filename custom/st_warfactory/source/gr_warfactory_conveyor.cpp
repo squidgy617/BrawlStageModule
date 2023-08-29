@@ -2,7 +2,7 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 
-grWarFactoryConveyor* grWarFactoryConveyor::create(int mdlIndex, char* tgtNodeName, char* taskName)
+grWarFactoryConveyor* grWarFactoryConveyor::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
     grWarFactoryConveyor* ground = new (Heaps::StageInstance) grWarFactoryConveyor(taskName);
     ground->setupMelee();
