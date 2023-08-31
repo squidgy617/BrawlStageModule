@@ -190,16 +190,16 @@ void grQbertRed::onDamage(int index, soDamage* damage, soDamageAttackerInfo* att
         this->setSleepAttack(true);
         this->setSleepHit(true);
         this->isDead = true;
-        this->angle = damage->m_vector;
-        if (damage->m_side == -1) {
-            this->angle = 180 - damage->m_vector;
+        this->angle = damage->m_attackData.m_vector;
+        if (damage->m_lr == -1) {
+            this->angle = 180 - damage->m_attackData.m_vector;
         }
         this->velocity = damage->m_reaction / 60;
 
         this->prevPos = this->getPos();
         this->targetPos = (Vec3f){this->prevPos.m_x, this->stage->m_deadRange.m_bottom, 0};
 
-        int teamId = damage->m_teamId;
+        int teamId = damage->m_collisionLog.m_teamId;
         if (attackerInfo->m_indirectAttackerSoKind == StageObject_Fighter) {
             teamId = g_ftManager->getTeam(attackerInfo->m_indirectAttackerEntryId, false, false);
             if (this->gameRule == Game_Rule_Coin) {

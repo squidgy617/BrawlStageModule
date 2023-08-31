@@ -229,9 +229,9 @@ void grQbertCoily::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
         this->setSleepAttack(true);
         this->setSleepHit(true);
         this->isDead = true;
-        this->angle = damage->m_vector;
-        if (damage->m_side == -1) {
-            this->angle = 180 - damage->m_vector;
+        this->angle = damage->m_attackData.m_vector;
+        if (damage->m_lr == -1) {
+            this->angle = 180 - damage->m_attackData.m_vector;
         }
         this->velocity = damage->m_reaction / 60;
 
