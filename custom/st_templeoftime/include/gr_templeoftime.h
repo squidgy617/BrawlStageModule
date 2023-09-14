@@ -12,7 +12,7 @@ public:
     }
     virtual ~OcarinaSongInterface() { };
     virtual u32 length();
-    virtual bool updateAndCheckIfComplete(Button button);
+    virtual bool updateAndCheckIfComplete(ipButton button);
     virtual bool isSongFinished() {
         if (this->state >= this->length()) {
             this->state = 0;
@@ -28,14 +28,14 @@ public:
 template <u32 L>
 class OcarinaSong : public OcarinaSongInterface {
 public:
-    Button buttons[L];
+    ipButton buttons[L];
     OcarinaSong() : OcarinaSongInterface() {
-        __memfill(&buttons, 0, sizeof(Button)*L);
+        __memfill(&buttons, 0, sizeof(ipButton)*L);
     }
     virtual ~OcarinaSong() { };
     virtual u32 length() { return L; }
-    virtual bool updateAndCheckIfComplete(Button button) {
-        Button checkedButton = (Button){button.m_bits & this->buttons[this->state].m_bits};
+    virtual bool updateAndCheckIfComplete(ipButton button) {
+        ipButton checkedButton = (ipButton){button.m_bits & this->buttons[this->state].m_bits};
         if (checkedButton.m_bits > 0) {
             this->state++;
             if (this->isSongFinished()) {
@@ -57,8 +57,8 @@ class grTempleOfTime : public grMadein {
 
 protected:
 
-    Button buttonMask;
-    Button prevButton;
+    ipButton buttonMask;
+    ipButton prevButton;
     OcarinaSongInterface* ocarinaSong;
 
 public:
