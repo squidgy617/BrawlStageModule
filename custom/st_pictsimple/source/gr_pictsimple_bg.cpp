@@ -5,7 +5,7 @@
 #include <ft/ft_manager.h>
 #include <gm/gm_global.h>
 #include <mt/mt_prng.h>
-#include <mu/mu_menu.h>
+#include <mu/menu.h>
 #include <OS/OSError.h>
 
 grPictSimpleBg* grPictSimpleBg::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
