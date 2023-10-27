@@ -93,44 +93,61 @@ void grGhostHouseBoo::setupAttack() {
 
 void grGhostHouseBoo::updateMove(float deltaFrame) {
     stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
+    float currentAnimFrame = this->m_modelAnims[0]->getFrame();
+    float animFrameCount = this->m_modelAnims[0]->getFrameCount();
+    switch(this->state) {
+        case State_ShyEnter:
+            if (int(currentAnimFrame) == animFrameCount/2 || currentAnimFrame >= animFrameCount - 1) {
+                this->setState(State_ShyStart);
+            }
+        case State_ShyStart:
+           if (currentAnimFrame >= animFrameCount - 1) {
+               this->setState(State_Shy);
+           }
+        case State_Shy:
+        case State_Following:
+            for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
+                int entryId = g_ftManager->getEntryIdFromIndex(i);
+                if (this->playerTarget == g_ftManager->getPlayerNo(entryId) && g_ftManager->isFighterActivate(entryId, -1)) {
 
-    for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
-        int entryId = g_ftManager->getEntryIdFromIndex(i);
-        if (this->playerTarget == g_ftManager->getPlayerNo(entryId) && g_ftManager->isFighterActivate(entryId, -1)) {
+                    Vec3f currentPos = this->getPos();
+                    Vec3f targetFighterPos = g_ftManager->getFighterCenterPos(entryId, -1);
+                    Vec3f dirVec = targetFighterPos - currentPos;
+                    float targetFighterLr = g_ftManager->getFighterLr(entryId, -1);
+                    if (dirVec.m_x >= 0) {
+                        this->setRot(0, ghostHouseData->booRot, 0);
+                        if (targetFighterLr < 0) {
+                            this->setState(State_ShyEnter);
+                        }
+                        else {
+                            this->setState(State_Following);
+                        }
+                    }
+                    else {
+                        this->setRot(0, -ghostHouseData->booRot, 0);
+                        if (targetFighterLr > 0) {
+                            this->setState(State_ShyEnter);
+                        }
+                        else {
+                            this->setState(State_Following);
+                        }
+                    }
+                    if (this->state == State_Following) {
+                        this->speed += ghostHouseData->booAccel * deltaFrame;
+                        if (this->speed > ghostHouseData->booTopSpeed) {
+                            this->speed = ghostHouseData->booTopSpeed;
+                        }
+                        dirVec = (dirVec / hkMath::sqrt(dirVec.m_x*dirVec.m_x + dirVec.m_y*dirVec.m_y + dirVec.m_z*dirVec.m_z))*this->speed*deltaFrame ;
 
-            Vec3f currentPos = this->getPos();
-            Vec3f targetFighterPos = g_ftManager->getFighterCenterPos(entryId, -1);
-            Vec3f dirVec = targetFighterPos - currentPos;
-            float targetFighterLr = g_ftManager->getFighterLr(entryId, -1);
-            if (dirVec.m_x >= 0) {
-                if (targetFighterLr < 0) {
-                    this->setState(State_Shy);
-                }
-                else {
-                    this->setState(State_Following);
+                        Vec3f newPos = currentPos + dirVec;
+                        this->setPos(&newPos);
+                    }
+
                 }
             }
-            else {
-                if (targetFighterLr > 0) {
-                    this->setState(State_Shy);
-                }
-                else {
-                    this->setState(State_Following);
-                }
-            }
-            if (this->state == State_Following) {
-                this->speed += ghostHouseData->booAccel * deltaFrame;
-                if (this->speed > ghostHouseData->booTopSpeed) {
-                    this->speed = ghostHouseData->booTopSpeed;
-                }
-                dirVec = (dirVec / hkMath::sqrt(dirVec.m_x*dirVec.m_x + dirVec.m_y*dirVec.m_y + dirVec.m_z*dirVec.m_z))*this->speed*deltaFrame ;
-
-                Vec3f newPos = currentPos + dirVec;
-                this->setPos(&newPos);
-            }
-
-        }
+            break;
     }
+
 }
 
 void grGhostHouseBoo::setPlayerTarget(int playerTarget) {
@@ -139,18 +156,31 @@ void grGhostHouseBoo::setPlayerTarget(int playerTarget) {
 
 void grGhostHouseBoo::setState(State state) {
     if (this->state != state) {
-        this->state = state;
         switch(state) {
+            case State_Spawn:
+
             case State_Following:
-                this->setMotionDetails(0, 0, 0, 0, 0);
+                if (this->state != State_ShyEnter) {
+                    this->setMotionDetails(0, 0, 0, 0, 0);
+                }
+                break;
+            case State_ShyEnter:
+                if (this->state == State_ShyStart || this->state == State_Shy) {
+                    return;
+                }
+                this->speed = 0;
+                break;
+            case State_ShyStart:
+                this->setMotionDetails(3, 1, 0, 0, 0);
                 break;
             case State_Shy:
-                this->setMotionDetails(3, 2, 0, 0, 0);
-                this->speed = 0;
+                this->setMotionDetails(4, 1, 0, 0, 0);
                 break;
             default:
                 break;
         }
+        this->state = state;
+
     }
 
 }

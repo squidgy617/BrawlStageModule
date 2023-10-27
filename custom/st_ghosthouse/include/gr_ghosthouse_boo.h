@@ -9,7 +9,9 @@ protected:
         State_Inactive = 0x0,
         State_Spawn = 0x1,
         State_Following = 0x2,
-        State_Shy = 0x3
+        State_ShyEnter = 0x3,
+        State_ShyStart = 0x4,
+        State_Shy = 0x5
     };
 
     int playerTarget;

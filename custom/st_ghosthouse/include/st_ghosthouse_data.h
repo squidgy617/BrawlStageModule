@@ -16,5 +16,6 @@ struct stGhostHouseData {
     int booShieldDamage;
     float booTopSpeed;
     float booAccel;
+    float booRot;
 };
 //static_assert(sizeof(stGhostHouseData) == 64, "Class is wrong size!");
