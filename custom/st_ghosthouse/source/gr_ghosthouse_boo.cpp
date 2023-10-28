@@ -96,28 +96,28 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
     float currentAnimFrame = this->m_modelAnims[0]->getFrame();
     float animFrameCount = this->m_modelAnims[0]->getFrameCount();
     switch(this->state) {
-        case State_ShyEnter:
-            if (int(currentAnimFrame) == animFrameCount/2 || currentAnimFrame >= animFrameCount - 1) {
-                this->setState(State_ShyStart);
+        case State_Spawn:
+            if (currentAnimFrame >= animFrameCount - 1) {
+                this->setState(State_Following);
             }
+            break;
         case State_ShyStart:
-           if (currentAnimFrame >= animFrameCount - 1) {
-               this->setState(State_Shy);
-           }
+            if (currentAnimFrame >= animFrameCount - 1) {
+                this->setState(State_Shy);
+            }
         case State_Shy:
         case State_Following:
             for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
                 int entryId = g_ftManager->getEntryIdFromIndex(i);
                 if (this->playerTarget == g_ftManager->getPlayerNo(entryId) && g_ftManager->isFighterActivate(entryId, -1)) {
 
-                    Vec3f currentPos = this->getPos();
                     Vec3f targetFighterPos = g_ftManager->getFighterCenterPos(entryId, -1);
-                    Vec3f dirVec = targetFighterPos - currentPos;
+                    Vec3f dirVec = targetFighterPos - this->getPos();
                     float targetFighterLr = g_ftManager->getFighterLr(entryId, -1);
                     if (dirVec.m_x >= 0) {
                         this->setRot(0, ghostHouseData->booRot, 0);
                         if (targetFighterLr < 0) {
-                            this->setState(State_ShyEnter);
+                            this->setState(State_ShyStart);
                         }
                         else {
                             this->setState(State_Following);
@@ -126,13 +126,14 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                     else {
                         this->setRot(0, -ghostHouseData->booRot, 0);
                         if (targetFighterLr > 0) {
-                            this->setState(State_ShyEnter);
+                            this->setState(State_ShyStart);
                         }
                         else {
                             this->setState(State_Following);
                         }
                     }
                     if (this->state == State_Following) {
+                        Vec3f currentPos = this->getPos();
                         this->speed += ghostHouseData->booAccel * deltaFrame;
                         if (this->speed > ghostHouseData->booTopSpeed) {
                             this->speed = ghostHouseData->booTopSpeed;
@@ -158,20 +159,36 @@ void grGhostHouseBoo::setState(State state) {
     if (this->state != state) {
         switch(state) {
             case State_Spawn:
-
+                this->setMotionDetails(1, 0, 0, 0, 0);
+                break;
             case State_Following:
-                if (this->state != State_ShyEnter) {
+                if (this->state != State_ShyStart) {
                     this->setMotionDetails(0, 0, 0, 0, 0);
+                    if (this->prevFollowAnimFrame != 0) {
+                        this->m_modelAnims[0]->setFrame(this->prevFollowAnimFrame);
+                        this->setPos(&this->prevFollowPos);
+                    }
                 }
                 break;
-            case State_ShyEnter:
+            case State_ShyStart:
+            {
                 if (this->state == State_ShyStart || this->state == State_Shy) {
                     return;
                 }
+                this->prevFollowAnimFrame = this->m_modelAnims[0]->getFrame();
+                this->prevFollowPos = this->getPos();
+
                 this->speed = 0;
-                break;
-            case State_ShyStart:
+                Vec3f centerPos;
+                Vec3f bodyPos;
+                this->getNodePosition(&centerPos, 0, "center");
+                this->getNodePosition(&bodyPos, 0, "skl_root");
+
+                Vec3f centerToBodyPos = bodyPos - centerPos;
+                this->setPos(this->prevFollowPos.m_x + centerToBodyPos.m_x, this->prevFollowPos.m_y + centerToBodyPos.m_y, this->prevFollowPos.m_z);
                 this->setMotionDetails(3, 1, 0, 0, 0);
+            }
+
                 break;
             case State_Shy:
                 this->setMotionDetails(4, 1, 0, 0, 0);

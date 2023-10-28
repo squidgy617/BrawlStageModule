@@ -75,6 +75,9 @@ void stGhostHouse::createObjBoo(int mdlIndex) {
 }
 
 void stGhostHouse::update(float frameDelta){
+//    for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
+//
+//    }
 
 }
 

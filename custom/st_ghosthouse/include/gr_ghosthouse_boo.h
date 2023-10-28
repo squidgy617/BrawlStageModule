@@ -9,14 +9,15 @@ protected:
         State_Inactive = 0x0,
         State_Spawn = 0x1,
         State_Following = 0x2,
-        State_ShyEnter = 0x3,
-        State_ShyStart = 0x4,
-        State_Shy = 0x5
+        State_ShyStart = 0x3,
+        State_Shy = 0x4
     };
 
     int playerTarget;
     float speed;
     State state;
+    float prevFollowAnimFrame;
+    Vec3f prevFollowPos;
 
 public:
     grGhostHouseBoo(const char* taskName) : grMadein(taskName)
@@ -24,6 +25,8 @@ public:
         playerTarget = -1;
         speed = 0;
         state = State_Following;
+        prevFollowAnimFrame = 0;
+
     };
     virtual void update(float deltaFrame);
     virtual ~grGhostHouseBoo(){};
