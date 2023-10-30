@@ -14,10 +14,27 @@ const float POKETRAINER_Z = 0.0f;
 
 class stGhostHouse : public stMelee {
     protected:
+        enum GhostEvent {
+            Event_None = 0x0,
+            Event_Follow = 0x1,
+            Event_FollowBig = 0x2,
+            Event_Circle = 0x3,
+            Event_Snake = 0x4,
+            Event_Crew = 0x5,
+            Event_Disappear = 0x6,
+            Event_Bubble = 0x7,
+            Event_Fishing = 0x8
+        };
+
+        GhostEvent currentEvent;
+        GhostEvent nextEvent;
+        float eventStartTimer;
 
     public:
         stGhostHouse(srStageKind stageID) : stMelee("stGhostHouse", stageID) {
-
+            currentEvent = Event_None;
+            nextEvent = Event_None;
+            eventStartTimer = 0;
         };
         static stGhostHouse* create();
 
@@ -58,7 +75,12 @@ class stGhostHouse : public stMelee {
         virtual int getFinalTechniqColor();
         virtual bool isBamperVector();
         virtual ~stGhostHouse() {this->releaseArchive(); };
+        virtual void notifyEventInfoGo();
 
         virtual void createObjGround(int mdlIndex);
         virtual void createObjBoo(int mdlIndex);
+
+        virtual GhostEvent decideNextEvent();
+        virtual void changeEvent(GhostEvent event);
+        virtual void startNextEvent();
 };

@@ -3,6 +3,7 @@
 #include <memory.h>
 #include <ft/ft_manager.h>
 #include <hk/hk_math.h>
+#include <mt/mt_prng.h>
 #include <OS/OSError.h>
 
 grGhostHouseBoo* grGhostHouseBoo::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
@@ -96,14 +97,14 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
     float currentAnimFrame = this->m_modelAnims[0]->getFrame();
     float animFrameCount = this->m_modelAnims[0]->getFrameCount();
     switch(this->state) {
-        case State_Spawn:
+        case State_FollowStart:
             if (currentAnimFrame >= animFrameCount - 1) {
-                this->setState(State_Following);
+                this->changeState(State_Following);
             }
             break;
         case State_ShyStart:
             if (currentAnimFrame >= animFrameCount - 1) {
-                this->setState(State_Shy);
+                this->changeState(State_Shy);
             }
         case State_Shy:
         case State_Following:
@@ -117,26 +118,26 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                     if (dirVec.m_x >= 0) {
                         this->setRot(0, ghostHouseData->booRot, 0);
                         if (targetFighterLr < 0) {
-                            this->setState(State_ShyStart);
+                            this->changeState(State_ShyStart);
                         }
                         else {
-                            this->setState(State_Following);
+                            this->changeState(State_Following);
                         }
                     }
                     else {
                         this->setRot(0, -ghostHouseData->booRot, 0);
                         if (targetFighterLr > 0) {
-                            this->setState(State_ShyStart);
+                            this->changeState(State_ShyStart);
                         }
                         else {
-                            this->setState(State_Following);
+                            this->changeState(State_Following);
                         }
                     }
                     if (this->state == State_Following) {
                         Vec3f currentPos = this->getPos();
-                        this->speed += ghostHouseData->booAccel * deltaFrame;
-                        if (this->speed > ghostHouseData->booTopSpeed) {
-                            this->speed = ghostHouseData->booTopSpeed;
+                        this->speed += ghostHouseData->booFollowAccel * deltaFrame;
+                        if (this->speed > ghostHouseData->booFollowTopSpeed) {
+                            this->speed = ghostHouseData->booFollowTopSpeed;
                         }
                         dirVec = (dirVec / hkMath::sqrt(dirVec.m_x*dirVec.m_x + dirVec.m_y*dirVec.m_y + dirVec.m_z*dirVec.m_z))*this->speed*deltaFrame ;
 
@@ -151,18 +152,40 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
 
 }
 
+void grGhostHouseBoo::setSpawnRange(stRange* range, Vec3f* centerPos) {
+    this->spawnRange = range;
+    this->centerPos = centerPos;
+}
+
 void grGhostHouseBoo::setPlayerTarget(int playerTarget) {
     this->playerTarget = playerTarget;
 }
 
-void grGhostHouseBoo::setState(State state) {
+void grGhostHouseBoo::changeState(State state) {
     if (this->state != state) {
         switch(state) {
             case State_Spawn:
-                this->setMotionDetails(1, 0, 0, 0, 0);
+            {
+                stRange range = {this->spawnRange->m_left + this->centerPos->m_x, this->spawnRange->m_right + this->centerPos->m_x, this->spawnRange->m_top + this->centerPos->m_y, this->spawnRange->m_bottom + this->centerPos->m_y};
+                this->setPos(randf()*(range.m_right - range.m_left) + range.m_left, randf()*(range.m_top - range.m_bottom) + range.m_bottom, 0);
+                this->setMotionDetails(2, 3, 0, 0, 2);
+                this->setSleepAttack(true);
+            }
+                break;
+            case State_Disappear:
+                if (this->state != State_Defeat && this->state != State_Spawn) {
+                    this->setMotionDetails(2, 4, 0, 0, 2);
+                    this->setSleepAttack(true);
+                    this->speed = 0;
+                }
+                break;
+            case State_FollowStart:
+                this->setMotionDetails(1, 0, 0, 0, 1);
+                this->prevFollowAnimFrame = 0;
                 break;
             case State_Following:
                 if (this->state != State_ShyStart) {
+                    this->setSleepAttack(false);
                     this->setMotionDetails(0, 0, 0, 0, 0);
                     if (this->prevFollowAnimFrame != 0) {
                         this->m_modelAnims[0]->setFrame(this->prevFollowAnimFrame);

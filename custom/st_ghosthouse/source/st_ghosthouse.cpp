@@ -5,8 +5,9 @@
 #include <snd/snd_system.h>
 #include <ft/ft_manager.h>
 #include <so/so_external_value_accesser.h>
-#include <OS/OSError.h>
 #include <hk/hk_math.h>
+#include <mt/mt_prng.h>
+#include <OS/OSError.h>
 
 static stClassInfoImpl<Stages::Final, stGhostHouse> classInfo = stClassInfoImpl<Stages::Final, stGhostHouse>();
 
@@ -23,13 +24,10 @@ void stGhostHouse::createObj() {
 
     testStageParamInit(m_fileData, 10);
     testStageDataInit(m_fileData, 20, 1);
-
-    createObjGround(1);
-    createObjGround(2);
-    createObjBoo(3);
-    createCollision(m_fileData, 2, NULL);
-
     initCameraParam();
+
+    stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(m_stageData);
+
     nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 0x64, 0xfffe));
     if (posData.ptr() == NULL)
     {
@@ -40,6 +38,14 @@ void stGhostHouse::createObj() {
     {
         createStagePositions(&posData);
     }
+
+    createObjGround(1);
+    createObjGround(2);
+    for (int i = 0; i < ghostHouseData->numNormalBoos; i++) {
+        createObjBoo(3);
+    }
+    createCollision(m_fileData, 2, NULL);
+
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 30);
     nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(Data_Type_Scene, 0, 0xfffe));
@@ -60,25 +66,108 @@ void stGhostHouse::createObjGround(int mdlIndex) {
 }
 
 void stGhostHouse::createObjBoo(int mdlIndex) {
-    grGhostHouseBoo* ground = grGhostHouseBoo::create(mdlIndex, "", "grGhostHouseBoo");
-    if (ground != NULL)
+    grGhostHouseBoo* boo = grGhostHouseBoo::create(mdlIndex, "", "grGhostHouseBoo");
+    if (boo != NULL)
     {
-        addGround(ground);
-        ground->startup(m_fileData, 0, 0);
-        ground->setStageData(m_stageData);
-        ground->setupAttack();
-        ground->initializeEntity();
-        ground->startEntity();
-        ground->setPlayerTarget(0);
-        ground->setMotionDetails(0, 0, 0, 0, 0);
+        addGround(boo);
+        boo->startup(m_fileData, 0, 0);
+        boo->setStageData(m_stageData);
+        boo->setupAttack();
+        boo->initializeEntity();
+        boo->startEntity();
+        boo->setSpawnRange(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos);
+        boo->changeState(grGhostHouseBoo::State_Spawn);
     }
 }
 
-void stGhostHouse::update(float frameDelta){
-//    for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
-//
-//    }
+void stGhostHouse::notifyEventInfoGo() {
+    this->changeEvent(this->decideNextEvent());
+}
 
+void stGhostHouse::update(float frameDelta){
+    for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
+        int entryId = g_ftManager->getEntryIdFromIndex(i);
+        if (g_ftManager->isFighterActivate(entryId, -1)) {
+            Fighter* fighter = g_ftManager->getFighter(entryId, -1);
+            ipButton currentButton = fighter->m_moduleAccesser->getControllerModule()->getButton();
+            if (currentButton.m_downTaunt) {
+                this->changeEvent(Event_Follow);
+            }
+            else if (currentButton.m_upTaunt) {
+                this->changeEvent(Event_None);
+            }
+
+        }
+    }
+
+    if (this->eventStartTimer > 0.0) {
+        this->eventStartTimer -= frameDelta;
+        if (this->eventStartTimer <= 0.0) {
+            this->startNextEvent();
+        }
+    }
+}
+
+stGhostHouse::GhostEvent stGhostHouse::decideNextEvent() {
+    stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(m_stageData);
+
+    float totalChance = 0.0;
+    for (int i = 0; i < NUM_EVENTS; i++) {
+        if (i != this->currentEvent) {
+            totalChance += ghostHouseData->eventChances[i];
+        }
+    }
+    float targetChance = totalChance*randf();
+
+    float currentChanceSum = 0.0;
+    for (int i = 0; i < NUM_EVENTS; i++) {
+        if (i != this->currentEvent) {
+            currentChanceSum += ghostHouseData->eventChances[i];
+            if (currentChanceSum >= totalChance) {
+                return static_cast<GhostEvent>(i);
+            }
+        }
+    }
+    return Event_None;
+}
+
+void stGhostHouse::startNextEvent() {
+    this->currentEvent = this->nextEvent;
+    switch (this->currentEvent) {
+        case Event_Follow:
+            for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
+                int entryId = g_ftManager->getEntryIdFromIndex(i);
+                if (g_ftManager->isFighterActivate(entryId, -1)) {
+                    grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(2 + i));
+                    boo->setPlayerTarget(g_ftManager->getPlayerNo(entryId));
+                    boo->changeState(grGhostHouseBoo::State_FollowStart);
+                }
+
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void stGhostHouse::changeEvent(GhostEvent event) {
+    stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(m_stageData);
+
+    if (this->currentEvent != event && this->nextEvent != event) {
+        switch (this->currentEvent) {
+            case Event_Follow:
+                for (int i = 0; i < ghostHouseData->numNormalBoos; i++) {
+                    grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(2 + i));
+                    boo->changeState(grGhostHouseBoo::State_Disappear);
+                }
+                this->eventStartTimer = 120;
+                break;
+            default:
+                this->eventStartTimer = 120;
+                break;
+        }
+        this->nextEvent = event;
+    }
 }
 
 void Ground::setStageData(void* stageData) {
