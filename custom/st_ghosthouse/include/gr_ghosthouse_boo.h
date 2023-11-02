@@ -14,7 +14,9 @@ public:
         State_Following = 0x4,
         State_ShyStart = 0x5,
         State_Shy = 0x6,
-        State_Defeat = 0x7
+        State_CircleStart = 0x7,
+        State_Circle = 0x8,
+        State_Defeat = 0x9
     };
 
 protected:
@@ -41,6 +43,7 @@ public:
     virtual void setupAttack();
     virtual void setPlayerTarget(int playerTarget);
     virtual void setSpawnRange(stRange* range, Vec3f* centerPos);
+    virtual void setMotionPath(grGimmickMotionPath* motionPath, float motionRatio, float startFrame);
     virtual void updateMove(float deltaFrame);
     virtual void changeState(State state);
 

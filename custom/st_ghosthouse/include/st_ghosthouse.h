@@ -29,12 +29,24 @@ class stGhostHouse : public stMelee {
         GhostEvent currentEvent;
         GhostEvent nextEvent;
         float eventStartTimer;
+        grGimmickMotionPathData circleMotionPathData;
+        u32 booStartGroundIndex;
+        u32 bubbleStartGroundIndex;
+        u32 eerieStartGroundIndex;
+        u32 fishingBooStartGroundIndex;
+
+        u32 circleMotionPathStartGroundIndex;
 
     public:
         stGhostHouse(srStageKind stageID) : stMelee("stGhostHouse", stageID) {
             currentEvent = Event_None;
             nextEvent = Event_None;
             eventStartTimer = 0;
+
+            circleMotionPathData.m_motionRatio = 1.0;
+            circleMotionPathData.m_index = 0;
+            circleMotionPathData.m_pathMode = MotionPathMode_Loop;
+            circleMotionPathData.m_mdlIndex = -1;
         };
         static stGhostHouse* create();
 
@@ -79,8 +91,11 @@ class stGhostHouse : public stMelee {
 
         virtual void createObjGround(int mdlIndex);
         virtual void createObjBoo(int mdlIndex);
+        virtual void createObjMotionPath(int mdlIndex, int index);
 
         virtual GhostEvent decideNextEvent();
         virtual void changeEvent(GhostEvent event);
         virtual void startNextEvent();
 };
+
+// TODO: Fishing Boo - circle around with item, whoever takes item is the one who gets haunted

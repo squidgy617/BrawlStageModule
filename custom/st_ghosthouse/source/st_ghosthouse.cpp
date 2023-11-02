@@ -7,6 +7,7 @@
 #include <so/so_external_value_accesser.h>
 #include <hk/hk_math.h>
 #include <mt/mt_prng.h>
+#include <stdio.h>
 #include <OS/OSError.h>
 
 static stClassInfoImpl<Stages::Final, stGhostHouse> classInfo = stClassInfoImpl<Stages::Final, stGhostHouse>();
@@ -41,9 +42,51 @@ void stGhostHouse::createObj() {
 
     createObjGround(1);
     createObjGround(2);
-    for (int i = 0; i < ghostHouseData->numNormalBoos; i++) {
+    u32 groundCount = 2;
+    this->booStartGroundIndex = groundCount;
+    for (int i = 0; i < ghostHouseData->numEachBoos; i++) {
         createObjBoo(3);
+        groundCount++;
     }
+    for (int i = 0; i < ghostHouseData->numEachBoos; i++) {
+        createObjBoo(4);
+        groundCount++;
+    }
+    for (int i = 0; i < ghostHouseData->numEachBoos; i++) {
+        createObjBoo(5);
+        groundCount++;
+    }
+    for (int i = 0; i < ghostHouseData->numEachBoos; i++) {
+        createObjBoo(6);
+        groundCount++;
+    }
+    this->bubbleStartGroundIndex = groundCount;
+    for (int i = 0; i < ghostHouseData->numBubbles; i++) {
+        createObjGround(1);
+        groundCount++;
+    }
+    this->eerieStartGroundIndex = groundCount;
+    for (int i = 0; i < ghostHouseData->numEeries; i++) {
+        createObjGround(1);
+        groundCount++;
+    }
+    this->fishingBooStartGroundIndex = groundCount;
+    for (int i = 0; i < ghostHouseData->numFishingBoos; i++) {
+        createObjGround(1);
+        groundCount++;
+    }
+    this->circleMotionPathStartGroundIndex = groundCount;
+
+    Ground* ground = this->getGround(0);
+    u32 circlesIndex = ground->getNodeIndex(0, "Circles");
+    u32 bubblesIndex = ground->getNodeIndex(0, "Bubbles");
+    for (int i = circlesIndex + 1; i < bubblesIndex; i++) {
+        nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+        for (int j = 0; j < int(resNodeData->m_rotation.m_x); j++) {
+            this->createObjMotionPath(resNodeData->m_translation.m_z, j);
+        }
+    }
+
     createCollision(m_fileData, 2, NULL);
 
     createWind2ndOnly();
@@ -70,13 +113,26 @@ void stGhostHouse::createObjBoo(int mdlIndex) {
     if (boo != NULL)
     {
         addGround(boo);
-        boo->startup(m_fileData, 0, 0);
         boo->setStageData(m_stageData);
+        boo->startup(m_fileData, 0, 0);
         boo->setupAttack();
         boo->initializeEntity();
         boo->startEntity();
         boo->setSpawnRange(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos);
         boo->changeState(grGhostHouseBoo::State_Spawn);
+    }
+}
+
+void stGhostHouse::createObjMotionPath(int mdlIndex, int index) {
+    char nodeName[32];
+    sprintf(nodeName, "Boo%d", index);
+    const char* nodeNamePtr = nodeName;
+    grGimmickMotionPath* motionPath = grGimmickMotionPath::create(mdlIndex, nodeNamePtr, "grGimmickMotionPath");
+    if (motionPath != NULL)
+    {
+        addGround(motionPath);
+        motionPath->setGimmickData(&this->circleMotionPathData);
+        motionPath->startup(m_fileData, 0, 0);
     }
 }
 
@@ -92,6 +148,9 @@ void stGhostHouse::update(float frameDelta){
             ipButton currentButton = fighter->m_moduleAccesser->getControllerModule()->getButton();
             if (currentButton.m_downTaunt) {
                 this->changeEvent(Event_Follow);
+            }
+            else if (currentButton.m_leftTaunt) {
+                this->changeEvent(Event_Circle);
             }
             else if (currentButton.m_upTaunt) {
                 this->changeEvent(Event_None);
@@ -132,6 +191,8 @@ stGhostHouse::GhostEvent stGhostHouse::decideNextEvent() {
 }
 
 void stGhostHouse::startNextEvent() {
+    stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(m_stageData);
+
     this->currentEvent = this->nextEvent;
     switch (this->currentEvent) {
         case Event_Follow:
@@ -145,6 +206,35 @@ void stGhostHouse::startNextEvent() {
 
             }
             break;
+        case Event_Circle:
+        {
+            Ground* ground = this->getGround(0);
+            u32 circlesIndex = ground->getNodeIndex(0, "Circles");
+            u32 bubblesIndex = ground->getNodeIndex(0, "Bubbles");
+            u32 chosenCircle = randi(bubblesIndex - (circlesIndex + 1));
+
+            u32 groundCount = this->circleMotionPathStartGroundIndex;
+
+            for (int i = circlesIndex + 1; i < bubblesIndex; i++) {
+                nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+                if (chosenCircle + circlesIndex + 1 == i) {
+                    //float animStart =
+                    for (int j = 0; j < int(resNodeData->m_rotation.m_x); j++) {
+                        grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + ghostHouseData->numEachBoos*(j % 4) + j/4));
+                        grGimmickMotionPath* motionPath = static_cast<grGimmickMotionPath*>(this->getGround(groundCount + j));
+                        boo->setMotionPath(motionPath, 1.0, 1.0);
+                        boo->changeState(grGhostHouseBoo::State_CircleStart);
+                    }
+                    break;
+                }
+
+                groundCount += resNodeData->m_rotation.m_x;
+
+            }
+
+
+        }
+            break;
         default:
             break;
     }
@@ -156,8 +246,8 @@ void stGhostHouse::changeEvent(GhostEvent event) {
     if (this->currentEvent != event && this->nextEvent != event) {
         switch (this->currentEvent) {
             case Event_Follow:
-                for (int i = 0; i < ghostHouseData->numNormalBoos; i++) {
-                    grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(2 + i));
+                for (int i = 0; i < ghostHouseData->numEachBoos; i++) {
+                    grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + i));
                     boo->changeState(grGhostHouseBoo::State_Disappear);
                 }
                 this->eventStartTimer = 120;
