@@ -30,6 +30,9 @@ class stGhostHouse : public stMelee {
         GhostEvent nextEvent;
         float eventStartTimer;
         grGimmickMotionPathData circleMotionPathData;
+        u32 numPlayerCircles;
+        u32 numSetCircles;
+
         u32 booStartGroundIndex;
         u32 bubbleStartGroundIndex;
         u32 eerieStartGroundIndex;

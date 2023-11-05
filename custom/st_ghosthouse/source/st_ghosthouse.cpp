@@ -77,14 +77,21 @@ void stGhostHouse::createObj() {
     }
     this->circleMotionPathStartGroundIndex = groundCount;
 
-    Ground* ground = this->getGround(0);
-    u32 circlesIndex = ground->getNodeIndex(0, "Circles");
-    u32 bubblesIndex = ground->getNodeIndex(0, "Bubbles");
-    for (int i = circlesIndex + 1; i < bubblesIndex; i++) {
-        nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-        for (int j = 0; j < int(resNodeData->m_rotation.m_x); j++) {
-            this->createObjMotionPath(resNodeData->m_translation.m_z, j);
+    grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
+    this->numPlayerCircles = ground->getNumNodesWithFormat("PCircle%d");
+    this->numSetCircles = ground->getNumNodesWithFormat("Circle%d");
+
+    for (int i = 0; i < this->numSetCircles; i++) {
+        u32 nodeIndex;
+        ground->getNodeIndexWithFormat(&nodeIndex, 0, "Circle%d", i);
+        nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex)).ptr();
+
+        if (int(resNodeData->m_translation.m_z) > 0) {
+            for (int j = 0; j < int(resNodeData->m_rotation.m_x); j++) {
+                this->createObjMotionPath(resNodeData->m_translation.m_z, j);
+            }
         }
+
     }
 
     createCollision(m_fileData, 2, NULL);
@@ -208,27 +215,96 @@ void stGhostHouse::startNextEvent() {
             break;
         case Event_Circle:
         {
-            Ground* ground = this->getGround(0);
-            u32 circlesIndex = ground->getNodeIndex(0, "Circles");
-            u32 bubblesIndex = ground->getNodeIndex(0, "Bubbles");
-            u32 chosenCircle = randi(bubblesIndex - (circlesIndex + 1));
+            grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
 
-            u32 groundCount = this->circleMotionPathStartGroundIndex;
+            u32 numCircles = this->numSetCircles;
 
-            for (int i = circlesIndex + 1; i < bubblesIndex; i++) {
-                nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-                if (chosenCircle + circlesIndex + 1 == i) {
-                    //float animStart =
-                    for (int j = 0; j < int(resNodeData->m_rotation.m_x); j++) {
-                        grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + ghostHouseData->numEachBoos*(j % 4) + j/4));
-                        grGimmickMotionPath* motionPath = static_cast<grGimmickMotionPath*>(this->getGround(groundCount + j));
-                        boo->setMotionPath(motionPath, 1.0, 1.0);
-                        boo->changeState(grGhostHouseBoo::State_CircleStart);
+            int entryIds[NUM_PLAYERS];
+            u32 numPlayersOnGround = 0;
+            if (ghostHouseData->booCirclePlayerProbability > randf()) {
+                for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
+                    int entryId = g_ftManager->getEntryIdFromIndex(i);
+                    if (g_ftManager->isFighterActivate(entryId, -1)) {
+                        if (soExternalValueAccesser::getSituationKind(g_ftManager->getFighter(entryId, -1)) == 0) {
+                            entryIds[numPlayersOnGround] = entryId;
+                            numPlayersOnGround++;
+                        }
                     }
-                    break;
                 }
 
-                groundCount += resNodeData->m_rotation.m_x;
+                if (numPlayersOnGround > 0) {
+                    numCircles = this->numPlayerCircles;
+                }
+            }
+
+            u32 chosenCircle = randi(numCircles);
+            u32 groundCount = this->circleMotionPathStartGroundIndex;
+            
+            float startRatio = randf();
+            int speedMultiplier = -1 + 2*randi(2);
+
+            for (int i = 0; i < numCircles; i++) {
+                u32 nodeIndex;
+                if (numPlayersOnGround > 0) {
+                    ground->getNodeIndexWithFormat(&nodeIndex, 0, "PCircle%d", i);
+                }
+                else {
+                    ground->getNodeIndexWithFormat(&nodeIndex, 0, "Circle%d", i);
+                }
+                nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex)).ptr();
+                if (int(resNodeData->m_translation.m_z) > 0) {
+                    if (chosenCircle == i) {
+                        int numBoos = resNodeData->m_rotation.m_x;
+                        for (int j = 0; j < numBoos; j++) {
+                            grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + ghostHouseData->numEachBoos*(j % 4) + j/4));
+                            grGimmickMotionPath* motionPath = static_cast<grGimmickMotionPath*>(this->getGround(groundCount + j));
+                            boo->setMotionPath(motionPath, startRatio, speedMultiplier);
+                            boo->changeState(grGhostHouseBoo::State_CircleStart);
+                        }
+                        break;
+                    }
+                    groundCount += resNodeData->m_rotation.m_x;
+                }
+                else {
+                    if (chosenCircle == i) {
+                        Vec2f centerCircle = resNodeData->m_translation.m_xy;
+                        Vec2f center = centerCircle;
+                        if (numPlayersOnGround > 0) {
+                            center = g_ftManager->getFighterCenterPos(entryIds[randi(numPlayersOnGround)], -1).m_xy;
+                        }
+
+                        if (int(resNodeData->m_rotation.m_x) > 0) {
+                            int numBoos = resNodeData->m_rotation.m_x;
+                            for (int j = 0; j < numBoos; j++) {
+                                grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + ghostHouseData->numEachBoos*(j % 4) + j/4));
+
+                                u32 numBooSpots = resNodeData->m_rotation.m_x + resNodeData->m_rotation.m_y;
+                                float angle = 2*M_PI*startRatio + 2*M_PI*j/numBooSpots;
+                                float radius = resNodeData->m_scale.m_z;
+                                float speed = speedMultiplier*resNodeData->m_rotation.m_z;
+                                boo->setCircle(&center, radius, angle, speed);
+                                boo->changeState(grGhostHouseBoo::State_CircleStart);
+                            }
+                        }
+                        else {
+                            resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 1)).ptr();
+                            float speed = speedMultiplier*resNodeData->m_rotation.m_z;
+                            int numBoos = resNodeData->m_rotation.m_x;
+                            for (int j = 0; j < numBoos; j++) {
+                                grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + ghostHouseData->numEachBoos*(j % 4) + j/4));
+
+                                resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 1 + j)).ptr();
+                                float radius = centerCircle.distance(&resNodeData->m_translation.m_xy);
+                                float angle = 2*M_PI*startRatio + atan2(resNodeData->m_translation.m_y, resNodeData->m_translation.m_x);
+                                boo->setCircle(&center, radius, angle, speed);
+                                boo->changeState(grGhostHouseBoo::State_CircleStart);
+
+
+                            }
+                        }
+                    }
+                }
+
 
             }
 
@@ -245,8 +321,9 @@ void stGhostHouse::changeEvent(GhostEvent event) {
 
     if (this->currentEvent != event && this->nextEvent != event) {
         switch (this->currentEvent) {
+            case Event_Circle:
             case Event_Follow:
-                for (int i = 0; i < ghostHouseData->numEachBoos; i++) {
+                for (int i = 0; i < ghostHouseData->numEachBoos*4; i++) {
                     grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + i));
                     boo->changeState(grGhostHouseBoo::State_Disappear);
                 }

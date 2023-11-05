@@ -8,6 +8,7 @@
 #include <mt/mt_matrix.h>
 
 #define NUM_EVENTS 10
+#define NUM_PLAYERS 7
 #define BOO_ROT_SPEED 1.0f
 
 struct stGhostHouseData {
@@ -51,6 +52,7 @@ struct stGhostHouseData {
     };
     float blockBooProbability;
     float boolossusProbability;
+    float booCirclePlayerProbability;
 };
 //static_assert(sizeof(stGhostHouseData) == 64, "Class is wrong size!");
 

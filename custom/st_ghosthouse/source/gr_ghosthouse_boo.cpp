@@ -103,58 +103,31 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
     float animFrameCount = this->m_modelAnims[0]->getFrameCount();
     switch(this->state) {
         case State_CircleStart:
+        {
             animFrameCount = this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength;
             if (currentAnimFrame >= animFrameCount - 1) {
                 this->changeState(State_Circle);
             }
+            Vec3f closestDisp = this->findClosestFighterDisp();
+            this->rotateToDisp(&closestDisp, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
+        }
+            break;
         case State_Circle:
         {
-            Vec3f pos = this->getPos();
-            Vec3f closestDisp = (Vec3f){0, 0, 0};
-            float closestDist = HUGE_VALF;
-            for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
-                int entryId = g_ftManager->getEntryIdFromIndex(i);
-                if (g_ftManager->isFighterActivate(entryId, -1)) {
-                    Vec3f disp = g_ftManager->getFighterCenterPos(entryId, -1) - pos;
-                    float dist = disp.length();
-                    if (closestDist > dist) {
-                        closestDist = dist;
-                        closestDisp = disp;
-                    };
+            if (this->m_gimmickMotionPath == NULL) {
+                this->setPos(this->circleCenterPos.m_x + this->circleRadius*cos(this->circleCurrentAngle), this->circleCenterPos.m_y + this->circleRadius*sin(this->circleCurrentAngle), 0);
+                this->circleCurrentAngle += deltaFrame*mtConvDegToRad(this->circleSpeed);
+
+                if (this->circleCurrentAngle >= 2*M_PI) {
+                    this->circleCurrentAngle -= 2*M_PI;
+                }
+                else if (this->circleCurrentAngle <= -2*M_PI) {
+                    this->circleCurrentAngle += 2*M_PI;
                 }
             }
 
-            Vec3f currentRot = this->getRot();
-            float pitch = mtConvRadToDeg(hkMath::acos(fabsf(closestDisp.m_y)/closestDisp.m_xy.length()));
-            pitch = hkMath::min2(ghostHouseData->booRot, pitch);
-            if (closestDisp.m_x < 0) {
-                pitch = -pitch;
-            }
-            float pitchDiff = pitch - currentRot.m_pitch;
-            if (pitchDiff >= 0) {
-                pitchDiff = hkMath::min2(pitchDiff, BOO_ROT_SPEED);
-            }
-            else {
-                pitchDiff = hkMath::max2(pitchDiff, -BOO_ROT_SPEED);
-            }
-            currentRot.m_pitch += pitchDiff;
-
-            float roll = mtConvRadToDeg(hkMath::acos(fabsf(closestDisp.m_x)/closestDisp.m_xy.length()));
-            roll = hkMath::min2(ghostHouseData->booRot, roll);
-            if (closestDisp.m_y >= 0) {
-                roll = -roll;
-            }
-            float rollDiff = roll - currentRot.m_roll;
-            if (rollDiff >= 0) {
-                rollDiff = hkMath::min2(rollDiff, BOO_ROT_SPEED);
-            }
-            else {
-                rollDiff = hkMath::max2(rollDiff, -BOO_ROT_SPEED);
-            }
-            currentRot.m_roll += rollDiff;
-
-            this->setRot(&currentRot);
-
+            Vec3f closestDisp = this->findClosestFighterDisp();
+            this->rotateToDisp(&closestDisp, ghostHouseData->booRot, deltaFrame*BOO_ROT_SPEED);
         }
             break;
         case State_FollowStart:
@@ -221,8 +194,19 @@ void grGhostHouseBoo::setPlayerTarget(int playerTarget) {
     this->playerTarget = playerTarget;
 }
 
-void grGhostHouseBoo::setMotionPath(grGimmickMotionPath* motionPath, float motionRatio, float startFrame) {
+void grGhostHouseBoo::setMotionPath(grGimmickMotionPath* motionPath, float startRatio, float circleSpeed) {
     this->m_gimmickMotionPath = motionPath;
+    this->m_gimmickMotionPath->startMove();
+    this->m_gimmickMotionPath->setFrame(motionPath->m_modelAnims[0]->getFrameCount()*startRatio);
+    this->m_gimmickMotionPath->setFrameUpdate(0);
+    this->circleSpeed = circleSpeed;
+}
+
+void grGhostHouseBoo::setCircle(Vec2f* circleCenterPos, float circleRadius, float circleCurrentAngle, float circleAngleSpeed) {
+    this->circleCenterPos = *circleCenterPos;
+    this->circleRadius = circleRadius;
+    this->circleCurrentAngle = circleCurrentAngle;
+    this->circleSpeed = circleAngleSpeed;
 }
 
 void grGhostHouseBoo::changeState(State state) {
@@ -243,6 +227,12 @@ void grGhostHouseBoo::changeState(State state) {
                     this->setMotionDetails(5, 2, 0, 0, 2);
                     this->setSleepAttack(true);
                     this->speed = 0;
+                    if (this->m_gimmickMotionPath != NULL) {
+                        this->m_gimmickMotionPath->setFrameUpdate(0);
+                        this->m_gimmickMotionPath->clearFrame();
+                        this->m_gimmickMotionPath->stopStartSE();
+                    }
+                    this->m_gimmickMotionPath = NULL;
                 }
                 break;
             case State_FollowStart:
@@ -255,6 +245,7 @@ void grGhostHouseBoo::changeState(State state) {
                     }
                 }
                 this->setMotionDetails(1, 0, 0, 0, 5);
+                this->setRot(0, 0, 0);
                 this->prevFollowAnimFrame = 0;
                 break;
             case State_Following:
@@ -293,11 +284,16 @@ void grGhostHouseBoo::changeState(State state) {
             case State_CircleStart:
                 // TODO: Random chance to spawn around a player if they are on the ground
                 this->setMotionDetails(5, 0, 0, 0, 1);
+                if (this->m_gimmickMotionPath == NULL) {
+                    this->setPos(this->circleCenterPos.m_x + this->circleRadius*cos(this->circleCurrentAngle), this->circleCenterPos.m_y + this->circleRadius*sin(this->circleCurrentAngle), 0);
+                }
                 break;
             case State_Circle:
                 this->setMotionDetails(5, 0, 0, 0, 0);
                 this->setSleepAttack(false);
-                this->m_gimmickMotionPath->startMove();
+                if (this->m_gimmickMotionPath != NULL) {
+                    this->m_gimmickMotionPath->setFrameUpdate(this->circleSpeed);
+                }
                 break;
             default:
                 break;
@@ -305,5 +301,55 @@ void grGhostHouseBoo::changeState(State state) {
         this->state = state;
 
     }
+}
 
+Vec3f grGhostHouseBoo::findClosestFighterDisp() {
+    Vec3f pos = this->getPos();
+    Vec3f closestDisp = (Vec3f){0, 0, 0};
+    float closestDist = HUGE_VALF;
+    for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
+        int entryId = g_ftManager->getEntryIdFromIndex(i);
+        if (g_ftManager->isFighterActivate(entryId, -1)) {
+            Vec3f disp = g_ftManager->getFighterCenterPos(entryId, -1) - pos;
+            float dist = disp.length();
+            if (closestDist > dist) {
+                closestDist = dist;
+                closestDisp = disp;
+            };
+        }
+    }
+    return closestDisp;
+}
+
+void grGhostHouseBoo::rotateToDisp(Vec3f* disp, float maxRot, float rotateSpeed) {
+    Vec3f currentRot = this->getRot();
+    float pitch = mtConvRadToDeg(hkMath::acos(fabsf(disp->m_y)/disp->m_xy.length()));
+    pitch = hkMath::min2(maxRot, pitch);
+    if (disp->m_x < 0) {
+        pitch = -pitch;
+    }
+    float pitchDiff = pitch - currentRot.m_pitch;
+    if (pitchDiff >= 0) {
+        pitchDiff = hkMath::min2(pitchDiff, rotateSpeed);
+    }
+    else {
+        pitchDiff = hkMath::max2(pitchDiff, -rotateSpeed);
+    }
+    currentRot.m_pitch += pitchDiff;
+
+    float roll = mtConvRadToDeg(hkMath::acos(fabsf(disp->m_x)/disp->m_xy.length()));
+    roll = hkMath::min2(maxRot, roll);
+    if (disp->m_y >= 0) {
+        roll = -roll;
+    }
+    float rollDiff = roll - currentRot.m_roll;
+    if (rollDiff >= 0) {
+        rollDiff = hkMath::min2(rollDiff, rotateSpeed);
+    }
+    else {
+        rollDiff = hkMath::max2(rollDiff, -rotateSpeed);
+    }
+    currentRot.m_roll += rollDiff;
+
+    this->setRot(&currentRot);
 }

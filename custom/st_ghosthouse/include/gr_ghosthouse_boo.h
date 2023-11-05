@@ -28,6 +28,11 @@ protected:
     float prevFollowAnimFrame;
     Vec3f prevFollowPos;
 
+    Vec2f circleCenterPos;
+    float circleRadius;
+    float circleCurrentAngle;
+    float circleSpeed;
+
 public:
     grGhostHouseBoo(const char* taskName) : grMadein(taskName)
     {
@@ -43,8 +48,11 @@ public:
     virtual void setupAttack();
     virtual void setPlayerTarget(int playerTarget);
     virtual void setSpawnRange(stRange* range, Vec3f* centerPos);
-    virtual void setMotionPath(grGimmickMotionPath* motionPath, float motionRatio, float startFrame);
+    virtual void setMotionPath(grGimmickMotionPath* motionPath, float startRatio, float circleSpeed);
+    virtual void setCircle(Vec2f* circleCenterPos, float circleRadius, float circleCurrentAngle, float circleAngleSpeed);
     virtual void updateMove(float deltaFrame);
+    virtual Vec3f findClosestFighterDisp();
+    virtual void rotateToDisp(Vec3f* disp, float maxRot, float rotateSpeed);
     virtual void changeState(State state);
 
     static grGhostHouseBoo* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
