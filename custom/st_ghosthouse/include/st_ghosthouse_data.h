@@ -10,6 +10,10 @@
 #define NUM_EVENTS 10
 #define NUM_PLAYERS 7
 #define BOO_ROT_SPEED 1.0f
+#define BOO_SNAKE_OFFSET 10.0f
+#define BOO_SNAKE_DIR_X 0.707f
+#define BOO_SNAKE_DIR_Y 0.707f
+#define BOO_SNAKE_MIN_HIT_DIST 5.0f
 
 struct stGhostHouseData {
     int booReactionEffect;

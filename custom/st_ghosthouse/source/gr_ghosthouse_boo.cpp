@@ -8,6 +8,7 @@
 #include <OS/OSError.h>
 #include <math.h>
 #include <gr/gr_gimmick_motion_path.h>
+#include <st/st_utility.h>
 
 grGhostHouseBoo* grGhostHouseBoo::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
@@ -116,7 +117,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
         {
             if (this->m_gimmickMotionPath == NULL) {
                 this->setPos(this->circleCenterPos.m_x + this->circleRadius*cos(this->circleCurrentAngle), this->circleCenterPos.m_y + this->circleRadius*sin(this->circleCurrentAngle), 0);
-                this->circleCurrentAngle += deltaFrame*mtConvDegToRad(this->circleSpeed);
+                this->circleCurrentAngle += deltaFrame*mtConvDegToRad(this->speed);
 
                 if (this->circleCurrentAngle >= 2*M_PI) {
                     this->circleCurrentAngle -= 2*M_PI;
@@ -130,6 +131,63 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
             this->rotateToDisp(&closestDisp, ghostHouseData->booRot, deltaFrame*BOO_ROT_SPEED);
         }
             break;
+        case State_SnakeStart:
+            animFrameCount = this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength;
+            if (currentAnimFrame >= animFrameCount - 1) {
+                this->changeState(State_Snake);
+            }
+            break;
+        case State_Snake:
+        {
+            Vec3f pos = this->getPos();
+            Vec3f dir = (Vec3f){this->snakeDir.m_x, this->snakeDir.m_y, 0.0}*BOO_SNAKE_MIN_HIT_DIST;
+            Vec3f outHitPos;
+            Vec3f outCollNormalVec;
+
+            if (stRayCheck(&pos, &dir, &outHitPos, &outCollNormalVec, 1, NULL, 0, 5)) {
+                float dirAngle = atan2(this->snakeDir.m_y, this->snakeDir.m_x) + M_PI;
+                float normalAngle = atan2(outCollNormalVec.m_y, outCollNormalVec.m_x) + M_PI;
+
+                if (0 < dirAngle && M_PI/2 >= dirAngle) { // quad 1
+                    if (5*M_PI/4 < normalAngle && 7*M_PI/4 >= normalAngle) {
+                        this->snakeDir = (Vec2f){-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                    }
+                    else if (3*M_PI/4 < normalAngle && 5*M_PI/4 >= normalAngle) {
+                        this->snakeDir = (Vec2f){BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                    }
+                }
+                else if (M_PI/2 < dirAngle && M_PI >= dirAngle) {   // quad 2
+                    if (5*M_PI/4 < normalAngle && 7*M_PI/4 >= normalAngle) {
+                        this->snakeDir = (Vec2f){BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                    }
+                    else if (7*M_PI/4 < normalAngle || M_PI/4 >= normalAngle) {
+                        this->snakeDir = (Vec2f){-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                    }
+                }
+                else if (M_PI < dirAngle && 3*M_PI/2 >= dirAngle) { // quad 3
+                    if (M_PI/4 < normalAngle && 3*M_PI/4 >= normalAngle) {
+                        this->snakeDir = (Vec2f){BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                    }
+                    else if (7*M_PI/4 < normalAngle || M_PI/4 >= normalAngle) {
+                        this->snakeDir = (Vec2f){-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                    }
+                }
+                else if (3*M_PI/2 < dirAngle && 2*M_PI >= dirAngle) {   // quad 4
+                    if (M_PI/4 < normalAngle && 3*M_PI/4 >= normalAngle) {
+                        this->snakeDir = (Vec2f){-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                    }
+                    else if (3*M_PI/4 < normalAngle && 5*M_PI/4 >= normalAngle) {
+                        this->snakeDir = (Vec2f){BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                    }
+                }
+            }
+
+            dir = (Vec3f){this->snakeDir.m_x, this->snakeDir.m_y, 0.0};
+
+            Vec3f nextPos = pos + dir*ghostHouseData->booSnakeSpeed;
+            this->setPos(&nextPos);
+            break;
+        }
         case State_FollowStart:
             if (currentAnimFrame >= animFrameCount - 1) {
                 this->changeState(State_Following);
@@ -187,7 +245,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
 
 void grGhostHouseBoo::setSpawnRange(stRange* range, Vec3f* centerPos) {
     this->spawnRange = range;
-    this->centerPos = centerPos;
+    this->spawnCenterPos = centerPos;
 }
 
 void grGhostHouseBoo::setPlayerTarget(int playerTarget) {
@@ -199,14 +257,14 @@ void grGhostHouseBoo::setMotionPath(grGimmickMotionPath* motionPath, float start
     this->m_gimmickMotionPath->startMove();
     this->m_gimmickMotionPath->setFrame(motionPath->m_modelAnims[0]->getFrameCount()*startRatio);
     this->m_gimmickMotionPath->setFrameUpdate(0);
-    this->circleSpeed = circleSpeed;
+    this->speed = circleSpeed;
 }
 
 void grGhostHouseBoo::setCircle(Vec2f* circleCenterPos, float circleRadius, float circleCurrentAngle, float circleAngleSpeed) {
     this->circleCenterPos = *circleCenterPos;
     this->circleRadius = circleRadius;
     this->circleCurrentAngle = circleCurrentAngle;
-    this->circleSpeed = circleAngleSpeed;
+    this->speed = circleAngleSpeed;
 }
 
 void grGhostHouseBoo::changeState(State state) {
@@ -216,7 +274,7 @@ void grGhostHouseBoo::changeState(State state) {
         switch(state) {
             case State_Spawn:
             {
-                stRange range = {this->spawnRange->m_left + this->centerPos->m_x, this->spawnRange->m_right + this->centerPos->m_x, this->spawnRange->m_top + this->centerPos->m_y, this->spawnRange->m_bottom + this->centerPos->m_y};
+                stRange range = {this->spawnRange->m_left + this->spawnCenterPos->m_x, this->spawnRange->m_right + this->spawnCenterPos->m_x, this->spawnRange->m_top + this->spawnCenterPos->m_y, this->spawnRange->m_bottom + this->spawnCenterPos->m_y};
                 this->setPos(randf()*(range.m_right - range.m_left) + range.m_left, randf()*(range.m_top - range.m_bottom) + range.m_bottom, 0);
                 this->setMotionDetails(5, 2, 0, 0, 2);
                 this->setSleepAttack(true);
@@ -292,9 +350,40 @@ void grGhostHouseBoo::changeState(State state) {
                 this->setMotionDetails(5, 0, 0, 0, 0);
                 this->setSleepAttack(false);
                 if (this->m_gimmickMotionPath != NULL) {
-                    this->m_gimmickMotionPath->setFrameUpdate(this->circleSpeed);
+                    this->m_gimmickMotionPath->setFrameUpdate(this->speed);
                 }
                 break;
+            case State_SnakeStart:
+            {
+                this->setMotionDetails(5, 0, 0, 0, 1);
+                Vec3f pos = (Vec3f){0, 0, 0};
+                switch (randi(4)) {
+                    case 0:
+                        pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_OFFSET, this->spawnRange->m_top + BOO_SNAKE_OFFSET, 0.0};
+                        this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                        break;
+                    case 1:
+                        pos = (Vec3f){this->spawnRange->m_right + BOO_SNAKE_OFFSET, this->spawnRange->m_top + BOO_SNAKE_OFFSET, 0.0};
+                        this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                        break;
+                    case 2:
+                        pos = (Vec3f){this->spawnRange->m_right + BOO_SNAKE_OFFSET, this->spawnRange->m_bottom - BOO_SNAKE_OFFSET, 0.0};
+                        this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                        break;
+                    case 3:
+                        pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_OFFSET, this->spawnRange->m_bottom - BOO_SNAKE_OFFSET, 0.0};
+                        this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                        break;
+                    default:
+                        break;
+                }
+                pos += *this->spawnCenterPos;
+                this->setPos(&pos);
+            }
+                break;
+            case State_Snake:
+                this->setMotionDetails(5, 0, 0, 0, 0);
+                this->setSleepAttack(false);
             default:
                 break;
         }

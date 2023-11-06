@@ -159,9 +159,13 @@ void stGhostHouse::update(float frameDelta){
             else if (currentButton.m_leftTaunt) {
                 this->changeEvent(Event_Circle);
             }
+            else if (currentButton.m_rightTaunt) {
+                this->changeEvent(Event_Snake);
+            }
             else if (currentButton.m_upTaunt) {
                 this->changeEvent(Event_None);
             }
+
 
         }
     }
@@ -239,7 +243,7 @@ void stGhostHouse::startNextEvent() {
 
             u32 chosenCircle = randi(numCircles);
             u32 groundCount = this->circleMotionPathStartGroundIndex;
-            
+
             float startRatio = randf();
             int speedMultiplier = -1 + 2*randi(2);
 
@@ -307,8 +311,12 @@ void stGhostHouse::startNextEvent() {
 
 
             }
-
-
+        }
+            break;
+        case Event_Snake:
+        {
+            grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex));
+            boo->changeState(grGhostHouseBoo::State_SnakeStart);
         }
             break;
         default:
@@ -322,6 +330,7 @@ void stGhostHouse::changeEvent(GhostEvent event) {
     if (this->currentEvent != event && this->nextEvent != event) {
         switch (this->currentEvent) {
             case Event_Circle:
+            case Event_Snake:
             case Event_Follow:
                 for (int i = 0; i < ghostHouseData->numEachBoos*4; i++) {
                     grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + i));

@@ -16,12 +16,14 @@ public:
         State_Shy = 0x6,
         State_CircleStart = 0x7,
         State_Circle = 0x8,
-        State_Defeat = 0x9
+        State_SnakeStart = 0x9,
+        State_Snake = 0xA,
+        State_Defeat = 0xB,
     };
 
 protected:
     stRange* spawnRange;
-    Vec3f* centerPos;
+    Vec3f* spawnCenterPos;
     int playerTarget;
     float speed;
     State state;
@@ -31,8 +33,8 @@ protected:
     Vec2f circleCenterPos;
     float circleRadius;
     float circleCurrentAngle;
-    float circleSpeed;
 
+    Vec2f snakeDir;
 public:
     grGhostHouseBoo(const char* taskName) : grMadein(taskName)
     {
