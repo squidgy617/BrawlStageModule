@@ -16,8 +16,8 @@ class stGhostHouse : public stMelee {
     protected:
         enum GhostEvent {
             Event_None = 0x0,
-            Event_Follow = 0x1,
-            Event_FollowBig = 0x2,
+            Event_Stalk = 0x1,
+            Event_StalkBig = 0x2,
             Event_Circle = 0x3,
             Event_Snake = 0x4,
             Event_Crew = 0x5,

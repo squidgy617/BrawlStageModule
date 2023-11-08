@@ -10,10 +10,9 @@
 #define NUM_EVENTS 10
 #define NUM_PLAYERS 7
 #define BOO_ROT_SPEED 1.0f
-#define BOO_SNAKE_OFFSET 10.0f
+#define BOO_SNAKE_SPAWN_OFFSET 10.0f
 #define BOO_SNAKE_DIR_X 0.707f
 #define BOO_SNAKE_DIR_Y 0.707f
-#define BOO_SNAKE_MIN_HIT_DIST 5.0f
 
 struct stGhostHouseData {
     int booReactionEffect;
@@ -35,10 +34,14 @@ struct stGhostHouseData {
     Vec2f booCrewDetectRange;
     float booCrewDetectChance;
     float booSnakeSpeed;
-    u32 numEachBoos;
-    u32 numBubbles;
-    u32 numEeries;
-    u32 numFishingBoos;
+    u8 minNumBoosInSnake;
+    u8 maxNumBoosInSnake;
+    u8 minNumBooSnakes;
+    u8 maxNumBooSnakes;
+    u8 numEachBoos;
+    u8 numBubbles;
+    u8 numEeries;
+    u8 numFishingBoos;
     union {
         struct {
             float eventNoneChance;

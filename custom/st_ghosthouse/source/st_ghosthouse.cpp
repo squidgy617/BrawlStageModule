@@ -154,7 +154,7 @@ void stGhostHouse::update(float frameDelta){
             Fighter* fighter = g_ftManager->getFighter(entryId, -1);
             ipButton currentButton = fighter->m_moduleAccesser->getControllerModule()->getButton();
             if (currentButton.m_downTaunt) {
-                this->changeEvent(Event_Follow);
+                this->changeEvent(Event_Stalk);
             }
             else if (currentButton.m_leftTaunt) {
                 this->changeEvent(Event_Circle);
@@ -206,13 +206,13 @@ void stGhostHouse::startNextEvent() {
 
     this->currentEvent = this->nextEvent;
     switch (this->currentEvent) {
-        case Event_Follow:
+        case Event_Stalk:
             for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
                 int entryId = g_ftManager->getEntryIdFromIndex(i);
                 if (g_ftManager->isFighterActivate(entryId, -1)) {
                     grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(2 + i));
                     boo->setPlayerTarget(g_ftManager->getPlayerNo(entryId));
-                    boo->changeState(grGhostHouseBoo::State_FollowStart);
+                    boo->changeState(grGhostHouseBoo::State_StalkStart);
                 }
 
             }
@@ -262,8 +262,7 @@ void stGhostHouse::startNextEvent() {
                         for (int j = 0; j < numBoos; j++) {
                             grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + ghostHouseData->numEachBoos*(j % 4) + j/4));
                             grGimmickMotionPath* motionPath = static_cast<grGimmickMotionPath*>(this->getGround(groundCount + j));
-                            boo->setMotionPath(motionPath, startRatio, speedMultiplier);
-                            boo->changeState(grGhostHouseBoo::State_CircleStart);
+                            boo->setCircle(motionPath, startRatio, speedMultiplier);
                         }
                         break;
                     }
@@ -287,7 +286,6 @@ void stGhostHouse::startNextEvent() {
                                 float radius = resNodeData->m_scale.m_z;
                                 float speed = speedMultiplier*resNodeData->m_rotation.m_z;
                                 boo->setCircle(&center, radius, angle, speed);
-                                boo->changeState(grGhostHouseBoo::State_CircleStart);
                             }
                         }
                         else {
@@ -301,9 +299,6 @@ void stGhostHouse::startNextEvent() {
                                 float radius = centerCircle.distance(&resNodeData->m_translation.m_xy);
                                 float angle = 2*M_PI*startRatio + atan2(resNodeData->m_translation.m_y, resNodeData->m_translation.m_x);
                                 boo->setCircle(&center, radius, angle, speed);
-                                boo->changeState(grGhostHouseBoo::State_CircleStart);
-
-
                             }
                         }
                     }
@@ -317,6 +312,16 @@ void stGhostHouse::startNextEvent() {
         {
             grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex));
             boo->changeState(grGhostHouseBoo::State_SnakeStart);
+            float numBoosInSnake = randi(ghostHouseData->maxNumBoosInSnake - ghostHouseData->minNumBoosInSnake) + ghostHouseData->minNumBoosInSnake;
+
+            for (int j = 1; j < numBoosInSnake; j++) {
+                grGhostHouseBoo* followerBoo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + ghostHouseData->numEachBoos*(j % 4) + j/4));
+                Vec3f scale;
+                followerBoo->getNodeScale(&scale, 0, "Hurt");
+                float maxSnakeTimer = 2*scale.m_x*(numBoosInSnake-1)/ghostHouseData->booSnakeSpeed;
+
+                followerBoo->setSnakeFollow(boo, maxSnakeTimer, j*maxSnakeTimer/(numBoosInSnake-1));
+            }
         }
             break;
         default:
@@ -331,7 +336,7 @@ void stGhostHouse::changeEvent(GhostEvent event) {
         switch (this->currentEvent) {
             case Event_Circle:
             case Event_Snake:
-            case Event_Follow:
+            case Event_Stalk:
                 for (int i = 0; i < ghostHouseData->numEachBoos*4; i++) {
                     grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + i));
                     boo->changeState(grGhostHouseBoo::State_Disappear);

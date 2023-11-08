@@ -49,7 +49,7 @@ void grGhostHouseBoo::setupAttack() {
     overwriteAttackData->m_offsetPos = offsetPos;
     overwriteAttackData->m_hitstopMultiplier = ghostHouseData->booHitstopMultiplier;
 
-    overwriteAttackData->m_bits.nodeIndex = 0x3;
+    overwriteAttackData->m_bits.nodeIndex = 0x4;
 
     overwriteAttackData->m_bits.isCollisionCategory9 = true;
     overwriteAttackData->m_bits.isCollisionCategory8 = true;
@@ -138,59 +138,73 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
             }
             break;
         case State_Snake:
-        {
-            Vec3f pos = this->getPos();
-            Vec3f dir = (Vec3f){this->snakeDir.m_x, this->snakeDir.m_y, 0.0}*BOO_SNAKE_MIN_HIT_DIST;
-            Vec3f outHitPos;
-            Vec3f outCollNormalVec;
+            if (this->snakeLeader == NULL) {
+                Vec3f pos = this->getPos();
+                Vec3f hurtNodeScale;
+                this->getNodeScale(&hurtNodeScale, 0, "Hurt");
+                Vec3f dir = (Vec3f) {this->snakeDir.m_x, this->snakeDir.m_y, 0.0} * hurtNodeScale.m_x;
+                Vec3f outHitPos;
+                Vec3f outCollNormalVec;
 
-            if (stRayCheck(&pos, &dir, &outHitPos, &outCollNormalVec, 1, NULL, 0, 5)) {
-                float dirAngle = atan2(this->snakeDir.m_y, this->snakeDir.m_x) + M_PI;
-                float normalAngle = atan2(outCollNormalVec.m_y, outCollNormalVec.m_x) + M_PI;
+                if (stRayCheck(&pos, &dir, &outHitPos, &outCollNormalVec, 1, NULL, 0, 5)) {
+                    float dirAngle = atan2(this->snakeDir.m_y, this->snakeDir.m_x) + M_PI;
+                    float normalAngle = atan2(outCollNormalVec.m_y, outCollNormalVec.m_x) + M_PI;
 
-                if (0 < dirAngle && M_PI/2 >= dirAngle) { // quad 1
-                    if (5*M_PI/4 < normalAngle && 7*M_PI/4 >= normalAngle) {
-                        this->snakeDir = (Vec2f){-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                    }
-                    else if (3*M_PI/4 < normalAngle && 5*M_PI/4 >= normalAngle) {
-                        this->snakeDir = (Vec2f){BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                    if (0 < dirAngle && M_PI / 2 >= dirAngle) { // quad 1
+                        if (5 * M_PI / 4 < normalAngle && 7 * M_PI / 4 >= normalAngle) {
+                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->setRot(-ghostHouseData->booRot, -ghostHouseData->booRot, 0);
+                        } else if (3 * M_PI / 4 < normalAngle && 5 * M_PI / 4 >= normalAngle) {
+                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->setRot(ghostHouseData->booRot, ghostHouseData->booRot, 0);
+                        }
+                    } else if (M_PI / 2 < dirAngle && M_PI >= dirAngle) {   // quad 2
+                        if (5 * M_PI / 4 < normalAngle && 7 * M_PI / 4 >= normalAngle) {
+                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->setRot(-ghostHouseData->booRot, ghostHouseData->booRot, 0);
+                        } else if (7 * M_PI / 4 < normalAngle || M_PI / 4 >= normalAngle) {
+                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->setRot(ghostHouseData->booRot, -ghostHouseData->booRot, 0);
+                        }
+                    } else if (M_PI < dirAngle && 3 * M_PI / 2 >= dirAngle) { // quad 3
+                        if (M_PI / 4 < normalAngle && 3 * M_PI / 4 >= normalAngle) {
+                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->setRot(ghostHouseData->booRot, ghostHouseData->booRot, 0);
+                        } else if (7 * M_PI / 4 < normalAngle || M_PI / 4 >= normalAngle) {
+                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->setRot(-ghostHouseData->booRot, -ghostHouseData->booRot, 0);
+                        }
+                    } else if (3 * M_PI / 2 < dirAngle && 2 * M_PI >= dirAngle) {   // quad 4
+                        if (M_PI / 4 < normalAngle && 3 * M_PI / 4 >= normalAngle) {
+                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->setRot(ghostHouseData->booRot, -ghostHouseData->booRot, 0);
+                        } else if (3 * M_PI / 4 < normalAngle && 5 * M_PI / 4 >= normalAngle) {
+                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->setRot(-ghostHouseData->booRot, ghostHouseData->booRot, 0);
+                        }
                     }
                 }
-                else if (M_PI/2 < dirAngle && M_PI >= dirAngle) {   // quad 2
-                    if (5*M_PI/4 < normalAngle && 7*M_PI/4 >= normalAngle) {
-                        this->snakeDir = (Vec2f){BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                    }
-                    else if (7*M_PI/4 < normalAngle || M_PI/4 >= normalAngle) {
-                        this->snakeDir = (Vec2f){-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-                    }
-                }
-                else if (M_PI < dirAngle && 3*M_PI/2 >= dirAngle) { // quad 3
-                    if (M_PI/4 < normalAngle && 3*M_PI/4 >= normalAngle) {
-                        this->snakeDir = (Vec2f){BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-                    }
-                    else if (7*M_PI/4 < normalAngle || M_PI/4 >= normalAngle) {
-                        this->snakeDir = (Vec2f){-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                    }
-                }
-                else if (3*M_PI/2 < dirAngle && 2*M_PI >= dirAngle) {   // quad 4
-                    if (M_PI/4 < normalAngle && 3*M_PI/4 >= normalAngle) {
-                        this->snakeDir = (Vec2f){-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-                    }
-                    else if (3*M_PI/4 < normalAngle && 5*M_PI/4 >= normalAngle) {
-                        this->snakeDir = (Vec2f){BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                    }
+
+                dir = (Vec3f) {this->snakeDir.m_x, this->snakeDir.m_y, 0.0};
+
+                Vec3f nextPos = pos + dir * ghostHouseData->booSnakeSpeed;
+                this->setPos(&nextPos);
+            }
+            else {
+                this->snakeTimer -= deltaFrame;
+                if (this->snakeTimer <= 0) {
+                    this->snakeTimer = this->maxSnakeTimer;
+                    Vec3f leaderPos = this->snakeLeader->getPos();
+                    this->setPos(&leaderPos);
+                    Vec3f leaderRot = this->snakeLeader->getRot();
+                    this->setRot(&leaderRot);
                 }
             }
-
-            dir = (Vec3f){this->snakeDir.m_x, this->snakeDir.m_y, 0.0};
-
-            Vec3f nextPos = pos + dir*ghostHouseData->booSnakeSpeed;
-            this->setPos(&nextPos);
             break;
-        }
-        case State_FollowStart:
+
+        case State_StalkStart:
             if (currentAnimFrame >= animFrameCount - 1) {
-                this->changeState(State_Following);
+                this->changeState(State_Stalk);
             }
             break;
         case State_ShyStart:
@@ -198,7 +212,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                 this->changeState(State_Shy);
             }
         case State_Shy:
-        case State_Following:
+        case State_Stalk:
             for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
                 int entryId = g_ftManager->getEntryIdFromIndex(i);
                 if (this->playerTarget == g_ftManager->getPlayerNo(entryId) && g_ftManager->isFighterActivate(entryId, -1)) {
@@ -212,7 +226,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                             this->changeState(State_ShyStart);
                         }
                         else {
-                            this->changeState(State_Following);
+                            this->changeState(State_Stalk);
                         }
                     }
                     else {
@@ -221,10 +235,10 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                             this->changeState(State_ShyStart);
                         }
                         else {
-                            this->changeState(State_Following);
+                            this->changeState(State_Stalk);
                         }
                     }
-                    if (this->state == State_Following) {
+                    if (this->state == State_Stalk) {
                         Vec3f currentPos = this->getPos();
                         this->speed += ghostHouseData->booFollowAccel * deltaFrame;
                         if (this->speed > ghostHouseData->booFollowTopSpeed) {
@@ -252,12 +266,13 @@ void grGhostHouseBoo::setPlayerTarget(int playerTarget) {
     this->playerTarget = playerTarget;
 }
 
-void grGhostHouseBoo::setMotionPath(grGimmickMotionPath* motionPath, float startRatio, float circleSpeed) {
+void grGhostHouseBoo::setCircle(grGimmickMotionPath* motionPath, float startRatio, float circleSpeed) {
     this->m_gimmickMotionPath = motionPath;
     this->m_gimmickMotionPath->startMove();
     this->m_gimmickMotionPath->setFrame(motionPath->m_modelAnims[0]->getFrameCount()*startRatio);
     this->m_gimmickMotionPath->setFrameUpdate(0);
     this->speed = circleSpeed;
+    this->changeState(State_CircleStart);
 }
 
 void grGhostHouseBoo::setCircle(Vec2f* circleCenterPos, float circleRadius, float circleCurrentAngle, float circleAngleSpeed) {
@@ -265,6 +280,14 @@ void grGhostHouseBoo::setCircle(Vec2f* circleCenterPos, float circleRadius, floa
     this->circleRadius = circleRadius;
     this->circleCurrentAngle = circleCurrentAngle;
     this->speed = circleAngleSpeed;
+    this->changeState(State_CircleStart);
+}
+
+void grGhostHouseBoo::setSnakeFollow(grGhostHouseBoo* snakeLeader, float maxSnakeTimer, float snakeTimer) {
+    this->snakeLeader = snakeLeader;
+    this->maxSnakeTimer = maxSnakeTimer;
+    this->snakeTimer = snakeTimer;
+    this->changeState(State_SnakeStart);
 }
 
 void grGhostHouseBoo::changeState(State state) {
@@ -293,7 +316,7 @@ void grGhostHouseBoo::changeState(State state) {
                     this->m_gimmickMotionPath = NULL;
                 }
                 break;
-            case State_FollowStart:
+            case State_StalkStart:
                 for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
                     int entryId = g_ftManager->getEntryIdFromIndex(i);
                     if (this->playerTarget == g_ftManager->getPlayerNo(entryId) && g_ftManager->isFighterActivate(entryId, -1)) {
@@ -306,7 +329,7 @@ void grGhostHouseBoo::changeState(State state) {
                 this->setRot(0, 0, 0);
                 this->prevFollowAnimFrame = 0;
                 break;
-            case State_Following:
+            case State_Stalk:
                 if (this->state != State_ShyStart) {
                     this->setSleepAttack(false);
                     this->setMotionDetails(0, 0, 0, 0, 0);
@@ -354,36 +377,48 @@ void grGhostHouseBoo::changeState(State state) {
                 }
                 break;
             case State_SnakeStart:
-            {
                 this->setMotionDetails(5, 0, 0, 0, 1);
-                Vec3f pos = (Vec3f){0, 0, 0};
-                switch (randi(4)) {
-                    case 0:
-                        pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_OFFSET, this->spawnRange->m_top + BOO_SNAKE_OFFSET, 0.0};
-                        this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-                        break;
-                    case 1:
-                        pos = (Vec3f){this->spawnRange->m_right + BOO_SNAKE_OFFSET, this->spawnRange->m_top + BOO_SNAKE_OFFSET, 0.0};
-                        this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-                        break;
-                    case 2:
-                        pos = (Vec3f){this->spawnRange->m_right + BOO_SNAKE_OFFSET, this->spawnRange->m_bottom - BOO_SNAKE_OFFSET, 0.0};
-                        this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                        break;
-                    case 3:
-                        pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_OFFSET, this->spawnRange->m_bottom - BOO_SNAKE_OFFSET, 0.0};
-                        this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                        break;
-                    default:
-                        break;
+                if (this->snakeLeader == NULL) {
+                    Vec3f pos = (Vec3f){0, 0, 0};
+                    switch (randi(4)) {
+                        case 0:
+                            pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_SPAWN_OFFSET, this->spawnRange->m_top + BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->setRot(ghostHouseData->booRot, ghostHouseData->booRot, 0);
+                            break;
+                        case 1:
+                            pos = (Vec3f){this->spawnRange->m_right + BOO_SNAKE_SPAWN_OFFSET, this->spawnRange->m_top + BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->setRot(ghostHouseData->booRot, -ghostHouseData->booRot, 0);
+                            break;
+                        case 2:
+                            pos = (Vec3f){this->spawnRange->m_right + BOO_SNAKE_SPAWN_OFFSET, this->spawnRange->m_bottom - BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->setRot(-ghostHouseData->booRot, -ghostHouseData->booRot, 0);
+                            break;
+                        case 3:
+                            pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_SPAWN_OFFSET, this->spawnRange->m_bottom - BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->setRot(-ghostHouseData->booRot, ghostHouseData->booRot, 0);
+                            break;
+                        default:
+                            break;
+                    }
+                    pos += *this->spawnCenterPos;
+                    this->setPos(&pos);
                 }
-                pos += *this->spawnCenterPos;
-                this->setPos(&pos);
-            }
+                else {
+                    Vec3f leaderPos = this->snakeLeader->getPos();
+                    this->setPos(&leaderPos);
+                    Vec3f leaderRot = this->snakeLeader->getRot();
+                    this->setRot(&leaderRot);
+                }
+
                 break;
             case State_Snake:
                 this->setMotionDetails(5, 0, 0, 0, 0);
                 this->setSleepAttack(false);
+                break;
             default:
                 break;
         }
