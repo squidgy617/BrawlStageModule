@@ -380,24 +380,48 @@ void grGhostHouseBoo::changeState(State state) {
                 this->setMotionDetails(5, 0, 0, 0, 1);
                 if (this->snakeLeader == NULL) {
                     Vec3f pos = (Vec3f){0, 0, 0};
-                    switch (randi(4)) {
+                    float startRatio = randf();
+                    u8 randomStartIndex = randi(8);
+                    Vec2f range = (Vec2f){(this->spawnRange->m_right - this->spawnRange->m_left)/2 + BOO_SNAKE_SPAWN_OFFSET, (this->spawnRange->m_top - this->spawnRange->m_bottom)/2 + BOO_SNAKE_SPAWN_OFFSET};
+                    Vec2f midPoint = (Vec2f){(this->spawnRange->m_right + this->spawnRange->m_left)/2, (this->spawnRange->m_top + this->spawnRange->m_bottom)/2};
+                    switch (randomStartIndex % 4) {
                         case 0:
-                            pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_SPAWN_OFFSET, this->spawnRange->m_top + BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            if (randomStartIndex < 4) {
+                                pos = (Vec3f){midPoint.m_x - startRatio*range.m_x, this->spawnRange->m_top + BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            }
+                            else {
+                                pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_SPAWN_OFFSET, midPoint.m_y + startRatio*range.m_y, 0.0};
+                            }
                             this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
                             this->setRot(ghostHouseData->booRot, ghostHouseData->booRot, 0);
                             break;
                         case 1:
-                            pos = (Vec3f){this->spawnRange->m_right + BOO_SNAKE_SPAWN_OFFSET, this->spawnRange->m_top + BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            if (randomStartIndex < 4) {
+                                pos = (Vec3f){midPoint.m_x + startRatio*range.m_x, this->spawnRange->m_top + BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            }
+                            else {
+                                pos = (Vec3f){this->spawnRange->m_left + BOO_SNAKE_SPAWN_OFFSET, midPoint.m_y + startRatio*range.m_y, 0.0};
+                            }
                             this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
                             this->setRot(ghostHouseData->booRot, -ghostHouseData->booRot, 0);
                             break;
                         case 2:
-                            pos = (Vec3f){this->spawnRange->m_right + BOO_SNAKE_SPAWN_OFFSET, this->spawnRange->m_bottom - BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            if (randomStartIndex < 4) {
+                                pos = (Vec3f){midPoint.m_x + startRatio*range.m_x, this->spawnRange->m_top - BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            }
+                            else {
+                                pos = (Vec3f){this->spawnRange->m_left + BOO_SNAKE_SPAWN_OFFSET, midPoint.m_y - startRatio*range.m_y, 0.0};
+                            }
                             this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
                             this->setRot(-ghostHouseData->booRot, -ghostHouseData->booRot, 0);
                             break;
                         case 3:
-                            pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_SPAWN_OFFSET, this->spawnRange->m_bottom - BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            if (randomStartIndex < 4) {
+                                pos = (Vec3f){midPoint.m_x - startRatio*range.m_x, this->spawnRange->m_top - BOO_SNAKE_SPAWN_OFFSET, 0.0};
+                            }
+                            else {
+                                pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_SPAWN_OFFSET, midPoint.m_y - startRatio*range.m_y, 0.0};
+                            }
                             this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
                             this->setRot(-ghostHouseData->booRot, ghostHouseData->booRot, 0);
                             break;

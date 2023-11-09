@@ -310,18 +310,29 @@ void stGhostHouse::startNextEvent() {
             break;
         case Event_Snake:
         {
-            grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex));
-            boo->changeState(grGhostHouseBoo::State_SnakeStart);
-            float numBoosInSnake = randi(ghostHouseData->maxNumBoosInSnake - ghostHouseData->minNumBoosInSnake) + ghostHouseData->minNumBoosInSnake;
+            int booIndex = 0;
+            int numSnakes = randi(ghostHouseData->maxNumBooSnakes - ghostHouseData->minNumBooSnakes) + ghostHouseData->minNumBooSnakes;
+            for (int i = 0; i < numSnakes; i++) {
+                grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + booIndex));
+                boo->changeState(grGhostHouseBoo::State_SnakeStart);
+                int numBoosInSnake = randi(ghostHouseData->maxNumBoosInSnake - ghostHouseData->minNumBoosInSnake) + ghostHouseData->minNumBoosInSnake;
 
-            for (int j = 1; j < numBoosInSnake; j++) {
-                grGhostHouseBoo* followerBoo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + ghostHouseData->numEachBoos*(j % 4) + j/4));
-                Vec3f scale;
-                followerBoo->getNodeScale(&scale, 0, "Hurt");
-                float maxSnakeTimer = 2*scale.m_x*(numBoosInSnake-1)/ghostHouseData->booSnakeSpeed;
+                for (int j = 1; j < numBoosInSnake; j++) {
+                    if (j % 4 == 0) {
+                        booIndex++;
+                    }
+                    if (booIndex < ghostHouseData->numEachBoos) {
+                        grGhostHouseBoo* followerBoo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + ghostHouseData->numEachBoos*(j % 4) + booIndex));
+                        Vec3f scale;
+                        followerBoo->getNodeScale(&scale, 0, "Hurt");
+                        float maxSnakeTimer = 2*scale.m_x*(numBoosInSnake-1)/ghostHouseData->booSnakeSpeed;
 
-                followerBoo->setSnakeFollow(boo, maxSnakeTimer, j*maxSnakeTimer/(numBoosInSnake-1));
+                        followerBoo->setSnakeFollow(boo, maxSnakeTimer, j*maxSnakeTimer/(numBoosInSnake-1));
+                    }
+                }
+                booIndex++;
             }
+
         }
             break;
         default:
@@ -350,6 +361,8 @@ void stGhostHouse::changeEvent(GhostEvent event) {
         this->nextEvent = event;
     }
 }
+
+// TODO: Make random event be based on frame timer so that can have some control over event (some frames can be completely random)
 
 void Ground::setStageData(void* stageData) {
    this->m_stageData = stageData;
