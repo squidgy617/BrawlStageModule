@@ -49,6 +49,7 @@ protected:
         State_Set = 0x0,
         State_Fire = 0x1,
         State_Rest = 0x2,
+        State_Respawn = 0x3,
     };
 
     enum PlayerState {
@@ -87,6 +88,7 @@ protected:
     float animFrame;
     unsigned int animSetLength;
     unsigned int animFireLength;
+    unsigned int animRespawnLength;
     float rotThreshold;
     soAreaData areaData;
     soAreaInit areaInit;
@@ -115,6 +117,7 @@ public:
         this->animFrame = 0.0;
         this->animSetLength = 60;
         this->animFireLength = 60;
+        this->animRespawnLength = 60;
         this->areaInfo.m_numHitGroups = 0;
         this->areaInfo.m_hitGroupsInfo = NULL;
         this->effectIndex = 0;
