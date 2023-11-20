@@ -17,4 +17,5 @@ struct stCannonData {
     float cannonShootSpeed;
     float cannonShootTimerSpeed;
     float cannonShootStunTimerSpeed;
+    u32 cannonCooldownFrames;
 };

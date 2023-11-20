@@ -125,7 +125,7 @@ void grLunarHorizonColour::setMotionPathData(int mdlIndex) {
     this->motionPathData.m_index = 0;
     this->motionPathData.m_pathMode = MotionPathMode_Loop;
     this->motionPathData.m_mdlIndex = mdlIndex;
-    this->motionPathData._padding = 0x0;
+    this->motionPathData.m_7 = 0x0;
 }
 
 void grLunarHorizonColour::setType(int type) {

@@ -117,8 +117,13 @@ Default: 15
 	/EndDescription
 1
 
-isCannonInvincibility, isCannonShootStop, isCannonSingleRider, _
+isCannonInvincibility, isCannonShootStop, isCannonSingleRider, isCannonTether
 Default: true, false, false, false
+	/EndDescription
+6
+
+cannonNumJumps,_,_, _
+Default: 255, 0, 0, 0
 	/EndDescription
 6
 
@@ -150,3 +155,8 @@ Cannon Shoot Stun Timer Speed
 Default: 0.25
 	/EndDescription
 0
+
+Cannon Cooldown Frames
+Default: 0
+	/EndDescription
+1

@@ -250,7 +250,7 @@ void grCapturePoint::setNewCapturePosition() {
     this->motionPathData.m_index = 0;
     this->motionPathData.m_pathMode = MotionPathMode_Loop;
     this->motionPathData.m_mdlIndex = resNodeData->m_translation.m_z;
-    this->motionPathData._padding = 0x0;
+    this->motionPathData.m_7 = 0x0;
     if (this->m_gimmickMotionPath != NULL) {
         gfTask* task = this->m_attachedTask;
         if (task == this->m_gimmickMotionPath) {
@@ -281,7 +281,7 @@ void grCapturePoint::setNewCapturePosition() {
     }
     this->syncedGround = NULL;
     this->syncedGroundExitAnim = -1;
-    grGimmickMotionPathInfo motionPathInfo = {this->stage->m_fileData, &this->motionPathData, 0x01000000, 0, 0, 0, 0, 0, 0 };
+    grGimmickMotionPathInfo motionPathInfo = {this->stage->m_fileData, &this->motionPathData, false, true, 0, 0, 0, 0, 0, 0 };
     stTriggerData triggerData = {0,0,1,0};
     this->createAttachMotionPath(&motionPathInfo, &triggerData, "MoveNode");
     if (resNodeData->m_rotation.m_x > 0) {
