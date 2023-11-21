@@ -115,7 +115,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     trigger->setObserveYakumono(this->m_yakumono);
     this->createEffectWork(3);
     SimpleEffectData simpleEffectData;
-    this->createSimpleEffectData(&simpleEffectData, 0x1030001, "ExplodePos");
+    this->createSimpleEffectData(&simpleEffectData, 0x1030001, "FighterPos");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[0].m_id = simpleEffectData.m_id;
         this->m_effects[0].m_0x10 = simpleEffectData.m_0x4;
@@ -130,7 +130,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
         this->m_effects[0].m_0x20 = 0.0;
         this->m_effects[0].m_0x24 = 1.0;
     }
-    this->createSimpleEffectData(&simpleEffectData, 0x66, "SparklePos");
+    this->createSimpleEffectData(&simpleEffectData, 0x66, "ExplodePos");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[1].m_id = simpleEffectData.m_id;
         this->m_effects[1].m_0x10 = simpleEffectData.m_0x4;
@@ -145,7 +145,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
         this->m_effects[1].m_0x20 = 0.0;
         this->m_effects[1].m_0x24 = 1.0;
     }
-    this->createSimpleEffectData(&simpleEffectData, 0x5d, "FighterPos");
+    this->createSimpleEffectData(&simpleEffectData, 0x5d, "SparklePos");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[2].m_id = simpleEffectData.m_id;
         this->m_effects[2].m_0x10 = simpleEffectData.m_0x4;
