@@ -27,8 +27,11 @@ struct stGhostHouseData {
     float booFollowTopSpeed;
     float booFollowAccel;
     float booRot;
-    float booCrewIdleSpeed;
-    float booCrewIdleTurnChance;
+    Vec2f booCrewDirection;
+    float booCrewIdleTopSpeed;
+    float booCrewIdleAccel;
+    float booCloudIdleMaxVerticalDistance;
+    float booCrewIdleHorizontalTurnChance;
     float booCrewChaseFramesToReach;
     float booCrewChaseAccel;
     Vec2f booCrewDetectRange;

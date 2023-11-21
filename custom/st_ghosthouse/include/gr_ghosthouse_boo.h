@@ -18,12 +18,15 @@ public:
         State_Circle = 0x8,
         State_SnakeStart = 0x9,
         State_Snake = 0xA,
-        State_Defeat = 0xC,
+        State_CrewStart = 0xB,
+        State_Crew = 0xC,
+        State_ChaseStart = 0xD,
+        State_Chase = 0xE,
+        State_ChaseFinish = 0xF,
+        State_Defeat = 0x10,
     };
 
 protected:
-    stRange* spawnRange;
-    Vec3f* spawnCenterPos;
     int playerTarget;
     float speed;
     State state;
@@ -34,10 +37,16 @@ protected:
     float circleRadius;
     float circleCurrentAngle;
 
-    Vec2f snakeDir;
+    Vec2f direction;
     grGhostHouseBoo* snakeLeader;
     float maxSnakeTimer;
-    float snakeTimer;
+    float timer;
+
+    float accel;
+
+    Vec3f* crewSWPos;
+    Vec3f* crewNEPos;
+
 public:
     grGhostHouseBoo(const char* taskName) : grMadein(taskName)
     {
@@ -53,13 +62,15 @@ public:
 
     virtual void setupAttack();
     virtual void setPlayerTarget(int playerTarget);
-    virtual void setSpawnRange(stRange* range, Vec3f* centerPos);
+    virtual void setSpawn(stRange* spawnRange, Vec3f* centerPos);
     virtual void setCircle(grGimmickMotionPath* motionPath, float startRatio, float circleSpeed);
     virtual void setCircle(Vec2f* circleCenterPos, float circleRadius, float circleCurrentAngle, float circleAngleSpeed);
+    virtual void setSnakeLeader(stRange* spawnRange, Vec3f* centerPos);
     virtual void setSnakeFollow(grGhostHouseBoo* snakeLeader, float maxSnakeTimer, float snakeTimer);
+    virtual void setCrew(Vec3f* crewSWPos, Vec3f* crewNEPos);
     virtual void updateMove(float deltaFrame);
     virtual Vec3f findClosestFighterDisp();
-    virtual void rotateToDisp(Vec3f* disp, float maxRot, float rotateSpeed);
+    virtual void rotateToDisp(Vec2f* disp, float maxRot, float rotateSpeed);
     virtual void changeState(State state);
 
     static grGhostHouseBoo* create(int mdlIndex, const char* tgtNodeName, const char* taskName);

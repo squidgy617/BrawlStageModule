@@ -110,7 +110,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                 this->changeState(State_Circle);
             }
             Vec3f closestDisp = this->findClosestFighterDisp();
-            this->rotateToDisp(&closestDisp, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
+            this->rotateToDisp(&closestDisp.m_xy, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
         }
             break;
         case State_Circle:
@@ -128,7 +128,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
             }
 
             Vec3f closestDisp = this->findClosestFighterDisp();
-            this->rotateToDisp(&closestDisp, ghostHouseData->booRot, deltaFrame*BOO_ROT_SPEED);
+            this->rotateToDisp(&closestDisp.m_xy, ghostHouseData->booRot, deltaFrame*BOO_ROT_SPEED);
         }
             break;
         case State_SnakeStart:
@@ -142,58 +142,58 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                 Vec3f pos = this->getPos();
                 Vec3f hurtNodeScale;
                 this->getNodeScale(&hurtNodeScale, 0, "Hurt");
-                Vec3f dir = (Vec3f) {this->snakeDir.m_x, this->snakeDir.m_y, 0.0} * hurtNodeScale.m_x;
+                Vec3f dir = (Vec3f) {this->direction.m_x, this->direction.m_y, 0.0} * hurtNodeScale.m_x;
                 Vec3f outHitPos;
                 Vec3f outCollNormalVec;
 
                 if (stRayCheck(&pos, &dir, &outHitPos, &outCollNormalVec, 1, NULL, 0, 5)) {
-                    float dirAngle = atan2(this->snakeDir.m_y, this->snakeDir.m_x) + M_PI;
+                    float dirAngle = atan2(this->direction.m_y, this->direction.m_x) + M_PI;
                     float normalAngle = atan2(outCollNormalVec.m_y, outCollNormalVec.m_x) + M_PI;
 
                     if (0 < dirAngle && M_PI / 2 >= dirAngle) { // quad 1
                         if (5 * M_PI / 4 < normalAngle && 7 * M_PI / 4 >= normalAngle) {
-                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
                             this->setRot(-ghostHouseData->booRot, -ghostHouseData->booRot, 0);
                         } else if (3 * M_PI / 4 < normalAngle && 5 * M_PI / 4 >= normalAngle) {
-                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->direction = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
                             this->setRot(ghostHouseData->booRot, ghostHouseData->booRot, 0);
                         }
                     } else if (M_PI / 2 < dirAngle && M_PI >= dirAngle) {   // quad 2
                         if (5 * M_PI / 4 < normalAngle && 7 * M_PI / 4 >= normalAngle) {
-                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->direction = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
                             this->setRot(-ghostHouseData->booRot, ghostHouseData->booRot, 0);
                         } else if (7 * M_PI / 4 < normalAngle || M_PI / 4 >= normalAngle) {
-                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
                             this->setRot(ghostHouseData->booRot, -ghostHouseData->booRot, 0);
                         }
                     } else if (M_PI < dirAngle && 3 * M_PI / 2 >= dirAngle) { // quad 3
                         if (M_PI / 4 < normalAngle && 3 * M_PI / 4 >= normalAngle) {
-                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->direction = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
                             this->setRot(ghostHouseData->booRot, ghostHouseData->booRot, 0);
                         } else if (7 * M_PI / 4 < normalAngle || M_PI / 4 >= normalAngle) {
-                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
                             this->setRot(-ghostHouseData->booRot, -ghostHouseData->booRot, 0);
                         }
                     } else if (3 * M_PI / 2 < dirAngle && 2 * M_PI >= dirAngle) {   // quad 4
                         if (M_PI / 4 < normalAngle && 3 * M_PI / 4 >= normalAngle) {
-                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
                             this->setRot(ghostHouseData->booRot, -ghostHouseData->booRot, 0);
                         } else if (3 * M_PI / 4 < normalAngle && 5 * M_PI / 4 >= normalAngle) {
-                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->direction = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
                             this->setRot(-ghostHouseData->booRot, ghostHouseData->booRot, 0);
                         }
                     }
                 }
 
-                dir = (Vec3f) {this->snakeDir.m_x, this->snakeDir.m_y, 0.0};
+                dir = (Vec3f) {this->direction.m_x, this->direction.m_y, 0.0};
 
-                Vec3f nextPos = pos + dir * ghostHouseData->booSnakeSpeed;
+                Vec3f nextPos = pos + dir * ghostHouseData->booSnakeSpeed * deltaFrame;
                 this->setPos(&nextPos);
             }
             else {
-                this->snakeTimer -= deltaFrame;
-                if (this->snakeTimer <= 0) {
-                    this->snakeTimer = this->maxSnakeTimer;
+                this->timer -= deltaFrame;
+                if (this->timer <= 0) {
+                    this->timer = this->maxSnakeTimer;
                     Vec3f leaderPos = this->snakeLeader->getPos();
                     this->setPos(&leaderPos);
                     Vec3f leaderRot = this->snakeLeader->getRot();
@@ -201,7 +201,41 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                 }
             }
             break;
+        case State_CrewStart:
+            if (currentAnimFrame >= animFrameCount - 1) {
+                this->changeState(State_Crew);
+            }
+        case State_Crew:
+            {
+                Vec3f pos = this->getPos();
 
+                this->speed += this->accel * deltaFrame;
+                if (this->speed <= 0) {
+                    this->speed = 0;
+                    this->accel = ghostHouseData->booCrewIdleAccel;
+                    this->direction.m_x = -this->direction.m_x;
+                }
+                else if (this->speed >= ghostHouseData->booCrewIdleTopSpeed) {
+                    this->speed = ghostHouseData->booCrewIdleTopSpeed;
+                }
+
+                this->timer -= ghostHouseData->booCrewDirection.m_y * this->speed * deltaFrame;
+                if (this->timer <= 0) {
+                    this->direction.m_y = -this->direction.m_y;
+                    this->timer = ghostHouseData->booCloudIdleMaxVerticalDistance;
+                }
+                Vec2f newPos = pos.m_xy + this->direction * this->speed * deltaFrame;
+                if (this->accel > 0 && ((this->direction.m_x < 0 && newPos.m_x <= this->crewSWPos->m_x)
+                    || (this->direction.m_x > 0 && newPos.m_x >= this->crewNEPos->m_x)
+                    || ghostHouseData->booCrewIdleHorizontalTurnChance > randf())) {
+                    this->accel = -ghostHouseData->booCrewIdleAccel;
+                }
+                this->setPos(newPos.m_x, newPos.m_y, 0.0);
+
+                this->rotateToDisp(&this->direction, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
+
+            }
+            break;
         case State_StalkStart:
             if (currentAnimFrame >= animFrameCount - 1) {
                 this->changeState(State_Stalk);
@@ -257,9 +291,10 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
 
 }
 
-void grGhostHouseBoo::setSpawnRange(stRange* range, Vec3f* centerPos) {
-    this->spawnRange = range;
-    this->spawnCenterPos = centerPos;
+void grGhostHouseBoo::setSpawn(stRange* spawnRange, Vec3f* centerPos) {
+    stRange range = {spawnRange->m_left + centerPos->m_x, spawnRange->m_right + centerPos->m_x, spawnRange->m_top + centerPos->m_y, spawnRange->m_bottom + centerPos->m_y};
+    this->setPos(randf()*(range.m_right - range.m_left) + range.m_left, randf()*(range.m_top - range.m_bottom) + range.m_bottom, 0);
+    this->changeState(State_Spawn);
 }
 
 void grGhostHouseBoo::setPlayerTarget(int playerTarget) {
@@ -283,12 +318,77 @@ void grGhostHouseBoo::setCircle(Vec2f* circleCenterPos, float circleRadius, floa
     this->changeState(State_CircleStart);
 }
 
+void grGhostHouseBoo::setSnakeLeader(stRange* spawnRange, Vec3f* centerPos) {
+    stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
+
+    u8 randomStartIndex = randi(4);
+    float angle = atan2(BOO_SNAKE_DIR_Y, BOO_SNAKE_DIR_X);
+    switch (randomStartIndex) {
+        case 0:
+            this->direction = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+            this->setRot(ghostHouseData->booRot, angle, 0);
+            break;
+        case 1:
+            this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+            this->setRot(ghostHouseData->booRot, -angle, 0);
+            break;
+        case 2:
+            this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+            this->setRot(-ghostHouseData->booRot, -angle, 0);
+            break;
+        case 3:
+            this->direction = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+            this->setRot(-ghostHouseData->booRot, angle, 0);
+            break;
+        default:
+            break;
+    }
+    this->setPos(randf()*(spawnRange->m_right - spawnRange->m_left) + spawnRange->m_left + centerPos->m_x,
+                 randf()*(spawnRange->m_top - spawnRange->m_bottom) + spawnRange->m_bottom + centerPos->m_y,
+                 0.0);
+    this->changeState(State_SnakeStart);
+}
+
 void grGhostHouseBoo::setSnakeFollow(grGhostHouseBoo* snakeLeader, float maxSnakeTimer, float snakeTimer) {
     this->snakeLeader = snakeLeader;
     this->maxSnakeTimer = maxSnakeTimer;
-    this->snakeTimer = snakeTimer;
+    this->timer = snakeTimer;
     this->changeState(State_SnakeStart);
 }
+
+void grGhostHouseBoo::setCrew(Vec3f* crewSWPos, Vec3f* crewNEPos) {
+    this->crewSWPos = crewSWPos;
+    this->crewNEPos = crewNEPos;
+
+    stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
+
+    this->setPos(randf()*(crewNEPos->m_x - crewSWPos->m_x) + crewSWPos->m_x, randf()*(crewNEPos->m_y - crewSWPos->m_y) + crewSWPos->m_y, 0.0);
+    u8 randomStartIndex = randi(4);
+    float angle = atan2(ghostHouseData->booCrewDirection.m_y, ghostHouseData->booCrewDirection.m_x);
+    switch (randomStartIndex) {
+        case 0:
+            this->direction = (Vec2f) {ghostHouseData->booCrewDirection.m_x, -ghostHouseData->booCrewDirection.m_y};
+            this->setRot(ghostHouseData->booRot, angle, 0);
+            break;
+        case 1:
+            this->direction = (Vec2f) {-ghostHouseData->booCrewDirection.m_x, -ghostHouseData->booCrewDirection.m_y};
+            this->setRot(ghostHouseData->booRot, -angle, 0);
+            break;
+        case 2:
+            this->direction = (Vec2f) {-ghostHouseData->booCrewDirection.m_x, ghostHouseData->booCrewDirection.m_y};
+            this->setRot(-ghostHouseData->booRot, -angle, 0);
+            break;
+        case 3:
+            this->direction = (Vec2f) {ghostHouseData->booCrewDirection.m_x, ghostHouseData->booCrewDirection.m_y};
+            this->setRot(-ghostHouseData->booRot, angle, 0);
+            break;
+        default:
+            break;
+    }
+    this->timer = ghostHouseData->booCloudIdleMaxVerticalDistance;
+    this->changeState(State_CrewStart);
+}
+
 
 void grGhostHouseBoo::changeState(State state) {
     stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
@@ -297,8 +397,6 @@ void grGhostHouseBoo::changeState(State state) {
         switch(state) {
             case State_Spawn:
             {
-                stRange range = {this->spawnRange->m_left + this->spawnCenterPos->m_x, this->spawnRange->m_right + this->spawnCenterPos->m_x, this->spawnRange->m_top + this->spawnCenterPos->m_y, this->spawnRange->m_bottom + this->spawnCenterPos->m_y};
-                this->setPos(randf()*(range.m_right - range.m_left) + range.m_left, randf()*(range.m_top - range.m_bottom) + range.m_bottom, 0);
                 this->setMotionDetails(5, 2, 0, 0, 2);
                 this->setSleepAttack(true);
             }
@@ -325,7 +423,7 @@ void grGhostHouseBoo::changeState(State state) {
                         this->setPos(targetPos.m_x + ghostHouseData->booFollowSpawnRadius*cosf(angle), targetPos.m_y + ghostHouseData->booFollowSpawnRadius*sinf(angle), 0);
                     }
                 }
-                this->setMotionDetails(1, 0, 0, 0, 5);
+                this->setMotionDetails(1, 0, 0, 0, 8);
                 this->setRot(0, 0, 0);
                 this->prevFollowAnimFrame = 0;
                 break;
@@ -378,70 +476,24 @@ void grGhostHouseBoo::changeState(State state) {
                 break;
             case State_SnakeStart:
                 this->setMotionDetails(5, 0, 0, 0, 1);
-                if (this->snakeLeader == NULL) {
-                    Vec3f pos = (Vec3f){0, 0, 0};
-                    float startRatio = randf();
-                    u8 randomStartIndex = randi(8);
-                    Vec2f range = (Vec2f){(this->spawnRange->m_right - this->spawnRange->m_left)/2 + BOO_SNAKE_SPAWN_OFFSET, (this->spawnRange->m_top - this->spawnRange->m_bottom)/2 + BOO_SNAKE_SPAWN_OFFSET};
-                    Vec2f midPoint = (Vec2f){(this->spawnRange->m_right + this->spawnRange->m_left)/2, (this->spawnRange->m_top + this->spawnRange->m_bottom)/2};
-                    switch (randomStartIndex % 4) {
-                        case 0:
-                            if (randomStartIndex < 4) {
-                                pos = (Vec3f){midPoint.m_x - startRatio*range.m_x, this->spawnRange->m_top + BOO_SNAKE_SPAWN_OFFSET, 0.0};
-                            }
-                            else {
-                                pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_SPAWN_OFFSET, midPoint.m_y + startRatio*range.m_y, 0.0};
-                            }
-                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-                            this->setRot(ghostHouseData->booRot, ghostHouseData->booRot, 0);
-                            break;
-                        case 1:
-                            if (randomStartIndex < 4) {
-                                pos = (Vec3f){midPoint.m_x + startRatio*range.m_x, this->spawnRange->m_top + BOO_SNAKE_SPAWN_OFFSET, 0.0};
-                            }
-                            else {
-                                pos = (Vec3f){this->spawnRange->m_left + BOO_SNAKE_SPAWN_OFFSET, midPoint.m_y + startRatio*range.m_y, 0.0};
-                            }
-                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-                            this->setRot(ghostHouseData->booRot, -ghostHouseData->booRot, 0);
-                            break;
-                        case 2:
-                            if (randomStartIndex < 4) {
-                                pos = (Vec3f){midPoint.m_x + startRatio*range.m_x, this->spawnRange->m_top - BOO_SNAKE_SPAWN_OFFSET, 0.0};
-                            }
-                            else {
-                                pos = (Vec3f){this->spawnRange->m_left + BOO_SNAKE_SPAWN_OFFSET, midPoint.m_y - startRatio*range.m_y, 0.0};
-                            }
-                            this->snakeDir = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                            this->setRot(-ghostHouseData->booRot, -ghostHouseData->booRot, 0);
-                            break;
-                        case 3:
-                            if (randomStartIndex < 4) {
-                                pos = (Vec3f){midPoint.m_x - startRatio*range.m_x, this->spawnRange->m_top - BOO_SNAKE_SPAWN_OFFSET, 0.0};
-                            }
-                            else {
-                                pos = (Vec3f){this->spawnRange->m_left - BOO_SNAKE_SPAWN_OFFSET, midPoint.m_y - startRatio*range.m_y, 0.0};
-                            }
-                            this->snakeDir = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                            this->setRot(-ghostHouseData->booRot, ghostHouseData->booRot, 0);
-                            break;
-                        default:
-                            break;
-                    }
-                    pos += *this->spawnCenterPos;
-                    this->setPos(&pos);
-                }
-                else {
+                if (this->snakeLeader != NULL) {
                     Vec3f leaderPos = this->snakeLeader->getPos();
                     this->setPos(&leaderPos);
                     Vec3f leaderRot = this->snakeLeader->getRot();
                     this->setRot(&leaderRot);
                 }
-
                 break;
             case State_Snake:
                 this->setMotionDetails(5, 0, 0, 0, 0);
                 this->setSleepAttack(false);
+                break;
+            case State_CrewStart:
+                this->speed = ghostHouseData->booCrewIdleTopSpeed;
+                this->accel = ghostHouseData->booCrewIdleAccel;
+                this->setMotionDetails(5, 0, 0, 0, 4);
+                break;
+            case State_Crew:
+                this->setMotionDetails(5, 0, 0, 0, 3);
                 break;
             default:
                 break;
@@ -469,9 +521,9 @@ Vec3f grGhostHouseBoo::findClosestFighterDisp() {
     return closestDisp;
 }
 
-void grGhostHouseBoo::rotateToDisp(Vec3f* disp, float maxRot, float rotateSpeed) {
+void grGhostHouseBoo::rotateToDisp(Vec2f* disp, float maxRot, float rotateSpeed) {
     Vec3f currentRot = this->getRot();
-    float pitch = mtConvRadToDeg(hkMath::acos(fabsf(disp->m_y)/disp->m_xy.length()));
+    float pitch = mtConvRadToDeg(hkMath::acos(fabsf(disp->m_y)/disp->length()));
     pitch = hkMath::min2(maxRot, pitch);
     if (disp->m_x < 0) {
         pitch = -pitch;
@@ -485,7 +537,7 @@ void grGhostHouseBoo::rotateToDisp(Vec3f* disp, float maxRot, float rotateSpeed)
     }
     currentRot.m_pitch += pitchDiff;
 
-    float roll = mtConvRadToDeg(hkMath::acos(fabsf(disp->m_x)/disp->m_xy.length()));
+    float roll = mtConvRadToDeg(hkMath::acos(fabsf(disp->m_x)/disp->length()));
     roll = hkMath::min2(maxRot, roll);
     if (disp->m_y >= 0) {
         roll = -roll;

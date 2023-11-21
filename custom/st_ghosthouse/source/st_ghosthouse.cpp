@@ -8,6 +8,7 @@
 #include <hk/hk_math.h>
 #include <mt/mt_prng.h>
 #include <stdio.h>
+#include <it/it_manager.h>
 #include <OS/OSError.h>
 
 static stClassInfoImpl<Stages::Final, stGhostHouse> classInfo = stClassInfoImpl<Stages::Final, stGhostHouse>();
@@ -125,8 +126,7 @@ void stGhostHouse::createObjBoo(int mdlIndex) {
         boo->setupAttack();
         boo->initializeEntity();
         boo->startEntity();
-        boo->setSpawnRange(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos);
-        boo->changeState(grGhostHouseBoo::State_Spawn);
+        boo->setSpawn(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos);
     }
 }
 
@@ -163,10 +163,8 @@ void stGhostHouse::update(float frameDelta){
                 this->changeEvent(Event_Snake);
             }
             else if (currentButton.m_upTaunt) {
-                this->changeEvent(Event_None);
+                this->changeEvent(Event_Crew);
             }
-
-
         }
     }
 
@@ -332,7 +330,19 @@ void stGhostHouse::startNextEvent() {
                 }
                 booIndex++;
             }
+        }
+            break;
+        case Event_Crew:
+        {
+            grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
+            u32 nodeIndex = ground->getNodeIndex(0, "Crew");
+            nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 1)).ptr();
+            nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 2)).ptr();
 
+            for (int i = 0; i < ghostHouseData->numEachBoos*4; i++) {
+                grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + i));
+                boo->setCrew(&resNodeDataSW->m_translation, &resNodeDataNE->m_translation);
+            }
         }
             break;
         default:
@@ -347,6 +357,7 @@ void stGhostHouse::changeEvent(GhostEvent event) {
         switch (this->currentEvent) {
             case Event_Circle:
             case Event_Snake:
+            case Event_Crew:
             case Event_Stalk:
                 for (int i = 0; i < ghostHouseData->numEachBoos*4; i++) {
                     grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + i));
