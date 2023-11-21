@@ -113,9 +113,9 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
             break;
     }
     trigger->setObserveYakumono(this->m_yakumono);
-    this->createEffectWork(2);
+    this->createEffectWork(3);
     SimpleEffectData simpleEffectData;
-    this->createSimpleEffectData(&simpleEffectData, 0x1030001, "FighterPos");
+    this->createSimpleEffectData(&simpleEffectData, 0x1030001, "ExplodePos");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[0].m_id = simpleEffectData.m_id;
         this->m_effects[0].m_0x10 = simpleEffectData.m_0x4;
@@ -130,7 +130,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
         this->m_effects[0].m_0x20 = 0.0;
         this->m_effects[0].m_0x24 = 1.0;
     }
-    this->createSimpleEffectData(&simpleEffectData, 0x3a, "FighterPos");
+    this->createSimpleEffectData(&simpleEffectData, 0x66, "SparklePos");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[1].m_id = simpleEffectData.m_id;
         this->m_effects[1].m_0x10 = simpleEffectData.m_0x4;
@@ -145,8 +145,23 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
         this->m_effects[1].m_0x20 = 0.0;
         this->m_effects[1].m_0x24 = 1.0;
     }
+    this->createSimpleEffectData(&simpleEffectData, 0x5d, "FighterPos");
+    if (0 < simpleEffectData.m_id) {
+        this->m_effects[2].m_id = simpleEffectData.m_id;
+        this->m_effects[2].m_0x10 = simpleEffectData.m_0x4;
+        if (simpleEffectData.m_nodeIndex == 0) {
+            this->m_effects[2].m_nodeIndex = this->getNodeIndex(0, "effect_locator");
+        }
+        else {
+            this->m_effects[2].m_nodeIndex = simpleEffectData.m_nodeIndex;
+        }
+        this->m_effects[2].m_0x14 = simpleEffectData.m_0x8;
+        this->m_effects[2].m_0x1c = 0.0;
+        this->m_effects[2].m_0x20 = 0.0;
+        this->m_effects[2].m_0x24 = 1.0;
+    }
 
-    this->createSoundWork(3,1);
+    this->createSoundWork(4,1);
     this->m_soundEffects[0].m_id = snd_se_ADVstage_common_03;
     this->m_soundEffects[0].m_0x10 = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
@@ -165,6 +180,12 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->m_soundEffects[2].m_0x14 = 0;
     this->m_soundEffects[2].m_0x1c = 0.0;
     this->m_soundEffects[2].m_0x20 = 0.0;
+    this->m_soundEffects[3].m_id = snd_se_item_Barrel_break;
+    this->m_soundEffects[3].m_0x10 = 0;
+    this->m_soundEffects[3].m_nodeIndex = 0;
+    this->m_soundEffects[3].m_0x14 = 0;
+    this->m_soundEffects[3].m_0x1c = 0.0;
+    this->m_soundEffects[3].m_0x20 = 0.0;
     this->createSimpleEffectData(&simpleEffectData, 0x1030006, "effect_locator");
     u32 visProdIndex = 4;
     this->createEffectVisibleProductionForExcel(&simpleEffectData, &visProdIndex, this->m_visibleProductions);
@@ -329,7 +350,11 @@ void grAdventureBarrelCannon::update(float frameDelta)
             if (this->animFrame >= this->animFireLength) {
                 this->cannonState = State_Rest;
                 this->animFrame = 0.0;
+                g_ecMgr->endEffect(this->effectIndex);
                 this->m_modelAnims[0]->unbindNodeAnim(this->m_sceneModels[0]);
+                this->setNodeVisibilityAll(false, 0);
+                this->startGimmickEffect(1);
+                this->startGimmickSE(3);
             }
             break;
         case State_Set:
@@ -373,18 +398,15 @@ void grAdventureBarrelCannon::update(float frameDelta)
     }
     this->updateMove(frameDelta);
 
-    if (this->isInCooldown && stageData->cannonCooldownFrames - this->cooldownTimer - frameDelta >= 15.0) {
+    if (this->cooldownTimer > 0.0 && (this->cooldownTimer -= frameDelta) <= 0.0) {
         this->isInCooldown = false;
-        g_ecMgr->endEffect(this->effectIndex);
-        this->setNodeVisibilityAll(false, 0);
-        this->startGimmickEffect(1);
-    }
-    else if (this->cooldownTimer > 0.0 && (this->cooldownTimer -= frameDelta) <= 0.0) {
         this->cooldownTimer = 0.0;
+        this->animFrame = 0.0;
         this->changeNodeAnim(2,0);
         this->changeMatColAnim(1, 0);
         this->setNodeVisibilityAll(true, 0);
         this->cannonState = State_Respawn;
+        this->startGimmickEffect(2);
         this->startGimmickSE(2);
     }
 
@@ -632,10 +654,10 @@ void grAdventureBarrelCannon::eraseSendID(int sendID)
         //g_stAdventure2->stopCameraAdvCameraOffset();
         this->isPlayerIn = false;
     }
-    if (isNoPlayersIn && this->m_modelAnims[0]->m_anmObjChrRes != NULL) {
-        this->cannonState = State_Rest;
-        this->animFrame = 0.0;
-        this->m_modelAnims[0]->unbindNodeAnim(this->m_sceneModels[0]);
-    }
+//    if (isNoPlayersIn && this->m_modelAnims[0]->m_anmObjChrRes != NULL) {
+//        this->cannonState = State_Rest;
+//        this->animFrame = 0.0;
+//        this->m_modelAnims[0]->unbindNodeAnim(this->m_sceneModels[0]);
+//    }
 }
 
