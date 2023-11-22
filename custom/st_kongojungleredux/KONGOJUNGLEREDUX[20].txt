@@ -160,3 +160,23 @@ Cannon Cooldown Frames
 Default: 0
 	/EndDescription
 1
+
+Cannon Area Offset X
+Default: 0
+	/EndDescription
+0
+
+Cannon Area Offset Y
+Default: 0
+	/EndDescription
+0
+
+Cannon Area Range X
+Default: 20
+	/EndDescription
+0
+
+Cannon Area Range Y
+Default: 15
+	/EndDescription
+0

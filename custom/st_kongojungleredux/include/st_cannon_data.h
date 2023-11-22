@@ -18,4 +18,6 @@ struct stCannonData {
     float cannonShootTimerSpeed;
     float cannonShootStunTimerSpeed;
     u32 cannonCooldownFrames;
+    Vec2f cannonAreaOffsetPos;
+    Vec2f cannonAreaRange;
 };
