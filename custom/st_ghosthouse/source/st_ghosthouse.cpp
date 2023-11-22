@@ -209,8 +209,7 @@ void stGhostHouse::startNextEvent() {
                 int entryId = g_ftManager->getEntryIdFromIndex(i);
                 if (g_ftManager->isFighterActivate(entryId, -1)) {
                     grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(2 + i));
-                    boo->setPlayerTarget(g_ftManager->getPlayerNo(entryId));
-                    boo->changeState(grGhostHouseBoo::State_StalkStart);
+                    boo->setStalk(g_ftManager->getPlayerNo(entryId));
                 }
 
             }
@@ -341,7 +340,7 @@ void stGhostHouse::startNextEvent() {
 
             for (int i = 0; i < ghostHouseData->numEachBoos*4; i++) {
                 grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + i));
-                boo->setCrew(&resNodeDataSW->m_translation, &resNodeDataNE->m_translation);
+                boo->setCrew(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy);
             }
         }
             break;

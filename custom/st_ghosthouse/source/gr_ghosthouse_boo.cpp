@@ -109,7 +109,8 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
             if (currentAnimFrame >= animFrameCount - 1) {
                 this->changeState(State_Circle);
             }
-            Vec3f closestDisp = this->findClosestFighterDisp();
+            Vec3f closestDisp;
+            this->findClosestFighterDisp(&closestDisp);
             this->rotateToDisp(&closestDisp.m_xy, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
         }
             break;
@@ -127,7 +128,8 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                 }
             }
 
-            Vec3f closestDisp = this->findClosestFighterDisp();
+            Vec3f closestDisp;
+            this->findClosestFighterDisp(&closestDisp);
             this->rotateToDisp(&closestDisp.m_xy, ghostHouseData->booRot, deltaFrame*BOO_ROT_SPEED);
         }
             break;
@@ -202,6 +204,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
             }
             break;
         case State_CrewStart:
+        case State_ChaseFinish:
             if (currentAnimFrame >= animFrameCount - 1) {
                 this->changeState(State_Crew);
             }
@@ -219,22 +222,67 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                     this->speed = ghostHouseData->booCrewIdleTopSpeed;
                 }
 
-                this->timer -= ghostHouseData->booCrewDirection.m_y * this->speed * deltaFrame;
-                if (this->timer <= 0) {
+                this->remainingDistance -= ghostHouseData->booCrewDirection.m_y * this->speed * deltaFrame;
+                if (this->remainingDistance <= 0) {
                     this->direction.m_y = -this->direction.m_y;
-                    this->timer = ghostHouseData->booCloudIdleMaxVerticalDistance;
+                    this->remainingDistance = ghostHouseData->booCloudIdleMaxVerticalDistance;
                 }
                 Vec2f newPos = pos.m_xy + this->direction * this->speed * deltaFrame;
-                if (this->accel > 0 && ((this->direction.m_x < 0 && newPos.m_x <= this->crewSWPos->m_x)
-                    || (this->direction.m_x > 0 && newPos.m_x >= this->crewNEPos->m_x)
-                    || ghostHouseData->booCrewIdleHorizontalTurnChance > randf())) {
+                if (this->accel > 0 && ((this->direction.m_x < 0 && newPos.m_x <= this->crewSWPos->m_x) ||
+                    (this->direction.m_x > 0 && newPos.m_x >= this->crewNEPos->m_x) ||
+                    (newPos.m_x > this->crewSWPos->m_x && newPos.m_x < this->crewNEPos->m_x && ghostHouseData->booCrewIdleHorizontalTurnChance > randf()))) {
                     this->accel = -ghostHouseData->booCrewIdleAccel;
                 }
                 this->setPos(newPos.m_x, newPos.m_y, 0.0);
-
                 this->rotateToDisp(&this->direction, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
 
+                if (ghostHouseData->booCrewDetectChance > randf()) {
+                    Vec3f closestFighterDisp;
+                    if (this->findClosestFighterDisp(&closestFighterDisp) &&
+                        fabsf(closestFighterDisp.m_x) <= ghostHouseData->booCrewDetectRange.m_x / 2 &&
+                        closestFighterDisp.m_y <= 0.0 &&
+                        fabsf(closestFighterDisp.m_y) <= ghostHouseData->booCrewDetectRange.m_y) {
+                        pos = this->getPos();
+                        Vec2f targetPos = pos.m_xy + closestFighterDisp.m_xy;
+                        this->setChase(&pos, &targetPos);
+                    }
+                }
             }
+            break;
+        case State_ChaseStart:
+        {
+            if (currentAnimFrame >= animFrameCount - 1) {
+                this->changeState(State_Chase);
+            }
+            Vec2f disp = this->targetPos - this->getPos().m_xy;
+            this->rotateToDisp(&disp, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
+        }
+            break;
+        case State_Chase:
+        {
+
+            Vec3f currentPos = this->getPos();
+
+            this->timer -= deltaFrame;
+            if (this->timer < 0) {
+                this->timer = 0;
+                this->changeState(State_ChaseFinish);
+            }
+
+            float speedX = (targetPos.m_x - prevPos.m_x) / ghostHouseData->booCrewChaseFramesToReach;
+            float timeElapsed = ghostHouseData->booCrewChaseFramesToReach*2 - this->timer;
+
+            float initSpeedY = 2*(targetPos.m_y - prevPos.m_y) / ghostHouseData->booCrewChaseFramesToReach;
+            float accelY = -initSpeedY / ghostHouseData->booCrewChaseFramesToReach;
+
+            Vec3f newPos = (Vec3f){currentPos.m_x + deltaFrame*speedX,
+                                   this->prevPos.m_y + initSpeedY*timeElapsed + 0.5*accelY*timeElapsed*timeElapsed,
+                                   0.0};
+
+            this->setPos(&newPos);
+            Vec2f disp = this->targetPos - newPos.m_xy;
+            this->rotateToDisp(&disp, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
+        }
             break;
         case State_StalkStart:
             if (currentAnimFrame >= animFrameCount - 1) {
@@ -297,8 +345,9 @@ void grGhostHouseBoo::setSpawn(stRange* spawnRange, Vec3f* centerPos) {
     this->changeState(State_Spawn);
 }
 
-void grGhostHouseBoo::setPlayerTarget(int playerTarget) {
+void grGhostHouseBoo::setStalk(int playerTarget) {
     this->playerTarget = playerTarget;
+    this->changeState(grGhostHouseBoo::State_StalkStart);
 }
 
 void grGhostHouseBoo::setCircle(grGimmickMotionPath* motionPath, float startRatio, float circleSpeed) {
@@ -356,7 +405,7 @@ void grGhostHouseBoo::setSnakeFollow(grGhostHouseBoo* snakeLeader, float maxSnak
     this->changeState(State_SnakeStart);
 }
 
-void grGhostHouseBoo::setCrew(Vec3f* crewSWPos, Vec3f* crewNEPos) {
+void grGhostHouseBoo::setCrew(Vec2f* crewSWPos, Vec2f* crewNEPos) {
     this->crewSWPos = crewSWPos;
     this->crewNEPos = crewNEPos;
 
@@ -385,10 +434,18 @@ void grGhostHouseBoo::setCrew(Vec3f* crewSWPos, Vec3f* crewNEPos) {
         default:
             break;
     }
-    this->timer = ghostHouseData->booCloudIdleMaxVerticalDistance;
+    this->remainingDistance = ghostHouseData->booCloudIdleMaxVerticalDistance;
     this->changeState(State_CrewStart);
 }
 
+void grGhostHouseBoo::setChase(Vec3f* startPos, Vec2f* targetPos) {
+    stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
+
+    this->prevPos = *startPos;
+    this->targetPos = *targetPos;
+    this->timer = ghostHouseData->booCrewChaseFramesToReach*2;
+    this->changeState(State_ChaseStart);
+}
 
 void grGhostHouseBoo::changeState(State state) {
     stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
@@ -433,7 +490,7 @@ void grGhostHouseBoo::changeState(State state) {
                     this->setMotionDetails(0, 0, 0, 0, 0);
                     if (this->prevFollowAnimFrame != 0) {
                         this->m_modelAnims[0]->setFrame(this->prevFollowAnimFrame);
-                        this->setPos(&this->prevFollowPos);
+                        this->setPos(&this->prevPos);
                     }
                 }
                 break;
@@ -443,7 +500,7 @@ void grGhostHouseBoo::changeState(State state) {
                     return;
                 }
                 this->prevFollowAnimFrame = this->m_modelAnims[0]->getFrame();
-                this->prevFollowPos = this->getPos();
+                this->prevPos = this->getPos();
 
                 this->speed = 0;
                 Vec3f centerPos;
@@ -452,7 +509,7 @@ void grGhostHouseBoo::changeState(State state) {
                 this->getNodePosition(&bodyPos, 0, "skl_root");
 
                 Vec3f centerToBodyPos = bodyPos - centerPos;
-                this->setPos(this->prevFollowPos.m_x + centerToBodyPos.m_x, this->prevFollowPos.m_y + centerToBodyPos.m_y, this->prevFollowPos.m_z);
+                this->setPos(this->prevPos.m_x + centerToBodyPos.m_x, this->prevPos.m_y + centerToBodyPos.m_y, this->prevPos.m_z);
                 this->setMotionDetails(2, 3, 0, 0, 0);
             }
 
@@ -495,6 +552,17 @@ void grGhostHouseBoo::changeState(State state) {
             case State_Crew:
                 this->setMotionDetails(5, 0, 0, 0, 3);
                 break;
+            case State_ChaseStart:
+                this->setMotionDetails(5, 0, 0, 0, 6);
+                break;
+            case State_Chase:
+                this->setMotionDetails(5, 0, 0, 0, 0);
+                this->setSleepAttack(false);
+                break;
+            case State_ChaseFinish:
+                this->setMotionDetails(5, 0, 0, 0, 7);
+                this->setSleepAttack(true);
+                break;
             default:
                 break;
         }
@@ -503,9 +571,9 @@ void grGhostHouseBoo::changeState(State state) {
     }
 }
 
-Vec3f grGhostHouseBoo::findClosestFighterDisp() {
+bool grGhostHouseBoo::findClosestFighterDisp(Vec3f* outDisp) {
     Vec3f pos = this->getPos();
-    Vec3f closestDisp = (Vec3f){0, 0, 0};
+    *outDisp = (Vec3f){0, 0, 0};
     float closestDist = HUGE_VALF;
     for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
         int entryId = g_ftManager->getEntryIdFromIndex(i);
@@ -514,11 +582,11 @@ Vec3f grGhostHouseBoo::findClosestFighterDisp() {
             float dist = disp.length();
             if (closestDist > dist) {
                 closestDist = dist;
-                closestDisp = disp;
+                *outDisp = disp;
             };
         }
     }
-    return closestDisp;
+    return closestDist < HUGE_VALF;
 }
 
 void grGhostHouseBoo::rotateToDisp(Vec2f* disp, float maxRot, float rotateSpeed) {
