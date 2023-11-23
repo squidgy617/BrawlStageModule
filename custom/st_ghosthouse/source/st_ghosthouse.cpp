@@ -311,7 +311,7 @@ void stGhostHouse::startNextEvent() {
             int numSnakes = randi(ghostHouseData->maxNumBooSnakes - ghostHouseData->minNumBooSnakes) + ghostHouseData->minNumBooSnakes;
             for (int i = 0; i < numSnakes; i++) {
                 grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + booIndex));
-                boo->changeState(grGhostHouseBoo::State_SnakeStart);
+                boo->setSnakeLeader(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos);
                 int numBoosInSnake = randi(ghostHouseData->maxNumBoosInSnake - ghostHouseData->minNumBoosInSnake) + ghostHouseData->minNumBoosInSnake;
 
                 for (int j = 1; j < numBoosInSnake; j++) {
