@@ -6,6 +6,7 @@
 #include <mt/mt_prng.h>
 #include "gr_ghosthouse.h"
 #include "gr_ghosthouse_boo.h"
+#include "gr_ghosthouse_bubble.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;

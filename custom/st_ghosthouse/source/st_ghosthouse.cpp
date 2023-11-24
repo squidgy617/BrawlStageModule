@@ -205,14 +205,24 @@ void stGhostHouse::startNextEvent() {
     this->currentEvent = this->nextEvent;
     switch (this->currentEvent) {
         case Event_Stalk:
+        {
+            int numBoosToFollow = randi(ghostHouseData->maxNumBoosToFollow - ghostHouseData->minNumBoosToFollow) +
+                                  ghostHouseData->minNumBoosToFollow;
+            numBoosToFollow =
+                    hkMath::min2<int>(g_ftManager->getEntryCount() * numBoosToFollow, ghostHouseData->numEachBoos) /
+                    g_ftManager->getEntryCount();
+
             for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
                 int entryId = g_ftManager->getEntryIdFromIndex(i);
                 if (g_ftManager->isFighterActivate(entryId, -1)) {
-                    grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(2 + i));
-                    boo->setStalk(g_ftManager->getPlayerNo(entryId));
+                    for (int j = 0; j < numBoosToFollow; j++) {
+                        grGhostHouseBoo *boo = static_cast<grGhostHouseBoo *>(this->getGround(
+                                this->booStartGroundIndex + i * numBoosToFollow + j));
+                        boo->setStalk(g_ftManager->getPlayerNo(entryId));
+                    }
                 }
-
             }
+        }
             break;
         case Event_Circle:
         {
@@ -508,3 +518,5 @@ template<srStageKind I, typename T>
 void stClassInfoImpl<I, T>::preload() {
    return;
 }
+
+// TODO: in timed or coin mode, get score for killing boos
