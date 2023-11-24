@@ -228,15 +228,15 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                     this->remainingDistance = ghostHouseData->booCloudIdleMaxVerticalDistance;
                 }
                 Vec2f newPos = pos.m_xy + this->direction * this->speed * deltaFrame;
-                if (this->accel > 0 && ((this->direction.m_x < 0 && newPos.m_x <= this->crewSWPos->m_x) ||
-                    (this->direction.m_x > 0 && newPos.m_x >= this->crewNEPos->m_x) ||
-                    (newPos.m_x > this->crewSWPos->m_x && newPos.m_x < this->crewNEPos->m_x && ghostHouseData->booCrewIdleHorizontalTurnChance > randf()))) {
+                if (this->accel > 0 && ((this->direction.m_x < 0 && newPos.m_x <= this->southWestPos->m_x) ||
+                    (this->direction.m_x > 0 && newPos.m_x >= this->northEastPos->m_x) ||
+                    (newPos.m_x > this->southWestPos->m_x && newPos.m_x < this->northEastPos->m_x && ghostHouseData->booCrewIdleHorizontalTurnChance > randf()))) {
                     this->accel = -ghostHouseData->booCrewIdleAccel;
                 }
                 this->setPos(newPos.m_x, newPos.m_y, 0.0);
                 this->rotateToDisp(&this->direction, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
 
-                if (ghostHouseData->booCrewDetectChance > randf()) {
+                if (this->state == State_Crew && ghostHouseData->booCrewDetectChance > randf()) {
                     Vec3f closestFighterDisp;
                     if (this->findClosestFighterDisp(&closestFighterDisp) &&
                         fabsf(closestFighterDisp.m_x) <= ghostHouseData->booCrewDetectRange.m_x / 2 &&
@@ -282,6 +282,33 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
             this->setPos(&newPos);
             Vec2f disp = this->targetPos - newPos.m_xy;
             this->rotateToDisp(&disp, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
+        }
+            break;
+        case State_AppearStart:
+            if (currentAnimFrame >= animFrameCount - 1) {
+                this->changeState(State_Appear);
+            }
+        case State_Appear:
+        {
+            Vec3f closestDisp;
+            this->findClosestFighterDisp(&closestDisp);
+            this->rotateToDisp(&closestDisp.m_xy, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
+
+            this->timer -= deltaFrame;
+            if (this->timer <= 0) {
+                this->changeState(State_Disappear);
+            }
+        }
+            break;
+        case State_Disappear:
+        {
+            Vec3f closestDisp;
+            this->findClosestFighterDisp(&closestDisp);
+            this->rotateToDisp(&closestDisp.m_xy, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
+            this->timer -= deltaFrame;
+            if (this->timer <= 0) {
+                this->changeState(State_AppearStart);
+            }
         }
             break;
         case State_StalkStart:
@@ -406,8 +433,8 @@ void grGhostHouseBoo::setSnakeFollow(grGhostHouseBoo* snakeLeader, float maxSnak
 }
 
 void grGhostHouseBoo::setCrew(Vec2f* crewSWPos, Vec2f* crewNEPos) {
-    this->crewSWPos = crewSWPos;
-    this->crewNEPos = crewNEPos;
+    this->southWestPos = crewSWPos;
+    this->northEastPos = crewNEPos;
 
     stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
 
@@ -447,6 +474,13 @@ void grGhostHouseBoo::setChase(Vec3f* startPos, Vec2f* targetPos) {
     this->changeState(State_ChaseStart);
 }
 
+void grGhostHouseBoo::setDisappear(Vec2f* disappearSWPos, Vec2f* disappearNEPos) {
+    this->southWestPos = disappearSWPos;
+    this->northEastPos = disappearNEPos;
+
+    this->changeState(State_AppearStart);
+}
+
 void grGhostHouseBoo::changeState(State state) {
     stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
 
@@ -458,9 +492,14 @@ void grGhostHouseBoo::changeState(State state) {
                 this->setSleepAttack(true);
             }
                 break;
-            case State_Disappear:
-                if (this->state != State_Defeat && this->state != State_Spawn) {
-                    this->setMotionDetails(5, 2, 0, 0, 2);
+            case State_Vanish:
+                if (this->state != State_Defeat && this->state != State_Spawn && this->state != State_Disappear) {
+                    if (this->state == State_Crew || this->state == State_CrewStart || this->state == State_ChaseFinish) {
+                        this->setMotionDetails(5, 2, 0, 0, 5);
+                    }
+                    else {
+                        this->setMotionDetails(5, 2, 0, 0, 2);
+                    }
                     this->setSleepAttack(true);
                     this->speed = 0;
                     if (this->m_gimmickMotionPath != NULL) {
@@ -480,7 +519,7 @@ void grGhostHouseBoo::changeState(State state) {
                         this->setPos(targetPos.m_x + ghostHouseData->booFollowSpawnRadius*cosf(angle), targetPos.m_y + ghostHouseData->booFollowSpawnRadius*sinf(angle), 0);
                     }
                 }
-                this->setMotionDetails(1, 0, 0, 0, 8);
+                this->setMotionDetails(1, 0, 0, 0, 9);
                 this->setRot(0, 0, 0);
                 this->prevFollowAnimFrame = 0;
                 break;
@@ -518,7 +557,6 @@ void grGhostHouseBoo::changeState(State state) {
                 this->setMotionDetails(3, 3, 0, 0, 0);
                 break;
             case State_CircleStart:
-                // TODO: Random chance to spawn around a player if they are on the ground
                 this->setMotionDetails(5, 0, 0, 0, 1);
                 if (this->m_gimmickMotionPath == NULL) {
                     this->setPos(this->circleCenterPos.m_x + this->circleRadius*cos(this->circleCurrentAngle), this->circleCenterPos.m_y + this->circleRadius*sin(this->circleCurrentAngle), 0);
@@ -562,6 +600,22 @@ void grGhostHouseBoo::changeState(State state) {
             case State_ChaseFinish:
                 this->setMotionDetails(5, 0, 0, 0, 7);
                 this->setSleepAttack(true);
+                break;
+            case State_AppearStart:
+                this->setMotionDetails(5, 0, 0, 0, 8);
+                this->setPos(randf()*(this->northEastPos->m_x - this->southWestPos->m_x) + this->southWestPos->m_x,
+                             randf()*(this->northEastPos->m_y - this->southWestPos->m_y) + this->southWestPos->m_y,
+                             0.0);
+                this->timer = ghostHouseData->booDisappearingAppearFrames;
+                break;
+            case State_Appear:
+                this->setMotionDetails(5, 0, 0, 0, 0);
+                this->setSleepAttack(false);
+                break;
+            case State_Disappear:
+                this->setMotionDetails(5, 2, 0, 0, 2);
+                this->setSleepAttack(true);
+                this->timer = ghostHouseData->booDisappearingDisappearFrames;
                 break;
             default:
                 break;

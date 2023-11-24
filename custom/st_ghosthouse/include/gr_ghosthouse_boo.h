@@ -8,7 +8,7 @@ class grGhostHouseBoo : public grMadein {
 public:
     enum State {
         State_Inactive = 0x0,
-        State_Disappear = 0x1,
+        State_Vanish = 0x1,
         State_Spawn = 0x2,
         State_StalkStart = 0x3,
         State_Stalk = 0x4,
@@ -23,7 +23,10 @@ public:
         State_ChaseStart = 0xD,
         State_Chase = 0xE,
         State_ChaseFinish = 0xF,
-        State_Defeat = 0x10,
+        State_AppearStart = 0x10,
+        State_Appear = 0x11,
+        State_Disappear = 0x12,
+        State_Defeat = 0x13,
     };
 
 protected:
@@ -46,8 +49,8 @@ protected:
     float accel;
     Vec2f targetPos;
 
-    Vec2f* crewSWPos;
-    Vec2f* crewNEPos;
+    Vec2f* southWestPos;
+    Vec2f* northEastPos;
 
 public:
     grGhostHouseBoo(const char* taskName) : grMadein(taskName)
@@ -71,6 +74,7 @@ public:
     virtual void setSnakeFollow(grGhostHouseBoo* snakeLeader, float maxSnakeTimer, float snakeTimer);
     virtual void setCrew(Vec2f* crewSWPos, Vec2f* crewNEPos);
     virtual void setChase(Vec3f* startPos, Vec2f* targetPos);
+    virtual void setDisappear(Vec2f* disappearSWPos, Vec2f* disappearNEPos);
     virtual void updateMove(float deltaFrame);
     virtual bool findClosestFighterDisp(Vec3f* outDisp);
     virtual void rotateToDisp(Vec2f* disp, float maxRot, float rotateSpeed);

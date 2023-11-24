@@ -36,6 +36,8 @@ struct stGhostHouseData {
     Vec2f booCrewDetectRange;
     float booCrewDetectChance;
     float booSnakeSpeed;
+    float booDisappearingAppearFrames;
+    float booDisappearingDisappearFrames;
     u8 minNumBoosInSnake;
     u8 maxNumBoosInSnake;
     u8 minNumBooSnakes;

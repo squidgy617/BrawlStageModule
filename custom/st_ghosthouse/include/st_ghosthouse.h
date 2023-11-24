@@ -23,7 +23,8 @@ class stGhostHouse : public stMelee {
             Event_Crew = 0x5,
             Event_Disappear = 0x6,
             Event_Bubble = 0x7,
-            Event_Fishing = 0x8
+            Event_Eerie = 0x8,
+            Event_Fishing = 0x9
         };
 
         GhostEvent currentEvent;
