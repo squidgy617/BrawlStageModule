@@ -30,6 +30,8 @@ public:
     };
 
 protected:
+    bool useAltAnim;
+
     int playerTarget;
     float speed;
     State state;
@@ -66,7 +68,7 @@ public:
     virtual ~grGhostHouseBoo(){};
 
     virtual void setupAttack();
-    virtual void setSpawn(stRange* spawnRange, Vec3f* centerPos);
+    virtual void setSpawn(stRange* spawnRange, Vec3f* centerPos, bool useAltAnim);
     virtual void setStalk(int playerTarget);
     virtual void setCircle(grGimmickMotionPath* motionPath, float startRatio, float circleSpeed);
     virtual void setCircle(Vec2f* circleCenterPos, float circleRadius, float circleCurrentAngle, float circleAngleSpeed);

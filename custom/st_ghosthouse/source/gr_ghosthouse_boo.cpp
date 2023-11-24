@@ -366,9 +366,10 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
 
 }
 
-void grGhostHouseBoo::setSpawn(stRange* spawnRange, Vec3f* centerPos) {
+void grGhostHouseBoo::setSpawn(stRange* spawnRange, Vec3f* centerPos, bool useAltAnim) {
     stRange range = {spawnRange->m_left + centerPos->m_x, spawnRange->m_right + centerPos->m_x, spawnRange->m_top + centerPos->m_y, spawnRange->m_bottom + centerPos->m_y};
     this->setPos(randf()*(range.m_right - range.m_left) + range.m_left, randf()*(range.m_top - range.m_bottom) + range.m_bottom, 0);
+    this->useAltAnim = useAltAnim;
     this->changeState(State_Spawn);
 }
 
@@ -487,18 +488,31 @@ void grGhostHouseBoo::changeState(State state) {
     if (this->state != state) {
         switch(state) {
             case State_Spawn:
-            {
-                this->setMotionDetails(5, 2, 0, 0, 2);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 2, 0, 0, 2);
+                }
+                else {
+                    this->setMotionDetails(5, 2, 0, 0, 2);
+                }
                 this->setSleepAttack(true);
-            }
                 break;
             case State_Vanish:
                 if (this->state != State_Defeat && this->state != State_Spawn && this->state != State_Disappear) {
                     if (this->state == State_Crew || this->state == State_CrewStart || this->state == State_ChaseFinish) {
-                        this->setMotionDetails(5, 2, 0, 0, 5);
+                        if (this->useAltAnim) {
+                            this->setMotionDetails(6, 2, 0, 0, 5);
+                        }
+                        else {
+                            this->setMotionDetails(5, 2, 0, 0, 5);
+                        }
                     }
                     else {
-                        this->setMotionDetails(5, 2, 0, 0, 2);
+                        if (this->useAltAnim) {
+                            this->setMotionDetails(6, 2, 0, 0, 2);
+                        }
+                        else {
+                            this->setMotionDetails(5, 2, 0, 0, 2);
+                        }
                     }
                     this->setSleepAttack(true);
                     this->speed = 0;
@@ -557,20 +571,35 @@ void grGhostHouseBoo::changeState(State state) {
                 this->setMotionDetails(3, 3, 0, 0, 0);
                 break;
             case State_CircleStart:
-                this->setMotionDetails(5, 0, 0, 0, 1);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 0, 0, 0, 1);
+                }
+                else {
+                    this->setMotionDetails(5, 0, 0, 0, 1);
+                }
                 if (this->m_gimmickMotionPath == NULL) {
                     this->setPos(this->circleCenterPos.m_x + this->circleRadius*cos(this->circleCurrentAngle), this->circleCenterPos.m_y + this->circleRadius*sin(this->circleCurrentAngle), 0);
                 }
                 break;
             case State_Circle:
-                this->setMotionDetails(5, 0, 0, 0, 0);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 0, 0, 0, 0);
+                }
+                else {
+                    this->setMotionDetails(5, 0, 0, 0, 0);
+                }
                 this->setSleepAttack(false);
                 if (this->m_gimmickMotionPath != NULL) {
                     this->m_gimmickMotionPath->setFrameUpdate(this->speed);
                 }
                 break;
             case State_SnakeStart:
-                this->setMotionDetails(5, 0, 0, 0, 1);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 0, 0, 0, 1);
+                }
+                else {
+                    this->setMotionDetails(5, 0, 0, 0, 1);
+                }
                 if (this->snakeLeader != NULL) {
                     Vec3f leaderPos = this->snakeLeader->getPos();
                     this->setPos(&leaderPos);
@@ -579,41 +608,87 @@ void grGhostHouseBoo::changeState(State state) {
                 }
                 break;
             case State_Snake:
-                this->setMotionDetails(5, 0, 0, 0, 0);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 0, 0, 0, 0);
+                }
+                else {
+                    this->setMotionDetails(5, 0, 0, 0, 0);
+                }
                 this->setSleepAttack(false);
                 break;
             case State_CrewStart:
                 this->speed = ghostHouseData->booCrewIdleTopSpeed;
                 this->accel = ghostHouseData->booCrewIdleAccel;
-                this->setMotionDetails(5, 0, 0, 0, 4);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 0, 0, 0, 10);
+                }
+                else {
+                    this->setMotionDetails(5, 0, 0, 0, 4);
+                }
                 break;
             case State_Crew:
-                this->setMotionDetails(5, 0, 0, 0, 3);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 0, 0, 0, 3);
+                }
+                else {
+                    this->setMotionDetails(5, 0, 0, 0, 3);
+                }
                 break;
             case State_ChaseStart:
-                this->setMotionDetails(5, 0, 0, 0, 6);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 0, 0, 0, 11);
+                }
+                else {
+                    this->setMotionDetails(5, 0, 0, 0, 6);
+                }
                 break;
             case State_Chase:
-                this->setMotionDetails(5, 0, 0, 0, 0);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 0, 0, 0, 0);
+                }
+                else {
+                    this->setMotionDetails(5, 0, 0, 0, 0);
+                }
                 this->setSleepAttack(false);
                 break;
             case State_ChaseFinish:
-                this->setMotionDetails(5, 0, 0, 0, 7);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 0, 0, 0, 12);
+                }
+                else {
+                    this->setMotionDetails(5, 0, 0, 0, 7);
+                }
+
                 this->setSleepAttack(true);
                 break;
             case State_AppearStart:
-                this->setMotionDetails(5, 0, 0, 0, 8);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 0, 0, 0, 13);
+                }
+                else {
+                    this->setMotionDetails(5, 0, 0, 0, 8);
+                }
                 this->setPos(randf()*(this->northEastPos->m_x - this->southWestPos->m_x) + this->southWestPos->m_x,
                              randf()*(this->northEastPos->m_y - this->southWestPos->m_y) + this->southWestPos->m_y,
                              0.0);
                 this->timer = ghostHouseData->booDisappearingAppearFrames;
                 break;
             case State_Appear:
-                this->setMotionDetails(5, 0, 0, 0, 0);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 0, 0, 0, 0);
+                }
+                else {
+                    this->setMotionDetails(5, 0, 0, 0, 0);
+                }
                 this->setSleepAttack(false);
                 break;
             case State_Disappear:
-                this->setMotionDetails(5, 2, 0, 0, 2);
+                if (this->useAltAnim) {
+                    this->setMotionDetails(6, 2, 0, 0, 2);
+                }
+                else {
+                    this->setMotionDetails(5, 2, 0, 0, 2);
+                }
                 this->setSleepAttack(true);
                 this->timer = ghostHouseData->booDisappearingDisappearFrames;
                 break;

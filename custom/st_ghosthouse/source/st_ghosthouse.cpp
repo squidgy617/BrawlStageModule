@@ -46,19 +46,19 @@ void stGhostHouse::createObj() {
     u32 groundCount = 2;
     this->booStartGroundIndex = groundCount;
     for (int i = 0; i < ghostHouseData->numEachBoos; i++) {
-        createObjBoo(3);
+        createObjBoo(3, false);
         groundCount++;
     }
     for (int i = 0; i < ghostHouseData->numEachBoos; i++) {
-        createObjBoo(4);
+        createObjBoo(4, i % 2);
         groundCount++;
     }
     for (int i = 0; i < ghostHouseData->numEachBoos; i++) {
-        createObjBoo(5);
+        createObjBoo(5, false);
         groundCount++;
     }
     for (int i = 0; i < ghostHouseData->numEachBoos; i++) {
-        createObjBoo(6);
+        createObjBoo(6, false);
         groundCount++;
     }
     this->bubbleStartGroundIndex = groundCount;
@@ -116,7 +116,7 @@ void stGhostHouse::createObjGround(int mdlIndex) {
     }
 }
 
-void stGhostHouse::createObjBoo(int mdlIndex) {
+void stGhostHouse::createObjBoo(int mdlIndex, bool useAltAnim) {
     grGhostHouseBoo* boo = grGhostHouseBoo::create(mdlIndex, "", "grGhostHouseBoo");
     if (boo != NULL)
     {
@@ -126,7 +126,7 @@ void stGhostHouse::createObjBoo(int mdlIndex) {
         boo->setupAttack();
         boo->initializeEntity();
         boo->startEntity();
-        boo->setSpawn(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos);
+        boo->setSpawn(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos, useAltAnim);
     }
 }
 
