@@ -95,8 +95,9 @@ class stGhostHouse : public stMelee {
         virtual void notifyEventInfoGo();
 
         virtual void createObjGround(int mdlIndex);
-        virtual void createObjBoo(int mdlIndex, bool useAltAnim);
         virtual void createObjMotionPath(int mdlIndex, int index);
+        virtual void createObjBoo(int mdlIndex, bool useAltAnim);
+        virtual void createObjBubble(int mdlIndex);
 
         virtual GhostEvent decideNextEvent();
         virtual void changeEvent(GhostEvent event);

@@ -366,6 +366,10 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
 
 }
 
+void grGhostHouseBoo::setVanish() {
+    this->changeState(State_Vanish);
+}
+
 void grGhostHouseBoo::setSpawn(stRange* spawnRange, Vec3f* centerPos, bool useAltAnim) {
     stRange range = {spawnRange->m_left + centerPos->m_x, spawnRange->m_right + centerPos->m_x, spawnRange->m_top + centerPos->m_y, spawnRange->m_bottom + centerPos->m_y};
     this->setPos(randf()*(range.m_right - range.m_left) + range.m_left, randf()*(range.m_top - range.m_bottom) + range.m_bottom, 0);
@@ -514,6 +518,18 @@ void grGhostHouseBoo::changeState(State state) {
                             this->setMotionDetails(5, 2, 0, 0, 2);
                         }
                     }
+
+                    if (this->state == State_Stalk) {
+                        Vec3f centerPos;
+                        Vec3f bodyPos;
+                        this->getNodePosition(&centerPos, 0, "center");
+                        this->getNodePosition(&bodyPos, 0, "skl_root");
+
+                        Vec3f pos = this->getPos();
+                        Vec3f centerToBodyPos = bodyPos - centerPos;
+                        this->setPos(pos.m_x + centerToBodyPos.m_x, pos.m_y + centerToBodyPos.m_y, pos.m_z);
+                    }
+
                     this->setSleepAttack(true);
                     this->speed = 0;
                     if (this->m_gimmickMotionPath != NULL) {

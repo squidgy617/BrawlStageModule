@@ -63,7 +63,7 @@ void stGhostHouse::createObj() {
     }
     this->bubbleStartGroundIndex = groundCount;
     for (int i = 0; i < ghostHouseData->numBubbles; i++) {
-        createObjGround(1);
+        createObjBubble(11);
         groundCount++;
     }
     this->eerieStartGroundIndex = groundCount;
@@ -129,6 +129,19 @@ void stGhostHouse::createObjBoo(int mdlIndex, bool useAltAnim) {
         boo->setSpawn(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos, useAltAnim);
     }
 }
+void stGhostHouse::createObjBubble(int mdlIndex) {
+    grGhostHouseBubble* bubble = grGhostHouseBubble::create(mdlIndex, "", "grGhostHouseBubble");
+    if (bubble != NULL)
+    {
+        addGround(bubble);
+        bubble->setStageData(m_stageData);
+        bubble->startup(m_fileData, 0, 0);
+        bubble->setupAttack();
+        bubble->initializeEntity();
+        bubble->startEntity();
+        bubble->setVanish();
+    }
+}
 
 void stGhostHouse::createObjMotionPath(int mdlIndex, int index) {
     char nodeName[32];
@@ -160,7 +173,7 @@ void stGhostHouse::update(float frameDelta){
                 this->changeEvent(Event_Circle);
             }
             else if (currentButton.m_rightTaunt) {
-                this->changeEvent(Event_Disappear);
+                this->changeEvent(Event_Bubble);
             }
             else if (currentButton.m_upTaunt) {
                 this->changeEvent(Event_Crew);
@@ -367,6 +380,19 @@ void stGhostHouse::startNextEvent() {
             }
         }
             break;
+        case Event_Bubble:
+        {
+            grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
+            u32 nodeIndex = ground->getNodeIndex(0, "Bubbles");
+            nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 1)).ptr();
+            nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 2)).ptr();
+
+            for (int i = 0; i < ghostHouseData->numBubbles; i++) {
+                grGhostHouseBubble* bubble = static_cast<grGhostHouseBubble*>(this->getGround(this->bubbleStartGroundIndex + i));
+                bubble->setActive(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy);
+            }
+        }
+            break;
         default:
             break;
     }
@@ -384,9 +410,22 @@ void stGhostHouse::changeEvent(GhostEvent event) {
             case Event_Stalk:
                 for (int i = 0; i < ghostHouseData->numEachBoos*4; i++) {
                     grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + i));
-                    boo->changeState(grGhostHouseBoo::State_Vanish);
+                    boo->setVanish();
                 }
                 this->eventStartTimer = 120;
+                break;
+            case Event_Bubble:
+            {
+                for (int i = 0; i < ghostHouseData->numBubbles; i++) {
+                    grGhostHouseBubble* bubble = static_cast<grGhostHouseBubble*>(this->getGround(this->bubbleStartGroundIndex + i));
+                    bubble->setVanish();
+                }
+                grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
+                u32 nodeIndex = ground->getNodeIndex(0, "Bubbles");
+                nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 1)).ptr();
+                nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 2)).ptr();
+                this->eventStartTimer = (resNodeDataNE->m_translation.m_x - resNodeDataSW->m_translation.m_x) / ghostHouseData->bubbleSpeedX;
+            }
                 break;
             default:
                 this->eventStartTimer = 120;

@@ -5,7 +5,8 @@
 #include "st_ghosthouse_data.h"
 
 class grGhostHouseBoo : public grMadein {
-public:
+
+protected:
     enum State {
         State_Inactive = 0x0,
         State_Vanish = 0x1,
@@ -29,7 +30,6 @@ public:
         State_Defeat = 0x13,
     };
 
-protected:
     bool useAltAnim;
 
     int playerTarget;
@@ -68,6 +68,7 @@ public:
     virtual ~grGhostHouseBoo(){};
 
     virtual void setupAttack();
+    virtual void setVanish();
     virtual void setSpawn(stRange* spawnRange, Vec3f* centerPos, bool useAltAnim);
     virtual void setStalk(int playerTarget);
     virtual void setCircle(grGimmickMotionPath* motionPath, float startRatio, float circleSpeed);

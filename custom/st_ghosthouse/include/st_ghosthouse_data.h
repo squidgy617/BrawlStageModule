@@ -58,8 +58,8 @@ struct stGhostHouseData {
     int bubbleDetectionRate;
     int bubbleShieldDamage;
     float bubbleSpeedX;
-    float bubbleTimeScale;
-    float bubbleVerticalScale;
+    float bubblePeriod;
+    float bubbleAmplitude;
     u32 bubbleRespawnMinFrames;
     u32 bubbleRespawnMaxFrames;
     u8 minNumBoosToFollow;
@@ -90,7 +90,6 @@ struct stGhostHouseData {
         float eventChances[NUM_EVENTS];
     };
     float blockBooProbability;
-    //float boolossusProbability;
     float booCirclePlayerProbability;
 };
 //static_assert(sizeof(stGhostHouseData) == 64, "Class is wrong size!");
