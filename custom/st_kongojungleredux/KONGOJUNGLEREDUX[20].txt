@@ -180,3 +180,8 @@ Cannon Area Range Y
 Default: 15
 	/EndDescription
 0
+
+Cannon Explode Effect ID
+Default: 0
+	/EndDescription
+1

@@ -20,4 +20,5 @@ struct stCannonData {
     u32 cannonCooldownFrames;
     Vec2f cannonAreaOffsetPos;
     Vec2f cannonAreaRange;
+    u32 cannonExplodeEffectId;
 };

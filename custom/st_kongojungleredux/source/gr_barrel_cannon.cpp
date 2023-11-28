@@ -131,7 +131,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
         this->m_effects[0].m_0x20 = 0.0;
         this->m_effects[0].m_0x24 = 1.0;
     }
-    this->createSimpleEffectData(&simpleEffectData, 0x66, "ExplodePos");
+    this->createSimpleEffectData(&simpleEffectData, stageData->cannonExplodeEffectId, "ExplodePos");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[1].m_id = simpleEffectData.m_id;
         this->m_effects[1].m_0x10 = simpleEffectData.m_0x4;
