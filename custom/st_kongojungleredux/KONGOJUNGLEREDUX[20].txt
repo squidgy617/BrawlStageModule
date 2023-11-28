@@ -185,3 +185,8 @@ Cannon Explode Effect ID
 Default: 0
 	/EndDescription
 1
+
+Cannon Explode Sound ID
+Default: 0
+	/EndDescription
+1

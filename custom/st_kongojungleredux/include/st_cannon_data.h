@@ -21,4 +21,5 @@ struct stCannonData {
     Vec2f cannonAreaOffsetPos;
     Vec2f cannonAreaRange;
     u32 cannonExplodeEffectId;
+    u32 cannonExplodeSfxId;
 };

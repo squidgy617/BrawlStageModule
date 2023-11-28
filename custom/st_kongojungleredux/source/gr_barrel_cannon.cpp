@@ -181,7 +181,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->m_soundEffects[2].m_0x14 = 0;
     this->m_soundEffects[2].m_0x1c = 0.0;
     this->m_soundEffects[2].m_0x20 = 0.0;
-    this->m_soundEffects[3].m_id = snd_se_item_Barrel_break;
+    this->m_soundEffects[3].m_id = stageData->cannonExplodeSfxId;
     this->m_soundEffects[3].m_0x10 = 0;
     this->m_soundEffects[3].m_nodeIndex = 0;
     this->m_soundEffects[3].m_0x14 = 0;
