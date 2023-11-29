@@ -54,7 +54,7 @@ void grKrazoaSpawner::update(float deltaFrame)
             }
         }
         else {
-            if (this->m_modelAnims[0]->getFrame() >= this->m_modelAnims[0]->getFrameCount() / 2) {
+            if (this->m_modelAnims[0]->getFrame() >= this->spawnAfterFrames) {
                 BaseItem *item = itemManager->createItem(Item_MarioBros_Shellcreeper, 0x0, this->m_taskId, 0, 0, 0xffff, 0, 0xffff);
                 if (item != NULL) {
                     Vec3f spawnPos;
@@ -71,7 +71,7 @@ void grKrazoaSpawner::update(float deltaFrame)
     }
 }
 
-void grKrazoaSpawner::setConfig(int motionPathMdlIndex, float minRespawnFrames, float maxRespawnFrames) {
+void grKrazoaSpawner::setConfig(int motionPathMdlIndex, float minRespawnFrames, float maxRespawnFrames, float spawnAfterFrames) {
     this->motionPathData.m_motionRatio = 1.0;
     this->motionPathData.m_index = 0;
     this->motionPathData.m_pathMode = MotionPathMode_Loop;
@@ -80,5 +80,6 @@ void grKrazoaSpawner::setConfig(int motionPathMdlIndex, float minRespawnFrames, 
 
     this->minRespawnFrames = minRespawnFrames;
     this->maxRespawnFrames = maxRespawnFrames;
+    this->spawnAfterFrames = spawnAfterFrames;
 }
 

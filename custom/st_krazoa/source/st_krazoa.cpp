@@ -85,7 +85,8 @@ void stKrazoa::createObjGround(int mdlIndex) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             this->createObjSpawner(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                                     resNodeData->m_rotation.m_z, resNodeData->m_translation.m_z,
-                                    resNodeData->m_rotation.m_y, resNodeData->m_scale.m_x, resNodeData->m_scale.m_y);
+                                    resNodeData->m_rotation.m_y, resNodeData->m_scale.m_x, resNodeData->m_scale.m_y,
+                                    resNodeData->m_scale.m_z);
         }
     }
 }
@@ -107,12 +108,12 @@ void stKrazoa::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex, bo
     }
 }
 
-void stKrazoa::createObjSpawner(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float minRespawnFrames, float maxRespawnFrames) {
+void stKrazoa::createObjSpawner(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float minRespawnFrames, float maxRespawnFrames, float spawnAfterFrames) {
     grKrazoaSpawner* platform = grKrazoaSpawner::create(mdlIndex, "", "grKrazoaSpawner");
     if (platform != NULL){
         addGround(platform);
         platform->setStageData(m_stageData);
-        platform->setConfig(motionPathIndex, minRespawnFrames, maxRespawnFrames);
+        platform->setConfig(motionPathIndex, minRespawnFrames, maxRespawnFrames, spawnAfterFrames);
         platform->startup(this->m_fileData,0,0);
         platform->setPos(pos->m_x, pos->m_y, 0.0);
         platform->setRot(0.0, 0.0, rot);
