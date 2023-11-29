@@ -151,38 +151,51 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                 if (stRayCheck(&pos, &dir, &outHitPos, &outCollNormalVec, 1, NULL, 0, 5)) {
                     float dirAngle = atan2(this->direction.m_y, this->direction.m_x) + M_PI;
                     float normalAngle = atan2(outCollNormalVec.m_y, outCollNormalVec.m_x) + M_PI;
+                    float rotAngle = mtConvRadToDeg(atan2(BOO_SNAKE_DIR_Y, BOO_SNAKE_DIR_X));
 
                     if (0 < dirAngle && M_PI / 2 >= dirAngle) { // quad 1
-                        if (5 * M_PI / 4 < normalAngle && 7 * M_PI / 4 >= normalAngle) {
+                        if (7 * M_PI / 6 <= normalAngle && 4 * M_PI / 3 >= normalAngle) {
+                            this->direction = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->setRot(-rotAngle, ghostHouseData->booRot, 0);
+                        } else if (5 * M_PI / 4 < normalAngle && 7 * M_PI / 4 >= normalAngle) {
                             this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                            this->setRot(-ghostHouseData->booRot, -ghostHouseData->booRot, 0);
+                            this->setRot(-rotAngle, -ghostHouseData->booRot, 0);
                         } else if (3 * M_PI / 4 < normalAngle && 5 * M_PI / 4 >= normalAngle) {
                             this->direction = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-                            this->setRot(ghostHouseData->booRot, ghostHouseData->booRot, 0);
+                            this->setRot(rotAngle, ghostHouseData->booRot, 0);
                         }
                     } else if (M_PI / 2 < dirAngle && M_PI >= dirAngle) {   // quad 2
-                        if (5 * M_PI / 4 < normalAngle && 7 * M_PI / 4 >= normalAngle) {
+                        if (5 * M_PI / 3 <= normalAngle && 11 * M_PI / 6 >= normalAngle) {
+                            this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
+                            this->setRot(-rotAngle, -ghostHouseData->booRot, 0);
+                        } else if (5 * M_PI / 4 < normalAngle && 7 * M_PI / 4 >= normalAngle) {
                             this->direction = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                            this->setRot(-ghostHouseData->booRot, ghostHouseData->booRot, 0);
+                            this->setRot(-rotAngle, ghostHouseData->booRot, 0);
                         } else if (7 * M_PI / 4 < normalAngle || M_PI / 4 >= normalAngle) {
                             this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-                            this->setRot(ghostHouseData->booRot, -ghostHouseData->booRot, 0);
+                            this->setRot(rotAngle, -ghostHouseData->booRot, 0);
                         }
                     } else if (M_PI < dirAngle && 3 * M_PI / 2 >= dirAngle) { // quad 3
-                        if (M_PI / 4 < normalAngle && 3 * M_PI / 4 >= normalAngle) {
+                        if (M_PI / 6 <= normalAngle && M_PI / 3 >= normalAngle) {
+                            this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->setRot(rotAngle, -ghostHouseData->booRot, 0);
+                        } else if (M_PI / 4 < normalAngle && 3 * M_PI / 4 >= normalAngle) {
                             this->direction = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-                            this->setRot(ghostHouseData->booRot, ghostHouseData->booRot, 0);
+                            this->setRot(rotAngle, ghostHouseData->booRot, 0);
                         } else if (7 * M_PI / 4 < normalAngle || M_PI / 4 >= normalAngle) {
                             this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                            this->setRot(-ghostHouseData->booRot, -ghostHouseData->booRot, 0);
+                            this->setRot(-rotAngle, -ghostHouseData->booRot, 0);
                         }
                     } else if (3 * M_PI / 2 < dirAngle && 2 * M_PI >= dirAngle) {   // quad 4
-                        if (M_PI / 4 < normalAngle && 3 * M_PI / 4 >= normalAngle) {
+                        if (2 * M_PI / 3 <= normalAngle && 5 * M_PI / 6 >= normalAngle) {
+                            this->direction = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
+                            this->setRot(rotAngle, ghostHouseData->booRot, 0);
+                        } else if (M_PI / 4 < normalAngle && 3 * M_PI / 4 >= normalAngle) {
                             this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-                            this->setRot(ghostHouseData->booRot, -ghostHouseData->booRot, 0);
+                            this->setRot(rotAngle, -ghostHouseData->booRot, 0);
                         } else if (3 * M_PI / 4 < normalAngle && 5 * M_PI / 4 >= normalAngle) {
                             this->direction = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-                            this->setRot(-ghostHouseData->booRot, ghostHouseData->booRot, 0);
+                            this->setRot(-rotAngle, ghostHouseData->booRot, 0);
                         }
                     }
                 }
@@ -403,23 +416,23 @@ void grGhostHouseBoo::setSnakeLeader(stRange* spawnRange, Vec3f* centerPos) {
     stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
 
     u8 randomStartIndex = randi(4);
-    float angle = atan2(BOO_SNAKE_DIR_Y, BOO_SNAKE_DIR_X);
+    float angle = mtConvRadToDeg(atan2(BOO_SNAKE_DIR_Y, BOO_SNAKE_DIR_X));
     switch (randomStartIndex) {
         case 0:
             this->direction = (Vec2f) {BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-            this->setRot(ghostHouseData->booRot, angle, 0);
+            this->setRot(angle, ghostHouseData->booRot, 0);
             break;
         case 1:
             this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, -BOO_SNAKE_DIR_Y};
-            this->setRot(ghostHouseData->booRot, -angle, 0);
+            this->setRot(angle, -ghostHouseData->booRot, 0);
             break;
         case 2:
             this->direction = (Vec2f) {-BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-            this->setRot(-ghostHouseData->booRot, -angle, 0);
+            this->setRot(-angle, -ghostHouseData->booRot, 0);
             break;
         case 3:
             this->direction = (Vec2f) {BOO_SNAKE_DIR_X, BOO_SNAKE_DIR_Y};
-            this->setRot(-ghostHouseData->booRot, angle, 0);
+            this->setRot(-angle, ghostHouseData->booRot, 0);
             break;
         default:
             break;
@@ -449,19 +462,19 @@ void grGhostHouseBoo::setCrew(Vec2f* crewSWPos, Vec2f* crewNEPos) {
     switch (randomStartIndex) {
         case 0:
             this->direction = (Vec2f) {ghostHouseData->booCrewDirection.m_x, -ghostHouseData->booCrewDirection.m_y};
-            this->setRot(ghostHouseData->booRot, angle, 0);
+            this->setRot(angle, ghostHouseData->booRot, 0);
             break;
         case 1:
             this->direction = (Vec2f) {-ghostHouseData->booCrewDirection.m_x, -ghostHouseData->booCrewDirection.m_y};
-            this->setRot(ghostHouseData->booRot, -angle, 0);
+            this->setRot(angle, -ghostHouseData->booRot, 0);
             break;
         case 2:
             this->direction = (Vec2f) {-ghostHouseData->booCrewDirection.m_x, ghostHouseData->booCrewDirection.m_y};
-            this->setRot(-ghostHouseData->booRot, -angle, 0);
+            this->setRot(-angle, -ghostHouseData->booRot, 0);
             break;
         case 3:
             this->direction = (Vec2f) {ghostHouseData->booCrewDirection.m_x, ghostHouseData->booCrewDirection.m_y};
-            this->setRot(-ghostHouseData->booRot, angle, 0);
+            this->setRot(-angle, ghostHouseData->booRot, 0);
             break;
         default:
             break;
