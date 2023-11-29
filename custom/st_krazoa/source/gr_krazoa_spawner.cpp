@@ -40,28 +40,38 @@ void grKrazoaSpawner::update(float deltaFrame)
     grMadein::update(deltaFrame);
 
     itManager *itemManager = itManager::getInstance();
-    if (itemManager->getItemNum(Item_MarioBros_Shellcreeper, this->index, -1, -1) == 0x0) {
-        this->timer -= deltaFrame;
-        if (this->timer <= 0) {
-            if (itemManager->isCompItemKindArchive(Item_MarioBros_Shellcreeper, 0x0, true)) {
-                BaseItem *item = itemManager->createItem(Item_MarioBros_Shellcreeper, this->index, -1, 0, 0, 0xffff, 0, 0xffff);
+    if (itemManager->getItemNum(Item_MarioBros_Shellcreeper, 0x0, this->m_taskId, -1) == 0x0) {
+        if (this->timer > 0) {
+            this->timer -= deltaFrame;
+            if (this->timer <= 0) {
+                if (itemManager->isCompItemKindArchive(Item_MarioBros_Shellcreeper, 0x0, true)) {
+                    this->setMotion(1);
+                    this->startGimmickSE(0);
+                }
+                else {
+                    this->timer = randi(this->maxRespawnFrames - this->minRespawnFrames) + this->minRespawnFrames;
+                }
+            }
+        }
+        else {
+            if (this->m_modelAnims[0]->getFrame() >= this->m_modelAnims[0]->getFrameCount() / 2) {
+                BaseItem *item = itemManager->createItem(Item_MarioBros_Shellcreeper, 0x0, this->m_taskId, 0, 0, 0xffff, 0, 0xffff);
                 if (item != NULL) {
                     Vec3f spawnPos;
                     this->getNodePosition(&spawnPos, 0, "SpawnPos");
                     item->warp(&spawnPos);
                     item->setVanishMode(false);
-                    this->startGimmickSE(0);
-                    this->setMotion(1);
                 }
+                this->timer = randi(this->maxRespawnFrames - this->minRespawnFrames) + this->minRespawnFrames;
             }
-            this->timer = randi(this->maxRespawnFrames - this->minRespawnFrames) + this->minRespawnFrames;
+
+
         }
+
     }
 }
 
-void grKrazoaSpawner::setConfig(u32 index, int motionPathMdlIndex, float minRespawnFrames, float maxRespawnFrames) {
-    this->index = index;
-
+void grKrazoaSpawner::setConfig(int motionPathMdlIndex, float minRespawnFrames, float maxRespawnFrames) {
     this->motionPathData.m_motionRatio = 1.0;
     this->motionPathData.m_index = 0;
     this->motionPathData.m_pathMode = MotionPathMode_Loop;
