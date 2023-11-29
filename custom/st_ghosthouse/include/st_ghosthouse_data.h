@@ -14,6 +14,7 @@
 #define BOO_SNAKE_DIR_X 0.707f
 #define BOO_SNAKE_DIR_Y 0.707f
 #define MAX_NUM_ENEMY 255
+#define EERIE_PHASE_SHIFT -10
 
 struct stGhostHouseData {
     int booReactionEffect;

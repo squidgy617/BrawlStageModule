@@ -97,7 +97,7 @@ void grGhostHouseEerie::updateMove(float deltaFrame) {
         {
             Vec3f pos = this->getPos();
             this->setPos(pos.m_x + ghostHouseData->eerieSpeedX*deltaFrame*this->directionX,
-                         this->amplitude*sin((2*M_PI/this->m_modelAnims[0]->getFrameCount())*this->m_modelAnims[0]->getFrame()) + this->startPosY,
+                         this->amplitude*sin((2*M_PI/this->m_modelAnims[0]->getFrameCount())*(this->m_modelAnims[0]->getFrame() + EERIE_PHASE_SHIFT)) + this->startPosY,
                          0.0);
 
             if (this->directionX > 0) {
