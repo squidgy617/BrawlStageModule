@@ -12,16 +12,18 @@ class grKrazoaSpawner : public grMadein
         float minRespawnFrames;
         float maxRespawnFrames;
         float spawnAfterFrames;
+        bool isSilentDeployment;
 
     public:
         grKrazoaSpawner(const char* taskName) : grMadein(taskName) {
             timer = 0;
+            isSilentDeployment = true;
         };
         virtual ~grKrazoaSpawner() { };
         virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
         virtual void update(float deltaFrame);
 
-        virtual void setConfig(int motionPathMdlIndex, float minRespawnFrames, float maxRespawnFrames, float spawnAfterFrames);
+        virtual void setConfig(int motionPathMdlIndex, float minRespawnFrames, float maxRespawnFrames, float spawnAfterFrames, bool isFirstSilentDeployment);
 
         static grKrazoaSpawner* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 

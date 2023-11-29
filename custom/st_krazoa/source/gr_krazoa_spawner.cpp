@@ -46,7 +46,10 @@ void grKrazoaSpawner::update(float deltaFrame)
             if (this->timer <= 0) {
                 if (itemManager->isCompItemKindArchive(Item_MarioBros_Shellcreeper, 0x0, true)) {
                     this->setMotion(1);
-                    this->startGimmickSE(0);
+                    if (!this->isSilentDeployment) {
+                        this->startGimmickSE(0);
+                    }
+                    this->isSilentDeployment = false;
                 }
                 else {
                     this->timer = randi(this->maxRespawnFrames - this->minRespawnFrames) + this->minRespawnFrames;
@@ -68,7 +71,7 @@ void grKrazoaSpawner::update(float deltaFrame)
     }
 }
 
-void grKrazoaSpawner::setConfig(int motionPathMdlIndex, float minRespawnFrames, float maxRespawnFrames, float spawnAfterFrames) {
+void grKrazoaSpawner::setConfig(int motionPathMdlIndex, float minRespawnFrames, float maxRespawnFrames, float spawnAfterFrames, bool isFirstSilentDeployment) {
     this->motionPathData.m_motionRatio = 1.0;
     this->motionPathData.m_index = 0;
     this->motionPathData.m_pathMode = MotionPathMode_Loop;
@@ -78,5 +81,7 @@ void grKrazoaSpawner::setConfig(int motionPathMdlIndex, float minRespawnFrames, 
     this->minRespawnFrames = minRespawnFrames;
     this->maxRespawnFrames = maxRespawnFrames;
     this->spawnAfterFrames = spawnAfterFrames;
+
+    this->isSilentDeployment = isFirstSilentDeployment;
 }
 
