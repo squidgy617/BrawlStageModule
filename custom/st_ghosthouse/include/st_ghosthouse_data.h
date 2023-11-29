@@ -13,6 +13,7 @@
 #define BOO_SNAKE_SPAWN_OFFSET 10.0f
 #define BOO_SNAKE_DIR_X 0.707f
 #define BOO_SNAKE_DIR_Y 0.707f
+#define MAX_NUM_ENEMY 255
 
 struct stGhostHouseData {
     int booReactionEffect;
@@ -62,6 +63,19 @@ struct stGhostHouseData {
     float bubbleAmplitude;
     u32 bubbleRespawnMinFrames;
     u32 bubbleRespawnMaxFrames;
+    int eerieReactionEffect;
+    int eerieReactionFix;
+    int eerieReactionAdd;
+    int eeriePower;
+    int eerieVector;
+    float eerieHitstopMultiplier;
+    int eerieDetectionRate;
+    int eerieShieldDamage;
+    float eerieSpeedX;
+    float eerieAnimRatio;
+    float eerieRot;
+    u32 eerieWaitMinFrames;
+    u32 eerieWaitMaxFrames;
     u8 minNumBoosToFollow;
     u8 maxNumBoosToFollow;
     u8 bigBooNumHitsToAnger;

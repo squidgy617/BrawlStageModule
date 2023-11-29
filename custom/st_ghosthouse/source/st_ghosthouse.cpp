@@ -68,7 +68,7 @@ void stGhostHouse::createObj() {
     }
     this->eerieStartGroundIndex = groundCount;
     for (int i = 0; i < ghostHouseData->numEeries; i++) {
-        createObjGround(1);
+        createObjEerie(12);
         groundCount++;
     }
     this->fishingBooStartGroundIndex = groundCount;
@@ -81,6 +81,7 @@ void stGhostHouse::createObj() {
     grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
     this->numPlayerCircles = ground->getNumNodesWithFormat("PCircle%d");
     this->numSetCircles = ground->getNumNodesWithFormat("Circle%d");
+    this->numEerieFormations = ground->getNumNodesWithFormat("Eeries%d");
 
     for (int i = 0; i < this->numSetCircles; i++) {
         u32 nodeIndex;
@@ -143,6 +144,20 @@ void stGhostHouse::createObjBubble(int mdlIndex) {
     }
 }
 
+void stGhostHouse::createObjEerie(int mdlIndex) {
+    grGhostHouseEerie* eerie = grGhostHouseEerie::create(mdlIndex, "", "grGhostHouseEerie");
+    if (eerie != NULL)
+    {
+        addGround(eerie);
+        eerie->setStageData(m_stageData);
+        eerie->startup(m_fileData, 0, 0);
+        eerie->setupAttack();
+        eerie->initializeEntity();
+        eerie->startEntity();
+        eerie->setVanish();
+    }
+}
+
 void stGhostHouse::createObjMotionPath(int mdlIndex, int index) {
     char nodeName[32];
     sprintf(nodeName, "Boo%d", index);
@@ -160,7 +175,7 @@ void stGhostHouse::notifyEventInfoGo() {
     this->changeEvent(this->decideNextEvent());
 }
 
-void stGhostHouse::update(float frameDelta){
+void stGhostHouse::update(float deltaFrame){
     for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
         int entryId = g_ftManager->getEntryIdFromIndex(i);
         if (g_ftManager->isFighterActivate(entryId, -1)) {
@@ -173,7 +188,7 @@ void stGhostHouse::update(float frameDelta){
                 this->changeEvent(Event_Circle);
             }
             else if (currentButton.m_rightTaunt) {
-                this->changeEvent(Event_Bubble);
+                this->changeEvent(Event_Eerie);
             }
             else if (currentButton.m_upTaunt) {
                 this->changeEvent(Event_Crew);
@@ -181,8 +196,74 @@ void stGhostHouse::update(float frameDelta){
         }
     }
 
+    stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(m_stageData);
+    switch(this->currentEvent) {
+        case Event_Eerie:
+        {
+            this->eerieTimer -= deltaFrame;
+            if (this->eerieTimer <= 0) {
+                grGhostHouseEerie* availableEeries[MAX_NUM_ENEMY];
+                u32 numAvailableEeries = 0;
+                for (int i = 0; i < ghostHouseData->numEeries; i++) {
+                    grGhostHouseEerie* eerie = static_cast<grGhostHouseEerie*>(this->getGround(this->eerieStartGroundIndex + i));
+                    if (eerie->isAvailable()) {
+                        availableEeries[numAvailableEeries] = eerie;
+                        numAvailableEeries++;
+                    }
+                }
+
+                u32 chosenFormation = randi(this->numEerieFormations);
+
+                grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
+                u32 nodeIndex = ground->getNodeIndex(0, "Eeries");
+                nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 1)).ptr();
+                nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 2)).ptr();
+
+                ground->getNodeIndexWithFormat(&nodeIndex, 0, "Eeries%d", chosenFormation);
+
+                nw4r::g3d::ResNodeData* eerieResNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 1)).ptr();
+                int numEeries = eerieResNode->m_rotation.m_x;
+                float directionX = -1.0f + 2 * randi(2);
+                float startPosY = randf()*(resNodeDataNE->m_translation.m_y - resNodeDataSW->m_translation.m_y) + resNodeDataSW->m_translation.m_y;
+
+                for (int i = 0; i < numEeries; i++) {
+                    if (i < numAvailableEeries) {
+                        grGhostHouseEerie* eerie = availableEeries[i];
+
+                        eerieResNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 1 + i)).ptr();
+                        Vec3f startPos;
+                        if (directionX > 0) {
+                            startPos = (Vec3f){resNodeDataSW->m_translation.m_x - eerieResNode->m_translation.m_x, startPosY + eerieResNode->m_translation.m_y, 0.0};
+                        } else {
+                            startPos = (Vec3f){resNodeDataNE->m_translation.m_x + eerieResNode->m_translation.m_x, startPosY + eerieResNode->m_translation.m_y, 0.0};
+                        }
+
+                        float period = eerie->getPeriod();
+                        float startAnimFrame = eerieResNode->m_rotation.m_y + randi(period);
+                        if (startAnimFrame >= period) {
+                            startAnimFrame -= period;
+                        }
+
+                        eerie->setActive(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
+                                         &startPos, directionX, eerieResNode->m_rotation.m_z,
+                                         startAnimFrame);
+                    }
+
+
+                }
+
+                this->eerieTimer = randi(ghostHouseData->eerieWaitMaxFrames - ghostHouseData->eerieWaitMinFrames) + ghostHouseData->eerieWaitMinFrames;
+
+
+            }
+        }
+            break;
+        default:
+            break;
+    }
+
     if (this->eventStartTimer > 0.0) {
-        this->eventStartTimer -= frameDelta;
+        this->eventStartTimer -= deltaFrame;
         if (this->eventStartTimer <= 0.0) {
             this->startNextEvent();
         }
@@ -393,6 +474,9 @@ void stGhostHouse::startNextEvent() {
             }
         }
             break;
+        case Event_Eerie:
+            this->eerieTimer = 0;
+            break;
         default:
             break;
     }
@@ -426,6 +510,13 @@ void stGhostHouse::changeEvent(GhostEvent event) {
                 nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 2)).ptr();
                 this->eventStartTimer = (resNodeDataNE->m_translation.m_x - resNodeDataSW->m_translation.m_x) / ghostHouseData->bubbleSpeedX;
             }
+                break;
+            case Event_Eerie:
+                for (int i = 0; i < ghostHouseData->numEeries; i++) {
+                    grGhostHouseEerie* eerie = static_cast<grGhostHouseEerie*>(this->getGround(this->eerieStartGroundIndex + i));
+                    eerie->setVanish();
+                }
+                this->eventStartTimer = 120;
                 break;
             default:
                 this->eventStartTimer = 120;

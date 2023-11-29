@@ -7,6 +7,7 @@
 #include "gr_ghosthouse.h"
 #include "gr_ghosthouse_boo.h"
 #include "gr_ghosthouse_bubble.h"
+#include "gr_ghosthouse_eerie.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -30,10 +31,12 @@ class stGhostHouse : public stMelee {
 
         GhostEvent currentEvent;
         GhostEvent nextEvent;
+        float eerieTimer;
         float eventStartTimer;
         grGimmickMotionPathData circleMotionPathData;
         u32 numPlayerCircles;
         u32 numSetCircles;
+        u32 numEerieFormations;
 
         u32 booStartGroundIndex;
         u32 bubbleStartGroundIndex;
@@ -98,6 +101,7 @@ class stGhostHouse : public stMelee {
         virtual void createObjMotionPath(int mdlIndex, int index);
         virtual void createObjBoo(int mdlIndex, bool useAltAnim);
         virtual void createObjBubble(int mdlIndex);
+        virtual void createObjEerie(int mdlIndex);
 
         virtual GhostEvent decideNextEvent();
         virtual void changeEvent(GhostEvent event);
