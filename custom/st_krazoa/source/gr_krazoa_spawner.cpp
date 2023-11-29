@@ -64,10 +64,7 @@ void grKrazoaSpawner::update(float deltaFrame)
                 }
                 this->timer = randi(this->maxRespawnFrames - this->minRespawnFrames) + this->minRespawnFrames;
             }
-
-
         }
-
     }
 }
 

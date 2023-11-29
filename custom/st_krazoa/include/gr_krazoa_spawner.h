@@ -11,6 +11,7 @@ class grKrazoaSpawner : public grMadein
         grGimmickMotionPathData motionPathData;
         float minRespawnFrames;
         float maxRespawnFrames;
+        float spawnAfterFrames;
 
     public:
         grKrazoaSpawner(const char* taskName) : grMadein(taskName) {
@@ -20,7 +21,7 @@ class grKrazoaSpawner : public grMadein
         virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
         virtual void update(float deltaFrame);
 
-        virtual void setConfig(int motionPathMdlIndex, float minRespawnFrames, float maxRespawnFrames);
+        virtual void setConfig(int motionPathMdlIndex, float minRespawnFrames, float maxRespawnFrames, float spawnAfterFrames);
 
         static grKrazoaSpawner* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 
