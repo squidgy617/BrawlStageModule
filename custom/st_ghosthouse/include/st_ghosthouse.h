@@ -45,6 +45,12 @@ class stGhostHouse : public stMelee {
 
         u32 circleMotionPathStartGroundIndex;
 
+        gfArchive blueBlockItemBrres;
+        gfArchive blueBlockItemParam;
+        gfArchive pSwitchItemBrres;
+        gfArchive pSwitchItemParam;
+        gfArchive commonItemParam;
+
     public:
         stGhostHouse(srStageKind stageID) : stMelee("stGhostHouse", stageID) {
             currentEvent = Event_None;
@@ -96,6 +102,7 @@ class stGhostHouse : public stMelee {
         virtual bool isBamperVector();
         virtual ~stGhostHouse() {this->releaseArchive(); };
         virtual void notifyEventInfoGo();
+        virtual void getItemPac(gfArchive** brres, gfArchive** param, itKind itemID, int variantID, gfArchive** commonParam, itCustomizerInterface** customizer);
 
         virtual void createObjGround(int mdlIndex);
         virtual void createObjMotionPath(int mdlIndex, int index);

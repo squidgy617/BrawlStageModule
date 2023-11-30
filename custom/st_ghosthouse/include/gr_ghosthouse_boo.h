@@ -30,6 +30,8 @@ protected:
         State_Defeat = 0x13,
     };
 
+    ykData yakumonoData;
+
     bool useAltAnim;
 
     int playerTarget;
@@ -57,6 +59,9 @@ protected:
 public:
     grGhostHouseBoo(const char* taskName) : grMadein(taskName)
     {
+        yakumonoData.m_numHitGroups = 1;
+        yakumonoData.m_hitGroupsInfo = NULL;
+
         playerTarget = -1;
         speed = 0;
         state = State_Inactive;
@@ -66,8 +71,11 @@ public:
     };
     virtual void update(float deltaFrame);
     virtual ~grGhostHouseBoo(){};
+    virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
 
     virtual void setupAttack();
+    virtual void setupHitPoint();
+    virtual void setHit();
     virtual void setVanish();
     virtual void setSpawn(stRange* spawnRange, Vec3f* centerPos, bool useAltAnim);
     virtual void setStalk(int playerTarget);

@@ -24,6 +24,26 @@ grGhostHouseBoo* grGhostHouseBoo::create(int mdlIndex, const char* tgtNodeName, 
     return boo;
 }
 
+void grGhostHouseBoo::startup(gfArchive* archive, u32 unk1, u32 unk2) {
+    grMadein::startup(archive, unk1, unk2);
+
+    this->createSoundWork(1,1);
+    this->m_soundEffects[0].m_id = snd_se_stage_Madein_01;
+    this->m_soundEffects[0].m_0x10 = 0;
+    this->m_soundEffects[0].m_nodeIndex = 0;
+    this->m_soundEffects[0].m_0x14 = 0;
+    this->m_soundEffects[0].m_0x1c = 0.0;
+    this->m_soundEffects[0].m_0x20 = 0.0;
+
+    this->setupAttack();
+    this->setupHitPoint();
+
+    this->initializeEntity();
+    this->startEntity();
+
+    this->setHit();
+}
+
 void grGhostHouseBoo::update(float deltaFrame)
 {
     grMadein::update(deltaFrame);
@@ -49,15 +69,15 @@ void grGhostHouseBoo::setupAttack() {
     overwriteAttackData->m_offsetPos = offsetPos;
     overwriteAttackData->m_hitstopMultiplier = ghostHouseData->booHitstopMultiplier;
 
-    overwriteAttackData->m_bits.nodeIndex = 0x4;
+    overwriteAttackData->m_bits.nodeIndex = this->getNodeIndex(0, "Hurt");
 
     overwriteAttackData->m_bits.isCollisionCategory9 = true;
-    overwriteAttackData->m_bits.isCollisionCategory8 = true;
+    overwriteAttackData->m_bits.isCollisionCategory8 = false;
     overwriteAttackData->m_bits.isCollisionCategory7 = true;
     overwriteAttackData->m_bits.isCollisionCategory6 = true;
     overwriteAttackData->m_bits.isCollisionCategory5 = true;
     overwriteAttackData->m_bits.isCollisionCategory4 = true;
-    overwriteAttackData->m_bits.isCollisionCategory3 = true;
+    overwriteAttackData->m_bits.isCollisionCategory3 = false;
     overwriteAttackData->m_bits.isCollisionCategory2 = true;
     overwriteAttackData->m_bits.isCollisionCategory1 = true;
     overwriteAttackData->m_bits.isCollisionCategory0 = true;
@@ -96,6 +116,18 @@ void grGhostHouseBoo::setupAttack() {
     overwriteAttackData->m_bits.addedShieldDamage = ghostHouseData->booShieldDamage;
 
     overwriteAttackData->m_bits.isShapeCapsule = true;
+}
+
+void grGhostHouseBoo::setupHitPoint() {
+    Vec3f startOffsetPos = {0,0,0};
+    Vec3f endOffsetPos = {0,0,0};
+    this->setHitPoint(1.0, &startOffsetPos, &endOffsetPos, 1, this->getNodeIndex(0, "Hurt"));
+}
+
+void grGhostHouseBoo::setHit() {
+    // Done cause Brawl devs allocated ykData on the stack in grMadein::setupYakumonoClass leading to ykData being a garbage pointer so have to replace it in order to be able to change the HitSelfCategory
+    this->m_yakumono->m_data = &this->yakumonoData;
+    this->setSituationODD();
 }
 
 void grGhostHouseBoo::updateMove(float deltaFrame) {
@@ -511,7 +543,9 @@ void grGhostHouseBoo::changeState(State state) {
                 else {
                     this->setMotionDetails(5, 2, 0, 0, 2);
                 }
+                this->setSituationODD();
                 this->setSleepAttack(true);
+                this->setSleepHit(true);
                 break;
             case State_Vanish:
                 if (this->state != State_Defeat && this->state != State_Spawn && this->state != State_Disappear) {
@@ -544,6 +578,7 @@ void grGhostHouseBoo::changeState(State state) {
                     }
 
                     this->setSleepAttack(true);
+                    this->setSleepHit(true);
                     this->speed = 0;
                     if (this->m_gimmickMotionPath != NULL) {
                         this->m_gimmickMotionPath->setFrameUpdate(0);
@@ -569,6 +604,7 @@ void grGhostHouseBoo::changeState(State state) {
             case State_Stalk:
                 if (this->state != State_ShyStart) {
                     this->setSleepAttack(false);
+                    this->setSleepHit(false);
                     this->setMotionDetails(0, 0, 0, 0, 0);
                     if (this->prevFollowAnimFrame != 0) {
                         this->m_modelAnims[0]->setFrame(this->prevFollowAnimFrame);
@@ -618,6 +654,7 @@ void grGhostHouseBoo::changeState(State state) {
                     this->setMotionDetails(5, 0, 0, 0, 0);
                 }
                 this->setSleepAttack(false);
+                this->setSleepHit(false);
                 if (this->m_gimmickMotionPath != NULL) {
                     this->m_gimmickMotionPath->setFrameUpdate(this->speed);
                 }
@@ -644,6 +681,7 @@ void grGhostHouseBoo::changeState(State state) {
                     this->setMotionDetails(5, 0, 0, 0, 0);
                 }
                 this->setSleepAttack(false);
+                this->setSleepHit(false);
                 break;
             case State_CrewStart:
                 this->speed = ghostHouseData->booCrewIdleTopSpeed;
@@ -679,6 +717,7 @@ void grGhostHouseBoo::changeState(State state) {
                     this->setMotionDetails(5, 0, 0, 0, 0);
                 }
                 this->setSleepAttack(false);
+                this->setSleepHit(false);
                 break;
             case State_ChaseFinish:
                 if (this->useAltAnim) {
@@ -689,6 +728,7 @@ void grGhostHouseBoo::changeState(State state) {
                 }
 
                 this->setSleepAttack(true);
+                this->setSleepHit(true);
                 break;
             case State_AppearStart:
                 if (this->useAltAnim) {
@@ -710,6 +750,7 @@ void grGhostHouseBoo::changeState(State state) {
                     this->setMotionDetails(5, 0, 0, 0, 0);
                 }
                 this->setSleepAttack(false);
+                this->setSleepHit(false);
                 break;
             case State_Disappear:
                 if (this->useAltAnim) {
@@ -719,6 +760,7 @@ void grGhostHouseBoo::changeState(State state) {
                     this->setMotionDetails(5, 2, 0, 0, 2);
                 }
                 this->setSleepAttack(true);
+                this->setSleepHit(true);
                 this->timer = ghostHouseData->booDisappearingDisappearFrames;
                 break;
             default:

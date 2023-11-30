@@ -24,6 +24,20 @@ bool stGhostHouse::loading(){
 
 void stGhostHouse::createObj() {
 
+    int nodeSize;
+    void* data = m_fileData->getData(Data_Type_Misc, 0x2711, &nodeSize, 0xfffe);
+    if (data != NULL) {
+        this->blueBlockItemBrres.setFileImage(data, nodeSize, Heaps::StageResource);
+    }
+    data = m_fileData->getData(Data_Type_Misc, 0x2712, &nodeSize, 0xfffe);
+    if (data != NULL) {
+        this->blueBlockItemParam.setFileImage(data, nodeSize, Heaps::StageResource);
+    }
+    data = m_fileData->getData(Data_Type_Misc, 0x2715, &nodeSize, 0xfffe);
+    if (data != NULL) {
+        this->commonItemParam.setFileImage(data, nodeSize, Heaps::StageResource);
+    }
+
     testStageParamInit(m_fileData, 10);
     testStageDataInit(m_fileData, 20, 1);
     initCameraParam();
@@ -124,9 +138,6 @@ void stGhostHouse::createObjBoo(int mdlIndex, bool useAltAnim) {
         addGround(boo);
         boo->setStageData(m_stageData);
         boo->startup(m_fileData, 0, 0);
-        boo->setupAttack();
-        boo->initializeEntity();
-        boo->startEntity();
         boo->setSpawn(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos, useAltAnim);
     }
 }
@@ -175,6 +186,14 @@ void stGhostHouse::notifyEventInfoGo() {
     this->changeEvent(this->decideNextEvent());
 }
 
+void stGhostHouse::getItemPac(gfArchive** brres, gfArchive** param, itKind itemID, int variantID, gfArchive** commonParam, itCustomizerInterface** customizer) {
+    if (itemID == Item_MarioBros_Sidestepper) {
+        *brres = &this->blueBlockItemBrres;
+        *param = &this->blueBlockItemParam;
+        *commonParam = &this->commonItemParam;
+    }
+}
+
 void stGhostHouse::update(float deltaFrame){
     for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
         int entryId = g_ftManager->getEntryIdFromIndex(i);
@@ -188,7 +207,7 @@ void stGhostHouse::update(float deltaFrame){
                 this->changeEvent(Event_Circle);
             }
             else if (currentButton.m_rightTaunt) {
-                this->changeEvent(Event_Eerie);
+                this->changeEvent(Event_Snake);
             }
             else if (currentButton.m_upTaunt) {
                 this->changeEvent(Event_Crew);
