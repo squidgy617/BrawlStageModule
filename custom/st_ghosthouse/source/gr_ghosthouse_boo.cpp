@@ -130,6 +130,12 @@ void grGhostHouseBoo::setHit() {
     this->setSituationODD();
 }
 
+void grGhostHouseBoo::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
+    if (this->state != State_Snake) {
+        this->changeState(State_Defeat);
+    }
+}
+
 void grGhostHouseBoo::updateMove(float deltaFrame) {
     stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
     float currentAnimFrame = this->m_modelAnims[0]->getFrame();
@@ -588,6 +594,32 @@ void grGhostHouseBoo::changeState(State state) {
                     this->m_gimmickMotionPath = NULL;
                 }
                 break;
+            case State_Defeat:
+                this->setMotionDetails(4, 2, 0, 0, 2);
+
+                if (this->state == State_Stalk) {
+                    Vec3f centerPos;
+                    Vec3f bodyPos;
+                    this->getNodePosition(&centerPos, 0, "center");
+                    this->getNodePosition(&bodyPos, 0, "skl_root");
+
+                    Vec3f pos = this->getPos();
+                    Vec3f centerToBodyPos = bodyPos - centerPos;
+                    this->setPos(pos.m_x + centerToBodyPos.m_x, pos.m_y + centerToBodyPos.m_y, pos.m_z);
+                }
+
+                this->setSleepAttack(true);
+                this->setSleepHit(true);
+                this->speed = 0;
+                if (this->m_gimmickMotionPath != NULL) {
+                    this->m_gimmickMotionPath->setFrameUpdate(0);
+                    this->m_gimmickMotionPath->clearFrame();
+                    this->m_gimmickMotionPath->stopStartSE();
+                }
+                this->m_gimmickMotionPath = NULL;
+
+                break;
+
             case State_StalkStart:
                 for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
                     int entryId = g_ftManager->getEntryIdFromIndex(i);
