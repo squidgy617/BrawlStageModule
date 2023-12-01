@@ -46,7 +46,8 @@ protected:
 
     Vec2f direction;
     grGhostHouseBoo* snakeLeader;
-    float maxSnakeTimer;
+    grGhostHouseBoo* snakeTailgater;
+    u8 numSnakeFollowers;
     float timer;
 
     float remainingDistance;
@@ -82,11 +83,13 @@ public:
     virtual void setStalk(int playerTarget);
     virtual void setCircle(grGimmickMotionPath* motionPath, float startRatio, float circleSpeed);
     virtual void setCircle(Vec2f* circleCenterPos, float circleRadius, float circleCurrentAngle, float circleAngleSpeed);
-    virtual void setSnakeLeader(stRange* spawnRange, Vec3f* centerPos);
-    virtual void setSnakeFollow(grGhostHouseBoo* snakeLeader, float maxSnakeTimer, float snakeTimer);
+    virtual void setSnakeLeader(stRange* spawnRange, Vec3f* centerPos, u8 numFollowers);
+    virtual void setSnakeFollow(grGhostHouseBoo* snakeLeader, float snakeTimer);
     virtual void setCrew(Vec2f* crewSWPos, Vec2f* crewNEPos);
     virtual void setChase(Vec3f* startPos, Vec2f* targetPos);
     virtual void setDisappear(Vec2f* disappearSWPos, Vec2f* disappearNEPos);
+    virtual void setSnakeTailgater(grGhostHouseBoo* snakeTailgater);
+    virtual float getMaxSnakeTimer();
     virtual void updateMove(float deltaFrame);
     virtual bool findClosestFighterDisp(Vec3f* outDisp);
     virtual void rotateToDisp(Vec2f* disp, float maxRot, float rotateSpeed);

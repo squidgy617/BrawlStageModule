@@ -131,7 +131,24 @@ void grGhostHouseBoo::setHit() {
 }
 
 void grGhostHouseBoo::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
-    if (this->state != State_Snake) {
+    if (this->state == State_Snake) {
+        if (this->snakeLeader == NULL) {
+            if (this->snakeTailgater != NULL) {
+                this->snakeTailgater->changeState(State_Defeat);
+                this->snakeTailgater = NULL;
+                this->numSnakeFollowers--;
+            }
+            else if (this->numSnakeFollowers <= 0) {
+                this->changeState(State_Defeat);
+            }
+
+        }
+        else {
+            this->snakeLeader->onDamage(index, damage, attackerInfo);
+        }
+
+    }
+    else {
         this->changeState(State_Defeat);
     }
 }
@@ -246,7 +263,8 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
             else {
                 this->timer -= deltaFrame;
                 if (this->timer <= 0) {
-                    this->timer = this->maxSnakeTimer;
+                    this->snakeLeader->setSnakeTailgater(this);
+                    this->timer = this->getMaxSnakeTimer();
                     Vec3f leaderPos = this->snakeLeader->getPos();
                     this->setPos(&leaderPos);
                     Vec3f leaderRot = this->snakeLeader->getRot();
@@ -450,8 +468,10 @@ void grGhostHouseBoo::setCircle(Vec2f* circleCenterPos, float circleRadius, floa
     this->changeState(State_CircleStart);
 }
 
-void grGhostHouseBoo::setSnakeLeader(stRange* spawnRange, Vec3f* centerPos) {
+void grGhostHouseBoo::setSnakeLeader(stRange* spawnRange, Vec3f* centerPos, u8 numFollowers) {
     stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
+
+    this->numSnakeFollowers = numFollowers;
 
     u8 randomStartIndex = randi(4);
     float angle = mtConvRadToDeg(atan2(BOO_SNAKE_DIR_Y, BOO_SNAKE_DIR_X));
@@ -481,9 +501,8 @@ void grGhostHouseBoo::setSnakeLeader(stRange* spawnRange, Vec3f* centerPos) {
     this->changeState(State_SnakeStart);
 }
 
-void grGhostHouseBoo::setSnakeFollow(grGhostHouseBoo* snakeLeader, float maxSnakeTimer, float snakeTimer) {
+void grGhostHouseBoo::setSnakeFollow(grGhostHouseBoo* snakeLeader, float snakeTimer) {
     this->snakeLeader = snakeLeader;
-    this->maxSnakeTimer = maxSnakeTimer;
     this->timer = snakeTimer;
     this->changeState(State_SnakeStart);
 }
@@ -802,6 +821,23 @@ void grGhostHouseBoo::changeState(State state) {
 
     }
 }
+
+void grGhostHouseBoo::setSnakeTailgater(grGhostHouseBoo* snakeTailgater) {
+    this->snakeTailgater = snakeTailgater;
+}
+
+float grGhostHouseBoo::getMaxSnakeTimer() {
+    stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
+
+    if (this->snakeLeader != NULL) {
+        return this->snakeLeader->getMaxSnakeTimer();
+    }
+    else {
+        Vec3f scale;
+        this->getNodeScale(&scale, 0, "Hurt");
+        return 2*scale.m_x*(this->numSnakeFollowers)/ghostHouseData->booSnakeSpeed;
+    }
+};
 
 bool grGhostHouseBoo::findClosestFighterDisp(Vec3f* outDisp) {
     Vec3f pos = this->getPos();

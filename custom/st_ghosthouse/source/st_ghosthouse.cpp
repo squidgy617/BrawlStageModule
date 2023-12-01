@@ -433,24 +433,27 @@ void stGhostHouse::startNextEvent() {
             int booIndex = 0;
             int numSnakes = randi(ghostHouseData->maxNumBooSnakes - ghostHouseData->minNumBooSnakes) + ghostHouseData->minNumBooSnakes;
             for (int i = 0; i < numSnakes; i++) {
-                grGhostHouseBoo* boo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + booIndex));
-                boo->setSnakeLeader(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos);
-                int numBoosInSnake = randi(ghostHouseData->maxNumBoosInSnake - ghostHouseData->minNumBoosInSnake) + ghostHouseData->minNumBoosInSnake;
+                if (booIndex < ghostHouseData->numEachBoos) {
+                    grGhostHouseBoo* leaderBoo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + booIndex));
+                    int numBoosInSnake = hkMath::min2(int(randi(ghostHouseData->maxNumBoosInSnake - ghostHouseData->minNumBoosInSnake) + ghostHouseData->minNumBoosInSnake),
+                                                      4*(ghostHouseData->numEachBoos - booIndex));
+                    leaderBoo->setSnakeLeader(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos, numBoosInSnake - 1);
+                    float maxSnakeTimer = leaderBoo->getMaxSnakeTimer();
 
-                for (int j = 1; j < numBoosInSnake; j++) {
-                    if (j % 4 == 0) {
-                        booIndex++;
-                    }
-                    if (booIndex < ghostHouseData->numEachBoos) {
+                    for (int j = 1; j < numBoosInSnake; j++) {
+                        if (j % 4 == 0) {
+                            booIndex++;
+                        }
                         grGhostHouseBoo* followerBoo = static_cast<grGhostHouseBoo*>(this->getGround(this->booStartGroundIndex + ghostHouseData->numEachBoos*(j % 4) + booIndex));
-                        Vec3f scale;
-                        followerBoo->getNodeScale(&scale, 0, "Hurt");
-                        float maxSnakeTimer = 2*scale.m_x*(numBoosInSnake-1)/ghostHouseData->booSnakeSpeed;
 
-                        followerBoo->setSnakeFollow(boo, maxSnakeTimer, j*maxSnakeTimer/(numBoosInSnake-1));
+                        followerBoo->setSnakeFollow(leaderBoo, j*maxSnakeTimer/(numBoosInSnake-1));
+                        if (j == 1) {
+                            leaderBoo->setSnakeTailgater(followerBoo);
+                        }
+
                     }
+                    booIndex++;
                 }
-                booIndex++;
             }
         }
             break;
