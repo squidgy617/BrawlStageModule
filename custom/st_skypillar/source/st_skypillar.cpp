@@ -113,9 +113,12 @@ void stSkyPillar::update(float frameDiff)
 void stSkyPillar::createObj()
 {
     gfModuleManager* moduleManager = gfModuleManager::getInstance();
-    moduleManager->setTempolaryLoadHeap(Heaps::FighterTechqniq);
-    gfModuleManager::LoadRequestResult requestResult;
-    gfModuleManager::loadModuleRequest(&requestResult, moduleManager, "sora_enemy_rayquaza.rel", Heaps::OverlayStage, 1, 0);
+    int size;
+    gfModuleHeader* moduleHeader = static_cast<gfModuleHeader*>(m_fileData->getData(Data_Type_Misc, 41, &size, 0xfffe));
+    moduleManager->loadModuleRequestOnImage("sora_enemy.rel", Heaps::OverlayStage, moduleHeader, &size);
+    //moduleManager->setTempolaryLoadHeap(Heaps::FighterTechqniq);
+    //gfModuleManager::LoadRequestResult requestResult;
+    //gfModuleManager::loadModuleRequest(&requestResult, moduleManager, "sora_enemy_rayquaza.rel", Heaps::OverlayStage, 1, 0);
 
     testStageParamInit(m_fileData, 0xA);
     testStageDataInit(m_fileData, 0x14, 1);
