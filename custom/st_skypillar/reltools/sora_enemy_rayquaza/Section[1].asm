@@ -544,7 +544,7 @@ Enemy____ct:
     /* 00000838: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soEventUnitWithWorkArea_29soCollisionCatchEventObserver_1_____ct")]
     /* 0000083C: */    addi r3,r15,0x904
     /* 00000840: */    li r4,HEAP_TYPE
-    /* 00000844: */    li r5,0xf #0x11     # Use StageInstance cuz StageResource is auto full
+    /* 00000844: */    li r5,0x11
     /* 00000848: */    li r6,HEAP_TYPE
     /* 0000084C: */    li r7,0x0
     /* 00000850: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soHeapModuleImpl____ct")]
@@ -44545,7 +44545,7 @@ wnemheapmoduleimplcpp____sinit_:
     /* 00034AA8: */    lis r31,0x0                              [R_PPC_ADDR16_HA(41, 6, "loc_26C")]
     /* 00034AAC: */    addi r3,r31,0x0                          [R_PPC_ADDR16_LO(41, 6, "loc_26C")]
     /* 00034AB0: */    li r4,WEAPON_HEAP_TYPE  
-    /* 00034AB4: */    li r5,0xf #0x11     # Use StageInstance cuz StageResource is auto full
+    /* 00034AB4: */    li r5,0x11     
     /* 00034AB8: */    bl wnemHeapModuleImpl____ct
     /* 00034ABC: */    addi r3,r31,0x0                          [R_PPC_ADDR16_LO(41, 6, "loc_26C")]
     /* 00034AC0: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemHeapModuleImpl____dt")]
