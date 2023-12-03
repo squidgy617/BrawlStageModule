@@ -100,7 +100,7 @@ void stSkyPillar::update(float frameDiff)
             create.m_spawnPos.x =  8.0;
             enemyManager->createEnemy(&create);*/
 
-            gfHeapManager::dumpList();
+            //gfHeapManager::dumpList();
 
         }
         else {
