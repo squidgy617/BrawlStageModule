@@ -64,15 +64,15 @@ void stSkyPillar::update(float frameDiff)
             create.m_8 = 10000;
             create.m_difficultyLevel = 15;
             create.m_enemyKind = Enemy_Kuribo;
-            create.m_startingAction = 2;
-            create.m_spawnPos = (Vec3f){70.0, 0.01, 0.0};
-            create.m_facingDirection = -1.0; //1.0;
+            create.m_startStatusKind = 2;
+            create.m_startPos = (Vec3f){70.0, 0.01, 0.0};
+            create.m_startLr = -1.0; //1.0;
             create.m_32 = 1;
             create.m_36 = 0.0;
-            create.m_posX1 = -create.m_spawnPos.m_x;
-            create.m_posX2 = -create.m_spawnPos.m_x;
-            create.m_posY1 = -create.m_spawnPos.m_y;
-            create.m_posY1 = -create.m_spawnPos.m_y;
+            create.m_posX1 = -create.m_startPos.m_x;
+            create.m_posX2 = -create.m_startPos.m_x;
+            create.m_posY1 = -create.m_startPos.m_y;
+            create.m_posY1 = -create.m_startPos.m_y;
             create.m_connectedEnemyKind = (EnemyKind)0;
             create.m_epbm = NULL;
             create.m_motionPath = NULL;
@@ -81,27 +81,10 @@ void stSkyPillar::update(float frameDiff)
             //OSReport("Preload archive count result: %d \n", enemyManager->getPreloadArchiveCountFromKind(Enemy_Kuribo));
             //int result = enemyManager->createEnemy(&create);
 
-            create.m_startingAction = 2;
+            create.m_startStatusKind = 2;
             create.m_enemyKind = Enemy_Boss_Rayquaza;
             int result = enemyManager->createEnemy(&create);
             OSReport("Enemy Create result: %d \n", result);
-           /* create.m_spawnPos.x = -2.0;
-            enemyManager->createEnemy(&create);
-            create.m_spawnPos.x = -4.0;
-            enemyManager->createEnemy(&create);
-            create.m_spawnPos.x = -6.0;
-            enemyManager->createEnemy(&create);
-            create.m_spawnPos.x =  2.0;
-            enemyManager->createEnemy(&create);
-            create.m_spawnPos.x =  4.0;
-            enemyManager->createEnemy(&create);
-            create.m_spawnPos.x =  6.0;
-            enemyManager->createEnemy(&create);
-            create.m_spawnPos.x =  8.0;
-            enemyManager->createEnemy(&create);*/
-
-            //gfHeapManager::dumpList();
-
         }
         else {
             this->timer += frameDiff;

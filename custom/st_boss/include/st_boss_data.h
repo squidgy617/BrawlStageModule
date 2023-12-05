@@ -11,6 +11,6 @@
 
 struct stBossData {
     u8 maxNumEnemies[NUM_ENEMY_TYPES];
-    SndID sndID;
+    int bgmID;
 
 };

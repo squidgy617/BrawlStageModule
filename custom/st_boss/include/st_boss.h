@@ -18,6 +18,7 @@ public:
     gfArchive* enemyArchives[NUM_ENEMY_TYPES*2];
     gfArchive* enemyCommonArchive;
     gfArchive* primFaceArchive;
+    int regularBGMId;
 
     stBoss() : stMelee("stBoss", Stages::Final){
         isGo = false;

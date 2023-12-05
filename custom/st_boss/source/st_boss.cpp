@@ -7,6 +7,7 @@
 #include <em/em_weapon_manager.h>
 #include <gf/gf_heap_manager.h>
 #include <mt/mt_prng.h>
+#include <snd/snd_system.h>
 
 // TODO: Patch enemy pop so that can hitbox can affect any team (but can't hit fighters) (or even better change the team based on who killed the enemy)
 // TODO: Destroy enemy if they go past blast zone
@@ -94,19 +95,19 @@ void stBoss::update(float deltaFrame)
                         create.m_8 = 10000;
                         create.m_difficultyLevel = resNodeData->m_rotation.m_y;
                         create.m_enemyKind = (EnemyKind)i;
-                        create.m_startingAction = resNodeData->m_rotation.m_x;
+                        create.m_startStatusKind = resNodeData->m_rotation.m_x;
 
                         Vec3f pos;
                         ground->getNodePosition(&pos, 0, chosenNodeIndex);
-                        create.m_spawnPos = (Vec3f){pos.m_x, pos.m_y, 0.0};
+                        create.m_startPos = (Vec3f){pos.m_x, pos.m_y, 0.0};
 
-                        create.m_facingDirection = resNodeData->m_translation.m_z;
+                        create.m_startLr = resNodeData->m_translation.m_z;
                         create.m_32 = 1;
                         create.m_36 = 0.0;
-                        create.m_posX1 = -create.m_spawnPos.m_x;
-                        create.m_posX2 = -create.m_spawnPos.m_x;
-                        create.m_posY1 = -create.m_spawnPos.m_y;
-                        create.m_posY1 = -create.m_spawnPos.m_y;
+                        create.m_posX1 = -create.m_startPos.m_x;
+                        create.m_posX2 = -create.m_startPos.m_x;
+                        create.m_posY1 = -create.m_startPos.m_y;
+                        create.m_posY1 = -create.m_startPos.m_y;
                         create.m_connectedEnemyKind = (EnemyKind)0;
                         create.m_epbm = NULL;
                         create.m_motionPath = NULL;
@@ -120,9 +121,17 @@ void stBoss::update(float deltaFrame)
                         resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(startNodeIndex + 2)).ptr();
                         this->enemySpawnTimers[i] = randi(resNodeData->m_scale.m_y - resNodeData->m_scale.m_x) + resNodeData->m_scale.m_x;
 
+                        if (bossData->bgmID != -1 && bossData->bgmID != this->regularBGMId && this->regularBGMId == g_sndSystem->getBGMId()) {
+                            g_sndSystem->playBGM(bossData->bgmID, 0, true);
+                        }
+
                     }
                 }
             }
+        }
+
+        if (this->regularBGMId != g_sndSystem->getBGMId() && enemyManager->getEnemyCount() == 0) {
+            g_sndSystem->playBGM(this->regularBGMId, 0, true);
         }
     }
     return;
@@ -140,6 +149,7 @@ void stBoss::createObj()
     moduleManager->loadModuleRequestOnImage("sora_enemy.rel", Heaps::OverlayStage, moduleHeader, &size);
 
     this->primFaceIndex = randi(NUM_PRIM_FACES);
+    this->regularBGMId = g_sndSystem->getBGMId();
 
     this->createObjGround(1);
     this->createObjGround(2);
