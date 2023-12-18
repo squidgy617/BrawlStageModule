@@ -14410,7 +14410,7 @@ loc_D308:
     /* 0000D334: */    mr r6,r28
     /* 0000D338: */    bl __unresolved                          [R_PPC_REL24(0, 4, "loc_80073B68")]
     /* 0000D33C: */    mr r7,r3
-    /* 0000D340: */    cmpwi r3,-0x2
+    /* 0000D340: */    b loc_D350 #cmpwi r3,-0x2    # Ignore if sound fails to load
     /* 0000D344: */    bne- loc_D350
     /* 0000D348: */    li r3,-0x4
     /* 0000D34C: */    b loc_D368
@@ -44544,8 +44544,8 @@ wnemheapmoduleimplcpp____sinit_:
     /* 00034AA4: */    stw r31,0xC(r1)
     /* 00034AA8: */    lis r31,0x0                              [R_PPC_ADDR16_HA(41, 6, "loc_26C")]
     /* 00034AAC: */    addi r3,r31,0x0                          [R_PPC_ADDR16_LO(41, 6, "loc_26C")]
-    /* 00034AB0: */    li r4,WEAPON_HEAP_TYPE  
-    /* 00034AB4: */    li r5,0x11     
+    /* 00034AB0: */    li r4,WEAPON_HEAP_TYPE
+    /* 00034AB4: */    li r5,0x11
     /* 00034AB8: */    bl wnemHeapModuleImpl____ct
     /* 00034ABC: */    addi r3,r31,0x0                          [R_PPC_ADDR16_LO(41, 6, "loc_26C")]
     /* 00034AC0: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemHeapModuleImpl____dt")]
@@ -47138,12 +47138,12 @@ loc_48364:
 # include "./Enemies/asm/emGhamghabase.asm"
 # include "./Enemies/asm/emGalleom.asm"
 # include "./Enemies/asm/emRidley.asm"
-.include "./Enemies/asm/emRayquaza.asm"
+#.include "./Enemies/asm/emRayquaza.asm"
 # include "./Enemies/asm/emDuon.asm"
 # include "./Enemies/asm/emPorky.asm"
 # include "./Enemies/asm/emMetaridley.asm"
 # include "./Enemies/asm/emFalconflyer.asm"
-# include "./Enemies/asm/emTaboo.asm"
+.include "./Enemies/asm/emTaboo.asm"
 # include "./Enemies/asm/emMasterhand.asm"
 # include "./Enemies/asm/emCrazyhand.asm"
 

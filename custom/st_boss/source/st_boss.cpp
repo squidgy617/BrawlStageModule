@@ -57,7 +57,7 @@ void stBoss::notifyEventInfoGo() {
             this->getEnemyPac(&brres, &param, &enmCommon, &primFaceBrres, (EnemyKind)i);
             emManager* enemyManager = emManager::getInstance();
             int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, (EnemyKind)i, true);
-            OSReport("Enemy {d} archive preloaded result: %d \n", i, result);
+            OSReport("Enemy %d archive preloaded result: %d \n", i, result);
 
             u32 nodeIndex;
             ground->getNodeIndexWithFormat(&nodeIndex, 0, "Enemy%d", i);
