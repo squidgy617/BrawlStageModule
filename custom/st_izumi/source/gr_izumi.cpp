@@ -34,7 +34,7 @@ void grIzumi::startfountainEffect(int spoutID)
             g_ecMgr->setDrawPrio(1);
             effSpoutPtr[spoutID] = g_ecMgr->setEffect(0x330001+spoutID);
             g_ecMgr->setDrawPrio(0xffffffff);
-			g_ecMgr->setParent(effSpoutPtr[spoutID], this->m_sceneModels[4+spoutID], "splash", 0);		
+			g_ecMgr->setParent(effSpoutPtr[spoutID], this->m_sceneModels[spoutID], "splash", 0);
 }
 void grIzumi::stopfountainEffect(int spoutID)
 {	
@@ -47,7 +47,7 @@ void grIzumi::updateEff()
 		for (int i=0; i < 2; i++)
 		{
 			Vec3f bonepos; 
-			this->getNodePosition(&bonepos,4+i,"splash");
+			this->getNodePosition(&bonepos,i,"splash");
 			if (bonepos.m_y < 1.25 && fountain[i])
 			{
 				stopfountainEffect(i);

@@ -1,7 +1,10 @@
 #include "st_izumi.h"
 #include "gr_izumi.h"
+#include <ec/ec_mgr.h>
+#include <gm/gm_global.h>
 #include <memory.h>
 #include <st/st_class_info.h>
+#include <OS/OSError.h>
 
 static stClassInfoImpl<Stages::Final, stIzumi> classInfo = stClassInfoImpl<Stages::Final, stIzumi>();
 
@@ -32,7 +35,16 @@ void stIzumi::createObj()
         ground->setStageData(m_stageData);
         ground->setDontMoveGround();
     }
-    ground = grIzumi::create(2, "", "grIzumiStage");
+    ground = grIzumi::create(2, "", "grIzumiMainBg");
+    if (ground != NULL)
+    {
+        addGround(ground);
+        ground->setType(0);
+        ground->startup(m_fileData, 0, 0);
+        ground->setStageData(m_stageData);
+        ground->setDontMoveGround();
+    }
+    ground = grIzumi::create(3, "", "grIzumiStage");
     if (ground != NULL)
     {
         addGround(ground);
@@ -60,6 +72,10 @@ void stIzumi::createObj()
     registScnAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
+
+    g_ecMgr->setDrawPrio(1);
+    g_ecMgr->setEffect(0x330005);
+    g_ecMgr->setDrawPrio(0xffffffff);
 }
 
 void Ground::setStageData(void* stageData)
