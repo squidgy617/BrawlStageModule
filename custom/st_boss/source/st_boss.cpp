@@ -93,7 +93,7 @@ void stBoss::update(float deltaFrame)
 
                         emCreate create;
                         create.m_8 = 10000;
-                        create.m_difficultyLevel = resNodeData->m_rotation.m_y;
+                        create.m_difficulty = resNodeData->m_rotation.m_y;
                         create.m_enemyKind = (EnemyKind)i;
                         create.m_startStatusKind = resNodeData->m_rotation.m_x;
 
@@ -102,7 +102,7 @@ void stBoss::update(float deltaFrame)
                         create.m_startPos = (Vec3f){pos.m_x, pos.m_y, 0.0};
 
                         create.m_startLr = resNodeData->m_translation.m_z;
-                        create.m_32 = 1;
+                        create.m_level = 1;
                         create.m_36 = 0.0;
                         create.m_posX1 = -create.m_startPos.m_x;
                         create.m_posX2 = -create.m_startPos.m_x;
