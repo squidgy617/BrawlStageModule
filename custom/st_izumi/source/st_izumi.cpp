@@ -1,5 +1,7 @@
 #include "st_izumi.h"
 #include "gr_izumi.h"
+#include "gr_izumi_spout.h"
+#include "gr_izumi_star.h"
 #include <ec/ec_mgr.h>
 #include <gm/gm_global.h>
 #include <memory.h>
@@ -26,11 +28,20 @@ void stIzumi::createObj()
 {
     testStageParamInit(m_fileData, 0xA);
     testStageDataInit(m_fileData, 0x14, 1);
+
+    grIzumiSpout* spout = grIzumiSpout::create(0, "", "grIzumiStage");
+    if (spout != NULL)
+    {
+        addGround(spout);
+        spout->startup(m_fileData, 0, 0);
+        spout->setStageData(m_stageData);
+        spout->setDontMoveGround();
+        spout->fountainInit();
+    }
     grIzumi* ground = grIzumi::create(1, "", "grIzumiMainBg");
     if (ground != NULL)
     {
         addGround(ground);
-        ground->setType(0);
         ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
         ground->setDontMoveGround();
@@ -39,20 +50,17 @@ void stIzumi::createObj()
     if (ground != NULL)
     {
         addGround(ground);
-        ground->setType(0);
         ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
         ground->setDontMoveGround();
     }
-    ground = grIzumi::create(3, "", "grIzumiStage");
-    if (ground != NULL)
+
+    grIzumiStar* star = grIzumiStar::create(4, "", "grIzumiStar");
+    if (star != NULL)
     {
-        addGround(ground);
-        ground->setType(1);
-        ground->startup(m_fileData, 0, 0);
-        ground->setStageData(m_stageData);
-        ground->setDontMoveGround();
-		ground->fountainInit();
+        addGround(star);
+        star->startup(m_fileData, 0, 0);
+        star->setStageData(m_stageData);
     }
     createCollision(m_fileData, 2, NULL);
     initCameraParam();

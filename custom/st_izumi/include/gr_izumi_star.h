@@ -1,0 +1,21 @@
+#pragma once
+
+#include <gr/gr_madein.h>
+
+class grIzumiStar : public grMadein {
+protected:
+    int lastPathIndex;
+    float timer;
+
+public:
+    grIzumiStar(const char* taskName) : grMadein(taskName)
+    {
+        lastPathIndex = -1;
+        timer = 0;
+    };
+    virtual void update(float deltaFrame);
+    virtual ~grIzumiStar(){};
+    virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
+
+    static grIzumiStar* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
+};

@@ -1,0 +1,90 @@
+#include "st_izumi_data.h"
+#include "gr_izumi_star.h"
+#include <ec/ec_mgr.h>
+#include <mt/mt_prng.h>
+#include <memory.h>
+#include <stdio.h>
+#include <OS/OSError.h>
+
+grIzumiStar* grIzumiStar::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
+{
+    grIzumiStar* ground = new (Heaps::StageInstance) grIzumiStar(taskName);
+    ground->setMdlIndex(mdlIndex);
+    ground->m_heapType = Heaps::StageInstance;
+    ground->makeCalcuCallback(1, Heaps::StageInstance);
+    ground->setCalcuCallbackRoot(7);
+    ground->setupMelee();
+    return ground;
+}
+
+void grIzumiStar::startup(gfArchive* archive, u32 unk1, u32 unk2) {
+    grMadein::startup(archive, unk1, unk2);
+
+    this->createEffectWork(2);
+
+    SimpleEffectData simpleEffectData;
+    this->createSimpleEffectData(&simpleEffectData, 0x330003, "StarFallNode");
+    if (0 < simpleEffectData.m_id) {
+        this->m_effects[0].m_id = simpleEffectData.m_id;
+        this->m_effects[0].m_0x10 = simpleEffectData.m_0x4;
+        if (simpleEffectData.m_nodeIndex == 0) {
+            this->m_effects[0].m_nodeIndex = this->getNodeIndex(0, "StarFallNode");
+        }
+        else {
+            this->m_effects[0].m_nodeIndex = simpleEffectData.m_nodeIndex;
+        }
+        this->m_effects[0].m_0x14 = simpleEffectData.m_0x8;
+        this->m_effects[0].m_0x1c = 0.0;
+        this->m_effects[0].m_0x20 = 0.0;
+        this->m_effects[0].m_0x24 = 1.0;
+    }
+
+    this->createSimpleEffectData(&simpleEffectData, 0x330004, "StarFallNode");
+    if (0 < simpleEffectData.m_id) {
+        this->m_effects[1].m_id = simpleEffectData.m_id;
+        this->m_effects[1].m_0x10 = simpleEffectData.m_0x4;
+        if (simpleEffectData.m_nodeIndex == 0) {
+            this->m_effects[1].m_nodeIndex = this->getNodeIndex(0, "StarFallNode");
+        }
+        else {
+            this->m_effects[1].m_nodeIndex = simpleEffectData.m_nodeIndex;
+        }
+        this->m_effects[1].m_0x14 = simpleEffectData.m_0x8;
+        this->m_effects[1].m_0x1c = 0.0;
+        this->m_effects[1].m_0x20 = 0.0;
+        this->m_effects[1].m_0x24 = 1.0;
+    }
+
+}
+
+void grIzumiStar::update(float deltaFrame)
+{
+    grMadein::update(deltaFrame);
+
+    stIzumiData* izumiData = static_cast<stIzumiData*>(this->getStageData());
+
+    this->timer -= deltaFrame;
+    if (this->timer <= 0) {
+        this->stopGimmickEffect(0);
+        this->stopGimmickEffect(1);
+        this->startGimmickEffect(0);
+        u32 colourIndex = randi(NUM_STAR_COLOURS);
+        g_ecMgr->preSetAnmIdx(colourIndex, colourIndex, colourIndex, colourIndex, colourIndex, colourIndex);
+        this->updataGimmickEffect(0);
+        this->startGimmickEffect(1);
+        this->timer = randi(izumiData->starFallMaxFrames - izumiData->starFallMinFrames) + izumiData->starFallMinFrames;
+        if (this->lastPathIndex < 0) {
+            this->lastPathIndex = randi(this->m_resFile.GetResAnmChrNumEntries());
+            this->setMotion(this->lastPathIndex);
+        }
+        else {
+            int pickedPathIndex = randi(this->m_resFile.GetResAnmChrNumEntries() - 1);
+            if (pickedPathIndex >= this->lastPathIndex) {
+                pickedPathIndex += 1;
+            }
+            this->lastPathIndex = pickedPathIndex;
+            this->setMotion(this->lastPathIndex);
+        }
+    }
+}
+
