@@ -1,4 +1,5 @@
 #include "st_izumi.h"
+#include "st_izumi_data.h"
 #include "gr_izumi.h"
 #include "gr_izumi_spout.h"
 #include "gr_izumi_star.h"
@@ -28,6 +29,7 @@ void stIzumi::createObj()
 {
     testStageParamInit(m_fileData, 0xA);
     testStageDataInit(m_fileData, 0x14, 1);
+    stIzumiData* izumiData = static_cast<stIzumiData*>(this->m_stageData);
 
     grIzumiSpout* spout = grIzumiSpout::create(0, "", "grIzumiStage");
     if (spout != NULL)
@@ -55,13 +57,16 @@ void stIzumi::createObj()
         ground->setDontMoveGround();
     }
 
-    grIzumiStar* star = grIzumiStar::create(4, "", "grIzumiStar");
-    if (star != NULL)
-    {
-        addGround(star);
-        star->startup(m_fileData, 0, 0);
-        star->setStageData(m_stageData);
+    for(int i = 0; i < izumiData->numStars; i++) {
+        grIzumiStar* star = grIzumiStar::create(4, "", "grIzumiStar");
+        if (star != NULL)
+        {
+            addGround(star);
+            star->startup(m_fileData, 0, 0);
+            star->setStageData(m_stageData);
+        }
     }
+
     createCollision(m_fileData, 2, NULL);
     initCameraParam();
     nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 0x64, 0xfffe));
