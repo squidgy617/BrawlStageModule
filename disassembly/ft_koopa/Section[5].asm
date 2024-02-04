@@ -2912,7 +2912,7 @@ loc_6440:
         .4byte 0xFFFFFF30
         .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "soItemManageEventObserver__addObserver")]
         .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "Fighter___208_notifyHaveItemPreCheck")]
-        .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "Fighter___208_notifyHaveItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "ftGKoopa___208_notifyHaveItem")]
         .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "Fighter___208_notifyAttachItem")]
         .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "Fighter___208_notifyUseItem")]
         .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "Fighter___208_notifyThrowItem")]
@@ -3020,7 +3020,7 @@ loc_6440:
         .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "Fighter__setVisibility")]
         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "Fighter__notifyEventTurn")]
         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "Fighter__notifyHaveItemPreCheck")]
-        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "Fighter__notifyHaveItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "ftGKoopa__notifyHaveItem")]
         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "Fighter__notifyAttachItem")]
         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "Fighter__notifyUseItem")]
         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "Fighter__notifyThrowItem")]
@@ -4548,122 +4548,122 @@ loc_8490:
         .asciz "mo_fighter.cpp"
         .balign 4
 
-# loc_ItemManageModule_175D0:
-#         .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17780")]
-#         .4byte 0x00000000
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soNullable__isNull")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "ftGKoopaItemManageModuleImpl____dt")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__activate")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__deactivate")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__begin")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__check")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__haveItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__createThrowItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__haveItem1")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__haveItem2")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__useItem1")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__attachItem1")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__pickupItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__isSuccessPickupItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__isHaveItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemSize")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemKind")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemTrait")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemHoldKind")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemParamInt")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemParamFloat")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemInfo")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getPickableItemSize")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getPickableItemKind")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getPickableItemTrait")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getPickableItemInfo")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__removeItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__removeItem1")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__removeAll")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__throwItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__throwItem1")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__dropItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__useItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__warpItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__bornItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__shootItemBullet")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__shootItemBulletBlanks")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getShootItemBullet")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__updateHaveItemActionInfo")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemScaleAnim")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemAction")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemVisibility")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemHoldAnim")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemConstraintNode")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__resetHaveItemConstraintNode")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__attachItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__isAttachItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getAttachItemCount")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getAttachItemInfo")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setAttachItemVisibility")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getAttachItemVisibility")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__ejectHaveItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__ejectAttachItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__eject")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__ejectAttach")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__dropAttach")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__dropAttachGroup")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__scaleAttach")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__scaleItem")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemTeam")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17780")]
-#         .4byte 0xFFFFFFF8
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soLinkEventObserver__addObserver")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl___8_notifyEventLink")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17780")]
-#         .4byte 0xFFFFFFEC
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soStatusEventObserver__addObserver")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl___20_notifyEventChangeStatus")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17780")]
-#         .4byte 0xFFFFFFE0
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soAnimCmdEventObserver__addObserver")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl___32_isObserv")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl___32_notifyEventAnimCmd")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17780")]
-#         .4byte 0xFFFFFFD4
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl___44_")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__notifyEventChangeStatus")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__notifyEventAnimCmd")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__isObserv")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__notifyEventLink")]
-# loc_17718:
-#         .4byte 0x736F4974
-#         .4byte 0x656D4D61
-#         .4byte 0x6E616765
-#         .4byte 0x4D6F6475
-#         .4byte 0x6C65496D
-#         .4byte 0x706C0000
-# loc_17730:
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_177C0")]
-#         .4byte 0x0000002C
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_3C0")]
-#         .4byte 0x00000020
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_390")]
-#         .4byte 0x00000020
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_1000")]
-#         .4byte 0x00000014
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_FD0")]
-#         .4byte 0x00000014
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_2B0")]
-#         .4byte 0x00000008
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_280")]
-#         .4byte 0x00000008
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_7C8")]
-#         .4byte 0x00000000
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_9E50")]
-#         .4byte 0x00000000
-#         .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_17780")]
-#         .4byte 0x00000000
-#         .4byte 0x00000000
-#         .4byte 0x00000000
-# loc_17780:
-#         .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17718")]
-#         .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17730")]
+loc_ItemManageModule_175D0:
+        .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17780")]
+        .4byte 0x00000000
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soNullable__isNull")]
+        .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "ftGKoopaItemManageModuleImpl____dt")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__activate")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__deactivate")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__begin")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__check")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__haveItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__createThrowItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__haveItem1")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__haveItem2")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__useItem1")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__attachItem1")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__pickupItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__isSuccessPickupItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__isHaveItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemSize")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemKind")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemTrait")]
+        .4byte 0x00000000         [R_PPC_ADDR32(102, 1, "ftGKoopaStatusUniqProcessItemLift__getHaveItemHoldKind")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemParamInt")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemParamFloat")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getHaveItemInfo")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getPickableItemSize")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getPickableItemKind")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getPickableItemTrait")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getPickableItemInfo")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__removeItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__removeItem1")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__removeAll")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__throwItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__throwItem1")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__dropItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__useItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__warpItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__bornItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__shootItemBullet")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__shootItemBulletBlanks")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getShootItemBullet")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__updateHaveItemActionInfo")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemScaleAnim")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemAction")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemVisibility")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemHoldAnim")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemConstraintNode")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__resetHaveItemConstraintNode")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__attachItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__isAttachItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getAttachItemCount")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getAttachItemInfo")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setAttachItemVisibility")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__getAttachItemVisibility")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__ejectHaveItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__ejectAttachItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__eject")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__ejectAttach")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__dropAttach")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__dropAttachGroup")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__scaleAttach")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__scaleItem")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__setHaveItemTeam")]
+        .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17780")]
+        .4byte 0xFFFFFFF8
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soLinkEventObserver__addObserver")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl___8_notifyEventLink")]
+        .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17780")]
+        .4byte 0xFFFFFFEC
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soStatusEventObserver__addObserver")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl___20_notifyEventChangeStatus")]
+        .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17780")]
+        .4byte 0xFFFFFFE0
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soAnimCmdEventObserver__addObserver")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl___32_isObserv")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl___32_notifyEventAnimCmd")]
+        .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17780")]
+        .4byte 0xFFFFFFD4
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl___44_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__notifyEventChangeStatus")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__notifyEventAnimCmd")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__isObserv")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 1, "soItemManageModuleImpl__notifyEventLink")]
+loc_17718:
+        .4byte 0x736F4974
+        .4byte 0x656D4D61
+        .4byte 0x6E616765
+        .4byte 0x4D6F6475
+        .4byte 0x6C65496D
+        .4byte 0x706C0000
+loc_17730:
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_177C0")]
+        .4byte 0x0000002C
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_3C0")]
+        .4byte 0x00000020
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_390")]
+        .4byte 0x00000020
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_1000")]
+        .4byte 0x00000014
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_FD0")]
+        .4byte 0x00000014
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_2B0")]
+        .4byte 0x00000008
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_280")]
+        .4byte 0x00000008
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_7C8")]
+        .4byte 0x00000000
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_9E50")]
+        .4byte 0x00000000
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_17780")]
+        .4byte 0x00000000
+        .4byte 0x00000000
+        .4byte 0x00000000
+loc_17780:
+        .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17718")]
+        .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_17730")]
 
 loc_StatusUniqItemLift_66E8:
         .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_StatusUniqItemLift_6758")]

@@ -2998,8 +2998,8 @@ soItemManageModuleBuilder_105soItemManageModuleBuildConfig_3_4_16soItemSearchImp
     /* 00002D10: */    li r31,-0x1
     /* 00002D14: */    extsh r4,r31
     /* 00002D18: */    addi r3,r3,0xA4
-    #bl ftGKoopaItemManageModuleImpl____dt
-    /* 00002D1C: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soItemManageModuleImpl____dt")]
+    bl ftGKoopaItemManageModuleImpl____dt
+    /* 00002D1C: */    #bl __unresolved                          [R_PPC_REL24(27, 1, "soItemManageModuleImpl____dt")]
     /* 00002D20: */    addi r3,r29,0x48
     /* 00002D24: */    extsh r4,r31
     /* 00002D28: */    bl soArraySelectHolder_1_29soArrayVector_10soItemInfo_4__46soSingletonHolder_25soArrayNull_10soItemI_______dt
@@ -8412,17 +8412,17 @@ soItemManageModuleBuilder_105soItemManageModuleBuildConfig_3_4_16soItemSearchImp
     /* 00007C10: */    addi r9,r9,0x0                           [R_PPC_ADDR16_LO(27, 6, "loc_2BCC")]
     /* 00007C14: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soItemManageModuleImpl____ct")]
     
-    # lis r3,0x0                               [R_PPC_ADDR16_HA(102, 5, "loc_ItemManageModule_175D0")]
-    # addi r3,r3,0x0                           [R_PPC_ADDR16_LO(102, 5, "loc_ItemManageModule_175D0")]
-    # addi r6,r3,0xF8
-    # stw r3,0xA4(r29)
-    # addi r5,r3,0x108
-    # addi r4,r3,0x118
-    # addi r3,r3,0x12C
-    # stw r6,0xAC(r29)
-    # stw r5,0xB8(r29)
-    # stw r4,0xC4(r29)
-    # stw r3,0xD0(r29)
+    lis r3,0x0                               [R_PPC_ADDR16_HA(102, 5, "loc_ItemManageModule_175D0")]
+    addi r3,r3,0x0                           [R_PPC_ADDR16_LO(102, 5, "loc_ItemManageModule_175D0")]
+    addi r6,r3,0xF8     # \
+    stw r3,0xA4(r29)    # |
+    addi r5,r3,0x108    # |
+    addi r4,r3,0x118    # |
+    addi r3,r3,0x12C    # | assign new vtable
+    stw r6,0xAC(r29)    # |
+    stw r5,0xB8(r29)    # |
+    stw r4,0xC4(r29)    # |
+    stw r3,0xD0(r29)    # /
 
     /* 00007C18: */    mr r3,r29
     /* 00007C1C: */    addi r11,r1,0x20
@@ -8432,357 +8432,363 @@ soItemManageModuleBuilder_105soItemManageModuleBuildConfig_3_4_16soItemSearchImp
     /* 00007C2C: */    addi r1,r1,0x20
     /* 00007C30: */    blr
 
-# ftGKoopaItemManageModuleImpl____dt:
-#      b __unresolved                          [R_PPC_REL24(27, 1, "soItemManageModuleImpl____dt")]
+ftGKoopa___208_notifyHaveItem:
+    subi r3,r3,0xD0
+    b ftGKoopa__notifyHaveItem
 
-# ftGKoopa___208_notifyHaveItem:
-#     subi r3,r3,0xD0
-#     b ftGKoopa__notifyHaveItem
+ftGKoopa__notifyHaveItem:
+    stwu r1,-0x70(r1)
+    mflr r0
+    stw r0,0x74(r1)
+    addi r11,r1,0x70
+    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_25")]
+    mr r29,r5
+    mr r28,r3
+    lwz r12,0x3C(r29)
+    mr r25,r6
+    lwz r30,0x60(r3)
+    mr r3,r29
+    lwz r12,0xA8(r12)
+    mr r26,r7
+    mr r31,r8
+    mtctr r12
+    bctrl
+    mr r27,r3
+    mr r3,r29
+    li r4,0x5BCE
+    bl __unresolved                         [R_PPC_REL24(27, 1, "BaseItem__getParam1")]
+    cmpwi r31,0x0
+    mr r31,r3
+    bne- loc_13A5A8
+    lis r4,0x0                               [R_PPC_ADDR16_HA(27, 4, "loc_1048")]
+    lis r3,0x0                               [R_PPC_ADDR16_HA(27, 4, "loc_104C")]
+    lfs f0,0x0(r4)                           [R_PPC_ADDR16_LO(27, 4, "loc_1048")]
+    li r0,0x0
+    lfs f1,0x0(r3)                           [R_PPC_ADDR16_LO(27, 4, "loc_104C")]
+    mr r5,r25
+    stfs f0,0x10(r1)
+    addi r6,r1,0x34
+    addi r7,r1,0x28
+    addi r8,r1,0x1C
+    stfs f0,0x14(r1)
+    addi r9,r1,0x10
+    li r4,0x35
+    li r10,0x0
+    stfs f0,0x18(r1)
+    stfs f0,0x1C(r1)
+    stfs f0,0x20(r1)
+    stfs f0,0x24(r1)
+    stfs f0,0x28(r1)
+    stfs f0,0x2C(r1)
+    stfs f0,0x30(r1)
+    stfs f0,0x34(r1)
+    stfs f0,0x38(r1)
+    stfs f0,0x3C(r1)
+    stw r0,0x8(r1)
+    lwz r3,0xD8(r30)
+    lwz r3,0x88(r3)
+    lwz r12,0x0(r3)
+    lwz r12,0x28(r12)
+    mtctr r12
+    bctrl
+    rlwinm. r0,r31,0,18,18
+    bne- loc_13A5A8
+    lwz r3,0xD8(r30)
+    li r4,0x1FAD
+    li r5,0x0
+    li r6,0x0
+    lwz r3,0x50(r3)
+    li r7,0x0
+    lwz r12,0x0(r3)
+    lwz r12,0x1C(r12)
+    mtctr r12
+    bctrl
+loc_13A5A8:
+    mr r3,r28
+    mr r4,r29
+    mr r5,r26
+    li r6,0x1
+    bl ftGKoopa__setItemHoldAnim
+    cmpwi r27,0x1B
+    beq- loc_13A7D8
+    bge- loc_13A5EC
+    cmpwi r27,0xD
+    beq- loc_13A604
+    bge- loc_13A5E0
+    cmpwi r27,0x0
+    beq- loc_13A7F4
+    b loc_13A814
+loc_13A5E0:
+    cmpwi r27,0x15
+    beq- loc_13A720
+    b loc_13A814
+loc_13A5EC:
+    cmpwi r27,0x45
+    beq- loc_13A690
+    bge- loc_13A814
+    cmpwi r27,0x1D
+    beq- loc_13A7D8
+    b loc_13A814
+loc_13A604:
+    lwz r5,0xD8(r30)
+    lis r3,0x1200
+    addi r4,r3,0x2D
+    lwz r3,0x64(r5)
+    lwz r12,0x0(r3)
+    lwz r12,0x50(r12)
+    mtctr r12
+    bctrl
+    lwz r3,0xD8(r30)
+    lwz r3,0x14(r3)
+    lwz r12,0x0(r3)
+    lwz r12,0x14(r12)
+    mtctr r12
+    bctrl
+    cmpwi r3,0x0
+    beq- loc_13A648
+    b loc_13A66C
+loc_13A648:
+    lwz r3,0xD8(r30)
+    mr r5,r30
+    li r4,0xA4
+    lwz r3,0x70(r3)
+    lwz r12,0x0(r3)
+    lwz r12,0x14(r12)
+    mtctr r12
+    bctrl
+    b loc_13A814
+loc_13A66C:
+    lwz r3,0xD8(r30)
+    mr r5,r30
+    li r4,0xAD
+    lwz r3,0x70(r3)
+    lwz r12,0x0(r3)
+    lwz r12,0x14(r12)
+    mtctr r12
+    bctrl
+    b loc_13A814
+loc_13A690:
+    lwz r3,0xD8(r30)
+    li r4,0x3
+    lwz r5,0x28(r29)
+    lwz r3,0x54(r3)
+    lwz r12,0x0(r3)
+    lwz r12,0x18(r12)
+    mtctr r12
+    bctrl
+    mr r3,r29
+    li r4,0x5BCD
+    bl __unresolved                         [R_PPC_REL24(27, 1, "BaseItem__getParam1")]
+    lwz r7,0xD8(r30)
+    mr r6,r3
+    li r4,0x3
+    li r5,0x0
+    lwz r3,0x54(r7)
+    li r7,0x3
+    li r8,0x1
+    lwz r12,0x0(r3)
+    lwz r12,0x134(r12)
+    mtctr r12
+    bctrl
+    lwz r3,0xD8(r30)
+    mr r5,r30
+    li r4,0xDC
+    lwz r3,0x70(r3)
+    lwz r12,0x0(r3)
+    lwz r12,0x14(r12)
+    mtctr r12
+    bctrl
+    lwz r12,0x3C(r29)
+    mr r3,r29
+    lwz r12,0x254(r12)
+    mtctr r12
+    bctrl
+    b loc_13A814
+loc_13A720:
+    lwz r4,0xD8(r30)
+    addi r3,r1,0x40
+    lwz r4,0xC(r4)
+    lwz r12,0x0(r4)
+    lwz r12,0x18(r12)
+    mtctr r12
+    bctrl
+    lwz r3,0xD8(r30)
+    mr r5,r26
+    addi r4,r1,0x40
+    lwz r3,0xA8(r3)
+    lwz r12,0x0(r3)
+    lwz r12,0x8C(r12)
+    mtctr r12
+    bctrl
+    lwz r3,0xD8(r30)
+    li r4,0x3
+    lwz r5,0x28(r29)
+    lwz r3,0x54(r3)
+    lwz r12,0x0(r3)
+    lwz r12,0x18(r12)
+    mtctr r12
+    bctrl
+    mr r3,r29
+    li r4,0x5BCD
+    bl __unresolved                         [R_PPC_REL24(27, 1, "BaseItem__getParam1")]
+    lwz r7,0xD8(r30)
+    mr r6,r3
+    li r4,0x3
+    li r5,0x0
+    lwz r3,0x54(r7)
+    li r7,0x3
+    li r8,0x1
+    lwz r12,0x0(r3)
+    lwz r12,0x134(r12)
+    mtctr r12
+    bctrl
+    lwz r3,0xD8(r30)
+    mr r5,r30
+    li r4,0xDE
+    lwz r3,0x70(r3)
+    lwz r12,0x0(r3)
+    lwz r12,0x14(r12)
+    mtctr r12
+    bctrl
+    b loc_13A814
+loc_13A7D8:
+    subi r0,r27,0x1B
+    mr r3,r28
+    cntlzw r0,r0
+    li r4,0x1
+    rlwinm r5,r0,27,5,31
+    bl __unresolved                         [R_PPC_REL24(27, 1, "Fighter__setHammer")]
+    b loc_13A814
+loc_13A7F4:
+    lwz r5,0xD8(r30)
+    lis r3,0x1200
+    addi r4,r3,0x2B
+    lwz r3,0x64(r5)
+    lwz r12,0x0(r3)
+    lwz r12,0x50(r12)
+    mtctr r12
+    bctrl
+loc_13A814:
+    lis r3,0x0                               [R_PPC_ADDR16_HA(27, 6, "loc_2E68")]
+    lwz r4,0x10C(r28)
+    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
+    bl __unresolved                         [R_PPC_REL24(27, 1, "ftManager__getPlayerNo")]
+    li r0,0x1
+    lbz r4,0x8D4(r29)
+    slw r0,r0,r3
+    mr r27,r3
+    and. r0,r4,r0
+    bne- loc_13A884
+    rlwinm. r0,r31,0,10,10
+    bne- loc_13A884
+    lwz r12,0x3C(r28)
+    mr r3,r28
+    lwz r12,0x2EC(r12)
+    mtctr r12
+    bctrl
+    lwz r12,0xC(r3)
+    li r4,0x1
+    li r5,0x1E
+    li r6,0x0
+    lwz r12,0x3C(r12)
+    mtctr r12
+    bctrl
+    mr r3,r29
+    mr r4,r27
+    li r5,0x1
+    bl __unresolved                         [R_PPC_REL24(27, 1, "BaseItem__setHavedLog")]
+loc_13A884:
+   addi r11,r1,0x70
+   bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___restgpr_25")]
+   lwz r0,0x74(r1)
+   mtlr r0
+   addi r1,r1,0x70
+   blr
 
-# ftGKoopa__notifyHaveItem:
-#     stwu r1,-0x70(r1)
-#     mflr r0
-#     stw r0,0x74(r1)
-#     addi r11,r1,0x70
-#     bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_25")]
-#     mr r29,r5
-#     mr r28,r3
-#     lwz r12,0x3C(r29)
-#     mr r25,r6
-#     lwz r30,0x60(r3)
-#     mr r3,r29
-#     lwz r12,0xA8(r12)
-#     mr r26,r7
-#     mr r31,r8
-#     mtctr r12
-#     bctrl
-#     mr r27,r3
-#     mr r3,r29
-#     li r4,0x5BCE
-#     bl __unresolved                         [R_PPC_REL24(27, 1, "BaseItem__getParam1")]
-#     cmpwi r31,0x0
-#     mr r31,r3
-#     bne- loc_13A5A8
-#     lis r4,0x0                               [R_PPC_ADDR16_HA(27, 4, "loc_1048")]
-#     lis r3,0x0                               [R_PPC_ADDR16_HA(27, 4, "loc_104C")]
-#     lfs f0,0x0(r4)                           [R_PPC_ADDR16_LO(27, 4, "loc_1048")]
-#     li r0,0x0
-#     lfs f1,0x0(r3)                           [R_PPC_ADDR16_LO(27, 4, "loc_104C")]
-#     mr r5,r25
-#     stfs f0,0x10(r1)
-#     addi r6,r1,0x34
-#     addi r7,r1,0x28
-#     addi r8,r1,0x1C
-#     stfs f0,0x14(r1)
-#     addi r9,r1,0x10
-#     li r4,0x35
-#     li r10,0x0
-#     stfs f0,0x18(r1)
-#     stfs f0,0x1C(r1)
-#     stfs f0,0x20(r1)
-#     stfs f0,0x24(r1)
-#     stfs f0,0x28(r1)
-#     stfs f0,0x2C(r1)
-#     stfs f0,0x30(r1)
-#     stfs f0,0x34(r1)
-#     stfs f0,0x38(r1)
-#     stfs f0,0x3C(r1)
-#     stw r0,0x8(r1)
-#     lwz r3,0xD8(r30)
-#     lwz r3,0x88(r3)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x28(r12)
-#     mtctr r12
-#     bctrl
-#     rlwinm. r0,r31,0,18,18
-#     bne- loc_13A5A8
-#     lwz r3,0xD8(r30)
-#     li r4,0x1FAD
-#     li r5,0x0
-#     li r6,0x0
-#     lwz r3,0x50(r3)
-#     li r7,0x0
-#     lwz r12,0x0(r3)
-#     lwz r12,0x1C(r12)
-#     mtctr r12
-#     bctrl
-# loc_13A5A8:
-#     mr r3,r28
-#     mr r4,r29
-#     mr r5,r26
-#     li r6,0x1
-#     bl ftGKoopa__setItemHoldAnim
-#     cmpwi r27,0x1B
-#     beq- loc_13A7D8
-#     bge- loc_13A5EC
-#     cmpwi r27,0xD
-#     beq- loc_13A604
-#     bge- loc_13A5E0
-#     cmpwi r27,0x0
-#     beq- loc_13A7F4
-#     b loc_13A814
-# loc_13A5E0:
-#     cmpwi r27,0x15
-#     beq- loc_13A720
-#     b loc_13A814
-# loc_13A5EC:
-#     cmpwi r27,0x45
-#     beq- loc_13A690
-#     bge- loc_13A814
-#     cmpwi r27,0x1D
-#     beq- loc_13A7D8
-#     b loc_13A814
-# loc_13A604:
-#     lwz r5,0xD8(r30)
-#     lis r3,0x1200
-#     addi r4,r3,0x2D
-#     lwz r3,0x64(r5)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x50(r12)
-#     mtctr r12
-#     bctrl
-#     lwz r3,0xD8(r30)
-#     lwz r3,0x14(r3)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x14(r12)
-#     mtctr r12
-#     bctrl
-#     cmpwi r3,0x0
-#     beq- loc_13A648
-#     b loc_13A66C
-# loc_13A648:
-#     lwz r3,0xD8(r30)
-#     mr r5,r30
-#     li r4,0xA4
-#     lwz r3,0x70(r3)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x14(r12)
-#     mtctr r12
-#     bctrl
-#     b loc_13A814
-# loc_13A66C:
-#     lwz r3,0xD8(r30)
-#     mr r5,r30
-#     li r4,0xAD
-#     lwz r3,0x70(r3)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x14(r12)
-#     mtctr r12
-#     bctrl
-#     b loc_13A814
-# loc_13A690:
-#     lwz r3,0xD8(r30)
-#     li r4,0x3
-#     lwz r5,0x28(r29)
-#     lwz r3,0x54(r3)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x18(r12)
-#     mtctr r12
-#     bctrl
-#     mr r3,r29
-#     li r4,0x5BCD
-#     bl __unresolved                         [R_PPC_REL24(27, 1, "BaseItem__getParam1")]
-#     lwz r7,0xD8(r30)
-#     mr r6,r3
-#     li r4,0x3
-#     li r5,0x0
-#     lwz r3,0x54(r7)
-#     li r7,0x3
-#     li r8,0x1
-#     lwz r12,0x0(r3)
-#     lwz r12,0x134(r12)
-#     mtctr r12
-#     bctrl
-#     lwz r3,0xD8(r30)
-#     mr r5,r30
-#     li r4,0xDC
-#     lwz r3,0x70(r3)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x14(r12)
-#     mtctr r12
-#     bctrl
-#     lwz r12,0x3C(r29)
-#     mr r3,r29
-#     lwz r12,0x254(r12)
-#     mtctr r12
-#     bctrl
-#     b loc_13A814
-# loc_13A720:
-#     lwz r4,0xD8(r30)
-#     addi r3,r1,0x40
-#     lwz r4,0xC(r4)
-#     lwz r12,0x0(r4)
-#     lwz r12,0x18(r12)
-#     mtctr r12
-#     bctrl
-#     lwz r3,0xD8(r30)
-#     mr r5,r26
-#     addi r4,r1,0x40
-#     lwz r3,0xA8(r3)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x8C(r12)
-#     mtctr r12
-#     bctrl
-#     lwz r3,0xD8(r30)
-#     li r4,0x3
-#     lwz r5,0x28(r29)
-#     lwz r3,0x54(r3)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x18(r12)
-#     mtctr r12
-#     bctrl
-#     mr r3,r29
-#     li r4,0x5BCD
-#     bl __unresolved                         [R_PPC_REL24(27, 1, "BaseItem__getParam1")]
-#     lwz r7,0xD8(r30)
-#     mr r6,r3
-#     li r4,0x3
-#     li r5,0x0
-#     lwz r3,0x54(r7)
-#     li r7,0x3
-#     li r8,0x1
-#     lwz r12,0x0(r3)
-#     lwz r12,0x134(r12)
-#     mtctr r12
-#     bctrl
-#     lwz r3,0xD8(r30)
-#     mr r5,r30
-#     li r4,0xDE
-#     lwz r3,0x70(r3)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x14(r12)
-#     mtctr r12
-#     bctrl
-#     b loc_13A814
-# loc_13A7D8:
-#     subi r0,r27,0x1B
-#     mr r3,r28
-#     cntlzw r0,r0
-#     li r4,0x1
-#     rlwinm r5,r0,27,5,31
-#     bl __unresolved                         [R_PPC_REL24(27, 1, "Fighter__setHammer")]
-#     b loc_13A814
-# loc_13A7F4:
-#     lwz r5,0xD8(r30)
-#     lis r3,0x1200
-#     addi r4,r3,0x2B
-#     lwz r3,0x64(r5)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x50(r12)
-#     mtctr r12
-#     bctrl
-# loc_13A814:
-#     lis r3,0x0                               [R_PPC_ADDR16_HA(27, 6, "loc_2E68")]
-#     lwz r4,0x10C(r28)
-#     lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
-#     bl __unresolved                         [R_PPC_REL24(27, 1, "ftManager__getPlayerNo")]
-#     li r0,0x1
-#     lbz r4,0x8D4(r29)
-#     slw r0,r0,r3
-#     mr r27,r3
-#     and. r0,r4,r0
-#     bne- loc_13A884
-#     rlwinm. r0,r31,0,10,10
-#     bne- loc_13A884
-#     lwz r12,0x3C(r28)
-#     mr r3,r28
-#     lwz r12,0x2EC(r12)
-#     mtctr r12
-#     bctrl
-#     lwz r12,0xC(r3)
-#     li r4,0x1
-#     li r5,0x1E
-#     li r6,0x0
-#     lwz r12,0x3C(r12)
-#     mtctr r12
-#     bctrl
-#     mr r3,r29
-#     mr r4,r27
-#     li r5,0x1
-#     bl __unresolved                         [R_PPC_REL24(27, 1, "BaseItem__setHavedLog")]
-# loc_13A884:
-#    addi r11,r1,0x70
-#    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___restgpr_25")]
-#    lwz r0,0x74(r1)
-#    mtlr r0
-#    addi r1,r1,0x70
-#    blr
+ftGKoopa__setItemHoldAnim:
+    stwu r1,-0x20(r1)
+    mflr r0
+    stw r0,0x24(r1)
+    addi r11,r1,0x20
+    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_28")]
+    mr r31,r6
+    mr r30,r5
+    mr r29,r3
+    mr r28,r4
+    mr r3, r28          # Get the item pointer
+    li r4, 23401        # check if the item is heavy
+    bl __unresolved                         [R_PPC_REL24(27, 1, "BaseItem__getParam1")]
+    andi. r3, r3, 1     # Is it heavy?
+    li r3, 6            # Force to treat like a trophy stand or spring
+    bne- loc_heavy
+    mr r3,r28
+    li r4,0x5B6A
+    bl __unresolved                         [R_PPC_REL24(27, 1, "BaseItem__getParam1")]
+loc_heavy:
 
-# ftGKoopa__setItemHoldAnim:
-#     stwu r1,-0x20(r1)
-#     mflr r0
-#     stw r0,0x24(r1)
-#     stw r31,0x1C(r1)
-#     mr r31,r6
-#     stw r30,0x18(r1)
-#     mr r30,r5
-#     stw r29,0x14(r1)
-#     mr r29,r3
-#     mr r3,r4
-#     li r4,0x5B6A
-#     bl __unresolved                         [R_PPC_REL24(27, 1, "BaseItem__getParam1")]
 #     cmpwi r3, 0x2
 #     bne+ loc_notLift
 #     li r3, 0x5
-#  loc_notLift:   
-#     cmpwi cr6,r3,0x7
-#     bge- cr6,loc_13C514
-#     cmpwi cr1,r3,0x3
-#     bge- cr1,loc_13C480
-#     b loc_13C514
-# loc_13C480:
-#     cmplwi r31,0x1
-#     bne- loc_13C4D4
-#     cmpwi r3,0x5
-#     beq- loc_13C4B8
-#     bge- loc_13C4A0
-#     beq- cr1,loc_13C4A8
-#     bge- cr1,loc_13C4B0
-#     b loc_13C4C4
-# loc_13C4A0:
-#     bge- cr6,loc_13C4C4
-#     b loc_13C4C0
-# loc_13C4A8:
-#     li r4,0x0
-#     b loc_13C4C4
-# loc_13C4B0:
-#     li r4,0x1
-#     b loc_13C4C4
-# loc_13C4B8:
-#     li r4,0x2
-#     b loc_13C4C4
-# loc_13C4C0:
-#     li r4,0x3
-# loc_13C4C4:
-#     mr r3,r29
-#     mr r5,r30
-#     bl __unresolved                         [R_PPC_REL24(27, 1, "Fighter__attachItemHoldAnim")]
-#     b loc_13C514
-# loc_13C4D4:
-#     lwz r3,0x60(r29)
-#     li r4,0x0
-#     lwz r3,0xD8(r3)
-#     lwz r3,0x8(r3)
-#     lwz r12,0x0(r3)
-#     lwz r12,0xA8(r12)
-#     mtctr r12
-#     bctrl
-#     lwz r3,0x60(r29)
-#     li r4,0x0
-#     lwz r3,0xD8(r3)
-#     lwz r3,0x8(r3)
-#     lwz r12,0x0(r3)
-#     lwz r12,0x144(r12)
-#     mtctr r12
-#     bctrl
-# loc_13C514:
-#     lwz r0,0x24(r1)
-#     lwz r31,0x1C(r1)
-#     lwz r30,0x18(r1)
-#     lwz r29,0x14(r1)
-#     mtlr r0
-#     addi r1,r1,0x20
-#     blr
+# loc_notLift:   
+    
+
+    cmpwi cr6,r3,0x7
+    bge- cr6,loc_13C514
+    cmpwi cr1,r3,0x3
+    bge- cr1,loc_13C480
+    b loc_13C514
+loc_13C480:
+    cmplwi r31,0x1
+    bne- loc_13C4D4
+    cmpwi r3,0x5
+    beq- loc_13C4B8
+    bge- loc_13C4A0
+    beq- cr1,loc_13C4A8
+    bge- cr1,loc_13C4B0
+    b loc_13C4C4
+loc_13C4A0:
+    bge- cr6,loc_13C4C4
+    b loc_13C4C0
+loc_13C4A8:
+    li r4,0x0
+    b loc_13C4C4
+loc_13C4B0:
+    li r4,0x1
+    b loc_13C4C4
+loc_13C4B8:
+    li r4,0x2
+    b loc_13C4C4
+loc_13C4C0:
+    li r4,0x3
+loc_13C4C4:
+    mr r3,r29
+    mr r5,r30
+    bl __unresolved                         [R_PPC_REL24(27, 1, "Fighter__attachItemHoldAnim")]
+    b loc_13C514
+loc_13C4D4:
+    lwz r3,0x60(r29)
+    li r4,0x0
+    lwz r3,0xD8(r3)
+    lwz r3,0x8(r3)
+    lwz r12,0x0(r3)
+    lwz r12,0xA8(r12)
+    mtctr r12
+    bctrl
+    lwz r3,0x60(r29)
+    li r4,0x0
+    lwz r3,0xD8(r3)
+    lwz r3,0x8(r3)
+    lwz r12,0x0(r3)
+    lwz r12,0x144(r12)
+    mtctr r12
+    bctrl
+loc_13C514:
+    addi r11,r1,0x20
+    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___restgpr_28")]
+    lwz r0,0x24(r1)
+    mtlr r0
+    addi r1,r1,0x20
+    blr
 
 soAnimCmdAddressPackArraySeparate____ct:
     /* 00007C34: */    lis r7,0x0                               [R_PPC_ADDR16_HA(102, 5, "loc_1984")]
@@ -18810,6 +18816,7 @@ loc_10C78:
     /* 00010D38: */    addi r1,r1,0x1E0
     /* 00010D3C: */    blr
 
+.include "./ftGKoopaItemManageModuleImpl.asm"
 .include "./ftGKoopaGeneralTermDisideModuleImpl.asm"
 #.include "./ftGKoopaStatusUniqProcessItemLift.asm"
 # TODO: Need to override both haveItem and notifyItem to override heavy item
