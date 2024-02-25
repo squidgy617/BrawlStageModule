@@ -43,7 +43,6 @@ void grElevate::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->m_soundEffects[1].m_0x14 = 0;
     this->m_soundEffects[1].m_0x1c = 0.0;
     this->m_soundEffects[1].m_0x20 = 0.0;
-
 }
 
 void grElevate::update(float deltaFrame)
