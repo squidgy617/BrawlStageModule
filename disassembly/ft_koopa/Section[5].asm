@@ -4710,12 +4710,13 @@ loc_GeneralTermDisideModuleImpl_2DA90:
         .4byte 0x65496D70
         .4byte 0x6C000000
 loc_GeneralTermDisideModuleImpl_2DAB0:
-        .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_7C8")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_7C8")]
         .4byte 0x00000000
-        .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_90C8")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_90C8")]
         .4byte 0x00000000
-        .4byte 0x00000000         [R_PPC_ADDR32(102, 5, "loc_9098")]
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_9098")]
         .4byte 0x00000000
+        .4byte 0x00000000         [R_PPC_ADDR32(27, 5, "loc_2DAD0")]
         .4byte 0x00000000
         .4byte 0x00000000
 loc_GeneralTermDisideModuleImpl_2DAD0:
