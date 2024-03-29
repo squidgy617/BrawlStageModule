@@ -141,7 +141,7 @@ void stSmashketball::update(float frameDelta){
         int entryCount = g_ftManager->getEntryCount();
         for (int i = 0; i < entryCount; i++) {
             int entryId = g_ftManager->getEntryIdFromIndex(i);
-            Fighter* fighter = g_ftManager->getFighter(entryId, 0);
+            Fighter* fighter = g_ftManager->getFighter(entryId, -1);
             if (fighter->m_moduleAccesser->getStatusModule()->getStatusKind() == 192) {
                 fighter->m_moduleAccesser->getGroundModule()->setCorrect(0,0);
             };
