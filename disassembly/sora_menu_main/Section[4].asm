@@ -1413,7 +1413,7 @@ loc_1400:
 loc_1408:
         .4byte 0x00000000         [R_PPC_ADDR32(2, 1, "loc_32298")]
         .4byte 0x00000000         [R_PPC_ADDR32(2, 1, "muButtonTask__mainStepLoading")]
-        .4byte 0x00000000         [R_PPC_ADDR32(2, 1, "muMainPanelCtrlTask__startupSpecialMelee")]
+        .4byte 0x00000000         [R_PPC_ADDR32(2, 1, "muButtonTask__initStepSelectAppear")]
         .4byte 0x00000000         [R_PPC_ADDR32(2, 1, "muButtonTask__mainStepSelectAppear")]
         .4byte 0x00000000         [R_PPC_ADDR32(2, 1, "muButtonTask__initStepSelect")]
         .4byte 0x00000000         [R_PPC_ADDR32(2, 1, "muButtonTask__mainStepSelect")]
@@ -1692,3 +1692,7 @@ loc_17F0:
         .4byte 0x3FACCCCD
 loc_17F4:
         .4byte 0x3FDDBCA9
+loc_songFreq:
+        .float 100.0 
+        .float 0.0
+        .float 60.0
