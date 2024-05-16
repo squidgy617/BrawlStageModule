@@ -230,9 +230,9 @@ loc_1A708:
     /* 0001A72C: */    bl __unresolved                          [R_PPC_REL24(0, 1, "loc_8000443C")]
     b __unresolved                           [R_PPC_REL24(2, 7, "loc_muProcOptSong_proc_loadParam")]
 loc_loadedParam:
-    /* 0001A730: */    lwz r0,0x670(r30)
+    /* 0001A730: */    li r0, 0 #lwz r0,0x670(r30)
     /* 0001A734: */    stw r29,0x6D4(r30)
-    /* 0001A738: */    cmpwi r0,0x4
+    /* 0001A738: */    stw r0,0x670(r30) # cmpwi r0,0x4
     /* 0001A73C: */    #bne- loc_1A8B0
     b loc_1A8B0     # Mushroomy Kingdom's slot only loads one tracklist
     /* 0001A740: */    lis r29,0x0                              [R_PPC_ADDR16_HA(0, 11, "loc_805A01D8")]
