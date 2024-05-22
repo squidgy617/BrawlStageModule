@@ -1,0 +1,15 @@
+loc_0:
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopocpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopostatusuniqprocesscliffcpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopostatusuniqprocessspecialscpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopostatusuniqprocessspecialspartnercpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopostatusuniqprocessspecialhicpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopostatusuniqprocessspecialhipartnercpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopostatusuniqprocessspecialhicliffpullpartnercpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopostatusuniqprocessfinalcpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopostatusuniqprocessfinalpartnercpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopostatusuniqprocessspeciallwcpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopostatusuniqprocessentrycpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "ftpopostatusuniqprocessrebirthcpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(105, 1, "wnpoporubberstatusuniqprocesscommoncpp____sinit_")]
+        .4byte 0x00000000
