@@ -202,7 +202,7 @@ loc_muProcOptSong_proc_playSound:
     # clear ASL input
     lis r8, 0x800C
     li r9, 0
-    stw r9, -0x615E (r8)
+    sth r9, -0x615E (r8)
 
     # This fixes an issue where looking at the songs for a stage alt would force that alt to load when the stage was selected
     li r9, 0            # \
@@ -211,11 +211,11 @@ loc_muProcOptSong_proc_playSound:
     sth r9, 0x0FB8 (r8) # / by setting it to 0, the game will see no stage as loaded, and reload the file
     b __unresolved                                                          [R_PPC_REL24(2, 1, "loc_soundPlayed")]
 
-    playSoundCheck:
+playSoundCheck:
     cmpwi r8, 4             # \
     bne playSoundEnd        # | if flag isn't 4 (pressed custom button), skip
     li r4, 1                # / otherwise, set sound ID to confirmation sound (we selected a song instead of backing out)
-    playSoundEnd:
+playSoundEnd:
     b __unresolved                                                          [R_PPC_REL24(2, 1, "loc_soundPlayed")]
 
 loc_muProcOptSong_proc_loadParam:
