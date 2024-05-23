@@ -266,7 +266,7 @@ void stQbert::updateCubes(float frameDelta) {
                 }
             }
             this->winTimer = qbertStageData->winFrames;
-            this->bgmTimer = hkMath::max2f(this->bgmTimer, qbertStageData->immobilizeFrames);
+            this->bgmTimer = hkMath::max2(this->bgmTimer, qbertStageData->immobilizeFrames);
             this->winningTeamId = team;
             this->round++;
             if (this->round > MAX_ROUNDS) {
@@ -316,7 +316,7 @@ void stQbert::updateEnemies(float frameDelta) {
             enemy->setImmobilize(qbertStageData->immobilizeFrames);
         }
         this->immobilizeState = Immobilize_None;
-        this->bgmTimer = hkMath::max2f(this->bgmTimer, qbertStageData->immobilizeFrames);
+        this->bgmTimer = hkMath::max2(this->bgmTimer, qbertStageData->immobilizeFrames);
     }
 }
 
