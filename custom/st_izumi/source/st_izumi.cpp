@@ -37,6 +37,27 @@ void stIzumi::createObj()
         addGround(spout);
         spout->startup(m_fileData, 0, 0);
         spout->setStageData(m_stageData);
+        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 0);
+        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 0);
+        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 0);
+        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 1);
+        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 1);
+        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 1);
+        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 2);
+        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 2);
+        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 2);
+        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 3);
+        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 3);
+        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 3);
+        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 4);
+        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 4);
+        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 4);
+        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 5);
+        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 5);
+        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 5);
+        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 6);
+        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 6);
+        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 6);
         spout->setDontMoveGround();
         spout->fountainInit();
     }
@@ -54,6 +75,8 @@ void stIzumi::createObj()
         addGround(ground);
         ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
+        ground->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 0);
+        ground->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 1);
         ground->setDontMoveGround();
     }
 
