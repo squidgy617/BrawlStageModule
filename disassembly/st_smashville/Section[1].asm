@@ -342,6 +342,12 @@ loc_498:
     /* 00000518: */    lwz r7,0xBC(r31)
     /* 0000051C: */    mtctr r12
     /* 00000520: */    bctrl
+
+    lwz r12, 0x9C(r31)  # \
+    lbz r0, 0x4D(r12)   # | check if there should be ambience 
+    cmpwi r0, 0x0       # |
+    beq+ loc_5B4        # /
+
     /* 00000524: */    lbz r0,0x1D8(r31)
     /* 00000528: */    cmpwi r0,0x3
     /* 0000052C: */    beq- loc_570
@@ -2008,48 +2014,53 @@ stVillage__selectScene:
     /* 00001C74: */    lwz r5,0x8(r4)
     /* 00001C78: */    cmpwi r5,0x0
     /* 00001C7C: */    beqlr-
+    lwz r12, 0x9C(r3)
+    lbz r0, 0x4C(r12)
+    cmpwi r0, 0x7
+    ble+ overrideScene 
     /* 00001C80: */    lbz r0,0x1C(r5)
+overrideScene:
     /* 00001C84: */    cmplwi r0,0x7
     /* 00001C88: */    bgt- loc_1D00
     /* 00001C8C: */    lis r4,0x0                               [R_PPC_ADDR16_HA(70, 5, "loc_6C0")]
-    /* 00001C90: */    rlwinm r0,r0,2,0,29
+    /* 00001C90: */    rlwinm r10,r0,2,0,29
     /* 00001C94: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(70, 5, "loc_6C0")]
-    /* 00001C98: */    lwzx r4,r4,r0
+    /* 00001C98: */    lwzx r4,r4,r10
     /* 00001C9C: */    mtctr r4
     /* 00001CA0: */    bctr
 loc_1CA4:
-    /* 00001CA4: */    li r0,0x0
-    /* 00001CA8: */    stb r0,0x1D8(r3)
+    /* 00001CA4: */    li r10,0x0
+    /* 00001CA8: */    stb r10,0x1D8(r3)
     /* 00001CAC: */    b loc_1D00
 loc_1CB0:
-    /* 00001CB0: */    li r0,0x1
-    /* 00001CB4: */    stb r0,0x1D8(r3)
+    /* 00001CB0: */    li r10,0x1
+    /* 00001CB4: */    stb r10,0x1D8(r3)
     /* 00001CB8: */    b loc_1D00
 loc_1CBC:
-    /* 00001CBC: */    li r0,0x2
-    /* 00001CC0: */    stb r0,0x1D8(r3)
+    /* 00001CBC: */    li r10,0x2
+    /* 00001CC0: */    stb r10,0x1D8(r3)
     /* 00001CC4: */    b loc_1D00
 loc_1CC8:
-    /* 00001CC8: */    li r0,0x3
-    /* 00001CCC: */    stb r0,0x1D8(r3)
+    /* 00001CC8: */    li r10,0x3
+    /* 00001CCC: */    stb r10,0x1D8(r3)
     /* 00001CD0: */    b loc_1D00
 loc_1CD4:
-    /* 00001CD4: */    li r0,0x3
-    /* 00001CD8: */    stb r0,0x1D8(r3)
+    /* 00001CD4: */    li r10,0x3
+    /* 00001CD8: */    stb r10,0x1D8(r3)
     /* 00001CDC: */    b loc_1D00
 loc_1CE0:
-    /* 00001CE0: */    li r0,0x3
-    /* 00001CE4: */    stb r0,0x1D8(r3)
+    /* 00001CE0: */    li r10,0x3
+    /* 00001CE4: */    stb r10,0x1D8(r3)
     /* 00001CE8: */    b loc_1D00
 loc_1CEC:
-    /* 00001CEC: */    li r0,0x4
-    /* 00001CF0: */    stb r0,0x1D8(r3)
+    /* 00001CEC: */    li r10,0x4
+    /* 00001CF0: */    stb r10,0x1D8(r3)
     /* 00001CF4: */    b loc_1D00
 loc_1CF8:
-    /* 00001CF8: */    li r0,0x4
-    /* 00001CFC: */    stb r0,0x1D8(r3)
+    /* 00001CF8: */    li r10,0x4
+    /* 00001CFC: */    stb r10,0x1D8(r3)
 loc_1D00:
-    /* 00001D00: */    lbz r0,0x1C(r5)
+    /* 00001D00: */    #lbz r0,0x1C(r5)
     /* 00001D04: */    cmpwi r0,0x6
     /* 00001D08: */    beqlr-
     /* 00001D0C: */    bge- loc_1D20
@@ -8227,8 +8238,9 @@ loc_7578:
     /* 00007588: */    lwz r12,0x18C(r12)
     /* 0000758C: */    mtctr r12
     /* 00007590: */    bctrl
+    lwz r4, 0x48(r30)    # Balloon hit sfx id
     /* 00007594: */    addi r3,r31,0x200
-    /* 00007598: */    li r4,0x1CF8
+    /* 00007598: */    #li r4,0x1CF8
     /* 0000759C: */    li r5,0x0
     /* 000075A0: */    li r6,0x0
     /* 000075A4: */    li r7,-0x1
