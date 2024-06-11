@@ -31,7 +31,7 @@ void stIzumi::createObj()
     testStageDataInit(m_fileData, 0x14, 1);
     stIzumiData* izumiData = static_cast<stIzumiData*>(this->m_stageData);
 
-    grIzumiSpout* spout = grIzumiSpout::create(0, "", "grIzumiStage");
+    grIzumiSpout* spout = grIzumiSpout::create(80, "", "grIzumiStage");
     if (spout != NULL)
     {
         addGround(spout);
@@ -69,7 +69,7 @@ void stIzumi::createObj()
         ground->setStageData(m_stageData);
         ground->setDontMoveGround();
     }
-    ground = grIzumi::create(2, "", "grIzumiMainBg");
+    ground = grIzumi::create(81, "", "grIzumiMainBg");
     if (ground != NULL)
     {
         addGround(ground);
