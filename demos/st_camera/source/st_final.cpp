@@ -62,11 +62,11 @@ void stFinal::createObj()
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 
     nw4r::g3d::ResFile resFile(scnData);
-    nw4r::g3d::SCN0* scn0 = resFile.GetResAnmScn(0);
+    nw4r::g3d::ResAnmScnData* scn0 = resFile.GetResAnmScn(0).ptr();
     CameraController* camController = CameraController::getInstance();
     camController->changeInput(CameraController::AnimationLocked);
     cmAnimationController* animController = static_cast<cmAnimationController*>(camController->m_currentController);
-    animController->setScnAnmRes(&scn0, 0);
+    animController->setScnAnmRes(scn0, 0);
 
 }
 
