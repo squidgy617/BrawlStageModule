@@ -10,4 +10,9 @@ struct stIzumiData {
     float starFallMaxFrames;
     u8 numStars;
     char _pad[3];
+
+    u32 stationaryMinFrames;
+    u32 stationaryMaxFrames;
+    u32 sinkMinFrames;
+    u32 sinkMaxFrames;
 };

@@ -1,7 +1,9 @@
+#include "st_izumi_data.h"
 #include "gr_izumi_spout.h"
 #include <ec/ec_mgr.h>
 #include <memory.h>
 #include <mt/mt_vector.h>
+#include <mt/mt_prng.h>
 
 grIzumiSpout* grIzumiSpout::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
@@ -14,56 +16,110 @@ grIzumiSpout* grIzumiSpout::create(int mdlIndex, const char* tgtNodeName, const 
 
 void grIzumiSpout::update(float deltaFrame)
 {
-    this->updateEff();
+    this->updateEff(deltaFrame);
+    this->updateLevel(deltaFrame);
 }
-void grIzumiSpout::fountainInit()
+
+void grIzumiSpout::setMotion(u32 index) {
+    this->changeNodeAnim(index, 0);
+    this->changeTexSrtAnim(index, 0);
+    this->changeVisibleAnim(index, 0);
+    this->currentAnimIndex = index;
+}
+
+void grIzumiSpout::fountainInit(u32 spoutId)
 {
-	fountain[0] = false;
-	fountain[1] = false; //disable them, the below will check to see if they will need reactivation
-	startfountainEffect(0);
-	startfountainEffect(1);
-	fountainStep[0] = 0;
-	fountainStep[1] = 0;
-}
-void grIzumiSpout::startfountainEffect(int spoutID)
-{
-            g_ecMgr->setDrawPrio(1);
-            effSpoutPtr[spoutID] = g_ecMgr->setEffect(0x330001+spoutID);
-            g_ecMgr->setDrawPrio(0xffffffff);
-			g_ecMgr->setParent(effSpoutPtr[spoutID], this->m_sceneModels[spoutID], "splash", 0);
-}
-void grIzumiSpout::stopfountainEffect(int spoutID)
-{	
-           g_ecMgr->endEffect(effSpoutPtr[spoutID]);
-}
-void grIzumiSpout::updateEff()
-{
-    for (int i=0; i < 2; i++)
-    {
-        Vec3f bonepos;
-        this->getNodePosition(&bonepos,i,"splash");
-        if (bonepos.m_y < 1.25 && fountain[i])
-        {
-            stopfountainEffect(i);
-            fountainStep[i] = 0;
-            fountain[i] = false;
-        }
-        else if (bonepos.m_y > 1.3 && !fountain[i])
-        {
-            startfountainEffect(i);
-            fountain[i] = true;
-        }
-        else if(fountain[i])
-        {
-            fountainStep[i]++;
-            if (fountainStep[i] > 60)
-            {
-                stopfountainEffect(i);
-                startfountainEffect(i);
-                fountainStep[i] = 0;
-            }
-        }
+    stIzumiData* izumiData = static_cast<stIzumiData*>(this->getStageData());
+
+    this->spoutId = spoutId;
+
+	this->isActive = false;
+    this->startFountainEffect();
+
+    if (g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff) {
+        this->level = Level_Off;
+    }
+    else {
+        this->level = Level_Mid;
+        this->spoutTimer = randf()*(izumiData->stationaryMaxFrames - izumiData->stationaryMinFrames) + izumiData->stationaryMinFrames;
     }
 
-	step++;
+    this->setMotion(this->level*NUM_SPOUT_LEVELS);
+}
+
+void grIzumiSpout::startFountainEffect()
+{
+    this->effFrameCount = 0.0;
+    g_ecMgr->setDrawPrio(1);
+    this->effPtr = g_ecMgr->setEffect(0x330001+this->spoutId);
+    g_ecMgr->setDrawPrio(0xffffffff);
+    g_ecMgr->setParent(this->effPtr, this->m_sceneModels[0], "Splash", 0);
+}
+void grIzumiSpout::stopFountainEffect()
+{
+    g_ecMgr->endEffect(this->effPtr);
+}
+
+void grIzumiSpout::updateEff(float deltaFrame)
+{
+    Vec3f bonePos;
+    this->getNodePosition(&bonePos, 0, "Splash");
+    if (bonePos.m_y < 1.25 && this->isActive)
+    {
+        this->stopFountainEffect();
+        this->isActive = false;
+    }
+    else if (bonePos.m_y > 1.3 && !this->isActive)
+    {
+        this->startFountainEffect();
+        this->isActive = true;
+    }
+    else if (this->isActive) {
+        this->effFrameCount += deltaFrame;
+        if (this->effFrameCount > EFF_SPOUT_FRAME_MAX) {
+            this->stopFountainEffect();
+            this->startFountainEffect();
+            this->effFrameCount = 0;
+        }
+    }
+}
+
+void grIzumiSpout::updateLevel(float deltaFrame) {
+    stIzumiData* izumiData = static_cast<stIzumiData*>(this->getStageData());
+
+    if (this->level != Level_Off) {
+        float currentAnimFrame = this->m_modelAnims[0]->getFrame();
+        float animFrameCount = this->m_modelAnims[0]->getFrameCount();
+        if (this->currentAnimIndex != this->level*NUM_SPOUT_LEVELS) {
+            if (currentAnimFrame >= animFrameCount - 1) {
+                this->setMotion(this->level*NUM_SPOUT_LEVELS);
+            }
+        }
+
+        this->spoutTimer -= deltaFrame;
+        if (this->spoutTimer < 0) {
+            u32 numSpouts = 0;
+            u32 spouts[NUM_SPOUT_LEVELS - 1];
+            for (u32 i = 0; i < NUM_SPOUT_LEVELS; i++) {
+                if (this->level != i) {
+                    spouts[numSpouts] = i;
+                    numSpouts++;
+                }
+            }
+
+            u32 index = randi(NUM_SPOUT_LEVELS - 1);
+            this->setMotion(this->level*NUM_SPOUT_LEVELS + index + 1);
+            this->level = (Level)spouts[index];
+
+            if (this->level == Level_Sink) {
+                this->spoutTimer = randf()*(izumiData->sinkMaxFrames - izumiData->sinkMinFrames) + izumiData->sinkMinFrames;
+            }
+            else {
+                this->spoutTimer = randf()*(izumiData->stationaryMaxFrames - izumiData->stationaryMinFrames) + izumiData->stationaryMinFrames;
+            }
+        }
+
+
+
+    }
 }

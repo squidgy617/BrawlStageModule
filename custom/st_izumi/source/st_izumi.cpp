@@ -4,7 +4,6 @@
 #include "gr_izumi_spout.h"
 #include "gr_izumi_star.h"
 #include <ec/ec_mgr.h>
-#include <gm/gm_global.h>
 #include <memory.h>
 #include <st/st_class_info.h>
 #include <OS/OSError.h>
@@ -31,37 +30,33 @@ void stIzumi::createObj()
     testStageDataInit(m_fileData, 0x14, 1);
     stIzumiData* izumiData = static_cast<stIzumiData*>(this->m_stageData);
 
-    grIzumiSpout* spout = grIzumiSpout::create(80, "", "grIzumiStage");
+    grIzumi* ground = grIzumi::create(0, "", "grIzumiMainBg");
+    if (ground != NULL)
+    {
+        addGround(ground);
+        ground->startup(m_fileData, 0, 0);
+        ground->setStageData(m_stageData);
+        ground->setDontMoveGround();
+    }
+    grIzumiSpout* spout = grIzumiSpout::create(1, "", "grIzumiSpout");
     if (spout != NULL)
     {
         addGround(spout);
         spout->startup(m_fileData, 0, 0);
         spout->setStageData(m_stageData);
-        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 0);
-        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 0);
-        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 0);
-        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 1);
-        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 1);
-        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 1);
-        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 2);
-        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 2);
-        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 2);
-        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 3);
-        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 3);
-        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 3);
-        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 4);
-        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 4);
-        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 4);
-        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 5);
-        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 5);
-        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 5);
-        spout->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 6);
-        spout->changeTexSrtAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 6);
-        spout->changeVisibleAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 6);
         spout->setDontMoveGround();
-        spout->fountainInit();
+        spout->fountainInit(0);
     }
-    grIzumi* ground = grIzumi::create(1, "", "grIzumiMainBg");
+    spout = grIzumiSpout::create(2, "", "grIzumiSpout");
+    if (spout != NULL)
+    {
+        addGround(spout);
+        spout->startup(m_fileData, 0, 0);
+        spout->setStageData(m_stageData);
+        spout->setDontMoveGround();
+        spout->fountainInit(1);
+    }
+    ground = grIzumi::create(3, "", "grIzumiMainBg");
     if (ground != NULL)
     {
         addGround(ground);
@@ -69,17 +64,6 @@ void stIzumi::createObj()
         ground->setStageData(m_stageData);
         ground->setDontMoveGround();
     }
-    ground = grIzumi::create(81, "", "grIzumiMainBg");
-    if (ground != NULL)
-    {
-        addGround(ground);
-        ground->startup(m_fileData, 0, 0);
-        ground->setStageData(m_stageData);
-        ground->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 0);
-        ground->changeNodeAnim(g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff, 1);
-        ground->setDontMoveGround();
-    }
-
     for(int i = 0; i < izumiData->numStars; i++) {
         grIzumiStar* star = grIzumiStar::create(4, "", "grIzumiStar");
         if (star != NULL)
