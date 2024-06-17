@@ -4,6 +4,8 @@
 #include <memory.h>
 #include <mt/mt_vector.h>
 #include <mt/mt_prng.h>
+#include <ft/ft_manager.h>
+#include <OS/OSError.h>
 
 grIzumiSpout* grIzumiSpout::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
 {
@@ -45,6 +47,13 @@ void grIzumiSpout::fountainInit(u32 spoutId)
     }
 
     this->setMotion(this->level*NUM_SPOUT_LEVELS);
+
+    this->areaData = (soAreaData){ 0, 0x15, 0x1, 0, 0, this->getNodeIndex(0, "Trigger"), {0.0, 0.0}, izumiData->areaRange};
+    this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
+    stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick_AreaCommon,-1);
+    trigger->setObserveYakumono(this->m_yakumono);
+
+    this->disableArea();
 }
 
 void grIzumiSpout::startFountainEffect()
@@ -113,13 +122,26 @@ void grIzumiSpout::updateLevel(float deltaFrame) {
 
             if (this->level == Level_Sink) {
                 this->spoutTimer = randf()*(izumiData->sinkMaxFrames - izumiData->sinkMinFrames) + izumiData->sinkMinFrames;
+                this->enableArea();
             }
             else {
                 this->spoutTimer = randf()*(izumiData->stationaryMaxFrames - izumiData->stationaryMinFrames) + izumiData->stationaryMinFrames;
+                this->disableArea();
             }
         }
-
-
-
     }
+}
+
+void grIzumiSpout::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
+{
+    int entryId = g_ftManager->getEntryIdFromTaskId(*taskId, NULL);
+    if (entryId >= 0) {
+        stIzumiData* izumiData = static_cast<stIzumiData*>(this->getStageData());
+
+        Fighter *fighter = g_ftManager->getFighter(entryId, -1);
+        if (fighter->m_moduleAccesser->getSituationModule()->getKind() == 0x0 && this->spoutTimer < izumiData->cooldownRisingFrames) {
+            this->spoutTimer = izumiData->cooldownRisingFrames;
+        }
+    }
+
 }

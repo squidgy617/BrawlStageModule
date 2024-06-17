@@ -25,6 +25,10 @@ protected:
     float spoutTimer;
     u32 currentAnimIndex;
 
+    soAreaData areaData;
+    soAreaInit areaInit;
+    ykAreaData areaInfo;
+
 public:
 
 
@@ -35,6 +39,7 @@ public:
 	
     virtual void update(float deltaFrame);
     virtual ~grIzumiSpout(){};
+    virtual void onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId);
 
     virtual void fountainInit(u32 spoutId);
     virtual void startFountainEffect();
