@@ -18,15 +18,19 @@ grIzumiSpout* grIzumiSpout::create(int mdlIndex, const char* tgtNodeName, const 
 
 void grIzumiSpout::update(float deltaFrame)
 {
-    this->updateEff(deltaFrame);
     this->updateLevel(deltaFrame);
+    this->updateColl(deltaFrame);
+    this->updateEff(deltaFrame);
 }
 
 void grIzumiSpout::setMotion(u32 index) {
-    this->changeNodeAnim(index, 0);
-    this->changeTexSrtAnim(index, 0);
-    this->changeVisibleAnim(index, 0);
-    this->currentAnimIndex = index;
+    if (index != this->currentAnimIndex) {
+        this->changeNodeAnim(index, 0);
+        this->changeTexSrtAnim(index, 0);
+        this->changeVisibleAnim(index, 0);
+        this->changeMatColAnim(index, 0);
+        this->currentAnimIndex = index;
+    }
 }
 
 void grIzumiSpout::fountainInit(u32 spoutId)
@@ -71,25 +75,40 @@ void grIzumiSpout::stopFountainEffect()
 
 void grIzumiSpout::updateEff(float deltaFrame)
 {
+    stIzumiData* izumiData = static_cast<stIzumiData*>(this->getStageData());
+
     Vec3f bonePos;
     this->getNodePosition(&bonePos, 0, "Splash");
-    if (bonePos.m_y < 1.25 && this->isActive)
+    if (bonePos.m_y < izumiData->spoutEffectMinHeight - 0.5 && this->isActive)
     {
         this->stopFountainEffect();
         this->isActive = false;
     }
-    else if (bonePos.m_y > 1.3 && !this->isActive)
+    else if (bonePos.m_y > izumiData->spoutEffectMinHeight && !this->isActive)
     {
         this->startFountainEffect();
         this->isActive = true;
     }
     else if (this->isActive) {
         this->effFrameCount += deltaFrame;
-        if (this->effFrameCount > EFF_SPOUT_FRAME_MAX) {
+        if (this->effFrameCount > izumiData->spoutEffectDuration) {
             this->stopFountainEffect();
             this->startFountainEffect();
             this->effFrameCount = 0;
         }
+    }
+}
+
+void grIzumiSpout::updateColl(float deltaFrame) {
+    stIzumiData* izumiData = static_cast<stIzumiData*>(this->getStageData());
+
+    Vec3f bonePos;
+    this->getNodePosition(&bonePos, 0, "Platform");
+    if (bonePos.m_y >= izumiData->spoutCollisionMinHeight) {
+        this->setEnableCollisionStatus(true);
+    }
+    else {
+        this->setEnableCollisionStatus(false);
     }
 }
 
@@ -99,14 +118,11 @@ void grIzumiSpout::updateLevel(float deltaFrame) {
     if (this->level != Level_Off) {
         float currentAnimFrame = this->m_modelAnims[0]->getFrame();
         float animFrameCount = this->m_modelAnims[0]->getFrameCount();
-        if (this->currentAnimIndex != this->level*NUM_SPOUT_LEVELS) {
-            if (currentAnimFrame >= animFrameCount - 1) {
-                this->setMotion(this->level*NUM_SPOUT_LEVELS);
-            }
-        }
 
-        this->spoutTimer -= deltaFrame;
-        if (this->spoutTimer < 0) {
+        if (this->spoutTimer > 0) {
+            this->spoutTimer -= deltaFrame;
+        }
+        if (this->spoutTimer <= 0 && (currentAnimFrame >= animFrameCount - 1 || this->currentAnimIndex != WAIT_SINK_RIPPLE_ANIM_INDEX)) {
             u32 numSpouts = 0;
             u32 spouts[NUM_SPOUT_LEVELS - 1];
             for (u32 i = 0; i < NUM_SPOUT_LEVELS; i++) {
@@ -129,6 +145,16 @@ void grIzumiSpout::updateLevel(float deltaFrame) {
                 this->disableArea();
             }
         }
+        else if (this->spoutTimer < izumiData->riseWarningFrames && this->level == Level_Sink) {
+            this->setMotion(WAIT_SINK_RIPPLE_ANIM_INDEX);
+        }
+        else if (this->currentAnimIndex != this->level*NUM_SPOUT_LEVELS && this->currentAnimIndex != WAIT_SINK_RIPPLE_ANIM_INDEX) {
+            if (currentAnimFrame >= animFrameCount - 1) {
+                this->setMotion(this->level*NUM_SPOUT_LEVELS);
+            }
+        }
+
+
     }
 }
 
@@ -138,10 +164,9 @@ void grIzumiSpout::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
     if (entryId >= 0) {
         stIzumiData* izumiData = static_cast<stIzumiData*>(this->getStageData());
 
-        Fighter *fighter = g_ftManager->getFighter(entryId, -1);
-        if (fighter->m_moduleAccesser->getSituationModule()->getKind() == 0x0 && this->spoutTimer < izumiData->cooldownRisingFrames) {
+        //Fighter *fighter = g_ftManager->getFighter(entryId, -1);
+        if (this->spoutTimer < izumiData->cooldownRisingFrames) {
             this->spoutTimer = izumiData->cooldownRisingFrames;
         }
     }
-
 }

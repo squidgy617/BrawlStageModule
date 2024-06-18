@@ -3,6 +3,7 @@
 #include "gr_izumi.h"
 #include "gr_izumi_spout.h"
 #include "gr_izumi_star.h"
+#include "gr_izumi_star_item.h"
 #include <ec/ec_mgr.h>
 #include <memory.h>
 #include <st/st_class_info.h>
@@ -46,6 +47,7 @@ void stIzumi::createObj()
         spout->setStageData(m_stageData);
         spout->setDontMoveGround();
         spout->fountainInit(0);
+        createCollision(m_fileData, 3, spout);
     }
     spout = grIzumiSpout::create(2, "", "grIzumiSpout");
     if (spout != NULL)
@@ -55,6 +57,8 @@ void stIzumi::createObj()
         spout->setStageData(m_stageData);
         spout->setDontMoveGround();
         spout->fountainInit(1);
+        createCollision(m_fileData, 4, spout);
+
     }
     ground = grIzumi::create(3, "", "grIzumiMainBg");
     if (ground != NULL)

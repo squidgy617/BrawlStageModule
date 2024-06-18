@@ -3,9 +3,6 @@
 #include <gr/gr_yakumono.h>
 #include <gm/gm_global.h>
 
-#define EFF_SPOUT_FRAME_MAX 60.0
-#define NUM_SPOUT_LEVELS 4
-
 class grIzumiSpout : public grYakumono {
 protected:
 
@@ -45,6 +42,7 @@ public:
     virtual void startFountainEffect();
     virtual void stopFountainEffect();
     virtual void updateEff(float deltaFrame);
+    virtual void updateColl(float deltaFrame);
     virtual void updateLevel(float level);
     virtual void setMotion(u32 index);
 
