@@ -35,16 +35,16 @@ void stIzumi::createObj()
     if (ground != NULL)
     {
         addGround(ground);
-        ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
+        ground->startup(m_fileData, 0, 0);
         ground->setDontMoveGround();
     }
     grIzumiSpout* spout = grIzumiSpout::create(1, "", "grIzumiSpout");
     if (spout != NULL)
     {
         addGround(spout);
-        spout->startup(m_fileData, 0, 0);
         spout->setStageData(m_stageData);
+        spout->startup(m_fileData, 0, 0);
         spout->setDontMoveGround();
         spout->fountainInit(0);
         createCollision(m_fileData, 3, spout);
@@ -53,8 +53,8 @@ void stIzumi::createObj()
     if (spout != NULL)
     {
         addGround(spout);
-        spout->startup(m_fileData, 0, 0);
         spout->setStageData(m_stageData);
+        spout->startup(m_fileData, 0, 0);
         spout->setDontMoveGround();
         spout->fountainInit(1);
         createCollision(m_fileData, 4, spout);
@@ -64,8 +64,8 @@ void stIzumi::createObj()
     if (ground != NULL)
     {
         addGround(ground);
-        ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
+        ground->startup(m_fileData, 0, 0);
         ground->setDontMoveGround();
     }
     for(int i = 0; i < izumiData->numStars; i++) {
@@ -73,8 +73,17 @@ void stIzumi::createObj()
         if (star != NULL)
         {
             addGround(star);
-            star->startup(m_fileData, 0, 0);
             star->setStageData(m_stageData);
+            star->startup(m_fileData, 0, 0);
+        }
+    }
+    for(int i = 0; i < izumiData->numItemStars; i++) {
+        grIzumiStarItem* star = grIzumiStarItem::create(4, "", "grIzumiStarItem", this);
+        if (star != NULL)
+        {
+            addGround(star);
+            star->setStageData(m_stageData);
+            star->startup(m_fileData, 0, 0);
         }
     }
 

@@ -7,11 +7,19 @@
 #define WAIT_SINK_RIPPLE_ANIM_INDEX NUM_SPOUT_LEVELS*NUM_SPOUT_LEVELS + 1
 #define NUM_STAR_COLOURS 5
 
+#define STAR_IT_GEN_KIND 20000
+
 struct stIzumiData {
+    struct ItemDrop {
+        u32 min;
+        u32 max;
+    };
+
     u32 starFallMinFrames;
     u32 starFallMaxFrames;
     u8 numStars;
-    char _pad[3];
+    u8 numItemStars;
+    char _pad[2];
 
     u32 stationaryMinFrames;
     u32 stationaryMaxFrames;
@@ -23,7 +31,8 @@ struct stIzumiData {
     float spoutCollisionMinHeight;
     float spoutEffectMinHeight;
     float spoutEffectDuration;
-    float shootingStarItemPosRange;
-    float shootingStarItemSpeedXRange;
-    float shootingStarItemSpeedY;
+    float starItemPosRange;
+    float starItemSpeedXRange;
+    float starItemSpeedY;
+    ItemDrop starItemDropFrames[6];
 };

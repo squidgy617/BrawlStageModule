@@ -55,6 +55,7 @@ void grIzumiStar::startup(gfArchive* archive, u32 unk1, u32 unk2) {
         this->m_effects[1].m_0x24 = 1.0;
     }
 
+    this->setTimer();
 }
 
 void grIzumiStar::update(float deltaFrame)
@@ -65,26 +66,38 @@ void grIzumiStar::update(float deltaFrame)
 
     this->timer -= deltaFrame;
     if (this->timer <= 0) {
-        this->stopGimmickEffect(0);
-        this->stopGimmickEffect(1);
-        this->startGimmickEffect(0);
-        u32 colourIndex = randi(NUM_STAR_COLOURS);
-        g_ecMgr->preSetAnmIdx(colourIndex, colourIndex, colourIndex, colourIndex, colourIndex, colourIndex);
-        this->updataGimmickEffect(0);
-        this->startGimmickEffect(1);
-        this->timer = randi(izumiData->starFallMaxFrames - izumiData->starFallMinFrames) + izumiData->starFallMinFrames;
+        this->startStarEffect(randi(NUM_STAR_COLOURS));
+        this->setTimer();
         if (this->lastPathIndex < 0) {
-            this->lastPathIndex = randi(this->m_resFile.GetResAnmChrNumEntries());
-            this->setMotion(this->lastPathIndex);
+            this->lastPathIndex = randi(this->m_resFile.GetResAnmChrNumEntries() - 1);
+            this->setMotion(this->lastPathIndex + 1);
         }
         else {
-            int pickedPathIndex = randi(this->m_resFile.GetResAnmChrNumEntries() - 1);
+            int pickedPathIndex = randi(this->m_resFile.GetResAnmChrNumEntries() - 2);
             if (pickedPathIndex >= this->lastPathIndex) {
                 pickedPathIndex += 1;
             }
             this->lastPathIndex = pickedPathIndex;
-            this->setMotion(this->lastPathIndex);
+            this->setMotion(this->lastPathIndex + 1);
         }
     }
 }
 
+void grIzumiStar::setTimer()
+{
+    stIzumiData* izumiData = static_cast<stIzumiData*>(this->getStageData());
+    this->timer = randi(izumiData->starFallMaxFrames - izumiData->starFallMinFrames) + izumiData->starFallMinFrames;
+}
+
+void grIzumiStar::startStarEffect(u32 colourIndex) {
+    this->stopStarEffect();
+    this->startGimmickEffect(0);
+    g_ecMgr->preSetAnmIdx(colourIndex, colourIndex, colourIndex, colourIndex, colourIndex, colourIndex);
+    this->updataGimmickEffect(0);
+    this->startGimmickEffect(1);
+}
+
+void grIzumiStar::stopStarEffect() {
+    this->stopGimmickEffect(0);
+    this->stopGimmickEffect(1);
+}
