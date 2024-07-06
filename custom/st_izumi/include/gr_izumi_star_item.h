@@ -13,6 +13,7 @@ protected:
     stMelee* stage;
     State state;
     float speedX;
+    int itemInstanceId;
 
 public:
     grIzumiStarItem(const char* taskName) : grIzumiStar(taskName)
