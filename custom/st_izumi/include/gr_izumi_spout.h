@@ -31,7 +31,7 @@ public:
 
     grIzumiSpout(const char* taskName) : grYakumono(taskName)
     {
-
+        currentAnimIndex = -1;
     };
 	
     virtual void update(float deltaFrame);
