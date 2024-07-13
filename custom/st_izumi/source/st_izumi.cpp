@@ -111,6 +111,13 @@ void stIzumi::createObj()
     g_ecMgr->setDrawPrio(0xffffffff);
 }
 
+u8 stIzumi::getIteamDropStatus() {
+    if (grIzumiStarItem::getRainMode() != grIzumiStarItem::Rain_None) {
+        return false;
+    }
+    return true;
+}
+
 void Ground::setStageData(void* stageData)
 {
     this->m_stageData = stageData;

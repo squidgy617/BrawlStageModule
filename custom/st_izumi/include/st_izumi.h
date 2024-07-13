@@ -49,7 +49,10 @@ public:
     virtual void update(float deltaFrame);
     virtual int getFinalTechniqColor();
     virtual bool isBamperVector();
+    virtual u8 getIteamDropStatus();
     virtual ~stIzumi() { this->releaseArchive(); };
+
+
 
     //STATIC_CHECK(sizeof(stIzumi) == 0x1D8)
 };

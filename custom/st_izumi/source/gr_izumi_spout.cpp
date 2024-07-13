@@ -153,8 +153,6 @@ void grIzumiSpout::updateLevel(float deltaFrame) {
                 this->setMotion(this->level*NUM_SPOUT_LEVELS);
             }
         }
-
-
     }
 }
 
