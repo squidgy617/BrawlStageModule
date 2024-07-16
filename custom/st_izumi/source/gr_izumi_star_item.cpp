@@ -74,10 +74,10 @@ void grIzumiStarItem::update(float deltaFrame)
                     item->setVisibilityWhole(false);
 
                     this->itemInstanceId = item->m_instanceId;
+
+                    this->startGimmickSE(0);
                 }
             }
-
-
         }
     }
     else if (this->state == State_Falling) {
@@ -95,24 +95,29 @@ void grIzumiStarItem::update(float deltaFrame)
             this->stopStarEffect();
             this->setTimer();
             this->state = State_Vanish;
+            this->stopGimmickSE(0);
         }
         else {
             if (item->isHaved()) {
                 this->stopStarEffect();
                 this->setTimer();
                 this->state = State_Vanish;
+                this->stopGimmickSE(0);
             }
             else if (soGroundUtil::checkDeadArea(&newPos, 0.0, 0.0) > 0) {
                 this->stopStarEffect();
                 this->setTimer();
                 this->state = State_Vanish;
                 item->setVanishMode(true);
+                this->stopGimmickSE(0);
             }
             else if (stRayCheck(&newPos, &dir, &outHitPos, &outCollNormalVec, 1, NULL, 0, 5)) {
                 this->stopStarEffect();
                 this->setTimer();
                 this->state = State_Vanish;
                 g_ecMgr->setEffect(0x37, &outHitPos);
+                this->stopGimmickSE(0);
+                this->startGimmickSE(1);
 
                 float lr = 1.0;
                 if (this->speedX < 0) {
