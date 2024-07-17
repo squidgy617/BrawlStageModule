@@ -11,6 +11,7 @@
 #include <st/st_utility.h>
 #include <it/it_manager.h>
 #include <sc/sc_melee.h>
+#include <so/so_external_value_accesser.h>
 
 grIzumiStarItem* grIzumiStarItem::create(int mdlIndex, const char* tgtNodeName, const char* taskName, stMelee* stage)
 {
@@ -98,7 +99,8 @@ void grIzumiStarItem::update(float deltaFrame)
             this->stopGimmickSE(0);
         }
         else {
-            if (item->isHaved()) {
+            int statusKind = soExternalValueAccesser::getStatusKind(item);
+            if (item->isHaved() || statusKind == 7 || statusKind == 6){
                 this->stopStarEffect();
                 this->setTimer();
                 this->state = State_Vanish;
@@ -134,9 +136,6 @@ void grIzumiStarItem::update(float deltaFrame)
                 item->warp(&newPos);
             }
         }
-
-
-        // TODO: Twinkle sfx?
     }
 }
 
@@ -170,3 +169,4 @@ grIzumiStarItem::RainMode grIzumiStarItem::getRainMode() {
     }
     return Rain_None;
 }
+
