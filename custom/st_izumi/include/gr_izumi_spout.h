@@ -22,13 +22,14 @@ protected:
     float spoutTimer;
     u32 currentAnimIndex;
 
+    snd3DGenerator soundGenerator;
+    int sndPtr;
+
     soAreaData areaData;
     soAreaInit areaInit;
     ykAreaData areaInfo;
 
 public:
-
-
     grIzumiSpout(const char* taskName) : grYakumono(taskName)
     {
         currentAnimIndex = -1;

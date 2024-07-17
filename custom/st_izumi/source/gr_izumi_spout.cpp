@@ -39,8 +39,9 @@ void grIzumiSpout::fountainInit(u32 spoutId)
 
     this->spoutId = spoutId;
 
-	this->isActive = false;
+	this->isActive = true;
     this->startFountainEffect();
+    this->sndPtr = this->soundGenerator.playSE(snd_se_stage_Starfox_arwin_eng, 0, 0, -1);
 
     if (g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff) {
         this->level = Level_Off;
@@ -79,14 +80,17 @@ void grIzumiSpout::updateEff(float deltaFrame)
 
     Vec3f bonePos;
     this->getNodePosition(&bonePos, 0, "Splash");
+    this->soundGenerator.setPos(&bonePos);
     if (bonePos.m_y < izumiData->spoutEffectMinHeight - 0.5 && this->isActive)
     {
         this->stopFountainEffect();
+        this->soundGenerator.stopSE(this->sndPtr, 0);
         this->isActive = false;
     }
     else if (bonePos.m_y > izumiData->spoutEffectMinHeight && !this->isActive)
     {
         this->startFountainEffect();
+        this->sndPtr = this->soundGenerator.playSE(snd_se_stage_Starfox_arwin_eng, 0, 0, -1);
         this->isActive = true;
     }
     else if (this->isActive) {

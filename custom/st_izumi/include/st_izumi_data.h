@@ -35,4 +35,6 @@ struct stIzumiData {
     float starItemSpeedXRange;
     float starItemSpeedY;
     ItemDrop starItemDropFrames[6];
+    u32 ringSndStartFrame[2];
+
 };

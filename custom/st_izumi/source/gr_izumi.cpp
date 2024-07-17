@@ -1,3 +1,4 @@
+#include "st_izumi_data.h"
 #include "gr_izumi.h"
 #include <ec/ec_mgr.h>
 #include <memory.h>
@@ -11,7 +12,41 @@ grIzumi* grIzumi::create(int mdlIndex, const char* tgtNodeName, const char* task
     return ground;
 }
 
+void grIzumi::startup(gfArchive* archive, u32 unk1, u32 unk2) {
+    grYakumono::startup(archive, unk1, unk2);
+    u32 nodeIndex = -1;
+    if (this->getNodeIndex(&nodeIndex, 0, "sound_center")) {
+        Vec3f pos;
+        this->getNodePosition(&pos, 0, nodeIndex);
+        this->centerSoundGenerator.setPos(&pos);
+        this->centerSoundGenerator.playSE(snd_se_stage_Starfox_pleiadians_eng, 0, 0, -1);
+    }
+
+}
+
 void grIzumi::update(float deltaFrame)
 {
+    stIzumiData* izumiData = static_cast<stIzumiData*>(this->getStageData());
+    float animFrames = this->m_modelAnims[0]->getFrame();
+    u32 nodeIndex;
+
+    if (animFrames == izumiData->ringSndStartFrame[0]) {
+        if (this->getNodeIndex(&nodeIndex, 0, "sound_ring1")) {
+            Vec3f pos;
+            this->getNodePosition(&pos, 0, nodeIndex);
+            this->ringSoundGenerators[0].stopSE(this->ringSndPtr[0], 0);
+            this->ringSoundGenerators[0].setPos(&pos);
+            this->ringSoundGenerators[0].playSE(snd_se_stage_Starfox_arwin_shot, 0, 0, -1);
+        }
+    }
+    if (animFrames == izumiData->ringSndStartFrame[1]) {
+        if (this->getNodeIndex(&nodeIndex, 0, "sound_ring2")) {
+            Vec3f pos;
+            this->getNodePosition(&pos, 0, nodeIndex);
+            this->ringSoundGenerators[1].stopSE(this->ringSndPtr[1], 0);
+            this->ringSoundGenerators[1].setPos(&pos);
+            this->ringSoundGenerators[1].playSE(snd_se_stage_Starfox_arwin_shot_2, 0, 0, -1);
+        }
+    }
 
 }
