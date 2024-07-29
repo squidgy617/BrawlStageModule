@@ -20,7 +20,7 @@ void grAdventureBarrelCannon::prepareCannonData(Vec2f* pos, float rot, float rot
 
     this->_cannonData.motionPathData.m_motionRatio = 1.0;
     this->_cannonData.motionPathData.m_index = 0;
-    this->_cannonData.motionPathData.m_pathMode = MotionPathMode_Loop;
+    this->_cannonData.motionPathData.m_pathMode = MotionPath_Loop;
     this->_cannonData.motionPathData.m_mdlIndex = motionPathIndex;
     this->_cannonData.motionPathData.m_7 = 0x0;
     this->_cannonData.pos = *pos;
@@ -69,7 +69,7 @@ void grAdventureBarrelCannon::startup(gfArchive* archive, u32 unk1, u32 unk2)
     }
     this->cannonData->field_0xce = 8;
 
-    grGimmickMotionPathInfo motionPathInfo = { archive, &this->cannonData->motionPathData, false, true, 0, 0, 0, 0, 0, 0 };
+    grGimmickMotionPathInfo motionPathInfo = { archive, &this->cannonData->motionPathData, this->_cannonData.rot >= 360, true, 0, 0, 0, 0, 0, 0 };
     this->createAttachMotionPath(&motionPathInfo, &this->cannonData->motionPathTriggerData, "MoveNode");
     nw4r::g3d::ResAnmChrData* anmChr = this->m_resFile.GetResAnmChr(0).ptr();
     if (anmChr != NULL) {
@@ -495,9 +495,9 @@ void grAdventureBarrelCannon::presentShootEvent(int playerCannonIndex)
     attackData.m_bits.isCollisionPartRegion2 = true;
     attackData.m_bits.isCollisionPartRegion1 = true;
     attackData.m_bits.isCollisionPartRegion0 = true;
-    attackData.m_bits.elementType = Element_Type_Slash;
-    attackData.m_bits.hitSoundLevel = Hit_Sound_Level_Small;
-    attackData.m_bits.hitSoundType = Hit_Sound_Type_Slash;
+    attackData.m_bits.elementType = soCollisionAttackData::Element_Slash;
+    attackData.m_bits.hitSoundLevel = soCollisionAttackData::Hit_Sound_Small;
+    attackData.m_bits.hitSoundType = soCollisionAttackData::Hit_Sound_Slash;
     attackData.m_bits.isClankable = false;
     attackData.m_bits.field_0x34_3 = false;
     attackData.m_bits.field_0x34_4 = false;

@@ -63,7 +63,7 @@ void stDemo::update(float frameDiff)
             this->testCreated = true;
             emManager* enemyManager = emManager::getInstance();
             emCreate create;
-            create.m_8 = 10000;
+            create.m_teamNo = 10000;
             create.m_difficulty = 15;
             create.m_enemyKind = Enemy_Killer;
             create.m_startStatusKind = 6;
@@ -78,7 +78,7 @@ void stDemo::update(float frameDiff)
             create.m_epbm = NULL;
             create.m_motionPath = NULL;
             create.m_epsp = NULL;
-            create.m_72 = 0xFFFF;
+            create.m_parentCreateId = 0xFFFF;
             create.m_startPos = (Vec3f){positions[0].m_x, positions[0].m_y, 0.0};//{0.0, 5.0};
             //OSReport("Preload archive count result: %d \n", enemyManager->getPreloadArchiveCountFromKind(Enemy_Kuribo));
             //int result = enemyManager->createEnemy(&create);
@@ -128,7 +128,7 @@ void stDemo::createObj()
 
     this->doorData.motionPathData.m_motionRatio = 1.0;
     this->doorData.motionPathData.m_index = 0;
-    this->doorData.motionPathData.m_pathMode = MotionPathMode_Loop;
+    this->doorData.motionPathData.m_pathMode = MotionPath_Loop;
     this->doorData.motionPathData.m_mdlIndex = 0xFF;
     this->doorData.motionPathData.m_7 = 0x0;
     this->doorData._spacer[7] = 0x12;
@@ -152,7 +152,7 @@ void stDemo::createObj()
 
     this->cannonData.motionPathData.m_motionRatio = 1.0;
     this->cannonData.motionPathData.m_index = 0;
-    this->cannonData.motionPathData.m_pathMode = MotionPathMode_Loop;
+    this->cannonData.motionPathData.m_pathMode = MotionPath_Loop;
     this->cannonData.motionPathData.m_mdlIndex = 0xFF;
     this->cannonData.motionPathData.m_7 = 0x0;
     this->cannonData._spacer[7] = 0x12;
@@ -182,15 +182,15 @@ void stDemo::createObj()
     this->cannonData.attackData.m_reactionFix = 0;
     this->cannonData.attackData.m_reactionAdd = 0x5;
     //char _spacer[4];
-    this->cannonData.attackData.m_elementType = Element_Type_Normal;
+    this->cannonData.attackData.m_elementType = soCollisionAttackData::Element_Normal;
     this->cannonData.attackData.m_isClankable = false;
     this->cannonData.attackData.m_unk2 = false;
     this->cannonData.attackData.m_unk3 = true;
     this->cannonData.attackData.m_unk4 = true;
     //char _spacer2[0xC];
     this->cannonData.attackData.m_detectionRate = 0x3c;
-    this->cannonData.attackData.m_hitSoundLevel = Hit_Sound_Level_Medium;
-    this->cannonData.attackData.m_hitSoundType = Hit_Sound_Type_Punch;
+    this->cannonData.attackData.m_hitSoundLevel = soCollisionAttackData::Hit_Sound_Medium;
+    this->cannonData.attackData.m_hitSoundType = soCollisionAttackData::Hit_Sound_Punch;
     this->cannonData.attackData.m_unk5 = false;
     this->cannonData.attackData.m_isShapeCapsule = false;
     //char _spacer3[6];
@@ -432,7 +432,7 @@ int stDemo::getDefaultLightSetIndex()
 {
     return 0x14;
 }
-stRange* stDemo::getAIRange()
+Rect2D* stDemo::getAIRange()
 {
     return &this->m_aiRange;
 }
