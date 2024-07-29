@@ -157,7 +157,7 @@ int stWorldTournament::getScrollDir(u32 unk1) {
 int stWorldTournament::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stWorldTournament::getAIRange() {
+Rect2D* stWorldTournament::getAIRange() {
    return &this->m_aiRange;
 }
 bool stWorldTournament::isAdventureStage(){

@@ -67,10 +67,10 @@ void grQbertRed::setupAttack() {
     overwriteAttackData->m_bits.isCollisionPartRegion2 = true;
     overwriteAttackData->m_bits.isCollisionPartRegion1 = true;
     overwriteAttackData->m_bits.isCollisionPartRegion0 = true;
-    overwriteAttackData->m_bits.elementType = Element_Type_Normal;
+    overwriteAttackData->m_bits.elementType = soCollisionAttackData::Element_Normal;
 
-    overwriteAttackData->m_bits.hitSoundLevel = Hit_Sound_Level_Small;
-    overwriteAttackData->m_bits.hitSoundType = Hit_Sound_Type_NoneUnique;
+    overwriteAttackData->m_bits.hitSoundLevel = soCollisionAttackData::Hit_Sound_Small;
+    overwriteAttackData->m_bits.hitSoundType = soCollisionAttackData::Hit_Sound_NoneUnique;
     overwriteAttackData->m_bits.isClankable = true;
     overwriteAttackData->m_bits.field_0x34_3 = false;
     overwriteAttackData->m_bits.field_0x34_4 = false;
@@ -83,7 +83,7 @@ void grQbertRed::setupAttack() {
     overwriteAttackData->m_bits.field_0x38_1 = false;
     overwriteAttackData->m_bits.ignoreInvincibility = false;
     overwriteAttackData->m_bits.ignoreIntangibility = false;
-    overwriteAttackData->m_bits.facingRestriction = Facing_Restriction_Normal;
+    overwriteAttackData->m_bits.facingRestriction = soCollisionAttackData::Facing_Restriction_Normal;
     overwriteAttackData->m_bits.field_0x38_5 = false;
     overwriteAttackData->m_bits.enableFriendlyFire = false;
     overwriteAttackData->m_bits.disableHitstop = false;
@@ -118,7 +118,7 @@ void grQbertRed::updateMove(float frameDelta) {
     if (this->isDead) { // Launched
         this->timer += frameDelta;
         Vec3f pos = this->getPos();
-        stRange* range = &this->stage->m_deadRange;
+        Rect2D* range = &this->stage->m_deadRange;
         if (pos.m_y <= range->m_bottom) {
             if (this->timer >= qbertStageData->dropFrames) {
                 this->setStart();

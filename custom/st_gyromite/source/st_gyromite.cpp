@@ -162,7 +162,7 @@ int stGyromite::getScrollDir(u32 unk1) {
 int stGyromite::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stGyromite::getAIRange() {
+Rect2D* stGyromite::getAIRange() {
     return &this->m_aiRange;
 }
 bool stGyromite::isAdventureStage(){

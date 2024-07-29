@@ -90,7 +90,7 @@ class stQbert : public stMelee {
         void appearanceFighterLocal();
         int getScrollDir(u32 unk1);
         int getDefaultLightSetIndex();
-        stRange* getAIRange();
+        Rect2D* getAIRange();
         bool isAdventureStage();
         int getPokeTrainerDrawLayer();
         float getPokeTrainerPositionZ();

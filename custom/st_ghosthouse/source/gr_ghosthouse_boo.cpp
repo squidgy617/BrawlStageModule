@@ -91,10 +91,10 @@ void grGhostHouseBoo::setupAttack() {
     overwriteAttackData->m_bits.isCollisionPartRegion2 = true;
     overwriteAttackData->m_bits.isCollisionPartRegion1 = true;
     overwriteAttackData->m_bits.isCollisionPartRegion0 = true;
-    overwriteAttackData->m_bits.elementType = Element_Type_Normal;
+    overwriteAttackData->m_bits.elementType = Element_Normal;
 
-    overwriteAttackData->m_bits.hitSoundLevel = Hit_Sound_Level_Small;
-    overwriteAttackData->m_bits.hitSoundType = Hit_Sound_Type_Punch;
+    overwriteAttackData->m_bits.hitSoundLevel = Hit_Sound_Small;
+    overwriteAttackData->m_bits.hitSoundType = Hit_Sound_Punch;
     overwriteAttackData->m_bits.isClankable = false;
     overwriteAttackData->m_bits.field_0x34_3 = false;
     overwriteAttackData->m_bits.field_0x34_4 = false;
@@ -107,7 +107,7 @@ void grGhostHouseBoo::setupAttack() {
     overwriteAttackData->m_bits.field_0x38_1 = false;
     overwriteAttackData->m_bits.ignoreInvincibility = false;
     overwriteAttackData->m_bits.ignoreIntangibility = false;
-    overwriteAttackData->m_bits.facingRestriction = Facing_Restriction_Normal;
+    overwriteAttackData->m_bits.facingRestriction = soCollisionAttackData::Facing_Restriction_Normal;
     overwriteAttackData->m_bits.field_0x38_5 = false;
     overwriteAttackData->m_bits.enableFriendlyFire = false;
     overwriteAttackData->m_bits.disableHitstop = false;
@@ -398,8 +398,10 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                     Vec3f targetFighterPos = g_ftManager->getFighterCenterPos(entryId, -1);
                     Vec3f dirVec = targetFighterPos - this->getPos();
                     float targetFighterLr = g_ftManager->getFighterLr(entryId, -1);
+
+                    Vec2f rotDir;
                     if (dirVec.m_x >= 0) {
-                        this->setRot(0, ghostHouseData->booRot, 0);
+                        rotDir = (Vec2f){1.0, 0.0};
                         if (targetFighterLr < 0) {
                             this->changeState(State_ShyStart);
                         }
@@ -408,7 +410,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                         }
                     }
                     else {
-                        this->setRot(0, -ghostHouseData->booRot, 0);
+                        rotDir = (Vec2f){-1.0, 0.0};
                         if (targetFighterLr > 0) {
                             this->changeState(State_ShyStart);
                         }
@@ -416,6 +418,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                             this->changeState(State_Stalk);
                         }
                     }
+                    this->rotateToDisp(&rotDir, ghostHouseData->booRot, deltaFrame * BOO_ROT_SPEED);
                     if (this->state == State_Stalk) {
                         Vec3f currentPos = this->getPos();
                         this->speed += ghostHouseData->booFollowAccel * deltaFrame;
@@ -431,6 +434,8 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
                 }
             }
             break;
+        default:
+            break;
     }
 
 }
@@ -439,7 +444,7 @@ void grGhostHouseBoo::setVanish() {
     this->changeState(State_Vanish);
 }
 
-void grGhostHouseBoo::setSpawn(stRange* spawnRange, Vec3f* centerPos, bool useAltAnim) {
+void grGhostHouseBoo::setSpawn(Rect2D* spawnRange, Vec3f* centerPos, bool useAltAnim) {
     stRange range = {spawnRange->m_left + centerPos->m_x, spawnRange->m_right + centerPos->m_x, spawnRange->m_top + centerPos->m_y, spawnRange->m_bottom + centerPos->m_y};
     this->setPos(randf()*(range.m_right - range.m_left) + range.m_left, randf()*(range.m_top - range.m_bottom) + range.m_bottom, 0);
     this->useAltAnim = useAltAnim;
@@ -448,7 +453,7 @@ void grGhostHouseBoo::setSpawn(stRange* spawnRange, Vec3f* centerPos, bool useAl
 
 void grGhostHouseBoo::setStalk(int playerTarget) {
     this->playerTarget = playerTarget;
-    this->changeState(grGhostHouseBoo::State_StalkStart);
+    this->changeState(State_StalkStart);
 }
 
 void grGhostHouseBoo::setCircle(grGimmickMotionPath* motionPath, float startRatio, float circleSpeed) {
@@ -468,7 +473,7 @@ void grGhostHouseBoo::setCircle(Vec2f* circleCenterPos, float circleRadius, floa
     this->changeState(State_CircleStart);
 }
 
-void grGhostHouseBoo::setSnakeLeader(stRange* spawnRange, Vec3f* centerPos, u8 numFollowers) {
+void grGhostHouseBoo::setSnakeLeader(Rect2D* spawnRange, Vec3f* centerPos, u8 numFollowers) {
     stGhostHouseData* ghostHouseData = static_cast<stGhostHouseData*>(this->getStageData());
 
     this->numSnakeFollowers = numFollowers;

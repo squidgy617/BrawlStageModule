@@ -159,7 +159,7 @@ int stPictSimple::getScrollDir(u32 unk1) {
 int stPictSimple::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stPictSimple::getAIRange() {
+Rect2D* stPictSimple::getAIRange() {
     return &this->m_aiRange;
 }
 bool stPictSimple::isAdventureStage(){

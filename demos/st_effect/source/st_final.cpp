@@ -157,7 +157,7 @@ int stFinal::getDefaultLightSetIndex()
 {
     return 0x14;
 }
-stRange* stFinal::getAIRange()
+Rect2D* stFinal::getAIRange()
 {
     return &this->m_aiRange;
 }

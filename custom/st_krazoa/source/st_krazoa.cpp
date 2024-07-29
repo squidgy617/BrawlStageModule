@@ -209,7 +209,7 @@ int stKrazoa::getScrollDir(u32 unk1) {
 int stKrazoa::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stKrazoa::getAIRange() {
+Rect2D* stKrazoa::getAIRange() {
     return &this->m_aiRange;
 }
 bool stKrazoa::isAdventureStage(){

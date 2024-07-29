@@ -92,7 +92,7 @@ void stBoss::update(float deltaFrame)
                         nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(chosenNodeIndex)).ptr();
 
                         emCreate create;
-                        create.m_8 = 10000;
+                        create.m_teamNo = 10000;
                         create.m_difficulty = resNodeData->m_rotation.m_y;
                         create.m_enemyKind = (EnemyKind)i;
                         create.m_startStatusKind = resNodeData->m_rotation.m_x;
@@ -107,12 +107,12 @@ void stBoss::update(float deltaFrame)
                         create.m_posX1 = -create.m_startPos.m_x;
                         create.m_posX2 = -create.m_startPos.m_x;
                         create.m_posY1 = -create.m_startPos.m_y;
-                        create.m_posY1 = -create.m_startPos.m_y;
+                        create.m_posY2 = -create.m_startPos.m_y;
                         create.m_connectedTriggerId = 0;
                         create.m_epbm = NULL;
                         create.m_motionPath = NULL;
                         create.m_epsp = NULL;
-                        create.m_72 = 0xFFFF;
+                        create.m_parentCreateId = 0xFFFF;
                         //OSReport("Preload archive count result: %d \n", enemyManager->getPreloadArchiveCountFromKind(Enemy_Kuribo));
 
                         int result = enemyManager->createEnemy(&create);
@@ -260,7 +260,7 @@ void stBoss::clearHeap() {
         this->primFaceArchive = NULL;
     }
 
-    gfModuleManager::getInstance()->destroy("sora_enemy_vs.rel");
+    gfModuleManager::getInstance()->destroy("sora_enemy.rel");
 }
 
 void Ground::setStageData(void* stageData)
@@ -360,7 +360,7 @@ int stBoss::getDefaultLightSetIndex()
 {
     return 0x14;
 }
-stRange* stBoss::getAIRange()
+Rect2D* stBoss::getAIRange()
 {
     return &this->m_aiRange;
 }

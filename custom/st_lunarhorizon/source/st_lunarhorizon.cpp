@@ -241,7 +241,7 @@ int stLunarHorizon::getScrollDir(u32 unk1) {
 int stLunarHorizon::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stLunarHorizon::getAIRange() {
+Rect2D* stLunarHorizon::getAIRange() {
     return &this->m_aiRange;
 }
 bool stLunarHorizon::isAdventureStage(){

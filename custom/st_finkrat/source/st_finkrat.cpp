@@ -165,7 +165,7 @@ int stFinkrat::getScrollDir(u32 unk1) {
 int stFinkrat::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stFinkrat::getAIRange() {
+Rect2D* stFinkrat::getAIRange() {
     return &this->m_aiRange;
 }
 bool stFinkrat::isAdventureStage(){

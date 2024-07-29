@@ -173,7 +173,7 @@ int stPointlessExpress::getScrollDir(u32 unk1) {
 int stPointlessExpress::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stPointlessExpress::getAIRange() {
+Rect2D* stPointlessExpress::getAIRange() {
     return &this->m_aiRange;
 }
 bool stPointlessExpress::isAdventureStage(){

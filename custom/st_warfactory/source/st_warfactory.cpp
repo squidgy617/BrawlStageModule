@@ -153,7 +153,7 @@ int stWarFactory::getScrollDir(u32 unk1) {
 int stWarFactory::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stWarFactory::getAIRange() {
+Rect2D* stWarFactory::getAIRange() {
     return &this->m_aiRange;
 }
 bool stWarFactory::isAdventureStage(){

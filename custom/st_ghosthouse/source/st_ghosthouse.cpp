@@ -90,6 +90,10 @@ void stGhostHouse::createObj() {
         createObjGround(1);
         groundCount++;
     }
+    this->bigBooStartGroundIndex = groundCount;
+    createObjBigBoo(7);
+    groundCount++;
+
     this->circleMotionPathStartGroundIndex = groundCount;
 
     grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
@@ -141,6 +145,18 @@ void stGhostHouse::createObjBoo(int mdlIndex, bool useAltAnim) {
         boo->setSpawn(&this->m_cameraParam1->m_range, &this->m_cameraParam1->m_centerPos, useAltAnim);
     }
 }
+
+void stGhostHouse::createObjBigBoo(int mdlIndex) {
+    grGhostHouseBigBoo* boo = grGhostHouseBigBoo::create(mdlIndex, "", "grGhostHouseBigBoo");
+    if (boo != NULL)
+    {
+        addGround(boo);
+        boo->setStageData(m_stageData);
+        boo->startup(m_fileData, 0, 0);
+        boo->setSpawn();
+    }
+}
+
 void stGhostHouse::createObjBubble(int mdlIndex) {
     grGhostHouseBubble* bubble = grGhostHouseBubble::create(mdlIndex, "", "grGhostHouseBubble");
     if (bubble != NULL)
@@ -201,7 +217,7 @@ void stGhostHouse::update(float deltaFrame){
             Fighter* fighter = g_ftManager->getFighter(entryId, -1);
             ipButton currentButton = fighter->m_moduleAccesser->getControllerModule()->getButton();
             if (currentButton.m_downTaunt) {
-                this->changeEvent(Event_Stalk);
+                this->changeEvent(Event_StalkBig);
             }
             else if (currentButton.m_leftTaunt) {
                 this->changeEvent(Event_Circle);
@@ -335,6 +351,17 @@ void stGhostHouse::startNextEvent() {
                     }
                 }
             }
+        }
+            break;
+        case Event_StalkBig:
+        {
+            grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
+            u32 nodeIndex = ground->getNodeIndex(0, "BigBoo");
+            nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 1)).ptr();
+            nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 2)).ptr();
+
+            grGhostHouseBigBoo *boo = static_cast<grGhostHouseBigBoo*>(this->getGround(this->bigBooStartGroundIndex));
+            boo->setStalk(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy);
         }
             break;
         case Event_Circle:
@@ -520,6 +547,13 @@ void stGhostHouse::changeEvent(GhostEvent event) {
                 }
                 this->eventStartTimer = 120;
                 break;
+            case Event_StalkBig:
+            {
+                grGhostHouseBigBoo *boo = static_cast<grGhostHouseBigBoo*>(this->getGround(this->bigBooStartGroundIndex));
+                boo->setVanish();
+                this->eventStartTimer = 120;
+            }
+                break;
             case Event_Bubble:
             {
                 for (int i = 0; i < ghostHouseData->numBubbles; i++) {
@@ -624,7 +658,7 @@ int stGhostHouse::getScrollDir(u32 unk1) {
 int stGhostHouse::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stGhostHouse::getAIRange() {
+Rect2D* stGhostHouse::getAIRange() {
     return &this->m_aiRange;
 }
 bool stGhostHouse::isAdventureStage(){

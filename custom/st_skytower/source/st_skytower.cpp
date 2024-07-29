@@ -161,7 +161,7 @@ int stSkyTower::getDefaultLightSetIndex()
 {
     return 0x14;
 }
-stRange* stSkyTower::getAIRange()
+Rect2D* stSkyTower::getAIRange()
 {
     return &this->m_aiRange;
 }

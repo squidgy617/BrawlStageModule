@@ -203,7 +203,7 @@ int stCheeseBridge::getScrollDir(u32 unk1) {
 int stCheeseBridge::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stCheeseBridge::getAIRange() {
+Rect2D* stCheeseBridge::getAIRange() {
     return &this->m_aiRange;
 }
 bool stCheeseBridge::isAdventureStage(){

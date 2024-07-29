@@ -6,6 +6,7 @@
 #include <mt/mt_prng.h>
 #include "gr_ghosthouse.h"
 #include "gr_ghosthouse_boo.h"
+#include "gr_ghosthouse_bigboo.h"
 #include "gr_ghosthouse_bubble.h"
 #include "gr_ghosthouse_eerie.h"
 
@@ -42,6 +43,7 @@ class stGhostHouse : public stMelee {
         u32 bubbleStartGroundIndex;
         u32 eerieStartGroundIndex;
         u32 fishingBooStartGroundIndex;
+        u32 bigBooStartGroundIndex;
 
         u32 circleMotionPathStartGroundIndex;
 
@@ -89,7 +91,7 @@ class stGhostHouse : public stMelee {
         void appearanceFighterLocal();
         int getScrollDir(u32 unk1);
         int getDefaultLightSetIndex();
-        stRange* getAIRange();
+        Rect2D* getAIRange();
         bool isAdventureStage();
         int getPokeTrainerDrawLayer();
         float getPokeTrainerPositionZ();
@@ -109,6 +111,7 @@ class stGhostHouse : public stMelee {
         virtual void createObjBoo(int mdlIndex, bool useAltAnim);
         virtual void createObjBubble(int mdlIndex);
         virtual void createObjEerie(int mdlIndex);
+        virtual void createObjBigBoo(int mdlIndex);
 
         virtual GhostEvent decideNextEvent();
         virtual void changeEvent(GhostEvent event);

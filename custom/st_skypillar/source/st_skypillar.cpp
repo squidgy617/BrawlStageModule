@@ -61,7 +61,7 @@ void stSkyPillar::update(float frameDiff)
             this->testCreated = true;
             emManager* enemyManager = emManager::getInstance();
             emCreate create;
-            create.m_8 = 10000;
+            create.m_teamNo = 10000;
             create.m_difficulty = 15;
             create.m_enemyKind = Enemy_Kuribo;
             create.m_startStatusKind = 2;
@@ -72,12 +72,12 @@ void stSkyPillar::update(float frameDiff)
             create.m_posX1 = -create.m_startPos.m_x;
             create.m_posX2 = -create.m_startPos.m_x;
             create.m_posY1 = -create.m_startPos.m_y;
-            create.m_posY1 = -create.m_startPos.m_y;
+            create.m_posY2 = -create.m_startPos.m_y;
             create.m_connectedTriggerId = 0;
             create.m_epbm = NULL;
             create.m_motionPath = NULL;
             create.m_epsp = NULL;
-            create.m_72 = 0xFFFF;
+            create.m_parentCreateId = 0xFFFF;
             //OSReport("Preload archive count result: %d \n", enemyManager->getPreloadArchiveCountFromKind(Enemy_Kuribo));
             //int result = enemyManager->createEnemy(&create);
 
@@ -293,7 +293,7 @@ int stSkyPillar::getDefaultLightSetIndex()
 {
     return 0x14;
 }
-stRange* stSkyPillar::getAIRange()
+Rect2D* stSkyPillar::getAIRange()
 {
     return &this->m_aiRange;
 }

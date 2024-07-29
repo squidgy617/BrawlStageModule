@@ -96,14 +96,14 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     this->cannonData[index].attackData.m_reactionEffect = 0x19;
     this->cannonData[index].attackData.m_reactionFix = 0;
     this->cannonData[index].attackData.m_reactionAdd = 0x5;
-    this->cannonData[index].attackData.m_elementType = Element_Type_Normal;
+    this->cannonData[index].attackData.m_elementType = soCollisionAttackData::Element_Normal;
     this->cannonData[index].attackData.m_isClankable = false;
     this->cannonData[index].attackData.m_unk2 = false;
     this->cannonData[index].attackData.m_unk3 = true;
     this->cannonData[index].attackData.m_unk4 = true;
     this->cannonData[index].attackData.m_detectionRate = 0x3c;
-    this->cannonData[index].attackData.m_hitSoundLevel = Hit_Sound_Level_Medium;
-    this->cannonData[index].attackData.m_hitSoundType = Hit_Sound_Type_Punch;
+    this->cannonData[index].attackData.m_hitSoundLevel = soCollisionAttackData::Hit_Sound_Medium;
+    this->cannonData[index].attackData.m_hitSoundType = soCollisionAttackData::Hit_Sound_Punch;
     this->cannonData[index].attackData.m_unk5 = false;
     this->cannonData[index].attackData.m_isShapeCapsule = false;
     this->cannonData[index].attackData.m_nodeIndex = 0;
@@ -223,7 +223,7 @@ int stSmashketball::getScrollDir(u32 unk1) {
 int stSmashketball::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stSmashketball::getAIRange() {
+Rect2D* stSmashketball::getAIRange() {
     return &this->m_aiRange;
 }
 bool stSmashketball::isAdventureStage(){

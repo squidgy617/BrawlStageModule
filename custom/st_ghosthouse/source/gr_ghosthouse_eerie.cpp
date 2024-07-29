@@ -58,10 +58,10 @@ void grGhostHouseEerie::setupAttack() {
     overwriteAttackData->m_bits.isCollisionPartRegion2 = true;
     overwriteAttackData->m_bits.isCollisionPartRegion1 = true;
     overwriteAttackData->m_bits.isCollisionPartRegion0 = true;
-    overwriteAttackData->m_bits.elementType = Element_Type_Normal;
+    overwriteAttackData->m_bits.elementType = soCollisionAttackData::Element_Type_Normal;
 
-    overwriteAttackData->m_bits.hitSoundLevel = Hit_Sound_Level_Small;
-    overwriteAttackData->m_bits.hitSoundType = Hit_Sound_Type_Punch;
+    overwriteAttackData->m_bits.hitSoundLevel = soCollisionAttackData::Hit_Sound_Small;
+    overwriteAttackData->m_bits.hitSoundType = soCollisionAttackData::Hit_Sound_Punch;
     overwriteAttackData->m_bits.isClankable = false;
     overwriteAttackData->m_bits.field_0x34_3 = false;
     overwriteAttackData->m_bits.field_0x34_4 = false;
@@ -74,7 +74,7 @@ void grGhostHouseEerie::setupAttack() {
     overwriteAttackData->m_bits.field_0x38_1 = false;
     overwriteAttackData->m_bits.ignoreInvincibility = false;
     overwriteAttackData->m_bits.ignoreIntangibility = false;
-    overwriteAttackData->m_bits.facingRestriction = Facing_Restriction_Normal;
+    overwriteAttackData->m_bits.facingRestriction = soCollisionAttackData::Facing_Restriction_Normal;
     overwriteAttackData->m_bits.field_0x38_5 = false;
     overwriteAttackData->m_bits.enableFriendlyFire = false;
     overwriteAttackData->m_bits.disableHitstop = false;

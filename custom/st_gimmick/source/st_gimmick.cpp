@@ -459,7 +459,7 @@ int stGimmick::getScrollDir(u32 unk1) {
 int stGimmick::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stGimmick::getAIRange() {
+Rect2D* stGimmick::getAIRange() {
     return &this->m_aiRange;
 }
 bool stGimmick::isAdventureStage(){

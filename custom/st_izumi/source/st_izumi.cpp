@@ -215,7 +215,7 @@ int stIzumi::getDefaultLightSetIndex()
 {
     return 0x14;
 }
-stRange* stIzumi::getAIRange()
+Rect2D* stIzumi::getAIRange()
 {
     return &this->m_aiRange;
 }

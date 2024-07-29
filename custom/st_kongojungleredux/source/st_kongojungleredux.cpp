@@ -198,7 +198,7 @@ int stKongoJungleRedux::getScrollDir(u32 unk1) {
 int stKongoJungleRedux::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stKongoJungleRedux::getAIRange() {
+Rect2D* stKongoJungleRedux::getAIRange() {
     return &this->m_aiRange;
 }
 bool stKongoJungleRedux::isAdventureStage(){

@@ -404,7 +404,7 @@ int stQbert::getScrollDir(u32 unk1) {
 int stQbert::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stQbert::getAIRange() {
+Rect2D* stQbert::getAIRange() {
     return &this->m_aiRange;
 }
 bool stQbert::isAdventureStage(){

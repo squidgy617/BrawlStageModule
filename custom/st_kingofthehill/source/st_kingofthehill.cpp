@@ -485,7 +485,7 @@ int stKingOfTheHill::getScrollDir(u32 unk1) {
 int stKingOfTheHill::getDefaultLightSetIndex(){
    return 0x14;
 }
-stRange* stKingOfTheHill::getAIRange() {
+Rect2D* stKingOfTheHill::getAIRange() {
     return &this->m_aiRange;
 }
 bool stKingOfTheHill::isAdventureStage(){
