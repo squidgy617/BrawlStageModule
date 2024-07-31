@@ -55,7 +55,7 @@ void grLava::setupAttack() {
     overwriteAttackData->m_bits.isClankable = false;
     overwriteAttackData->m_bits.field_0x34_3 = false;
     overwriteAttackData->m_bits.field_0x34_4 = false;
-    overwriteAttackData->m_bits.isBlockable = false;
+    overwriteAttackData->m_bits.isShieldable = false;
     overwriteAttackData->m_bits.isReflectable = false;
     overwriteAttackData->m_bits.isAbsorbable = false;
     overwriteAttackData->m_bits.region = soCollisionAttackData::Region_None;

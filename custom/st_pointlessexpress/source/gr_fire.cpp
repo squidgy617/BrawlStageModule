@@ -74,7 +74,7 @@ void grFire::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     overwriteAttackData->m_bits.isClankable = false;
     overwriteAttackData->m_bits.field_0x34_3 = false;
     overwriteAttackData->m_bits.field_0x34_4 = false;
-    overwriteAttackData->m_bits.isBlockable = true;
+    overwriteAttackData->m_bits.isShieldable = true;
     overwriteAttackData->m_bits.isReflectable = false;
     overwriteAttackData->m_bits.isAbsorbable = false;
     overwriteAttackData->m_bits.region = soCollisionAttackData::Region_None;
