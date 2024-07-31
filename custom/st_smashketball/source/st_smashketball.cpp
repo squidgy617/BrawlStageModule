@@ -68,7 +68,7 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     stSmashketballData* smashketballData = (stSmashketballData*)this->m_stageData;
     this->cannonData[index].motionPathData.m_motionRatio = 1.0;
     this->cannonData[index].motionPathData.m_index = 0;
-    this->cannonData[index].motionPathData.m_pathMode = MotionPathMode_Loop;
+    this->cannonData[index].motionPathData.m_pathMode = MotionPath_Loop;
     this->cannonData[index].motionPathData.m_mdlIndex = 0xFF;
     this->cannonData[index].motionPathData.m_7 = 0x0;
     this->cannonData[index].areaOffsetPos = (Vec2f){0.0, 0.0};
@@ -96,14 +96,14 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     this->cannonData[index].attackData.m_reactionEffect = 0x19;
     this->cannonData[index].attackData.m_reactionFix = 0;
     this->cannonData[index].attackData.m_reactionAdd = 0x5;
-    this->cannonData[index].attackData.m_elementType = soCollisionAttackData::Element_Normal;
+    this->cannonData[index].attackData.m_attribute = soCollisionAttackData::Attribute_Normal;
     this->cannonData[index].attackData.m_isClankable = false;
     this->cannonData[index].attackData.m_unk2 = false;
     this->cannonData[index].attackData.m_unk3 = true;
     this->cannonData[index].attackData.m_unk4 = true;
     this->cannonData[index].attackData.m_detectionRate = 0x3c;
-    this->cannonData[index].attackData.m_hitSoundLevel = soCollisionAttackData::Hit_Sound_Medium;
-    this->cannonData[index].attackData.m_hitSoundType = soCollisionAttackData::Hit_Sound_Punch;
+    this->cannonData[index].attackData.m_soundLevel = soCollisionAttackData::Sound_Level_Medium;
+    this->cannonData[index].attackData.m_soundAttribute = soCollisionAttackData::Sound_Attribute_Punch;
     this->cannonData[index].attackData.m_unk5 = false;
     this->cannonData[index].attackData.m_isShapeCapsule = false;
     this->cannonData[index].attackData.m_nodeIndex = 0;

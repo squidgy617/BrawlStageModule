@@ -47,30 +47,18 @@ void grCheeseBridgeSaw::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
     overwriteAttackData->m_bits.nodeIndex = startHitboxNode;
 
-    overwriteAttackData->m_bits.isCollisionCategory9 = true;
-    overwriteAttackData->m_bits.isCollisionCategory8 = true;
-    overwriteAttackData->m_bits.isCollisionCategory7 = true;
-    overwriteAttackData->m_bits.isCollisionCategory6 = true;
-    overwriteAttackData->m_bits.isCollisionCategory5 = true;
-    overwriteAttackData->m_bits.isCollisionCategory4 = true;
-    overwriteAttackData->m_bits.isCollisionCategory3 = true;
-    overwriteAttackData->m_bits.isCollisionCategory2 = true;
-    overwriteAttackData->m_bits.isCollisionCategory1 = true;
-    overwriteAttackData->m_bits.isCollisionCategory0 = true;
+    overwriteAttackData->m_masks.category = COLLISION_CATEGORY_MASK_ALL;
 
-    overwriteAttackData->m_bits.isCollisionSituationODD = true;
-    overwriteAttackData->m_bits.isCollisionSituationAir = true;
-    overwriteAttackData->m_bits.isCollisionSituationGround = true;
+    overwriteAttackData->m_bits.isSituationODD = true;
+    overwriteAttackData->m_bits.isSituationAir = true;
+    overwriteAttackData->m_bits.isSituationGround = true;
 
     overwriteAttackData->m_bits.field_0x30_3 = false;
-    overwriteAttackData->m_bits.isCollisionPartRegion3 = true;
-    overwriteAttackData->m_bits.isCollisionPartRegion2 = true;
-    overwriteAttackData->m_bits.isCollisionPartRegion1 = true;
-    overwriteAttackData->m_bits.isCollisionPartRegion0 = true;
-    overwriteAttackData->m_bits.elementType = soCollisionAttackData::Element_Slash;
+    overwriteAttackData->m_masks.part = COLLISION_PART_MASK_ALL;
+    overwriteAttackData->m_bits.attribute = soCollisionAttackData::Attribute_Cutup;
 
-    overwriteAttackData->m_bits.hitSoundLevel = soCollisionAttackData::Hit_Sound_Medium;
-    overwriteAttackData->m_bits.hitSoundType = soCollisionAttackData::Hit_Sound_Slash;
+    overwriteAttackData->m_bits.soundLevel = soCollisionAttackData::Sound_Level_Medium;
+    overwriteAttackData->m_bits.soundAttribute = soCollisionAttackData::Sound_Attribute_Cutup;
     overwriteAttackData->m_bits.isClankable = false;
     overwriteAttackData->m_bits.field_0x34_3 = false;
     overwriteAttackData->m_bits.field_0x34_4 = false;
@@ -83,13 +71,13 @@ void grCheeseBridgeSaw::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     overwriteAttackData->m_bits.field_0x38_1 = false;
     overwriteAttackData->m_bits.ignoreInvincibility = false;
     overwriteAttackData->m_bits.ignoreIntangibility = false;
-    overwriteAttackData->m_bits.facingRestriction = soCollisionAttackData::Facing_Restriction_Normal;
+    overwriteAttackData->m_bits.lrCheck = soCollisionAttackData::Lr_Check_Pos;
     overwriteAttackData->m_bits.field_0x38_5 = false;
     overwriteAttackData->m_bits.enableFriendlyFire = false;
     overwriteAttackData->m_bits.disableHitstop = false;
     overwriteAttackData->m_bits.disableHitGfx = false;
     overwriteAttackData->m_bits.disableFlinch = false;
-    overwriteAttackData->m_bits.field_0x38_10 = 0;
+    overwriteAttackData->m_bits.region = soCollisionAttackData::Region_None;
 
     overwriteAttackData->m_bits.isShapeCapsule = true;
 }

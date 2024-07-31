@@ -69,10 +69,7 @@ void stSkyPillar::update(float frameDiff)
             create.m_startLr = -1.0; //1.0;
             create.m_level = 1;
             create.m_36 = 0.0;
-            create.m_posX1 = -create.m_startPos.m_x;
-            create.m_posX2 = -create.m_startPos.m_x;
-            create.m_posY1 = -create.m_startPos.m_y;
-            create.m_posY2 = -create.m_startPos.m_y;
+            create.m_territoryRange = (Rect2D){0.0, 0.0, 0.0, 0.0};
             create.m_connectedTriggerId = 0;
             create.m_epbm = NULL;
             create.m_motionPath = NULL;
