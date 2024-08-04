@@ -23,7 +23,7 @@ void grFire::setSizeAndVector(float size, int vector, bool isCapsule) {
 void grFire::setMotionPathData(int mdlIndex) {
     this->motionPathData.m_motionRatio = 1.0;
     this->motionPathData.m_index = 0;
-    this->motionPathData.m_pathMode = MotionPath_Loop;
+    this->motionPathData.m_pathMode = grGimmickMotionPathData::Path_Loop;
     this->motionPathData.m_mdlIndex = mdlIndex;
     this->motionPathData.m_7 = 0x0;
 }

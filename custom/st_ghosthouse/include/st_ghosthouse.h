@@ -61,7 +61,7 @@ class stGhostHouse : public stMelee {
 
             circleMotionPathData.m_motionRatio = 1.0;
             circleMotionPathData.m_index = 0;
-            circleMotionPathData.m_pathMode = MotionPath_Loop;
+            circleMotionPathData.m_pathMode = grGimmickMotionPathData::Path_Loop;
             circleMotionPathData.m_mdlIndex = -1;
         };
         static stGhostHouse* create();

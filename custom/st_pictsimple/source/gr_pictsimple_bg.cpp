@@ -52,8 +52,8 @@ void grPictSimpleBg::updateMessage(float deltaFrame) {
     }
 
     int kind = muMenu::exchangeGmCharacterKind2MuStockchkind(globalModeMelee->m_playersInitData[this->selectedPlayerNo].m_characterKind);
-//    if (kind == MuStockchkind_SZeroSuit) {
-//        kind = MuStockchkind_Samus;
+//    if (kind == MuStockch_SZeroSuit) {
+//        kind = MuStockch_Samus;
 //    }
 
     this->message->setScale(20.0, 20.0);

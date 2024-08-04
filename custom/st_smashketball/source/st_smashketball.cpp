@@ -68,7 +68,7 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     stSmashketballData* smashketballData = (stSmashketballData*)this->m_stageData;
     this->cannonData[index].motionPathData.m_motionRatio = 1.0;
     this->cannonData[index].motionPathData.m_index = 0;
-    this->cannonData[index].motionPathData.m_pathMode = MotionPath_Loop;
+    this->cannonData[index].motionPathData.m_pathMode = grGimmickMotionPathData::Path_Loop;;
     this->cannonData[index].motionPathData.m_mdlIndex = 0xFF;
     this->cannonData[index].motionPathData.m_7 = 0x0;
     this->cannonData[index].areaOffsetPos = (Vec2f){0.0, 0.0};
