@@ -187,7 +187,7 @@ void grQbertRed::onDamage(int index, soDamage* damage, soDamageAttackerInfo* att
         this->prevPos = this->getPos();
         this->targetPos = (Vec3f){this->prevPos.m_x, this->stage->m_deadRange.m_bottom, 0};
 
-        int teamId = damage->m_collisionLog.m_teamId;
+        int teamId = damage->m_collisionLog.m_teamNo;
         if (attackerInfo->m_indirectAttackerSoKind == StageObject_Fighter) {
             teamId = g_ftManager->getTeam(attackerInfo->m_indirectAttackerEntryId, false, false);
             if (this->gameRule == Game_Rule_Coin) {
