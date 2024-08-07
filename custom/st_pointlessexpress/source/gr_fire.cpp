@@ -55,41 +55,41 @@ void grFire::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     overwriteAttackData->m_vector = this->vector;
     overwriteAttackData->m_size = size;
     overwriteAttackData->m_offsetPos = offsetPos;
-    overwriteAttackData->m_hitstopMultiplier = lavaData->hitstopMultiplier;
+    overwriteAttackData->m_hitStopFrame = lavaData->hitstopMultiplier;
 
-    overwriteAttackData->m_bits.nodeIndex = startHitboxNode;
+    overwriteAttackData->m_nodeIndex = startHitboxNode;
 
-    overwriteAttackData->m_masks.category = COLLISION_CATEGORY_MASK_ALL;
+    overwriteAttackData->m_targetCategory = COLLISION_CATEGORY_MASK_ALL;
 
-    overwriteAttackData->m_bits.isSituationODD = true;
-    overwriteAttackData->m_bits.isSituationAir = true;
-    overwriteAttackData->m_bits.isSituationGround = true;
+    overwriteAttackData->m_targetSituationODD = true;
+    overwriteAttackData->m_targetSituationAir = true;
+    overwriteAttackData->m_targetSituationGround = true;
 
-    overwriteAttackData->m_bits.field_0x30_3 = false;
-    overwriteAttackData->m_masks.part = COLLISION_PART_MASK_ALL;
-    overwriteAttackData->m_bits.attribute = soCollisionAttackData::Attribute_Fire;
+    overwriteAttackData->m_targetLr = false;
+    overwriteAttackData->m_targetPart = COLLISION_PART_MASK_ALL;
+    overwriteAttackData->m_attribute = soCollisionAttackData::Attribute_Fire;
 
-    overwriteAttackData->m_bits.soundLevel = soCollisionAttackData::Sound_Level_Small;
-    overwriteAttackData->m_bits.soundAttribute = soCollisionAttackData::Sound_Attribute_Fire;
-    overwriteAttackData->m_bits.isClankable = false;
-    overwriteAttackData->m_bits.field_0x34_3 = false;
-    overwriteAttackData->m_bits.field_0x34_4 = false;
-    overwriteAttackData->m_bits.isShieldable = true;
-    overwriteAttackData->m_bits.isReflectable = false;
-    overwriteAttackData->m_bits.isAbsorbable = false;
-    overwriteAttackData->m_bits.region = soCollisionAttackData::Region_None;
+    overwriteAttackData->m_soundLevel = soCollisionAttackData::Sound_Level_Small;
+    overwriteAttackData->m_soundAttribute = soCollisionAttackData::Sound_Attribute_Fire;
+    overwriteAttackData->m_setOffKind = soCollisionAttackData::SetOff_Off;
 
-    overwriteAttackData->m_bits.detectionRate = lavaData->detectionRate;
-    overwriteAttackData->m_bits.field_0x38_1 = false;
-    overwriteAttackData->m_bits.ignoreInvincibility = false;
-    overwriteAttackData->m_bits.ignoreIntangibility = false;
-    overwriteAttackData->m_bits.lrCheck = soCollisionAttackData::Lr_Check_Pos;
-    overwriteAttackData->m_bits.field_0x38_5 = false;
-    overwriteAttackData->m_bits.enableFriendlyFire = false;
-    overwriteAttackData->m_bits.disableHitstop = false;
-    overwriteAttackData->m_bits.disableHitGfx = false;
-    overwriteAttackData->m_bits.disableFlinch = false;
-    overwriteAttackData->m_bits.addedShieldDamage = lavaData->addedShieldDamage;
+    overwriteAttackData->m_noScale = false;
+    overwriteAttackData->m_isShieldable = true;
+    overwriteAttackData->m_isReflectable = false;
+    overwriteAttackData->m_isAbsorbable = false;
+    overwriteAttackData->m_region = soCollisionAttackData::Region_None;
 
-    overwriteAttackData->m_bits.isShapeCapsule = this->isCapsule;
+    overwriteAttackData->m_serialHitFrame = lavaData->detectionRate;
+    overwriteAttackData->m_isDirect = false;
+    overwriteAttackData->m_isInvalidInvincible = false;
+    overwriteAttackData->m_isInvalidXlu = false;
+    overwriteAttackData->m_lrCheck = soCollisionAttackData::Lr_Check_Pos;
+    overwriteAttackData->m_isCatch = false;
+    overwriteAttackData->m_noTeam = false;
+    overwriteAttackData->m_noHitStop = false;
+    overwriteAttackData->m_noEffect = false;
+    overwriteAttackData->m_noTransaction = false;
+    overwriteAttackData->m_subShield = lavaData->addedShieldDamage;
+
+    overwriteAttackData->m_isCapsule = this->isCapsule;
 }

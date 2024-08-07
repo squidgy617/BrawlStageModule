@@ -67,43 +67,43 @@ void grGhostHouseBoo::setupAttack() {
     overwriteAttackData->m_vector = ghostHouseData->booVector;
     overwriteAttackData->m_size = 1.0;
     overwriteAttackData->m_offsetPos = offsetPos;
-    overwriteAttackData->m_hitstopMultiplier = ghostHouseData->booHitstopMultiplier;
+    overwriteAttackData->m_hitStopFrame = ghostHouseData->booHitstopMultiplier;
 
-    overwriteAttackData->m_bits.nodeIndex = this->getNodeIndex(0, "Hurt");
+    overwriteAttackData->m_hitStopFrame = this->getNodeIndex(0, "Hurt");
 
-    overwriteAttackData->m_masks = COLLISION_CATEGORY_MASK_NO_ITEM;
+    overwriteAttackData->m_targetCategory = COLLISION_CATEGORY_MASK_NO_ITEM;
 
-    overwriteAttackData->m_bits.isSituationODD = true;
-    overwriteAttackData->m_bits.isSituationAir = true;
-    overwriteAttackData->m_bits.isSituationGround = true;
+    overwriteAttackData->m_targetSituationODD = true;
+    overwriteAttackData->m_targetSituationAir = true;
+    overwriteAttackData->m_targetSituationGround = true;
 
-    overwriteAttackData->m_bits.field_0x30_3 = false;
-    overwriteAttackData->m_masks.part = COLLISION_PART_MASK_ALL;
-    overwriteAttackData->m_bits.attribute = soCollisionAttackData::Attribute_Normal;
+    overwriteAttackData->m_targetLr = false;
+    overwriteAttackData->m_targetPart = COLLISION_PART_MASK_ALL;
+    overwriteAttackData->m_attribute = soCollisionAttackData::Attribute_Normal;
 
-    overwriteAttackData->m_bits.soundLevel = soCollisionAttackData::Sound_Level_Small;
-    overwriteAttackData->m_bits.soundAttribute = soCollisionAttackData::Sound_Attribute_Punch;
-    overwriteAttackData->m_bits.isClankable = false;
-    overwriteAttackData->m_bits.field_0x34_3 = false;
-    overwriteAttackData->m_bits.field_0x34_4 = false;
-    overwriteAttackData->m_bits.isShieldable = true;
-    overwriteAttackData->m_bits.isReflectable = false;
-    overwriteAttackData->m_bits.isAbsorbable = false;
-    overwriteAttackData->m_bits.region = soCollisionAttackData::Region_None;
+    overwriteAttackData->m_soundLevel = soCollisionAttackData::Sound_Level_Small;
+    overwriteAttackData->m_soundAttribute = soCollisionAttackData::Sound_Attribute_Punch;
+    overwriteAttackData->m_setOffKind = soCollisionAttackData::SetOff_Off;
 
-    overwriteAttackData->m_bits.detectionRate = ghostHouseData->booDetectionRate;
-    overwriteAttackData->m_bits.field_0x38_1 = false;
-    overwriteAttackData->m_bits.ignoreInvincibility = false;
-    overwriteAttackData->m_bits.ignoreIntangibility = false;
-    overwriteAttackData->m_bits.lrCheck = soCollisionAttackData::Lr_Check_Pos;
-    overwriteAttackData->m_bits.field_0x38_5 = false;
-    overwriteAttackData->m_bits.enableFriendlyFire = false;
-    overwriteAttackData->m_bits.disableHitstop = false;
-    overwriteAttackData->m_bits.disableHitGfx = false;
-    overwriteAttackData->m_bits.disableFlinch = false;
-    overwriteAttackData->m_bits.addedShieldDamage = ghostHouseData->booShieldDamage;
+    overwriteAttackData->m_noScale = false;
+    overwriteAttackData->m_isShieldable = true;
+    overwriteAttackData->m_isReflectable = false;
+    overwriteAttackData->m_isAbsorbable = false;
+    overwriteAttackData->m_region = soCollisionAttackData::Region_None;
 
-    overwriteAttackData->m_bits.isShapeCapsule = true;
+    overwriteAttackData->m_serialHitFrame = ghostHouseData->booDetectionRate;
+    overwriteAttackData->m_isDirect = false;
+    overwriteAttackData->m_isInvalidInvincible = false;
+    overwriteAttackData->m_isInvalidXlu = false;
+    overwriteAttackData->m_lrCheck = soCollisionAttackData::Lr_Check_Pos;
+    overwriteAttackData->m_isCatch = false;
+    overwriteAttackData->m_noTeam = false;
+    overwriteAttackData->m_noHitStop = false;
+    overwriteAttackData->m_noEffect = false;
+    overwriteAttackData->m_noTransaction = false;
+    overwriteAttackData->m_subShield = ghostHouseData->booShieldDamage;
+
+    overwriteAttackData->m_isCapsule = true;
 }
 
 void grGhostHouseBoo::setupHitPoint() {
@@ -148,7 +148,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
     switch(this->state) {
         case State_CircleStart:
         {
-            animFrameCount = this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength;
+            animFrameCount = this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile.ptr()->m_animLength;
             if (currentAnimFrame >= animFrameCount - 1) {
                 this->changeState(State_Circle);
             }
@@ -177,7 +177,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
         }
             break;
         case State_SnakeStart:
-            animFrameCount = this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength;
+            animFrameCount = this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile.ptr()->m_animLength;
             if (currentAnimFrame >= animFrameCount - 1) {
                 this->changeState(State_Snake);
             }
@@ -433,7 +433,7 @@ void grGhostHouseBoo::setVanish() {
 }
 
 void grGhostHouseBoo::setSpawn(Rect2D* spawnRange, Vec3f* centerPos, bool useAltAnim) {
-    stRange range = {spawnRange->m_left + centerPos->m_x, spawnRange->m_right + centerPos->m_x, spawnRange->m_top + centerPos->m_y, spawnRange->m_bottom + centerPos->m_y};
+    Rect2D range = {spawnRange->m_left + centerPos->m_x, spawnRange->m_right + centerPos->m_x, spawnRange->m_top + centerPos->m_y, spawnRange->m_bottom + centerPos->m_y};
     this->setPos(randf()*(range.m_right - range.m_left) + range.m_left, randf()*(range.m_top - range.m_bottom) + range.m_bottom, 0);
     this->useAltAnim = useAltAnim;
     this->changeState(State_Spawn);
