@@ -79,7 +79,7 @@ Hurtbox Parameters: In the target ModelData, node to follow must be called "Hurt
 
 **Translation Z** - Speed
 
-**-Scale Z** - Delta Speed
+**-Scale Z** - Acceleration
 
 ## Punch Slider
 
@@ -256,9 +256,13 @@ Stage exclusive items must be preloaded using Group 1 of the ItmGen
 ## Enemy
 
 Enemies are stored in the first arc like in Subspace
+
 Param file index = enemyID*2
+
 Brres file index = enemyID*2 + 1
+
 EnmCommon file index = 300
+
 sora_enemy.rel file index = 301
 
 **Scale X** - Enemy Id
