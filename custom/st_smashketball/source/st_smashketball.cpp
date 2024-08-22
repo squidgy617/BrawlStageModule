@@ -84,9 +84,9 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     this->cannonData[index].alwaysRotate = false;
     this->cannonData[index].mdlIndex = mdlIndex;
     this->cannonData[index].field_0xce = 0x8;
-    this->cannonData[index].enterCannonTriggerData = (stTriggerData){ 0, 0, 1, 0 };
-    this->cannonData[index].motionPathTriggerData = (stTriggerData){ 0, 0, 1, 0 };
-    this->cannonData[index].isValidTriggerData = (stTriggerData){ 0, 0, 1, 0 };
+    this->cannonData[index].enterCannonTriggerData = (stTriggerData){ 0, 0, 1, stTriggerData::Keep_None };
+    this->cannonData[index].motionPathTriggerData = (stTriggerData){ 0, 0, 1, stTriggerData::Keep_None };
+    this->cannonData[index].isValidTriggerData = (stTriggerData){ 0, 0, 1, stTriggerData::Keep_None };
     this->cannonData[index].attackData.m_damage = 0;
     this->cannonData[index].attackData.m_offsetPos.m_x = 0.0;
     this->cannonData[index].attackData.m_offsetPos.m_y = 0.0;

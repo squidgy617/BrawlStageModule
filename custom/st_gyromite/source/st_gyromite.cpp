@@ -74,8 +74,8 @@ void stGyromite::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex, 
         addGround(ladder);
         grGimmickLadderData ladderData;
         __memfill(&ladderData, 0, sizeof(ladderData));
-        ladderData.m_motionPathTriggerData = (stTriggerData){ 0, 0, 1, 0 };
-        ladderData.m_isValidTriggerData = (stTriggerData){ 0, 0, 1, 0 };
+        ladderData.m_motionPathTriggerData = (stTriggerData){ 0, 0, 1, stTriggerData::Keep_None };
+        ladderData.m_isValidTriggerData = (stTriggerData){ 0, 0, 1, stTriggerData::Keep_None };
         ladderData.m_restrictUpExit = restrictUpExit;
         ladderData.m_51 = unk2;
         ladder->setMotionPathData(motionPathIndex);
