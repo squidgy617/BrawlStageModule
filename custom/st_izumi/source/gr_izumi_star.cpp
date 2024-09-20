@@ -26,48 +26,44 @@ void grIzumiStar::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     this->createSimpleEffectData(&simpleEffectData, 0x330003, "StarFallNode");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[0].m_id = simpleEffectData.m_id;
-        this->m_effects[0].m_0x10 = simpleEffectData.m_0x4;
+        this->m_effects[0].m_repeatFrames = simpleEffectData.m_repeatFrames;
         if (simpleEffectData.m_nodeIndex == 0) {
             this->m_effects[0].m_nodeIndex = this->getNodeIndex(0, "StarFallNode");
         }
         else {
             this->m_effects[0].m_nodeIndex = simpleEffectData.m_nodeIndex;
         }
-        this->m_effects[0].m_0x14 = simpleEffectData.m_0x8;
-        this->m_effects[0].m_0x1c = 0.0;
-        this->m_effects[0].m_0x20 = 0.0;
-        this->m_effects[0].m_0x24 = 1.0;
+        this->m_effects[0].m_endFrames = simpleEffectData.m_endFrames;
+        this->m_effects[0].m_offsetPos = (Vec2f){0.0, 0.0};
+        this->m_effects[0].m_scale = 1.0;
     }
 
     this->createSimpleEffectData(&simpleEffectData, 0x330004, "StarFallNode");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[1].m_id = simpleEffectData.m_id;
-        this->m_effects[1].m_0x10 = simpleEffectData.m_0x4;
+        this->m_effects[1].m_repeatFrames = simpleEffectData.m_repeatFrames;
         if (simpleEffectData.m_nodeIndex == 0) {
             this->m_effects[1].m_nodeIndex = this->getNodeIndex(0, "StarFallNode");
         }
         else {
             this->m_effects[1].m_nodeIndex = simpleEffectData.m_nodeIndex;
         }
-        this->m_effects[1].m_0x14 = simpleEffectData.m_0x8;
-        this->m_effects[1].m_0x1c = 0.0;
-        this->m_effects[1].m_0x20 = 0.0;
-        this->m_effects[1].m_0x24 = 1.0;
+        this->m_effects[1].m_endFrames = simpleEffectData.m_endFrames;
+        this->m_effects[1].m_offsetPos = (Vec2f){0.0, 0.0};
+        this->m_effects[1].m_scale = 1.0;
     }
 
     this->createSoundWork(2,1);
     this->m_soundEffects[0].m_id = snd_se_stage_Starfox_warp_in;
-    this->m_soundEffects[0].m_0x10 = 0;
+    this->m_soundEffects[0].m_repeatFrames = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
-    this->m_soundEffects[0].m_0x14 = 0;
-    this->m_soundEffects[0].m_0x1c = 0.0;
-    this->m_soundEffects[0].m_0x20 = 0.0;
+    this->m_soundEffects[0].m_endFrames = 0;
+    this->m_soundEffects[0].m_offsetPos = (Vec2f){0.0, 0.0};
     this->m_soundEffects[1].m_id = snd_se_stage_Starfox_warp_out;
-    this->m_soundEffects[1].m_0x10 = 0;
+    this->m_soundEffects[1].m_repeatFrames = 0;
     this->m_soundEffects[1].m_nodeIndex = 0;
-    this->m_soundEffects[1].m_0x14 = 0;
-    this->m_soundEffects[1].m_0x1c = 0.0;
-    this->m_soundEffects[1].m_0x20 = 0.0;
+    this->m_soundEffects[1].m_endFrames = 0;
+    this->m_soundEffects[1].m_offsetPos = (Vec2f){0.0, 0.0};
 
     this->setTimer();
 }

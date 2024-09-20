@@ -21,29 +21,25 @@ void grTempleOfTimeMedallion::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     grMadein::startup(archive, unk1, unk2);
     this->createSoundWork(4,1);
     this->m_soundEffects[0].m_id = snd_se_stage_Madein_01;
-    this->m_soundEffects[0].m_0x10 = 0;
+    this->m_soundEffects[0].m_repeatFrames = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
-    this->m_soundEffects[0].m_0x14 = 0;
-    this->m_soundEffects[0].m_0x1c = 0.0;
-    this->m_soundEffects[0].m_0x20 = 0.0;
+    this->m_soundEffects[0].m_endFrames = 0;
+    this->m_soundEffects[0].m_offsetPos = (Vec2f){0.0, 0.0};
     this->m_soundEffects[1].m_id = snd_se_stage_Madein_Caution;
-    this->m_soundEffects[1].m_0x10 = 0;
+    this->m_soundEffects[1].m_repeatFrames = 0;
     this->m_soundEffects[1].m_nodeIndex = 0;
-    this->m_soundEffects[1].m_0x14 = 0;
-    this->m_soundEffects[1].m_0x1c = 0.0;
-    this->m_soundEffects[1].m_0x20 = 0.0;
+    this->m_soundEffects[1].m_endFrames = 0;
+    this->m_soundEffects[1].m_offsetPos = (Vec2f){0.0, 0.0};
     this->m_soundEffects[2].m_id = snd_se_stage_Madein_07;
-    this->m_soundEffects[2].m_0x10 = 0;
+    this->m_soundEffects[2].m_repeatFrames = 0;
     this->m_soundEffects[2].m_nodeIndex = 0;
-    this->m_soundEffects[2].m_0x14 = 0;
-    this->m_soundEffects[2].m_0x1c = 0.0;
-    this->m_soundEffects[2].m_0x20 = 0.0;
+    this->m_soundEffects[2].m_endFrames = 0;
+    this->m_soundEffects[2].m_offsetPos = (Vec2f){0.0, 0.0};
     this->m_soundEffects[3].m_id = snd_se_stage_Madein_Arrow;
-    this->m_soundEffects[3].m_0x10 = 0;
+    this->m_soundEffects[3].m_repeatFrames = 0;
     this->m_soundEffects[3].m_nodeIndex = 0;
-    this->m_soundEffects[3].m_0x14 = 0;
-    this->m_soundEffects[3].m_0x1c = 0.0;
-    this->m_soundEffects[3].m_0x20 = 0.0;
+    this->m_soundEffects[3].m_endFrames = 0;
+    this->m_soundEffects[3].m_offsetPos = (Vec2f){0.0, 0.0};
 }
 
 void grTempleOfTimeMedallion::update(float deltaFrame) {

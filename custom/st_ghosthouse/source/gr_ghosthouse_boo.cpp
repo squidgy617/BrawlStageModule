@@ -29,11 +29,10 @@ void grGhostHouseBoo::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
     this->createSoundWork(1,1);
     this->m_soundEffects[0].m_id = snd_se_stage_Madein_01;
-    this->m_soundEffects[0].m_0x10 = 0;
+    this->m_soundEffects[0].m_repeatFrames = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
-    this->m_soundEffects[0].m_0x14 = 0;
-    this->m_soundEffects[0].m_0x1c = 0.0;
-    this->m_soundEffects[0].m_0x20 = 0.0;
+    this->m_soundEffects[0].m_endFrames = 0;
+    this->m_soundEffects[0].m_offsetPos = (Vec2f){0.0, 0.0};
 
     this->setupAttack();
     this->setupHitPoint();
