@@ -5,10 +5,12 @@
 #include <st/st_melee.h>
 #include <mt/mt_prng.h>
 #include "gr_ghosthouse.h"
+#include "gr_ghosthouse_plank.h"
 #include "gr_ghosthouse_boo.h"
 #include "gr_ghosthouse_bigboo.h"
 #include "gr_ghosthouse_bubble.h"
 #include "gr_ghosthouse_eerie.h"
+
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -52,7 +54,6 @@ class stGhostHouse : public stMelee {
         gfArchive pSwitchItemBrres;
         gfArchive pSwitchItemParam;
         gfArchive commonItemParam;
-
     public:
         stGhostHouse(srStageKind stageID) : stMelee("stGhostHouse", stageID) {
             currentEvent = Event_None;
@@ -107,6 +108,7 @@ class stGhostHouse : public stMelee {
         virtual void getItemPac(gfArchive** brres, gfArchive** param, itKind itemID, int variantID, gfArchive** commonParam, itCustomizerInterface** customizer);
 
         virtual void createObjGround(int mdlIndex);
+        virtual void createObjPlank(int mdlIndex);
         virtual void createObjMotionPath(int mdlIndex, int index);
         virtual void createObjBoo(int mdlIndex, bool useAltAnim);
         virtual void createObjBubble(int mdlIndex);

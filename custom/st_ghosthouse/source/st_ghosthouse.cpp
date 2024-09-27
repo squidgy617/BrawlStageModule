@@ -94,9 +94,18 @@ void stGhostHouse::createObj() {
     createObjBigBoo(7);
     groundCount++;
 
+    grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
+    u32 planksIndex = ground->getNodeIndex(0, "Planks");
+    u32 endIndex = ground->getNodeIndex(0, "End");
+    for (int i = planksIndex + 1; i < endIndex; i++) {
+        nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+        this->createObjPlank(resNodeData->m_rotation.m_x);
+        groundCount++;
+    }
+
     this->circleMotionPathStartGroundIndex = groundCount;
 
-    grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
+    ground = static_cast<grGhostHouse*>(this->getGround(0));
     this->numPlayerCircles = ground->getNumNodesWithFormat("PCircle%d");
     this->numSetCircles = ground->getNumNodesWithFormat("Circle%d");
     this->numEerieFormations = ground->getNumNodesWithFormat("Eeries%d");
@@ -115,7 +124,6 @@ void stGhostHouse::createObj() {
     }
 
     createCollision(m_fileData, 2, NULL);
-
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 30);
     nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(Data_Type_Scene, 0, 0xfffe));
@@ -132,6 +140,17 @@ void stGhostHouse::createObjGround(int mdlIndex) {
         ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
         ground->setDontMoveGround();
+    }
+}
+
+void stGhostHouse::createObjPlank(int mdlIndex) {
+    grGhostHousePlank* ground = grGhostHousePlank::create(mdlIndex, "grGhostHousePlank", "grGhostHousePlank");
+    if (ground != NULL)
+    {
+        addGround(ground);
+        ground->startup(m_fileData, 0, 0);
+        ground->setStageData(m_stageData);
+        ground->createCollisionSelf(this);
     }
 }
 

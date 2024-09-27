@@ -265,6 +265,7 @@ void grGhostHouseBigBoo::changeState(State state) {
             case State_Spawn:
                 this->setMotionDetails(3, 5, 0, 0, 0);
                 this->setSleepAttack(true);
+                this->setSleepHit(true);
                 break;
             case State_Vanish:
                 if (this->state != State_Defeat && this->state != State_Spawn) {
