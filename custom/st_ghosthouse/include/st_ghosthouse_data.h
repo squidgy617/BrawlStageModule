@@ -106,7 +106,11 @@ struct stGhostHouseData {
     };
     float blockBooProbability;
     float booCirclePlayerProbability;
+    u32 holeSpawnMinFrames;
+    u32 holeSpawnMaxFrames;
+    u32 holeActiveMinFrames;
+    u32 holeActiveMaxFrames;
 };
-//static_assert(sizeof(stGhostHouseData) == 64, "Class is wrong size!");
+static_assert(sizeof(stGhostHouseData) == 81*4, "Class is wrong size!");
 
 

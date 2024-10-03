@@ -151,8 +151,8 @@ void stGhostHouse::createObjHole(int mdlIndex, int collIndex, Vec2f* pos, Vec3f*
     {
         addGround(ground);
         ground->setMotionPathData(motionPathIndex);
-        ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
+        ground->startup(m_fileData, 0, 0);
         this->createCollision(m_fileData, collIndex, ground);
         ground->setPos(pos->m_x, pos->m_y, 0.0);
         ground->setScale(scale);
