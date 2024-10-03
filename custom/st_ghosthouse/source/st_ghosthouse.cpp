@@ -56,8 +56,19 @@ void stGhostHouse::createObj() {
     }
 
     createObjGround(1);
+    u32 groundCount = 1;
+
+    grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
+    u32 planksIndex = ground->getNodeIndex(0, "Holes");
+    u32 endIndex = ground->getNodeIndex(0, "End");
+    for (int i = planksIndex + 1; i < endIndex; i++) {
+        nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+        this->createObjHole(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y, &resNodeData->m_translation.m_xy, &resNodeData->m_scale, resNodeData->m_translation.m_z);
+        groundCount++;
+    }
+
     createObjGround(2);
-    u32 groundCount = 2;
+    groundCount++;
     this->booStartGroundIndex = groundCount;
     for (int i = 0; i < ghostHouseData->numEachBoos; i++) {
         createObjBoo(3, false);
@@ -93,15 +104,6 @@ void stGhostHouse::createObj() {
     this->bigBooStartGroundIndex = groundCount;
     createObjBigBoo(7);
     groundCount++;
-
-    grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
-    u32 planksIndex = ground->getNodeIndex(0, "Planks");
-    u32 endIndex = ground->getNodeIndex(0, "End");
-    for (int i = planksIndex + 1; i < endIndex; i++) {
-        nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-        this->createObjPlank(resNodeData->m_rotation.m_x);
-        groundCount++;
-    }
 
     this->circleMotionPathStartGroundIndex = groundCount;
 
@@ -143,14 +145,17 @@ void stGhostHouse::createObjGround(int mdlIndex) {
     }
 }
 
-void stGhostHouse::createObjPlank(int mdlIndex) {
-    grGhostHousePlank* ground = grGhostHousePlank::create(mdlIndex, "grGhostHousePlank", "grGhostHousePlank");
+void stGhostHouse::createObjHole(int mdlIndex, int collIndex, Vec2f* pos, Vec3f* scale, int motionPathIndex) {
+    grGhostHouseHole* ground = grGhostHouseHole::create(mdlIndex, "", "grGhostHouseHole");
     if (ground != NULL)
     {
         addGround(ground);
+        ground->setMotionPathData(motionPathIndex);
         ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
-        ground->createCollisionSelf(this);
+        this->createCollision(m_fileData, collIndex, ground);
+        ground->setPos(pos->m_x, pos->m_y, 0.0);
+        ground->setScale(scale);
     }
 }
 

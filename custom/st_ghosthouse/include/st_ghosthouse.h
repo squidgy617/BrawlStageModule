@@ -5,7 +5,7 @@
 #include <st/st_melee.h>
 #include <mt/mt_prng.h>
 #include "gr_ghosthouse.h"
-#include "gr_ghosthouse_plank.h"
+#include "gr_ghosthouse_hole.h"
 #include "gr_ghosthouse_boo.h"
 #include "gr_ghosthouse_bigboo.h"
 #include "gr_ghosthouse_bubble.h"
@@ -108,7 +108,7 @@ class stGhostHouse : public stMelee {
         virtual void getItemPac(gfArchive** brres, gfArchive** param, itKind itemID, int variantID, gfArchive** commonParam, itCustomizerInterface** customizer);
 
         virtual void createObjGround(int mdlIndex);
-        virtual void createObjPlank(int mdlIndex);
+        virtual void createObjHole(int mdlIndex, int collIndex, Vec2f* pos, Vec3f* scale, int motionPathIndex);
         virtual void createObjMotionPath(int mdlIndex, int index);
         virtual void createObjBoo(int mdlIndex, bool useAltAnim);
         virtual void createObjBubble(int mdlIndex);
