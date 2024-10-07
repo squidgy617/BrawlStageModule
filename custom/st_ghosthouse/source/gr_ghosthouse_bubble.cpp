@@ -109,6 +109,8 @@ void grGhostHouseBubble::updateMove(float deltaFrame) {
 
         }
             break;
+        default:
+            break;
     }
 }
 

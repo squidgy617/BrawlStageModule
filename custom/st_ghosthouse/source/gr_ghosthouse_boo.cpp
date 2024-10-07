@@ -378,6 +378,7 @@ void grGhostHouseBoo::updateMove(float deltaFrame) {
             }
         case State_Shy:
         case State_Stalk:
+            // TODO: Handle what happens if player doesn't exist? Should just be shy?
             for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
                 int entryId = g_ftManager->getEntryIdFromIndex(i);
                 if (this->playerTarget == g_ftManager->getPlayerNo(entryId) && g_ftManager->isFighterActivate(entryId, -1)) {

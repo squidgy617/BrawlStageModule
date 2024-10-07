@@ -98,7 +98,7 @@ void stGhostHouse::createObj() {
     }
     this->fishingBooStartGroundIndex = groundCount;
     for (int i = 0; i < ghostHouseData->numFishingBoos; i++) {
-        createObjGround(1);
+        createObjFishing(13);
         groundCount++;
     }
     this->bigBooStartGroundIndex = groundCount;
@@ -209,6 +209,20 @@ void stGhostHouse::createObjEerie(int mdlIndex) {
     }
 }
 
+void stGhostHouse::createObjFishing(int mdlIndex) {
+    grGhostHouseFishing* fishing = grGhostHouseFishing::create(mdlIndex, "", "grGhostHouseFishing");
+    if (fishing != NULL)
+    {
+        addGround(fishing);
+        fishing->setStageData(m_stageData);
+        fishing->startup(m_fileData, 0, 0);
+        fishing->setupAttack();
+        fishing->initializeEntity();
+        fishing->startEntity();
+        fishing->setVanish();
+    }
+}
+
 void stGhostHouse::createObjMotionPath(int mdlIndex, int index) {
     char nodeName[32];
     sprintf(nodeName, "Boo%d", index);
@@ -247,7 +261,7 @@ void stGhostHouse::update(float deltaFrame){
                 this->changeEvent(Event_Circle);
             }
             else if (currentButton.m_rightTaunt) {
-                this->changeEvent(Event_Snake);
+                this->changeEvent(Event_Fishing);
             }
             else if (currentButton.m_upTaunt) {
                 this->changeEvent(Event_Crew);
@@ -550,6 +564,19 @@ void stGhostHouse::startNextEvent() {
         case Event_Eerie:
             this->eerieTimer = 0;
             break;
+        case Event_Fishing:
+        {
+            grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
+            u32 nodeIndex = ground->getNodeIndex(0, "Fishing");
+            nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 1)).ptr();
+            nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 2)).ptr();
+
+            for (int i = 0; i < ghostHouseData->numFishingBoos; i++) {
+                grGhostHouseFishing* fishing = static_cast<grGhostHouseFishing*>(this->getGround(this->fishingBooStartGroundIndex + i));
+                fishing->setActive(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy);
+            }
+        }
+            break;
         default:
             break;
     }
@@ -597,6 +624,19 @@ void stGhostHouse::changeEvent(GhostEvent event) {
                     eerie->setVanish();
                 }
                 this->eventStartTimer = 120;
+                break;
+            case Event_Fishing:
+            {
+                for (int i = 0; i < ghostHouseData->numFishingBoos; i++) {
+                    grGhostHouseFishing* fishing = static_cast<grGhostHouseFishing*>(this->getGround(this->fishingBooStartGroundIndex + i));
+                    fishing->setVanish();
+                }
+                grGhostHouse* ground = static_cast<grGhostHouse*>(this->getGround(0));
+                u32 nodeIndex = ground->getNodeIndex(0, "Fishing");
+                nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 1)).ptr();
+                nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(nodeIndex + 2)).ptr();
+                this->eventStartTimer = (resNodeDataNE->m_translation.m_x - resNodeDataSW->m_translation.m_x) / ghostHouseData->fishingBaitMaxSpeed.m_x;
+            }
                 break;
             default:
                 this->eventStartTimer = 120;

@@ -10,7 +10,7 @@
 #include "gr_ghosthouse_bigboo.h"
 #include "gr_ghosthouse_bubble.h"
 #include "gr_ghosthouse_eerie.h"
-
+#include "gr_ghosthouse_fishing.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -114,6 +114,7 @@ class stGhostHouse : public stMelee {
         virtual void createObjBubble(int mdlIndex);
         virtual void createObjEerie(int mdlIndex);
         virtual void createObjBigBoo(int mdlIndex);
+        virtual void createObjFishing(int mdlIndex);
 
         virtual GhostEvent decideNextEvent();
         virtual void changeEvent(GhostEvent event);

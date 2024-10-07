@@ -15,6 +15,7 @@
 #define BOO_SNAKE_DIR_Y 0.707f
 #define MAX_NUM_ENEMY 255
 #define EERIE_PHASE_SHIFT -10
+#define FISHING_IT_GEN_KIND 20000
 
 struct stGhostHouseData {
     int booReactionEffect;
@@ -110,7 +111,12 @@ struct stGhostHouseData {
     u32 holeSpawnMaxFrames;
     u32 holeActiveMinFrames;
     u32 holeActiveMaxFrames;
+    Vec2f fishingBaitMaxSpeed;
+    Vec2f fishingBaitAccel;
+    Vec2f fishingStalkMaxSpeed;
+    Vec2f fishingStalkAccel;
+    u32 fishingFireStartFrames;
 };
-static_assert(sizeof(stGhostHouseData) == 81*4, "Class is wrong size!");
+static_assert(sizeof(stGhostHouseData) == 90*4, "Class is wrong size!");
 
 

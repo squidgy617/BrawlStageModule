@@ -19,6 +19,8 @@ grGhostHouseBigBoo* grGhostHouseBigBoo::create(int mdlIndex, const char* tgtNode
     return boo;
 }
 
+// TODO: Does not target the person who hit him last
+
 void grGhostHouseBigBoo::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     grMadein::startup(archive, unk1, unk2);
 
