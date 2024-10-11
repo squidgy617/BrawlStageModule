@@ -114,7 +114,7 @@ class stGhostHouse : public stMelee {
         virtual void createObjBubble(int mdlIndex);
         virtual void createObjEerie(int mdlIndex);
         virtual void createObjBigBoo(int mdlIndex);
-        virtual void createObjFishing(int mdlIndex);
+        virtual void createObjFishing(int mdlIndex, Vec2f* boundarySWPos, Vec2f* boundaryNEPos);
 
         virtual GhostEvent decideNextEvent();
         virtual void changeEvent(GhostEvent event);

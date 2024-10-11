@@ -97,8 +97,12 @@ void stGhostHouse::createObj() {
         groundCount++;
     }
     this->fishingBooStartGroundIndex = groundCount;
+
+    u32 fishingNodeIndex = ground->getNodeIndex(0, "Fishing");
+    nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(fishingNodeIndex + 1)).ptr();
+    nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(fishingNodeIndex + 2)).ptr();
     for (int i = 0; i < ghostHouseData->numFishingBoos; i++) {
-        createObjFishing(13);
+        createObjFishing(13, &resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy);
         groundCount++;
     }
     this->bigBooStartGroundIndex = groundCount;
@@ -122,7 +126,6 @@ void stGhostHouse::createObj() {
                 this->createObjMotionPath(resNodeData->m_translation.m_z, j);
             }
         }
-
     }
 
     createCollision(m_fileData, 2, NULL);
@@ -209,7 +212,7 @@ void stGhostHouse::createObjEerie(int mdlIndex) {
     }
 }
 
-void stGhostHouse::createObjFishing(int mdlIndex) {
+void stGhostHouse::createObjFishing(int mdlIndex, Vec2f* boundarySWPos, Vec2f* boundaryNEPos) {
     grGhostHouseFishing* fishing = grGhostHouseFishing::create(mdlIndex, "", "grGhostHouseFishing");
     if (fishing != NULL)
     {
@@ -219,7 +222,7 @@ void stGhostHouse::createObjFishing(int mdlIndex) {
         fishing->setupAttack();
         fishing->initializeEntity();
         fishing->startEntity();
-        fishing->setVanish();
+        fishing->setStart(boundarySWPos, boundaryNEPos);
     }
 }
 

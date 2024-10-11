@@ -16,6 +16,7 @@
 #define MAX_NUM_ENEMY 255
 #define EERIE_PHASE_SHIFT -10
 #define FISHING_IT_GEN_KIND 20000
+#define FISHING_ITEM_FLICKER_RATE 3
 
 struct stGhostHouseData {
     int booReactionEffect;
