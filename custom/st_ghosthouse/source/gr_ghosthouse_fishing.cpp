@@ -117,12 +117,16 @@ void grGhostHouseFishing::updateState(float deltaFrame) {
                 this->setStalk(teamOwnerEntryId);
             }
             else {
+        //            else if (u32 statusKind = soExternalValueAccesser::getStatusKind(item), statusKind == 7 || statusKind == 6) {
+//                this->changeState(State_Fetch);
+//
+
                 this->moveItem(item);
                 this->timer -= deltaFrame;
                 if (this->timer <= 0) {
                     item->changeStatus(6);
                 }
-                else if (item->getParam((u32)0x5b6f) == 1 && this->timer <= item->getParam((u32)0x59d9)) {
+                else if (this->timer <= item->getParam(itValueAccesser::Game_Param_Int_Remove_Flash_Frame)) {
                     item->setVisibilityWhole(static_cast<int>(this->timer) % FISHING_ITEM_FLICKER_RATE != 0);
                 }
             }

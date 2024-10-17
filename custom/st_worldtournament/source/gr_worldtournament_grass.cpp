@@ -48,7 +48,7 @@ void grWorldTournamentGrass::receiveCollMsg_Landing(grCollStatus* collStatus, gr
                 //fighter->toKnockOut();
                 this->toKnockOut(fighter);
             }
-            else if (fighter->m_moduleAccesser->getStatusModule()->getStatusKind() == ftStatus::Lying) {
+            else if (fighter->m_moduleAccesser->getStatusModule()->getStatusKind() == Fighter::Status_Down_Wait) {
                 soMotionModule* motionModule = fighter->m_moduleAccesser->getMotionModule();
                 if (motionModule->getEndFrame() - motionModule->getFrame() <= 1) {
                     soPostureModule* postureModule = fighter->m_moduleAccesser->getPostureModule();
@@ -94,9 +94,9 @@ void grWorldTournamentGrass::toKnockOut(Fighter* fighter) {
     moduleAccesser->getCollisionHitModule()->setCheckCatch(0,0);
     moduleAccesser->getWorkManageModule()->onFlag(0x12000018);
     moduleAccesser->getControllerModule()->setOff(true);
-    ftStatus::Kind statusKind = ftStatus::Tumble;
+    Fighter::StatusKind statusKind = Fighter::Status_Damage_Fall;
     if (moduleAccesser->getSituationModule()->getKind() == 0) {
-        statusKind = ftStatus::Hit_Wall_Tumble;
+        statusKind = Fighter::Status_Down_Spot;
     }
     moduleAccesser->getStatusModule()->changeStatusRequest(statusKind, moduleAccesser);
 }

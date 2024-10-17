@@ -160,7 +160,7 @@ void grCapturePoint::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
         stKingOfTheHillData* stageData = static_cast<stKingOfTheHillData*>(this->getStageData());
 
         Fighter* fighter = g_ftManager->getFighter(entryId, -1);
-        if (!stageData->disableCapturesDuringShielding || fighter->m_moduleAccesser->getStatusModule()->getStatusKind() != ftStatus::Shield) {
+        if (!stageData->disableCapturesDuringShielding || fighter->m_moduleAccesser->getStatusModule()->getStatusKind() != Fighter::Status_Guard) {
             this->applyMotionRate(stageData->bonusMotionSpeedMultipliers[this->bonusMultiplier - 1]);
             if (this->consecutiveFramesCaptured >= stageData->consecutiveFramesBeforeStartReward && int(this->consecutiveFramesCaptured) % stageData->rewardRate == 0) {
                 int lastChanceMultiplier = 1;
