@@ -280,7 +280,7 @@ void grGhostHouseFishing::changeState(State state) {
                     this->itemInstanceId = item->m_instanceId;
                     Vec3f pos = this->getPos();
                     item->warp(&pos);
-                    this->timer = soExternalValueAccesser::getWorkInt(item, ITEM_INSTANCE_WORK_INT_LIFE_TIME);
+                    this->timer = soExternalValueAccesser::getWorkInt(item, BaseItem::Instance_Work_Int_Life_Time);
                 }
             }
                 break;
