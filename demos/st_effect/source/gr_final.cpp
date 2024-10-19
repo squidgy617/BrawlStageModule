@@ -27,7 +27,7 @@ void grFinal::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint*
         Fighter* fighter = dynamic_cast<Fighter*>(stageObject);
         if (fighter->m_moduleAccesser->getStatusModule()->getStatusKind() == 0x04) {
             Vec3f pos = ftExternalValueAccesser::getHipPos(fighter);
-            g_ecMgr->setEffect(0x330001, &pos);
+            g_ecMgr->setEffect((EfID)0x330001, &pos);
 
         }
 

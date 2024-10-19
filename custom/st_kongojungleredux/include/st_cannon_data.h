@@ -3,6 +3,8 @@
 #include <types.h>
 #include <StaticAssert.h>
 #include <st/st_collision_attr_param.h>
+#include <ef/ef_id.h>
+#include <snd/snd_id.h>
 
 struct stCannonData {
     grGimmick::AttackData cannonAttackData;
@@ -20,6 +22,6 @@ struct stCannonData {
     u32 cannonCooldownFrames;
     Vec2f cannonAreaOffsetPos;
     Vec2f cannonAreaRange;
-    u32 cannonExplodeEffectId;
-    u32 cannonExplodeSfxId;
+    EfID cannonExplodeEffectId;
+    SndID cannonExplodeSfxId;
 };

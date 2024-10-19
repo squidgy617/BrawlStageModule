@@ -23,7 +23,7 @@ void grIzumiStar::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     this->createEffectWork(2);
 
     SimpleEffectData simpleEffectData;
-    this->createSimpleEffectData(&simpleEffectData, 0x330003, "StarFallNode");
+    this->createSimpleEffectData(&simpleEffectData, (EfID)0x330003, "StarFallNode");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[0].m_id = simpleEffectData.m_id;
         this->m_effects[0].m_repeatFrames = simpleEffectData.m_repeatFrames;
@@ -38,7 +38,7 @@ void grIzumiStar::startup(gfArchive* archive, u32 unk1, u32 unk2) {
         this->m_effects[0].m_scale = 1.0;
     }
 
-    this->createSimpleEffectData(&simpleEffectData, 0x330004, "StarFallNode");
+    this->createSimpleEffectData(&simpleEffectData, (EfID)0x330004, "StarFallNode");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[1].m_id = simpleEffectData.m_id;
         this->m_effects[1].m_repeatFrames = simpleEffectData.m_repeatFrames;

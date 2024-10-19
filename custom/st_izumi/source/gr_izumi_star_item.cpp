@@ -117,7 +117,7 @@ void grIzumiStarItem::update(float deltaFrame)
                 this->stopStarEffect();
                 this->setTimer();
                 this->state = State_Vanish;
-                g_ecMgr->setEffect(0x37, &outHitPos);
+                g_ecMgr->setEffect(ef_ptc_common_item_arrival, &outHitPos);
                 this->stopGimmickSE(0);
                 this->startGimmickSE(1);
 

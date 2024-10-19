@@ -54,7 +54,7 @@ void grWorldTournamentGrass::receiveCollMsg_Landing(grCollStatus* collStatus, gr
                     soPostureModule* postureModule = fighter->m_moduleAccesser->getPostureModule();
                     Vec3f pos = postureModule->getPos();
                     float scale = postureModule->getScale(); // TODO: Get model scale?
-                    g_ecMgr->setEffect(0x4c, &pos, NULL, &(Vec3f){scale, scale, scale});
+                    g_ecMgr->setEffect(ef_ptc_common_clacker_bomb, &pos, NULL, &(Vec3f){scale, scale, scale});
                     fighter->toDead(-1);
                 }
             }
@@ -95,7 +95,7 @@ void grWorldTournamentGrass::toKnockOut(Fighter* fighter) {
     moduleAccesser->getWorkManageModule()->onFlag(0x12000018);
     moduleAccesser->getControllerModule()->setOff(true);
     Fighter::StatusKind statusKind = Fighter::Status_Damage_Fall;
-    if (moduleAccesser->getSituationModule()->getKind() == 0) {
+    if (moduleAccesser->getSituationModule()->getKind() == Situation_Ground) {
         statusKind = Fighter::Status_Down_Spot;
     }
     moduleAccesser->getStatusModule()->changeStatusRequest(statusKind, moduleAccesser);

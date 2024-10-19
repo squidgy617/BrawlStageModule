@@ -65,7 +65,7 @@ void grIzumiSpout::startFountainEffect()
 {
     this->effFrameCount = 0.0;
     g_ecMgr->setDrawPrio(1);
-    this->effPtr = g_ecMgr->setEffect(0x330001+this->spoutId);
+    this->effPtr = g_ecMgr->setEffect((EfID)(0x330001+this->spoutId));
     g_ecMgr->setDrawPrio(0xffffffff);
     g_ecMgr->setParent(this->effPtr, this->m_sceneModels[0], "Splash", 0);
 }

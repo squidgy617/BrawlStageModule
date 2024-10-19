@@ -107,7 +107,7 @@ void stIzumi::createObj()
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 
     g_ecMgr->setDrawPrio(1);
-    g_ecMgr->setEffect(0x330005);
+    g_ecMgr->setEffect((EfID)0x330005);
     g_ecMgr->setDrawPrio(0xffffffff);
 }
 

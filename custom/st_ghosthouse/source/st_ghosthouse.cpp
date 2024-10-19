@@ -417,7 +417,7 @@ void stGhostHouse::startNextEvent() {
                 for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
                     int entryId = g_ftManager->getEntryIdFromIndex(i);
                     if (g_ftManager->isFighterActivate(entryId, -1)) {
-                        if (soExternalValueAccesser::getSituationKind(g_ftManager->getFighter(entryId, -1)) == 0) {
+                        if (soExternalValueAccesser::getSituationKind(g_ftManager->getFighter(entryId, -1)) == Situation_Ground) {
                             entryIds[numPlayersOnGround] = entryId;
                             numPlayersOnGround++;
                         }

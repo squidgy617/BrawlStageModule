@@ -24,7 +24,7 @@ void grPhendranaMissile::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
     this->createEffectWork(1);
     SimpleEffectData simpleEffectData;
-    this->createSimpleEffectData(&simpleEffectData, 0x320000 + this->effectIndex, "Effect");
+    this->createSimpleEffectData(&simpleEffectData, (EfID)(0x320000 + this->effectIndex), "Effect");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[0].m_id = simpleEffectData.m_id;
         this->m_effects[0].m_repeatFrames = simpleEffectData.m_repeatFrames;

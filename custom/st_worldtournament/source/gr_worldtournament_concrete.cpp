@@ -47,7 +47,7 @@ void grWorldTournamentConcrete::receiveCollMsg_Landing(grCollStatus* collStatus,
                     soPostureModule* postureModule = fighter->m_moduleAccesser->getPostureModule();
                     Vec3f pos = postureModule->getPos();
                     float scale = postureModule->getScale(); // TODO: Get model scale?
-                    g_ecMgr->setEffect(0x4c, &pos, NULL, &(Vec3f){scale, scale, scale});
+                    g_ecMgr->setEffect(ef_ptc_common_clacker_bomb, &pos, NULL, &(Vec3f){scale, scale, scale});
                     fighter->toDead(-1);
                 }
             }
