@@ -39,11 +39,11 @@ void grKrazoaSpawner::update(float deltaFrame)
     grMadein::update(deltaFrame);
 
     itManager *itemManager = itManager::getInstance();
-    if (itemManager->getItemNum(Item_MarioBros_Shellcreeper, 0x0, this->m_taskId, -1) == 0x0) {
+    if (itemManager->getItemNum(Item_Stage_Shellcreeper, 0x0, this->m_taskId, -1) == 0x0) {
         if (this->timer > 0) {
             this->timer -= deltaFrame;
             if (this->timer <= 0) {
-                if (itemManager->isCompItemKindArchive(Item_MarioBros_Shellcreeper, 0x0, true)) {
+                if (itemManager->isCompItemKindArchive(Item_Stage_Shellcreeper, 0x0, true)) {
                     this->setMotion(1);
                     if (!this->isSilentDeployment) {
                         this->startGimmickSE(0);
@@ -57,7 +57,7 @@ void grKrazoaSpawner::update(float deltaFrame)
         }
         else {
             if (this->m_modelAnims[0]->getFrame() >= this->spawnAfterFrames) {
-                BaseItem *item = itemManager->createItem(Item_MarioBros_Shellcreeper, 0x0, this->m_taskId, 0, 0, 0xffff, 0, 0xffff);
+                BaseItem *item = itemManager->createItem(Item_Stage_Shellcreeper, 0x0, this->m_taskId, 0, 0, 0xffff, 0, 0xffff);
                 if (item != NULL) {
                     Vec3f spawnPos;
                     this->getNodePosition(&spawnPos, 0, "SpawnPos");

@@ -114,7 +114,7 @@ void grQbertGreen::updateMove(float frameDelta) {
         this->setPos(&pos);
     }
     else if (animFrames - animFrameCount <= 1.0) { // Landed
-        if (this->targetPos.m_y <= this->stage->m_deadRange.m_bottom) {
+        if (this->targetPos.m_y <= this->stage->m_deadRange.m_down) {
             this->setStart();
         }
         else {

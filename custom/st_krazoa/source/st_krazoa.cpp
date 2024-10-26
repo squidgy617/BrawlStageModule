@@ -124,7 +124,7 @@ void stKrazoa::createObjSpawner(int mdlIndex, Vec2f* pos, float rot, int motionP
 }
 
 void stKrazoa::getItemPac(gfArchive** brres, gfArchive** param, itKind itemID, int variantID, gfArchive** commonParam, itCustomizerInterface** customizer) {
-    if (itemID == Item_MarioBros_Shellcreeper) {
+    if (itemID == Item_Stage_Shellcreeper) {
         *brres = &this->itemBrres;
         *param = &this->itemParam;
         *commonParam = &this->itemCommonParam;

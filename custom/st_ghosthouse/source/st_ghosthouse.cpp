@@ -244,7 +244,7 @@ void stGhostHouse::notifyEventInfoGo() {
 }
 
 void stGhostHouse::getItemPac(gfArchive** brres, gfArchive** param, itKind itemID, int variantID, gfArchive** commonParam, itCustomizerInterface** customizer) {
-    if (itemID == Item_MarioBros_Sidestepper) {
+    if (itemID == Item_Stage_Sidestepper) {
         *brres = &this->blueBlockItemBrres;
         *param = &this->blueBlockItemParam;
         *commonParam = &this->commonItemParam;

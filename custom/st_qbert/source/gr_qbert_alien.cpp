@@ -136,7 +136,7 @@ void grQbertAlien::updateMove(float frameDelta) {
         }
         Vec3f pos = this->getPos();
         Rect2D* range = &this->stage->m_deadRange;
-        if (pos.m_x <= range->m_left || pos.m_x >= range->m_right || pos.m_y >= range->m_top || pos.m_y <= range->m_bottom) {
+        if (pos.m_x <= range->m_left || pos.m_x >= range->m_right || pos.m_y >= range->m_up || pos.m_y <= range->m_down) {
             if (this->timer >= qbertStageData->qbertRespawnFrames) {
                 this->soundGenerator.playSE(snd_se_stage_Madein_Arrow, 0x0, 0x0, 0xffffffff);
                 this->setStart();
@@ -224,7 +224,7 @@ void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* a
             this->setSleepAttack(true);
             this->setSleepHit(true);
             this->prevPos = this->getPos();
-            this->targetPos = (Vec3f){this->prevPos.m_x, this->stage->m_deadRange.m_bottom, -500};
+            this->targetPos = (Vec3f){this->prevPos.m_x, this->stage->m_deadRange.m_down, -500};
             this->midpointPos = (Vec3f){this->prevPos.m_x, 110, this->prevPos.m_z};
             this->soundGenerator.playSE(snd_se_stage_Madein_04, 0x0, 0x0, 0xffffffff);
             this->setMotionRatio(0.0);

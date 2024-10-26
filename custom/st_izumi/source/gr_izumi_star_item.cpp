@@ -46,7 +46,7 @@ void grIzumiStarItem::update(float deltaFrame)
 
                     float midPosX = (this->stage->m_deadRange.m_left + this->stage->m_deadRange.m_right)/2;
                     float startPosX = randf()*(izumiData->starItemPosRange) + midPosX - izumiData->starItemPosRange/2;
-                    Vec3f startPos = (Vec3f){startPosX, this->stage->m_deadRange.m_top, 0.0};
+                    Vec3f startPos = (Vec3f){startPosX, this->stage->m_deadRange.m_up, 0.0};
                     this->setPos(&startPos);
                     this->speedX = randf()*(izumiData->starItemSpeedXRange) - izumiData->starItemSpeedXRange/2;
 

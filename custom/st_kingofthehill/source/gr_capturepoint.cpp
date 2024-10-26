@@ -57,7 +57,7 @@ void grCapturePoint::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     trigger->setObserveYakumono(this->m_yakumono);
 
     this->disableArea();
-    this->setPos(2*this->stage->m_deadRange.m_top, 0.0, 0.0);
+    this->setPos(2*this->stage->m_deadRange.m_up, 0.0, 0.0);
 }
 
 void grCapturePoint::update(float deltaFrame)
@@ -310,7 +310,7 @@ void grCapturePoint::setNewCapturePosition() {
     if (!stageData->disableCameraZoom) {
         this->stage->m_stagePositions->getCameraRange(&range);
     }
-    this->stage->zoomOutCamera((range.m_right - range.m_left)*2,(range.m_top - range.m_bottom)*2);
+    this->stage->zoomOutCamera((range.m_right - range.m_left)*2,(range.m_up - range.m_down)*2);
 }
 
 void grCapturePoint::applyMotionRate(float motionRate) {

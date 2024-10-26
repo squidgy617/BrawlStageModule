@@ -433,8 +433,8 @@ void grGhostHouseBoo::setVanish() {
 }
 
 void grGhostHouseBoo::setSpawn(Rect2D* spawnRange, Vec3f* centerPos, bool useAltAnim) {
-    Rect2D range = {spawnRange->m_left + centerPos->m_x, spawnRange->m_right + centerPos->m_x, spawnRange->m_top + centerPos->m_y, spawnRange->m_bottom + centerPos->m_y};
-    this->setPos(randf()*(range.m_right - range.m_left) + range.m_left, randf()*(range.m_top - range.m_bottom) + range.m_bottom, 0);
+    Rect2D range = {spawnRange->m_left + centerPos->m_x, spawnRange->m_right + centerPos->m_x, spawnRange->m_up + centerPos->m_y, spawnRange->m_down + centerPos->m_y};
+    this->setPos(randf()*(range.m_right - range.m_left) + range.m_left, randf()*(range.m_up - range.m_down) + range.m_down, 0);
     this->useAltAnim = useAltAnim;
     this->changeState(State_Spawn);
 }
@@ -489,7 +489,7 @@ void grGhostHouseBoo::setSnakeLeader(Rect2D* spawnRange, Vec3f* centerPos, u8 nu
             break;
     }
     this->setPos(randf()*(spawnRange->m_right - spawnRange->m_left) + spawnRange->m_left + centerPos->m_x,
-                 randf()*(spawnRange->m_top - spawnRange->m_bottom) + spawnRange->m_bottom + centerPos->m_y,
+                 randf()*(spawnRange->m_up - spawnRange->m_down) + spawnRange->m_down + centerPos->m_y,
                  0.0);
     this->changeState(State_SnakeStart);
 }

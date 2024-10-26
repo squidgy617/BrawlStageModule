@@ -107,7 +107,7 @@ void grQbertRed::updateMove(float frameDelta) {
         this->timer += frameDelta;
         Vec3f pos = this->getPos();
         Rect2D* range = &this->stage->m_deadRange;
-        if (pos.m_y <= range->m_bottom) {
+        if (pos.m_y <= range->m_down) {
             if (this->timer >= qbertStageData->dropFrames) {
                 this->setStart();
             }
@@ -147,7 +147,7 @@ void grQbertRed::updateMove(float frameDelta) {
         this->setPos(&pos);
     }
     else if (animFrames - animFrameCount <= 1.0) { // Landed
-        if (this->targetPos.m_y <= this->stage->m_deadRange.m_bottom) {
+        if (this->targetPos.m_y <= this->stage->m_deadRange.m_down) {
             this->setStart();
         }
         else {
@@ -185,7 +185,7 @@ void grQbertRed::onDamage(int index, soDamage* damage, soDamageAttackerInfo* att
         this->velocity = damage->m_reaction / 60;
 
         this->prevPos = this->getPos();
-        this->targetPos = (Vec3f){this->prevPos.m_x, this->stage->m_deadRange.m_bottom, 0};
+        this->targetPos = (Vec3f){this->prevPos.m_x, this->stage->m_deadRange.m_down, 0};
 
         int teamId = damage->m_collisionLog.m_teamNo;
         if (attackerInfo->m_indirectAttackerSoKind == StageObject_Fighter) {
