@@ -21,12 +21,12 @@ public:
     {
         openedWithOcarina = false;
         state = State_Closed;
-        songOfTime.buttons[0].m_rightTaunt = true;
+        songOfTime.buttons[0].m_appealSR = true;
         songOfTime.buttons[1].m_attack = true;
-        songOfTime.buttons[2].m_downTaunt = true;
-        songOfTime.buttons[3].m_rightTaunt = true;
+        songOfTime.buttons[2].m_appealLw = true;
+        songOfTime.buttons[3].m_appealSR = true;
         songOfTime.buttons[4].m_attack = true;
-        songOfTime.buttons[5].m_downTaunt = true;
+        songOfTime.buttons[5].m_appealLw = true;
         ocarinaSong = &songOfTime;
     };
     virtual void update(float deltaFrame);

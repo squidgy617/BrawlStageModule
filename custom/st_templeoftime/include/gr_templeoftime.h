@@ -65,10 +65,10 @@ public:
     grTempleOfTime(const char* taskName) : grMadein(taskName)
     {
         buttonMask.m_bits = 0;
-        buttonMask.m_rightTaunt = true;
-        buttonMask.m_leftTaunt = true;
-        buttonMask.m_upTaunt = true;
-        buttonMask.m_downTaunt = true;
+        buttonMask.m_appealSR = true;
+        buttonMask.m_appealSL = true;
+        buttonMask.m_appealHi = true;
+        buttonMask.m_appealLw = true;
         buttonMask.m_attack = true;
         prevButton.m_bits = 0;
     };

@@ -257,16 +257,16 @@ void stGhostHouse::update(float deltaFrame){
         if (g_ftManager->isFighterActivate(entryId, -1)) {
             Fighter* fighter = g_ftManager->getFighter(entryId, -1);
             ipButton currentButton = fighter->m_moduleAccesser->getControllerModule()->getButton();
-            if (currentButton.m_downTaunt) {
+            if (currentButton.m_appealLw) {
                 this->changeEvent(Event_StalkBig);
             }
-            else if (currentButton.m_leftTaunt) {
+            else if (currentButton.m_appealSL) {
                 this->changeEvent(Event_Circle);
             }
-            else if (currentButton.m_rightTaunt) {
+            else if (currentButton.m_appealSR) {
                 this->changeEvent(Event_Fishing);
             }
-            else if (currentButton.m_upTaunt) {
+            else if (currentButton.m_appealHi) {
                 this->changeEvent(Event_Crew);
             }
         }

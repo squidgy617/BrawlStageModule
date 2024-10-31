@@ -195,10 +195,10 @@ void grQbertAlien::updateMove(float frameDelta) {
 void grQbertAlien::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
     stQbertStageData* qbertStageData = (stQbertStageData*)this->getStageData();
     if (this->timer > 0 && damage->m_collisionLog.m_teamNo != 15) {
-        damage->m_totalDamage = 0;
+        damage->m_damage = 0;
     }
-    else if (damage->m_totalDamage >= qbertStageData->qbertHPPerLife) {
-        damage->m_totalDamage = 0;
+    else if (damage->m_damage >= qbertStageData->qbertHPPerLife) {
+        damage->m_damage = 0;
         if (damage->m_collisionLog.m_teamNo >= 0 && damage->m_collisionLog.m_teamNo < NUM_TEAMS - 1) {
             this->setTeam(damage->m_collisionLog.m_teamNo + 1);
         }

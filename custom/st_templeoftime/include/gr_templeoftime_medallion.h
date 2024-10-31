@@ -22,12 +22,12 @@ public:
     grTempleOfTimeMedallion(const char* taskName) : grTempleOfTime(taskName)
     {
         state = State_Closed;
-        preludeOfLight.buttons[0].m_upTaunt = true;
-        preludeOfLight.buttons[1].m_rightTaunt = true;
-        preludeOfLight.buttons[2].m_upTaunt = true;
-        preludeOfLight.buttons[3].m_rightTaunt = true;
-        preludeOfLight.buttons[4].m_leftTaunt = true;
-        preludeOfLight.buttons[5].m_upTaunt = true;
+        preludeOfLight.buttons[0].m_appealHi = true;
+        preludeOfLight.buttons[1].m_appealSR = true;
+        preludeOfLight.buttons[2].m_appealHi = true;
+        preludeOfLight.buttons[3].m_appealSR = true;
+        preludeOfLight.buttons[4].m_appealSL = true;
+        preludeOfLight.buttons[5].m_appealHi = true;
         ocarinaSong = &preludeOfLight;
     };
     virtual void update(float deltaFrame);
