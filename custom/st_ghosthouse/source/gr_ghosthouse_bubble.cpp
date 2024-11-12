@@ -70,7 +70,7 @@ void grGhostHouseBubble::setupAttack() {
     overwriteAttackData->m_noTransaction = false;
     overwriteAttackData->m_subShield = ghostHouseData->bubbleShieldDamage;
 
-    overwriteAttackData->m_isCapsule = true;
+    overwriteAttackData->m_shapeType = soCollision::Shape_Capsule;
 }
 
 void grGhostHouseBubble::update(float deltaFrame) {

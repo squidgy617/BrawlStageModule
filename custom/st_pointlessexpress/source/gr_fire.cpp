@@ -91,5 +91,5 @@ void grFire::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     overwriteAttackData->m_noTransaction = false;
     overwriteAttackData->m_subShield = lavaData->addedShieldDamage;
 
-    overwriteAttackData->m_isCapsule = this->isCapsule;
+    overwriteAttackData->m_shapeType = (soCollision::ShapeType)this->isCapsule;
 }

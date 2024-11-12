@@ -79,7 +79,7 @@ void grCheeseBridgeSaw::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     overwriteAttackData->m_noTransaction = false;
     overwriteAttackData->m_region = soCollisionAttackData::Region_None;
 
-    overwriteAttackData->m_isCapsule = true;
+    overwriteAttackData->m_shapeType = soCollision::Shape_Capsule;
 }
 
 void grCheeseBridgeSaw::setOrientation() {

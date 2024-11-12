@@ -105,7 +105,7 @@ void stSmashketball::createObjCannon(int mdlIndex, int index) {
     this->cannonData[index].attackData.m_soundLevel = soCollisionAttackData::Sound_Level_Medium;
     this->cannonData[index].attackData.m_soundAttribute = soCollisionAttackData::Sound_Attribute_Punch;
     this->cannonData[index].attackData.m_unk5 = false;
-    this->cannonData[index].attackData.m_isCapsule = false;
+    this->cannonData[index].attackData.m_shapeType = soCollision::Shape_Sphere;
     this->cannonData[index].attackData.m_nodeIndex = 0;
     this->cannonData[index].attackData.m_power = 0x1E;
     this->cannonData[index].shootSpeed = smashketballData->shootSpeed;

@@ -72,5 +72,5 @@ void grLava::setupAttack() {
     overwriteAttackData->m_noTransaction = false;
     overwriteAttackData->m_subShield = 0;
 
-    overwriteAttackData->m_isCapsule = true;
+    overwriteAttackData->m_shapeType = soCollision::Shape_Capsule;
 }

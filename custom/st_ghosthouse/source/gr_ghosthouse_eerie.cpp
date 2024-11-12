@@ -70,7 +70,7 @@ void grGhostHouseEerie::setupAttack() {
     overwriteAttackData->m_noTransaction = false;
     overwriteAttackData->m_subShield= ghostHouseData->eerieShieldDamage;
 
-    overwriteAttackData->m_isCapsule = true;
+    overwriteAttackData->m_shapeType = soCollision::Shape_Capsule;
 }
 
 void grGhostHouseEerie::update(float deltaFrame) {

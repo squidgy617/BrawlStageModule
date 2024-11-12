@@ -99,7 +99,7 @@ void grGhostHouseBigBoo::setupAttack() {
     overwriteAttackData->m_noTransaction = false;
     overwriteAttackData->m_subShield = ghostHouseData->bigBooShieldDamage;
 
-    overwriteAttackData->m_isCapsule = true;
+    overwriteAttackData->m_shapeType = soCollision::Shape_Capsule;
 }
 
 void grGhostHouseBigBoo::setupHitPoint() {

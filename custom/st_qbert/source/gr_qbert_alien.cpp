@@ -78,7 +78,7 @@ void grQbertAlien::setupAttack() {
     overwriteAttackData->m_noTransaction = false;
     overwriteAttackData->m_subShield = 0;
 
-    overwriteAttackData->m_isCapsule = false;
+    overwriteAttackData->m_shapeType = soCollision::Shape_Sphere;
 }
 
 void grQbertAlien::setupHitPoint() {
