@@ -22,7 +22,7 @@ void grWarFactoryConveyor::startup(gfArchive* archive, u32 unk1, u32 unk2)
     beltConveyorAreaData.m_isRightDirection = conveyorGimmickData->isRightDirection;
     beltConveyorAreaData.m_conveyorPos = (Vec3f){conveyorGimmickData->pos.m_x,conveyorGimmickData->pos.m_y,0};
 
-    stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick_BeltConveyor,-1);
+    stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick_Area_BeltConveyor,-1);
     trigger->setBeltConveyorTrigger(&beltConveyorAreaData);
 }
 

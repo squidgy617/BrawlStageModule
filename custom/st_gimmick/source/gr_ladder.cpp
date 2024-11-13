@@ -23,7 +23,7 @@ void grLadder::startupLadder(gfArchive* archive, u32 unk1, u32 unk2, grGimmickLa
     this->getUnderNode(&underNode);
     this->m_areaData = (soAreaData){ 0, 0x16, 0, 0, 0, 0, 0.0, 0.0, 10.0, upperNode.m_y - underNode.m_y};
     this->setAreaGimmick(&this->m_areaData, &this->m_areaInit, &this->m_ykData, false);
-    stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick_Ladder, -1);
+    stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick_Area_Ladder, -1);
     trigger->setObserveYakumono(this->m_yakumono);
     this->createIsValidTrigger(&ladderData->m_isValidTriggerData);
 
@@ -35,8 +35,8 @@ void grLadder::startupLadder(gfArchive* archive, u32 unk1, u32 unk2, grGimmickLa
 }
 
 void grLadder::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
-    grGimmickEventLadderInfo* ladderEventInfo = static_cast<grGimmickEventLadderInfo*>(eventInfo);
-    switch(ladderEventInfo->m_state) {
+    grGimmickLadderEventInfo* ladderEventInfo = static_cast<grGimmickLadderEventInfo*>(eventInfo);
+    switch(ladderEventInfo->m_kind) {
         case 0x14:
             this->getUpperNode(&ladderEventInfo->m_upperNode);
             this->getUnderNode(&ladderEventInfo->m_underNode);
