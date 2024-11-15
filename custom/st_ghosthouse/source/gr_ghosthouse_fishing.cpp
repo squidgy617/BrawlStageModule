@@ -211,7 +211,7 @@ void grGhostHouseFishing::moveToTarget(Vec2f* targetPos, Vec2f* maxSpeed, Vec2f*
 void grGhostHouseFishing::moveItem(BaseItem* item) {
     Vec3f pos;
     this->getNodePosition(&pos, 0, "Item");
-    item->m_moduleAccesser->getGroundModule()->setCorrect(0, 0);
+    item->m_moduleAccesser->getGroundModule()->setCorrect(soGroundShapeImpl::Correct_None, 0);
     item->warp(&pos);
 }
 
@@ -268,9 +268,9 @@ void grGhostHouseFishing::changeState(State state) {
                 this->setMotion(0);
 
                 itManager* itemManager = itManager::getInstance();
-                itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenKind)(FISHING_IT_GEN_KIND));
+                itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenId)(FISHING_IT_GEN_KIND));
                 itManager::ItemSwitch itemSwitch(true);
-                ItemKind itemKind = itemManager->getLotOneItemKind(&sheetKind, (itGenKind)(FISHING_IT_GEN_KIND), &itemSwitch, false);
+                ItemKind itemKind = itemManager->getLotOneItemKind(&sheetKind, (itGenId)(FISHING_IT_GEN_KIND), &itemSwitch, false);
 
                 BaseItem* item = itemManager->createItem(Item_Heart, itemKind.m_variation);
                 if (item == NULL) {

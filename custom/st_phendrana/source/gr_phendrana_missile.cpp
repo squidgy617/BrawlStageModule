@@ -45,11 +45,7 @@ void grPhendranaMissile::update(float deltaFrame)
 
 
 void grPhendranaMissile::setMotionPathData(int mdlIndex, bool isRotateMotionPath, u8 effectIndex) {
-    this->motionPathData.m_motionRatio = 1.0;
-    this->motionPathData.m_index = 0;
-    this->motionPathData.m_pathMode = grGimmickMotionPathData::Path_Loop;
-    this->motionPathData.m_mdlIndex = mdlIndex;
-    this->motionPathData.m_7 = 0x0;
+    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Loop, mdlIndex, 0};
     this->isRotateMotionPath = isRotateMotionPath;
     this->effectIndex = effectIndex;
 }

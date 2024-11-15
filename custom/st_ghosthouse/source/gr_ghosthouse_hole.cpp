@@ -18,11 +18,7 @@ grGhostHouseHole* grGhostHouseHole::create(int mdlIndex, const char* tgtNodeName
 }
 
 void grGhostHouseHole::setMotionPathData(int mdlIndex) {
-    this->motionPathData.m_motionRatio = 1.0;
-    this->motionPathData.m_index = 0;
-    this->motionPathData.m_pathMode = grGimmickMotionPathData::Path_Loop;
-    this->motionPathData.m_mdlIndex = mdlIndex;
-    this->motionPathData.m_7 = 0x0;
+    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Loop, mdlIndex, 0};
 }
 
 void grGhostHouseHole::startup(gfArchive* archive, u32 unk1, u32 unk2) {

@@ -82,7 +82,7 @@ void grCapturePoint::update(float deltaFrame)
         case State_Off:
             break;
         case State_Appear:
-            if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
+            if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile.ptr()->m_animLength - 1) {
                 this->state = State_On;
                 this->setMotionDetails(0, 0, 0, 0, State_On);
                 this->stage->zoomInCamera();
@@ -111,12 +111,12 @@ void grCapturePoint::update(float deltaFrame)
             if (int(this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame()) % 45 == 0) {
                 this->startGimmickSE(3);
             }
-            if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
+            if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile.ptr()->m_animLength - 1) {
                 this->setNewCapturePosition();
             }
             break;
         case State_Out:
-            if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
+            if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile.ptr()->m_animLength - 1) {
                 this->state = State_On;
                 this->setMotionDetails(0, 0, 0, 0, State_On);
                 if (this->collisionMode == CollisionMode_CaptureOnly) {
@@ -125,7 +125,7 @@ void grCapturePoint::update(float deltaFrame)
             }
         default:
             if (this->state == State_In){
-                if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile->m_animLength - 1) {
+                if (this->m_modelAnims[0]->m_anmObjMatClrRes->GetFrame() >= this->m_modelAnims[0]->m_anmObjMatClrRes->m_anmMatClrFile.ptr()->m_animLength - 1) {
                     this->state = State_Capturing;
                     this->setMotionDetails(0, 0, 0, 0, State_Capturing);
                     this->startGimmickSE(1);
@@ -241,11 +241,8 @@ void grCapturePoint::setNewCapturePosition() {
     this->stopGimmickSE(1);
     this->startGimmickSE(4);
 
-    this->motionPathData.m_motionRatio = 1.0;
-    this->motionPathData.m_index = 0;
-    this->motionPathData.m_pathMode = grGimmickMotionPathData::Path_Loop;
-    this->motionPathData.m_mdlIndex = resNodeData->m_translation.m_z;
-    this->motionPathData.m_7 = 0x0;
+    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Loop, resNodeData->m_translation.m_z, 0};
+
     if (this->m_gimmickMotionPath != NULL) {
         gfTask* task = this->m_attachedTask;
         if (task == this->m_gimmickMotionPath) {
@@ -305,7 +302,7 @@ void grCapturePoint::setNewCapturePosition() {
     this->enableArea();
     this->state = State_Appear;
     this->setMotionDetails(0, 0, 0, 0, State_Appear);
-    stRange range;
+    Rect2D range;
 
     if (!stageData->disableCameraZoom) {
         this->stage->m_stagePositions->getCameraRange(&range);

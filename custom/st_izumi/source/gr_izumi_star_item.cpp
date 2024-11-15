@@ -37,9 +37,9 @@ void grIzumiStarItem::update(float deltaFrame)
             RainMode rainMode = this->getRainMode();
             if (rainMode != Rain_Wait) {
                 itManager* itemManager = itManager::getInstance();
-                itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenKind)(STAR_IT_GEN_KIND + rainMode));
+                itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenId)(STAR_IT_GEN_KIND + rainMode));
                 itManager::ItemSwitch itemSwitch(true);
-                ItemKind itemKind = itemManager->getLotOneItemKind(&sheetKind, (itGenKind)(STAR_IT_GEN_KIND + rainMode), &itemSwitch, false);
+                ItemKind itemKind = itemManager->getLotOneItemKind(&sheetKind, (itGenId)(STAR_IT_GEN_KIND + rainMode), &itemSwitch, false);
 
                 BaseItem* item = itemManager->createItem(itemKind.m_kind, itemKind.m_variation);
                 if (item != NULL) {

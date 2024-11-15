@@ -247,12 +247,13 @@ void stGimmick::createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, float r
     grSpring* spring = grSpring::create(mdlIndex, "grSpring");
     if (spring != NULL) {
         addGround(spring);
-        grGimmickSpringData springData;
-        __memfill(&springData, 0, sizeof(springData));
-        springData.m_pos = *pos;
-        springData.m_rot = rot;
-        springData.m_areaRange = *range;
-        springData.m_bounce = bounce;
+        grGimmickSpringData springData(
+                pos,
+                rot,
+                bounce,
+                mdlIndex,
+                &(Vec2f){0.0, 0.0},
+                range);
         spring->setMotionPathData(motionPathIndex);
         spring->setGimmickData(&springData); // Note: gimmickData will only apply in next function since was allocated on the stack
         spring->startup(this->m_fileData,0,0);
@@ -277,12 +278,10 @@ void stGimmick::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex, b
     grLadder* ladder = grLadder::create(mdlIndex, "grLadder");
     if (ladder != NULL) {
         addGround(ladder);
-        grGimmickLadderData ladderData;
-        __memfill(&ladderData, 0, sizeof(ladderData));
-        ladderData.m_motionPathTriggerData = (stTriggerData){ 0, 0, 1, stTriggerData::Keep_None };
-        ladderData.m_isValidTriggerData = (stTriggerData){ 0, 0, 1, stTriggerData::Keep_None };
-        ladderData.m_restrictUpExit = restrictUpExit;
-        ladderData.m_51 = unk2;
+        grGimmickLadderData ladderData(
+                mdlIndex, 0, restrictUpExit, unk2, "",
+                &(Vec2f){0.0, 0.0}, &(Vec2f){0.0, 0.0}
+        );
         ladder->setMotionPathData(motionPathIndex);
         ladder->startupLadder(this->m_fileData,0,0,&ladderData);
         ladder->setPos(pos->m_x, pos->m_y, 0.0);
@@ -302,11 +301,10 @@ void stGimmick::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, float sca
     grWarpZone* warpZone = grWarpZone::create(mdlIndex, "grWarpZone");
     if (warpZone != NULL) {
         addGround(warpZone);
-        grGimmickWarpData warpData;
-        __memfill(&warpData, 0, sizeof(warpData));
-        warpData.m_pos = *pos;
-        warpData.m_areaRange = *range;
-        warpData.m_sndIDs[0] = snd_se_ADVstage_common_FIGHTER_IN;
+        grGimmickWarpData warpData(
+                pos, mdlIndex, snd_se_ADVstage_common_FIGHTER_IN, snd_se_invalid,
+                &(Vec2f){0.0, 0.0}, range
+        );
         warpZone->setStageData(m_stageData);
         warpZone->prepareWarpData(motionPathIndex, deactivateFrames);
         warpZone->setWarpAttrData(&(Vec3f){warpDest->m_x, warpDest->m_y, 0.0}, warpType, isNotAuto);
@@ -334,49 +332,49 @@ void stGimmick::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, float sca
 }
 
 void stGimmick::createTriggerHitPointEffect(Vec2f* posSW, Vec2f* posNE, float damage, short detectionRate) {
-    grGimmickHitPointEffectData hitPointEffectData;
-    __memfill(&hitPointEffectData, 0, sizeof(hitPointEffectData));
-    hitPointEffectData.m_pos = (Vec2f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y)};
-    hitPointEffectData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
-    if (damage < 0) {
-        hitPointEffectData.m_isHeal = true;
-        damage = -damage;
-    }
-    hitPointEffectData.m_damage = damage;
-    hitPointEffectData.m_serialHitFrame = detectionRate;
+    grGimmickHitPointEffectData hitPointEffectData(
+            fabsf(damage),
+            damage < 0 ? true : false,
+            detectionRate,
+            &(Vec2f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y)},
+            &(Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y}
+    );
     this->createGimmickHitPointEffectArea(&hitPointEffectData);
 }
 
 void stGimmick::createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed, bool isRightDirection) {
-    grGimmickBeltConveyorData beltConveyorAreaData;
-    __memfill(&beltConveyorAreaData, 0, sizeof(beltConveyorAreaData));
-    beltConveyorAreaData.m_conveyorPos = (Vec3f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0};
-    beltConveyorAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
-    beltConveyorAreaData.m_speed = speed;
-    beltConveyorAreaData.m_isRight = isRightDirection;
+    grGimmickBeltConveyorData beltConveyorAreaData(
+            &(Vec3f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0},
+            speed,
+            isRightDirection,
+            &(Vec2f){0.0, 0.0},
+            &(Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y},
+            gfArea::Shape_Rectangle
+    );
 
     this->createGimmickBeltConveyor2(&beltConveyorAreaData);
 }
 
 void stGimmick::createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bool canDrown) {
-    grGimmickWaterData waterAreaData;
-    __memfill(&waterAreaData, 0, sizeof(waterAreaData));
-    waterAreaData.m_pos = (Vec2f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y)};
-    waterAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
-    waterAreaData.m_swimHeight = posNE->m_y;
-    waterAreaData.m_canDrown = canDrown;
-    waterAreaData.m_speed = speed;
+    grGimmickWaterData waterAreaData(
+            posNE->m_y,
+            canDrown,
+            speed,
+            &(Vec2f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y)},
+            &(Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y}
+    );
 
     this->createGimmickWaterArea(&waterAreaData);
 }
 
 void stGimmick::createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength, float angle) {
-    grGimmickWindData windAreaData;
-    __memfill(&windAreaData, 0, sizeof(windAreaData));
-    windAreaData.m_windPos = (Vec3f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0};
-    windAreaData.m_range = (Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y};
-    windAreaData.m_speed = strength;
-    windAreaData.m_vector = angle;
+    grGimmickWindData windAreaData(
+            &(Vec3f){0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0},
+            strength,
+            angle,
+            &(Vec2f){0.0, 0.0},
+            &(Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y}
+    );
 
     this->createGimmickWind2(&windAreaData);
 }

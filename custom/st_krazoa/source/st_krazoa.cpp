@@ -96,12 +96,10 @@ void stKrazoa::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex, bo
     grKrazoaLadder* ladder = grKrazoaLadder::create(mdlIndex, "grKrazoaLadder");
     if (ladder != NULL) {
         addGround(ladder);
-        grGimmickLadderData ladderData;
-        __memfill(&ladderData, 0, sizeof(ladderData));
-        ladderData.m_motionPathTriggerData = (stTriggerData){ 0, 0, 1, stTriggerData::Keep_None };
-        ladderData.m_isValidTriggerData = (stTriggerData){ 0, 0, 1, stTriggerData::Keep_None };
-        ladderData.m_restrictUpExit = restrictUpExit;
-        ladderData.m_51 = unk2;
+        grGimmickLadderData ladderData(
+                mdlIndex, 0, restrictUpExit, unk2, "",
+                &(Vec2f){0.0, 0.0}, &(Vec2f){0.0, 0.0}
+        );
         ladder->setMotionPathData(motionPathIndex);
         ladder->startupLadder(this->m_fileData,0,0,&ladderData);
         ladder->setPos(pos->m_x, pos->m_y, 0.0);
