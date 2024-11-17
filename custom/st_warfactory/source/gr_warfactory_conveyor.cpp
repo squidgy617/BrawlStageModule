@@ -24,7 +24,7 @@ void grWarFactoryConveyor::startup(gfArchive* archive, u32 unk1, u32 unk2)
             gfArea::Shape_Rectangle
     );
 
-    stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick_Area_BeltConveyor,-1);
+    stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick::Area_BeltConveyor,-1);
     trigger->setBeltConveyorTrigger(&beltConveyorAreaData);
 }
 

@@ -30,14 +30,14 @@ void grCheeseBridgeRope::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     int root = 0;
     this->getNodePosition(&rootNode, 0, root);
     this->m_areaData = (soAreaData){ 0, 0x16, 0, 0, 0, 0, 0.0, (upperNode.m_y + underNode.m_y)/2, 10.0, upperNode.m_y - underNode.m_y};
-    this->setAreaGimmick(&this->m_areaData, &this->m_areaInit, &this->m_ykData, false);
-    stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick_Area_Ladder, -1);
+    this->setAreaGimmick(&this->m_areaData, &this->m_areaDataSet, &this->m_ykData, false);
+    stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick::Area_Ladder, -1);
     trigger->setObserveYakumono(this->m_yakumono);
 
 }
 
 void grCheeseBridgeRope::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
-    grGimmickLadderEventInfo* ladderEventInfo = static_cast<grGimmickLadderEventInfo*>(eventInfo);
+    soGimmickLadderEventInfo* ladderEventInfo = static_cast<soGimmickLadderEventInfo*>(eventInfo);
     switch(ladderEventInfo->m_kind) {
         case 0x14:
             this->getUpperNode(&ladderEventInfo->m_upperNodePos);

@@ -5,7 +5,7 @@
 class grCheeseBridgeRope : public grCheeseBridgePlatform {
 protected:
     soAreaData m_areaData;
-    soAreaInit m_areaInit;
+    soSet<soAreaData> m_areaDataSet;
     ykAreaData m_ykData;
 public:
     grCheeseBridgeRope(const char* taskName) : grCheeseBridgePlatform(taskName)

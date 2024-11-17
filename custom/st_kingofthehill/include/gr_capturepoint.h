@@ -25,7 +25,7 @@ protected:
 
     grGimmickMotionPathData motionPathData;
     soAreaData areaData;
-    soAreaInit areaInit;
+    soSet<soAreaData> areaInit;
     ykAreaData areaInfo;
     stMelee* stage;
     Ground* capturePointPositions;

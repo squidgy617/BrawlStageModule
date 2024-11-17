@@ -91,7 +91,7 @@ protected:
     unsigned int animRespawnLength;
     float rotThreshold;
     soAreaData areaData;
-    soAreaInit areaInit;
+    soSet<soAreaData> areaInit;
     ykAreaData areaInfo;
     u32 effectIndex;
     grYakumono* attachedGround;

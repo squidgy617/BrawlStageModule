@@ -26,7 +26,7 @@ protected:
     int sndPtr;
 
     soAreaData areaData;
-    soAreaInit areaInit;
+    soSet<soAreaData> areaInit;
     ykAreaData areaInfo;
 
 public:

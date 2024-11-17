@@ -53,7 +53,7 @@ void grCapturePoint::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
     this->areaData = (soAreaData){ 0, 0x15, 0, 0, 0, 0, stageData->areaOffsetPos, stageData->areaRange};
     this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
-    stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick_Area_Common,-1);
+    stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick::Area_Common,-1);
     trigger->setObserveYakumono(this->m_yakumono);
 
     this->disableArea();

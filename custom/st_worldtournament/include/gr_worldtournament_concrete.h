@@ -5,7 +5,7 @@
 class grWorldTournamentConcrete : public grYakumono {
 protected:
     soAreaData areaData;
-    soAreaInit areaInit;
+    soSet<soAreaData> areaInit;
     ykAreaData areaInfo;
 public:
     grWorldTournamentConcrete(const char* taskName) : grYakumono(taskName)

@@ -6,7 +6,7 @@
 class grWorldTournamentGrass : public grYakumono {
 protected:
     soAreaData areaData;
-    soAreaInit areaInit;
+    soSet<soAreaData> areaInit;
     ykAreaData areaInfo;
     float collTimer;
 
