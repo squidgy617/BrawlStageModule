@@ -8,10 +8,8 @@ class grSmashketballGlass : public grMadein {
         float timer;
 
     public:
-        grSmashketballGlass(const char* taskName) : grMadein(taskName)
+        grSmashketballGlass(const char* taskName) : grMadein(taskName), yakumonoData(1, NULL)
         {
-            yakumonoData.m_numHitGroups = 1;
-            yakumonoData.m_hitGroupsInfo = NULL;
             timer = 0;
         };
         virtual void startup(gfArchive* data, u32 unk1, u32 unk2);

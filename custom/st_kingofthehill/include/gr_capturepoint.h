@@ -44,8 +44,6 @@ protected:
 public:
     grCapturePoint(const char* taskName) : grMadein(taskName)
     {
-        areaInfo.m_numHitGroups = 0;
-        areaInfo.m_hitGroupsInfo = NULL;
         syncedGround = NULL;
         syncedGroundExitAnim = -1;
         numCaptures = 0;

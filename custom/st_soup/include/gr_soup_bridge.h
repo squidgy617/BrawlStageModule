@@ -20,9 +20,7 @@ class grSoupBridge : public grMadein
         float shakeTimer;
         BridgeState bridgeState;
     public:
-        grSoupBridge(const char* taskName) : grMadein(taskName) {
-            yakumonoData.m_numHitGroups = 1;
-            yakumonoData.m_hitGroupsInfo = NULL;
+        grSoupBridge(const char* taskName) : grMadein(taskName), yakumonoData(1, NULL) {
             breakTimer = 0;
             shakeTimer = 0;
             bridgeState = BRIDGE_STATE_BUILD;

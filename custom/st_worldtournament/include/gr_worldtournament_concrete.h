@@ -10,8 +10,7 @@ protected:
 public:
     grWorldTournamentConcrete(const char* taskName) : grYakumono(taskName)
     {
-        areaInfo.m_numHitGroups = 0;
-        areaInfo.m_hitGroupsInfo = NULL;
+
     };
     virtual void startup(gfArchive* data, u32 unk1, u32 unk2);
     virtual void update(float deltaFrame);

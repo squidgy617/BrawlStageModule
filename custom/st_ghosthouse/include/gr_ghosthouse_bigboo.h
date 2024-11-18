@@ -36,11 +36,8 @@ protected:
     Vec3f hideDestPos;
 
 public:
-    grGhostHouseBigBoo(const char* taskName) : grMadein(taskName)
+    grGhostHouseBigBoo(const char* taskName) : grMadein(taskName), yakumonoData(1, NULL)
     {
-        yakumonoData.m_numHitGroups = 1;
-        yakumonoData.m_hitGroupsInfo = NULL;
-
         state = State_Inactive;
         numHits = 0;
         speed = 0;

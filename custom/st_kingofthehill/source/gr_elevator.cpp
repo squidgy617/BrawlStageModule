@@ -18,8 +18,8 @@ void grAdventureElevator::prepareElevatorData(Vec2f* areaOffsetPos, Vec2f* areaR
     this->elevatorData.areaOffsetPos = *areaOffsetPos;
     this->elevatorData.areaRange = *areaRange;
     this->elevatorData.speed = speed;
-    this->elevatorData.speed = deltaSpeed;
-    this->elevatorData.speed = posMdlIndex;
+    this->elevatorData.deltaSpeed = deltaSpeed;
+    this->elevatorData.posMdlIndex = posMdlIndex;
 }
 
 void grAdventureElevator::startup(gfArchive* archive, u32 unk1, u32 unk2)
@@ -52,6 +52,7 @@ void grAdventureElevator::startup(gfArchive* archive, u32 unk1, u32 unk2)
     //g_stAdventure2->getFighterStartPos(&startPos, 0);
     Vec3f pos;
     this->elevatorPosGround->getNodePosition(&pos, 0, this->prevFloor + 1);
+
     this->setPos(&pos);
     this->nextFloor = this->prevFloor;
     this->areaData = (soAreaData){ 0, gfArea::Stage_Group_Gimmick_Elevator, AREA_SHAPE_FLAG_FOLLOW_NODE, 0, 0, 0, this->elevatorData.areaOffsetPos, this->elevatorData.areaRange };
@@ -169,20 +170,20 @@ void grAdventureElevator::getFloorData()
     nw4r::g3d::ResMdl resMdl = this->elevatorPosGround->m_sceneModels[0]->m_resMdl;
     int numEntries = resMdl.GetResNodeNumEntries();
     this->numFloors = numEntries - 1;
-    nw4r::g3d::ResNode resNode = resMdl.GetResNode((u64)0);
+    nw4r::g3d::ResNode resNode = resMdl.GetResNode(0);
     this->prevFloor = resNode.ptr()->m_rotation.m_y; // Get starting floor index from y rotation of first node
 
     //this->floorPositions = new (Heaps::StageInstance) Vec3f[this->numFloors];
     //for (int nodeIndex = 1; nodeIndex < numEntries; nodeIndex++) {
     //    nw4r::g3d::ResNode resNode = resMdl.GetResNode(nodeIndex);
-        // Note: Original code checks to see if node name starts with "Floor" and puts it into a vector, sorts the vector and then creates an array based on vector size
+    // Note: Original code checks to see if node name starts with "Floor" and puts it into a vector, sorts the vector and then creates an array based on vector size
 //        if (resNode.ptr()->m_nodeNameStrOffset != 0) {
 //            char* nodeName = (char*)resNode.ptr() + resNode.ptr()->m_nodeNameStrOffset;
 //            if (strncmp(nodeName, "Floor", 5) == 0) {
 //
 //            }
 //        }
-   //     this->floorPositions[nodeIndex - 1] = resNode.ptr()->m_translation;
+    //     this->floorPositions[nodeIndex - 1] = resNode.ptr()->m_translation;
 
     //}
     this->maxDistanceForAccel = (this->elevatorData.speed * this->elevatorData.speed / this->elevatorData.deltaSpeed) * 0.5;

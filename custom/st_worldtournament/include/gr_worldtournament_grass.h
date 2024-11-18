@@ -13,8 +13,6 @@ protected:
 public:
     grWorldTournamentGrass(const char* taskName) : grYakumono(taskName)
     {
-        areaInfo.m_numHitGroups = 0;
-        areaInfo.m_hitGroupsInfo = NULL;
         collTimer = 0.0;
     };
     virtual void startup(gfArchive* data, u32 unk1, u32 unk2);

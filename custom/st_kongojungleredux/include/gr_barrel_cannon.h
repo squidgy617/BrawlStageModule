@@ -118,8 +118,6 @@ public:
         this->animSetLength = 60;
         this->animFireLength = 60;
         this->animRespawnLength = 60;
-        this->areaInfo.m_numHitGroups = 0;
-        this->areaInfo.m_hitGroupsInfo = NULL;
         this->effectIndex = 0;
 
     };

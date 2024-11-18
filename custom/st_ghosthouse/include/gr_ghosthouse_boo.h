@@ -58,11 +58,8 @@ protected:
     Vec2f* northEastPos;
 
 public:
-    grGhostHouseBoo(const char* taskName) : grMadein(taskName)
+    grGhostHouseBoo(const char* taskName) : grMadein(taskName), yakumonoData(1, NULL)
     {
-        yakumonoData.m_numHitGroups = 1;
-        yakumonoData.m_hitGroupsInfo = NULL;
-
         playerTarget = -1;
         speed = 0;
         state = State_Inactive;
