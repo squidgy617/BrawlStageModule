@@ -53,7 +53,7 @@ void grIzumiSpout::fountainInit(u32 spoutId)
 
     this->setMotion(this->level*NUM_SPOUT_LEVELS);
 
-    this->areaData = (soAreaData){ 0, 0x15, 0x1, 0, 0, this->getNodeIndex(0, "Trigger"), {0.0, 0.0}, izumiData->areaRange};
+    this->areaData = (soAreaData){ 0, gfArea::Stage_Group_Gimmick_Normal, AREA_SHAPE_FLAG_FOLLOW_NODE, 0, 0, this->getNodeIndex(0, "Trigger"), {0.0, 0.0}, izumiData->areaRange};
     this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
     stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick::Area_Common,-1);
     trigger->setObserveYakumono(this->m_yakumono);

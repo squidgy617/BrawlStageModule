@@ -51,7 +51,7 @@ void grCapturePoint::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     this->m_soundEffects[4].m_offsetPos = (Vec2f){0.0, 0.0};
 
 
-    this->areaData = (soAreaData){ 0, 0x15, 0, 0, 0, 0, stageData->areaOffsetPos, stageData->areaRange};
+    this->areaData = (soAreaData){ 0, gfArea::Stage_Group_Gimmick_Normal, 0, 0, 0, 0, stageData->areaOffsetPos, stageData->areaRange};
     this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
     stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick::Area_Common,-1);
     trigger->setObserveYakumono(this->m_yakumono);
