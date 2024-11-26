@@ -256,7 +256,7 @@ void stGhostHouse::update(float deltaFrame){
         int entryId = g_ftManager->getEntryIdFromIndex(i);
         if (g_ftManager->isFighterActivate(entryId, -1)) {
             Fighter* fighter = g_ftManager->getFighter(entryId, -1);
-            ipButton currentButton = fighter->m_moduleAccesser->getControllerModule()->getButton();
+            ipPadButton currentButton = fighter->m_moduleAccesser->getControllerModule()->getButton();
             if (currentButton.m_appealLw) {
                 this->changeEvent(Event_StalkBig);
             }
