@@ -29,9 +29,9 @@ void grGhostHouseFishing::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     this->createSimpleEffectData(&simpleEffectData, (EfID)0x320004, "Effect");
     if (0 < simpleEffectData.m_id) {
         this->m_effects[0].m_id = simpleEffectData.m_id;
-        this->m_effects[0].m_repeatFrames = simpleEffectData.m_repeatFrames;
+        this->m_effects[0].m_repeatFrame = simpleEffectData.m_repeatFrame;
         this->m_effects[0].m_nodeIndex = simpleEffectData.m_nodeIndex;
-        this->m_effects[0].m_endFrames = simpleEffectData.m_endFrames;
+        this->m_effects[0].m_endFrame = simpleEffectData.m_endFrame;
         this->m_effects[0].m_offsetPos = (Vec2f) {0.0, 0.0};
         this->m_effects[0].m_scale = 1.0;
     }

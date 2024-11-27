@@ -25,9 +25,9 @@ void grCheeseBridgePlatform::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
     this->createSoundWork(1,1);
     this->m_soundEffects[0].m_id = snd_se_invalid;
-    this->m_soundEffects[0].m_repeatFrames = 0;
+    this->m_soundEffects[0].m_repeatFrame = 0;
     this->m_soundEffects[0].m_nodeIndex = 0;
-    this->m_soundEffects[0].m_endFrames = 0;
+    this->m_soundEffects[0].m_endFrame = 0;
     this->m_soundEffects[0].m_offsetPos = (Vec2f){0.0, 0.0};
 
     stCheeseBridgeData* stageData = static_cast<stCheeseBridgeData*>(this->getStageData());
