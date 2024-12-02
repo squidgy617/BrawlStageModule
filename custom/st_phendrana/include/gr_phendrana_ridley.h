@@ -8,9 +8,11 @@ class grPhendranaRidley : public grMadein
     protected:
         grGimmickMotionPathData motionPathData;
         bool isRotateMotionPath;
+        bool isActivated;
 
     public:
         grPhendranaRidley(const char* taskName) : grMadein(taskName) {
+            isActivated = false;
 
         };
         virtual ~grPhendranaRidley() { };
@@ -18,6 +20,7 @@ class grPhendranaRidley : public grMadein
         virtual void update(float deltaFrame);
 
         virtual void setMotionPathData(int mdlIndex, bool isRotateMotionPath);
+        virtual bool checkForPinch();
 
         static grPhendranaRidley* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 

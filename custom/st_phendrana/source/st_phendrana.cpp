@@ -61,17 +61,17 @@ void stPhendrana::createObjAshiba(int mdlIndex) {
         ground->setDontMoveGround();
 
         u32 ridleysIndex = ground->getNodeIndex(0, "Ridleys");
-        u32 missilesIndex = ground->getNodeIndex(0, "Missiles");
+        u32 otherIndex = ground->getNodeIndex(0, "Other");
         u32 endIndex = ground->getNodeIndex(0, "End");
 
-        for (int i = ridleysIndex + 1; i < missilesIndex; i++) {
+        for (int i = ridleysIndex + 1; i < otherIndex; i++) {
             nw4r::g3d::ResNodeData *resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             this->createObjRidley(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                                     resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
                                     resNodeData->m_translation.m_z);
 
         }
-        for (int i = missilesIndex + 1; i < endIndex; i++) {
+        for (int i = otherIndex + 1; i < endIndex; i++) {
             nw4r::g3d::ResNodeData *resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             this->createObjMissile(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                                   resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
