@@ -45,9 +45,11 @@ void grPhendranaRidley::update(float deltaFrame)
 {
     grMadein::update(deltaFrame);
     if (!this->isActivated && this->checkForPinch()) {
-        this->setMotionRatio(1.0);
         this->isActivated = true;
+        this->m_gimmickMotionPath->startMove();
+        this->setMotionRatio(1.0);
     }
+
 }
 
 
