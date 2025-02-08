@@ -22,18 +22,39 @@ void grPlatform::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     stTriggerData triggerData = {0,0,1,0};
     this->createAttachMotionPath(&motionPathInfo, &triggerData, "MovePlatformNode");
 
-    this->createSoundWork(2,1);
-    this->m_soundEffects[0].m_id = snd_se_ADVstage_common_61;
-    this->m_soundEffects[0].m_repeatFrame = 0;
-    this->m_soundEffects[0].m_nodeIndex = 0;
-    this->m_soundEffects[0].m_endFrame = 0;
-    this->m_soundEffects[0].m_offsetPos = (Vec2f){0.0, 0.0};
+    int endNodeIndex = this->getNodeIndex(0, "EndNode");
+    if (endNodeIndex > 0) {
+        int soundEffectNodeIndex = this->getNodeIndex(0, "SoundEffects");
+        int effectNodeIndex = this->getNodeIndex(0, "Effects");
+        int numSoundEffects = effectNodeIndex - soundEffectNodeIndex - 1;
+        this->createSoundWork(numSoundEffects,numSoundEffects);
+        for (int i = 0; i < numSoundEffects; i++) {
+            int nodeIndex = i + soundEffectNodeIndex + 1;
+            nw4r::g3d::ResNodeData* resNodeData = this->m_sceneModels[0]->m_resMdl.GetResNode(nodeIndex).ptr();
 
-    this->m_soundEffects[1].m_id = snd_se_ADVstage_common_62;
-    this->m_soundEffects[1].m_repeatFrame = 0;
-    this->m_soundEffects[1].m_nodeIndex = 0;
-    this->m_soundEffects[1].m_endFrame = 0;
-    this->m_soundEffects[1].m_offsetPos = (Vec2f){0.0, 0.0};
+            this->m_soundEffects[i].m_id = resNodeData->m_rotation.m_x;
+            this->m_soundEffects[i].m_repeatFrame = 0;
+            this->m_soundEffects[i].m_nodeIndex = nodeIndex;
+            this->m_soundEffects[i].m_endFrame = 0;
+            this->m_soundEffects[i].m_offsetPos = (Vec2f){0.0, 0.0};
+        }
+
+        int numEffects = endNodeIndex - effectNodeIndex - 1;
+        this->createEffectWork(numEffects);
+        for (int i = 0; i < numEffects; i++) {
+            int nodeIndex = i + effectNodeIndex + 1;
+            nw4r::g3d::ResNodeData* resNodeData = this->m_sceneModels[0]->m_resMdl.GetResNode(nodeIndex).ptr();
+
+            this->m_effects[i].m_id = resNodeData->m_rotation.m_x;
+            this->m_effects[i].m_repeatFrame = 0;
+            this->m_effects[i].m_nodeIndex = nodeIndex;
+            this->m_effects[i].m_endFrame = 0;
+            this->m_effects[i].m_offsetPos = (Vec2f){0.0, 0.0};
+            this->m_effects[i].m_scale = 1.0;
+        }
+    }
+
+    this->m_category = grMadein::Category_Enemy;
 }
 
 void grPlatform::update(float deltaFrame)
@@ -62,26 +83,65 @@ void grPlatform::update(float deltaFrame)
     }
 
     Vec3f pos = (Vec3f){0, 0, 0};
-    this->getNodePosition(&pos, 0, "CollisionNode");
-    if (pos.m_z >= 0) {
-        this->setEnableCollisionStatus(true);
+    if (this->getNodePosition(&pos, 0, "CollisionNode")) {
+        if (pos.m_z >= 0) {
+            this->setEnableCollisionStatus(true);
+        }
+        else {
+            this->setEnableCollisionStatus(false);
+        }
     }
-    else {
-        this->setEnableCollisionStatus(false);
+
+    Vec3f scale = (Vec3f){0, 0, 0};
+    if (this->getNodeScale(&scale, 0, "HurtNode")) {
+        if (scale.m_x > 0 || scale.m_y > 0 || scale.m_z > 0) {
+            this->enableHit(0, 0);
+        }
+        else {
+            this->disableHit(0, 0);
+        }
+    };
+
+    Vec3f areaPos = (Vec3f){0, 0, 0};
+    if (this->getNodePosition(&areaPos, 0, "AreaNode")) {
+        if (areaPos.m_z >= 0) {
+            this->enableArea();
+        }
+        else {
+            this->disableArea();
+        }
     }
 
     this->updateEffect(deltaFrame);
-
 }
 
 void grPlatform::updateEffect(float deltaFrame) {
-
+    for (u32 i = 0; i < this->m_soundEffectNum; i++) {
+        Vec3f pos;
+        this->getNodePosition(&pos, 0, this->m_soundEffects[i].m_nodeIndex);
+        if (pos.m_z < 0 && this->m_soundEffects[i].m_handleId == -1) {
+            this->m_soundEffects[i].m_generatorIndex = i;
+            this->startGimmickSE(i);
+        }
+        else if (pos.m_z >= 1000) {
+            this->stopGimmickSE(i);
+        }
+    }
+    for (u32 i = 0; i < this->m_effectNum; i++) {
+        Vec3f pos;
+        this->getNodePosition(&pos, 0, this->m_effects[i].m_nodeIndex);
+        if (pos.m_z < 0 && this->m_effects[i].m_handleId == -1) {
+            this->startGimmickEffect(i);
+        }
+        else if (pos.m_z >= 1000) {
+            this->stopGimmickEffect(i);
+        }
+    }
 }
 
 void grPlatform::onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo) {
     if (this->timer <= 0 && damage->m_damage >= this->maxDamage) {
         damage->m_damage = 0;
-        this->startGimmickSE(1);
         if (this->respawnFrames > 0) {
             this->timer = this->respawnFrames;
         }
@@ -95,9 +155,7 @@ void grPlatform::onDamage(int index, soDamage* damage, soDamageAttackerInfo* att
             }
         }
     }
-    else {
-        this->startGimmickSE(0);
-    }
+
 }
 
 void grPlatform::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
@@ -121,6 +179,22 @@ void grPlatform::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoi
             }
         }
     }
+}
+
+void grPlatform::onInflictEach(soCollisionLog* collisionLog, float power) {
+    if (this->m_modelAnims[0]->m_resFile.GetResAnmChrNumEntries() > 2
+    || this->m_modelAnims[0]->m_resFile.GetResAnmVisNumEntries() > 2
+    || this->m_modelAnims[0]->m_resFile.GetResAnmTexPatNumEntries() > 2
+    || this->m_modelAnims[0]->m_resFile.GetResAnmTexSrtNumEntries() > 2
+    || this->m_modelAnims[0]->m_resFile.GetResAnmClrNumEntries() > 2
+    || this->m_modelAnims[0]->m_resFile.GetResAnmShpNumEntries() > 2) {
+        this->setMotion(2);
+    }
+
+}
+
+void grPlatform::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
+    this->setMotion(2);
 }
 
 void grPlatform::setMotionPathData(int mdlIndex, bool isRotateMotionPath) {
@@ -155,5 +229,23 @@ void grPlatform::setupAttack(AttackData* attackData) {
 void grPlatform::setupLanding(float maxLandings, float respawnFrames) {
     this->maxLandings = maxLandings;
     this->respawnFrames = respawnFrames;
+}
+
+void grPlatform::initializeEntity() {
+    u32 nodeIndex;
+    if (this->getNodeIndex(&nodeIndex, 0, "AreaNode")) {
+        Vec3f areaPosSW;
+        Vec3f areaPosNE;
+        this->getNodePosition(&areaPosSW, 0, "AreaSW");
+        this->getNodePosition(&areaPosNE, 0, "AreaNE");
+        this->areaData = (soAreaData){ 0, gfArea::Stage_Group_Gimmick_Normal, 0, 0, 0, nodeIndex, (areaPosSW + areaPosNE).m_xy / 2, (areaPosSW - areaPosNE).m_xy};
+
+        this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, true);
+        stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick::Area_Common,-1);
+        trigger->setObserveYakumono(this->m_yakumono);
+    }
+    else {
+        grMadein::initializeEntity();
+    }
 }
 

@@ -14,8 +14,8 @@ public:
     virtual ~stClassInfo();
     static stClassInfo* getClassInfo(int);
     void setClassInfo(srStageKind p1, stClassInfo* p2);
-    STATIC_CHECK(sizeof(stClassInfo) == 0x4);
 };
+static_assert(sizeof(stClassInfo) == 0x4, "Class is wrong size!");
 
 template <srStageKind I, class T>
 class stClassInfoImpl : public stClassInfo {
@@ -119,15 +119,12 @@ void stOnlineTrainning::createObj() {
     }
     createCollision(m_fileData, 2, 0);
     initCameraParam();
-    nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 0x64, 0xfffe));
-    if (posData.ptr() == NULL)
-    {
-        // if no stgPos model in pac, use defaults
-        createStagePositions();
-    }
-    else
-    {
+    void* ptr = m_fileData->getData(Data_Type_Model, 0x64, 0xfffe);
+    if (ptr) {
+        nw4r::g3d::ResFile posData(ptr);
         createStagePositions(&posData);
+    } else {
+        createStagePositions();
     }
     createWind2ndOnly();
     loadStageAttrParam(m_fileData, 0x1E);
