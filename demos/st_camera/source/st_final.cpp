@@ -70,10 +70,7 @@ void stFinal::createObj()
 
 }
 
-void Ground::setStageData(void* stageData)
-{
-    this->m_stageData = stageData;
-}
+
 void stFinal::startFighterEvent()
 {
     return;

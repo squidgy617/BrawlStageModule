@@ -118,10 +118,7 @@ u8 stIzumi::getIteamDropStatus() {
     return true;
 }
 
-void Ground::setStageData(void* stageData)
-{
-    this->m_stageData = stageData;
-}
+
 void stIzumi::startFighterEvent()
 {
     return;

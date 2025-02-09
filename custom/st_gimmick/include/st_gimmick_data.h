@@ -18,6 +18,6 @@ struct stGimmickData {
     float cannonShootStunTimerSpeed;
     grGimmickDamageFloor damageFloor;
 
-    STATIC_CHECK(sizeof(stGimmickData) == 300)
 
 };
+static_assert(sizeof(stGimmickData) == 300, "Class is the wrong size!");

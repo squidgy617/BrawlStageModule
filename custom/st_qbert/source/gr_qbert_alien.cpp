@@ -4,7 +4,7 @@
 #include "gr_qbert_alien.h"
 #include <OS/OSError.h>
 #include <mt/mt_spline.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 #include <mt/mt_trig.h>
 #include <cm/cm_quake.h>
 #include <if/if_mngr.h>

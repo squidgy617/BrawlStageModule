@@ -16,7 +16,5 @@ struct stLunarHorizonData {
     float minGravityUpBeforeResetAvailable;
     float maxGravityUpBeforeResetAvailable;
     float cooldownFrames;
-
-    STATIC_CHECK(sizeof(stLunarHorizonData) == 48)
-
 };
+static_assert(sizeof(stLunarHorizonData) == 48, "Class is the wrong size!");

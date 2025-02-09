@@ -64,10 +64,7 @@ void stSkyTower::createObj()
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
 }
 
-void Ground::setStageData(void* stageData)
-{
-    this->m_stageData = stageData;
-}
+
 void stSkyTower::startFighterEvent()
 {
     return;

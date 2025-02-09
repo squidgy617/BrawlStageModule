@@ -193,10 +193,7 @@ void stSkyPillar::clearHeap() {
     gfModuleManager::getInstance()->destroy("sora_enemy_vs.rel");
 }
 
-void Ground::setStageData(void* stageData)
-{
-    this->m_stageData = stageData;
-}
+
 void stSkyPillar::startFighterEvent()
 {
     return;

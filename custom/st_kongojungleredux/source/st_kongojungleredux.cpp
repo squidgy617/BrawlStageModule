@@ -6,7 +6,7 @@
 #include <ft/ft_manager.h>
 #include <so/so_external_value_accesser.h>
 #include <OS/OSError.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 #include <gm/gm_global.h>
 #include <sc/sc_melee.h>
 
@@ -124,9 +124,7 @@ void stKongoJungleRedux::update(float frameDelta){
 
 }
 
-void Ground::setStageData(void* stageData) {
-   this->m_stageData = stageData;
-}
+
 void stKongoJungleRedux::startFighterEvent() {
    return;
 }

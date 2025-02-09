@@ -1,5 +1,5 @@
 #include <memory.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 #include <st/st_class_info.h>
 #include "st_templeoftime.h"
 #include <OS/OSError.h>

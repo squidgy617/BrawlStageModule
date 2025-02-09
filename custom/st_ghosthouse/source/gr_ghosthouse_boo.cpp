@@ -2,7 +2,7 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 #include <ft/ft_manager.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 #include <mt/mt_prng.h>
 #include <mt/mt_trig.h>
 #include <OS/OSError.h>

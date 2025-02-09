@@ -6,7 +6,7 @@
 #include <ft/ft_manager.h>
 #include <so/so_external_value_accesser.h>
 #include <OS/OSError.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 #include <ft/ft_manager.h>
 
 static stClassInfoImpl<Stages::Final, stSmashketball> classInfo = stClassInfoImpl<Stages::Final, stSmashketball>();
@@ -146,9 +146,7 @@ void stSmashketball::update(float frameDelta){
     }
 }
 
-void Ground::setStageData(void* stageData) {
-   this->m_stageData = stageData;
-}
+
 void stSmashketball::startFighterEvent() {
    return;
 }

@@ -4,7 +4,7 @@
 #include <OS/OSError.h>
 #include <so/so_external_value_accesser.h>
 #include <mt/mt_spline.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 #include <mt/mt_trig.h>
 #include <cm/cm_quake.h>
 #include <snd/snd_system.h>

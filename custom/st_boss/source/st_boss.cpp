@@ -260,10 +260,7 @@ void stBoss::clearHeap() {
     gfModuleManager::getInstance()->destroy("sora_enemy.rel");
 }
 
-void Ground::setStageData(void* stageData)
-{
-    this->m_stageData = stageData;
-}
+
 void stBoss::startFighterEvent()
 {
     return;

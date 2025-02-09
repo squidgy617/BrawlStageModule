@@ -6,7 +6,7 @@
 #include <ft/ft_manager.h>
 #include <so/so_external_value_accesser.h>
 #include <OS/OSError.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 
 static stClassInfoImpl<Stages::Final, stSoup> classInfo = stClassInfoImpl<Stages::Final, stSoup>();
 
@@ -86,9 +86,7 @@ void stSoup::update(float frameDelta){
 
 }
 
-void Ground::setStageData(void* stageData) {
-   this->m_stageData = stageData;
-}
+
 void stSoup::startFighterEvent() {
    return;
 }

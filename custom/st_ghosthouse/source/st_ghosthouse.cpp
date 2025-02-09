@@ -5,7 +5,7 @@
 #include <snd/snd_system.h>
 #include <ft/ft_manager.h>
 #include <so/so_external_value_accesser.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 #include <mt/mt_prng.h>
 #include <stdio.h>
 #include <it/it_manager.h>
@@ -651,9 +651,7 @@ void stGhostHouse::changeEvent(GhostEvent event) {
 
 // TODO: Make random event be based on frame timer so that can have some control over event (some frames can be completely random)
 
-void Ground::setStageData(void* stageData) {
-   this->m_stageData = stageData;
-}
+
 void stGhostHouse::startFighterEvent() {
    return;
 }

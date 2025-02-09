@@ -51,8 +51,4 @@ public:
     virtual bool isBamperVector();
     virtual u8 getIteamDropStatus();
     virtual ~stIzumi() { this->releaseArchive(); };
-
-
-
-    //STATIC_CHECK(sizeof(stIzumi) == 0x1D8)
 };

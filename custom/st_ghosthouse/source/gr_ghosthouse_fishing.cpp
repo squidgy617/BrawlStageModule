@@ -4,7 +4,7 @@
 #include <mt/mt_prng.h>
 #include <mt/mt_trig.h>
 #include <math.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 #include <it/it_manager.h>
 #include <so/so_external_value_accesser.h>
 #include <OS/OSError.h>

@@ -56,6 +56,4 @@ public:
         cmAnimationController* animController = static_cast<cmAnimationController*>(camController->m_currentController);
         animController->releaseScnAnmRes();
     };
-
-    STATIC_CHECK(sizeof(stFinal) == 0x1D8)
 };

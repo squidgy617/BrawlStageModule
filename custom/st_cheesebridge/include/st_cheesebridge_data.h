@@ -1,5 +1,6 @@
 #pragma once
 
+#include <StaticAssert.h>
 #include <types.h>
 
 #define NUM_RAILS 3
@@ -25,7 +26,5 @@ struct stCheeseBridgeData {
     RailObjectParam platformParam;
     RailObjectParam sawParam;
     RailObjectParam ropeParam;
-
-    STATIC_CHECK(sizeof(stCheeseBridgeData) == 84)
-
 };
+static_assert(sizeof(stCheeseBridgeData) == 84, "Class is the wrong size!");

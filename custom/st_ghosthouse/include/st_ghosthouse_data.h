@@ -3,7 +3,7 @@
 #include <types.h>
 #include <StaticAssert.h>
 #include <mt/mt_vector.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 #include <mt/mt_common.h>
 #include <mt/mt_matrix.h>
 

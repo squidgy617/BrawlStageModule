@@ -6,7 +6,7 @@
 #include <ft/ft_manager.h>
 #include <so/so_external_value_accesser.h>
 #include <OS/OSError.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 
 static stClassInfoImpl<Stages::Final, stPointlessExpress> classInfo = stClassInfoImpl<Stages::Final, stPointlessExpress>();
 
@@ -99,9 +99,7 @@ void stPointlessExpress::update(float frameDelta){
 
 }
 
-void Ground::setStageData(void* stageData) {
-   this->m_stageData = stageData;
-}
+
 void stPointlessExpress::startFighterEvent() {
    return;
 }

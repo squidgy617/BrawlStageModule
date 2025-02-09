@@ -30,7 +30,5 @@ struct stKingOfTheHillData {
     float cannonShootTimerSpeed;
     float cannonShootStunTimerSpeed;
     grGimmickDamageFloor damageFloor;
-
-    STATIC_CHECK(sizeof(stKingOfTheHillData) == 368)
-
 };
+static_assert(sizeof(stKingOfTheHillData) == 368, "Class is the wrong size!");

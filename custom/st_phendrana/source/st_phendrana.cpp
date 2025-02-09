@@ -107,10 +107,7 @@ void stPhendrana::createObjMissile(int mdlIndex, Vec2f* pos, float rot, float sc
     }
 }
 
-void Ground::setStageData(void* stageData)
-{
-    this->m_stageData = stageData;
-}
+
 void stPhendrana::startFighterEvent()
 {
     return;

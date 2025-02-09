@@ -1,7 +1,7 @@
 #include <memory.h>
 #include "gr_qbert_score.h"
 #include <OS/OSError.h>
-#include <hk/hk_math.h>
+#include <hkmath/hkMath.h>
 #include <extras.h>
 #include <stdlib.h>
 #include <cstring>

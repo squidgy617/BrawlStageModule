@@ -53,5 +53,5 @@ public:
         this->releaseArchive();
     };
 
-    STATIC_CHECK(sizeof(stSkyTower) == 0x1D8)
 };
+static_assert(sizeof(stSkyTower) == 0x1D8, "Class is the wrong size!");
