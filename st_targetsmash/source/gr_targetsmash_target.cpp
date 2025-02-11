@@ -145,7 +145,7 @@ void grTargetSmashTarget::onDamage(int index, soDamage* damage, soDamageAttacker
     (*this->targetsHitWork)++;
     (*this->targetsLeftWork)--;
     *this->totalDamageWork += damage->m_damageAdd;
-    int playerNo = g_ftManager->getPlayerNo(attackerInfo->m_indirectAttackerEntryId);
+    int playerNo = g_ftManager->getPlayerNo(attackerInfo->m_indirectEntryId);
     if (playerNo >= 0) {
         this->numTargetsHitPerPlayerWork[playerNo]++;
     }
