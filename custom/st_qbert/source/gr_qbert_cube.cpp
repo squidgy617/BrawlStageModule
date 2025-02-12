@@ -40,9 +40,9 @@ void grQbertCube::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJo
     if (this->timer <= 0) {
         gfTask* stageObject = gfTask::getTask(collStatus->m_taskId);
         int teamNumber = soExternalValueAccesser::getTeamNo(static_cast<StageObject*>(stageObject));
-        int unk = 1;
+        CategoryFlag categoryFlag(GROUND_COLL_STATUS_OWNER_TASK_CATEGORY_MASK_FIGHTER);
         int entryId = -1;
-        if (this->isCollisionStatusOwnerTask(collStatus, &unk)) {
+        if (this->isCollisionStatusOwnerTask(collStatus, &categoryFlag)) {
             entryId = g_ftManager->getEntryIdFromTaskId(collStatus->m_taskId, NULL);
             if (entryId > -1) {
                 teamNumber = g_ftManager->getTeam(entryId, false, false);

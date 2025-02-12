@@ -37,8 +37,8 @@ void grWorldTournamentConcrete::onGimmickEvent(soGimmickEventInfo* eventInfo, in
 
 
 void grWorldTournamentConcrete::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
-    int unk = 1;
-    if (this->isCollisionStatusOwnerTask(collStatus, &unk)) {
+    CategoryFlag categoryFlag(GROUND_COLL_STATUS_OWNER_TASK_CATEGORY_MASK_FIGHTER);
+    if (this->isCollisionStatusOwnerTask(collStatus, &categoryFlag)) {
         Fighter* fighter = (Fighter*)gfTask::getTask(collStatus->m_taskId);
         if (fighter != NULL) {
             if (fighter->m_moduleAccesser->getWorkManageModule()->isFlag(0x12000018)) {

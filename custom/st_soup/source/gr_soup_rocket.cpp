@@ -30,8 +30,8 @@ void grSoupRocket::update(float deltaFrame) {
 
 void grSoupRocket::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
     if (this->timer <= 0) {
-        int unk = 1;
-        if (this->isCollisionStatusOwnerTask(collStatus, &unk)) {
+        CategoryFlag categoryFlag(GROUND_COLL_STATUS_OWNER_TASK_CATEGORY_MASK_FIGHTER);
+        if (this->isCollisionStatusOwnerTask(collStatus, &categoryFlag)) {
             this->setMotion(1);
             this->timer = RESPAWN_FRAMES;
         }
