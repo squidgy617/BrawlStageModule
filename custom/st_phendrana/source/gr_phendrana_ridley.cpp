@@ -18,64 +18,41 @@ grPhendranaRidley* grPhendranaRidley::create(int mdlIndex, const char* tgtNodeNa
 }
 
 void grPhendranaRidley::startup(gfArchive* archive, u32 unk1, u32 unk2) {
-    grMadein::startup(archive, unk1, unk2);
-
-    grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, this->isRotateMotionPath, true, 0, 0, 0, 0, 0, 0 };
-    stTriggerData triggerData = {0,0,1,0};
-    this->createAttachMotionPath(&motionPathInfo, &triggerData, "MovePlatformNode");
+    grPhendranaPinch::startup(archive, unk1, unk2);
 
     this->createSoundWork(2,1);
-    this->m_soundEffects[0].m_id = snd_se_ADVstage_common_61;
+    this->m_soundEffects[0].m_id = snd_se_stage_Madein_01;
     this->m_soundEffects[0].m_repeatFrame = 0;
-    this->m_soundEffects[0].m_nodeIndex = 0;
+    this->m_soundEffects[0].m_nodeIndex = this->getNodeIndex(0, "HipN");;
     this->m_soundEffects[0].m_endFrame = 0;
     this->m_soundEffects[0].m_offsetPos = (Vec2f){0.0, 0.0};
 
-    this->m_soundEffects[1].m_id = snd_se_ADVstage_common_62;
+    this->m_soundEffects[1].m_id = snd_se_stage_Madein_04;
     this->m_soundEffects[1].m_repeatFrame = 0;
-    this->m_soundEffects[1].m_nodeIndex = 0;
+    this->m_soundEffects[1].m_nodeIndex = this->getNodeIndex(0, "HipN");;
     this->m_soundEffects[1].m_endFrame = 0;
     this->m_soundEffects[1].m_offsetPos = (Vec2f){0.0, 0.0};
 
-    this->setMotion(0);
-    this->setMotionRatio(0);
 }
 
 void grPhendranaRidley::update(float deltaFrame)
 {
-    grMadein::update(deltaFrame);
-    if (!this->isActivated && this->checkForPinch()) {
-        this->isActivated = true;
-        this->m_gimmickMotionPath->startMove();
-        this->setMotionRatio(1.0);
-    }
-
-}
-
-
-void grPhendranaRidley::setMotionPathData(int mdlIndex, bool isRotateMotionPath) {
-    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Once, mdlIndex, 0};
-
-    this->isRotateMotionPath = isRotateMotionPath;
-}
-
-bool grPhendranaRidley::checkForPinch() {
-    scMelee* scene = static_cast<scMelee*>(gfSceneManager::getInstance()->searchScene("scMelee"));
-    stOperatorRuleMelee* operatorRule = static_cast<stOperatorRuleMelee*>(scene->m_operatorRuleGameMode);
-    if (operatorRule->m_remainingFrameTime < 3600) {
-        return true;
-    }
-
-    for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
-        int entryId = g_ftManager->getEntryIdFromIndex(i);
-        if (g_ftManager->isFighterActivate(entryId, -1)) {
-            if (g_ftManager->getOwner(entryId)->getStockCount() == 1) {
-                return true;
-            }
+    grPhendranaPinch::update(deltaFrame);
+    if (this->m_gimmickMotionPath != NULL) {
+        if (this->m_gimmickMotionPath->isEndFrame()) {
+            this->stopGimmickSE(0);
+            this->stopGimmickSE(1);
         }
     }
 
-    return false;
 }
+
+void grPhendranaRidley::activatePinch() {
+    grPhendranaPinch::activatePinch();
+    this->startGimmickSE(0);
+    this->startGimmickSE(1);
+}
+
+
 
 

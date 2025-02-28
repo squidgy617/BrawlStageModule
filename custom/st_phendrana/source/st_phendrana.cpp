@@ -2,6 +2,7 @@
 #include "gr_phendrana.h"
 #include "gr_phendrana_ridley.h"
 #include "gr_phendrana_missile.h"
+#include "gr_phendrana_blizzard.h"
 #include <ec/ec_mgr.h>
 #include <memory.h>
 #include <st/st_class_info.h>
@@ -60,19 +61,29 @@ void stPhendrana::createObjAshiba(int mdlIndex) {
         ground->startup(m_fileData, 0, 0);
         ground->setDontMoveGround();
 
-        u32 ridleysIndex = ground->getNodeIndex(0, "Ridleys");
+        nw4r::g3d::ResNodeData *resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("Ridley").ptr();
+        this->createObjRidley(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                              resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
+                              resNodeData->m_translation.m_z);
+
+        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("Blizzard").ptr();
+        this->createObjBlizzard(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                              resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
+                              resNodeData->m_translation.m_z);
+
+
+        u32 pinchIndex = ground->getNodeIndex(0, "Pinch");
         u32 otherIndex = ground->getNodeIndex(0, "Other");
         u32 endIndex = ground->getNodeIndex(0, "End");
-
-        for (int i = ridleysIndex + 1; i < otherIndex; i++) {
-            nw4r::g3d::ResNodeData *resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            this->createObjRidley(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+        for (int i = pinchIndex + 1; i < otherIndex; i++) {
+            resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjPinch(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                                     resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
                                     resNodeData->m_translation.m_z);
 
         }
         for (int i = otherIndex + 1; i < endIndex; i++) {
-            nw4r::g3d::ResNodeData *resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             this->createObjMissile(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                                   resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
                                   resNodeData->m_translation.m_z, resNodeData->m_scale.m_y);
@@ -83,6 +94,32 @@ void stPhendrana::createObjAshiba(int mdlIndex) {
 
 void stPhendrana::createObjRidley(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
     grPhendranaRidley* platform = grPhendranaRidley::create(mdlIndex, "", "grPhendranaRidley");
+    if(platform != NULL){
+        addGround(platform);
+        platform->setStageData(m_stageData);
+        platform->setMotionPathData(motionPathIndex, rot >= 360);
+        platform->startup(this->m_fileData,0,0);
+        platform->setPos(pos->m_x, pos->m_y, 0.0);
+        platform->setScale(scale, scale, scale);
+        platform->setRot(0.0, 0.0, rot);
+    }
+}
+
+void stPhendrana::createObjBlizzard(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
+    grPhendranaBlizzard* platform = grPhendranaBlizzard::create(mdlIndex, "", "grPhendranaBlizzard");
+    if(platform != NULL){
+        addGround(platform);
+        platform->setStageData(m_stageData);
+        platform->setMotionPathData(motionPathIndex, rot >= 360);
+        platform->startup(this->m_fileData,0,0);
+        platform->setPos(pos->m_x, pos->m_y, 0.0);
+        platform->setScale(scale, scale, scale);
+        platform->setRot(0.0, 0.0, rot);
+    }
+}
+
+void stPhendrana::createObjPinch(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
+    grPhendranaPinch* platform = grPhendranaRidley::create(mdlIndex, "", "grPhendranaPinch");
     if(platform != NULL){
         addGround(platform);
         platform->setStageData(m_stageData);
@@ -243,3 +280,10 @@ int stPhendrana::getFinalTechniqColor()
 }
 
 ST_CLASS_INFO;
+
+// Imo best way would be something like:
+//Pinch starts right on ko and Ridley's anim as well as his shadow plays
+//Ridley roar with a little delay after that (Ridley still takes some time to appear on screen after the anim starts so it's a non issue)
+//Blizzard fades in
+//When Ridley flies through the stage and his anim ends both Ridley and the shadow get unloaded (just to make sure they don't affect performance anymore), the wing flap sfx doesn't play anymore but the blizzard still goes on for the rest of the match
+//Looping wind sfx for the blizzard would also be sick

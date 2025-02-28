@@ -1,26 +1,21 @@
 #pragma once
 
-#include <gr/gr_madein.h>
+#include "gr_phendrana_pinch.h"
 #include <st/st_melee.h>
 
-class grPhendranaRidley : public grMadein
+class grPhendranaRidley : public grPhendranaPinch
 {
     protected:
-        grGimmickMotionPathData motionPathData;
-        bool isRotateMotionPath;
-        bool isActivated;
+
 
     public:
-        grPhendranaRidley(const char* taskName) : grMadein(taskName) {
-            isActivated = false;
+        grPhendranaRidley(const char* taskName) : grPhendranaPinch(taskName) {
 
         };
         virtual ~grPhendranaRidley() { };
         virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
         virtual void update(float deltaFrame);
-
-        virtual void setMotionPathData(int mdlIndex, bool isRotateMotionPath);
-        virtual bool checkForPinch();
+        virtual void activatePinch();
 
         static grPhendranaRidley* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 

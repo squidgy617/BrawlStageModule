@@ -52,6 +52,8 @@ public:
     virtual ~stPhendrana() { this->releaseArchive(); };
     void createObjAshiba(int mdlIndex);
     void createObjRidley(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
+    void createObjPinch(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
+    void createObjBlizzard(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
     void createObjMissile(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, u8 effectIndex);
 
 
