@@ -20,16 +20,16 @@ grPhendranaRidley* grPhendranaRidley::create(int mdlIndex, const char* tgtNodeNa
 void grPhendranaRidley::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     grPhendranaPinch::startup(archive, unk1, unk2);
 
-    this->createSoundWork(2,1);
+    this->createSoundWork(2,2);
     this->m_soundEffects[0].m_id = snd_se_stage_Madein_01;
     this->m_soundEffects[0].m_repeatFrame = 0;
-    this->m_soundEffects[0].m_nodeIndex = this->getNodeIndex(0, "HipN");;
+    this->m_soundEffects[0].m_nodeIndex = this->getNodeIndex(0, "HipN");
     this->m_soundEffects[0].m_endFrame = 0;
     this->m_soundEffects[0].m_offsetPos = (Vec2f){0.0, 0.0};
 
     this->m_soundEffects[1].m_id = snd_se_stage_Madein_04;
     this->m_soundEffects[1].m_repeatFrame = 0;
-    this->m_soundEffects[1].m_nodeIndex = this->getNodeIndex(0, "HipN");;
+    this->m_soundEffects[1].m_nodeIndex = this->getNodeIndex(0, "HipN");
     this->m_soundEffects[1].m_endFrame = 0;
     this->m_soundEffects[1].m_offsetPos = (Vec2f){0.0, 0.0};
 
@@ -41,7 +41,7 @@ void grPhendranaRidley::update(float deltaFrame)
     if (this->m_gimmickMotionPath != NULL) {
         if (this->m_gimmickMotionPath->isEndFrame()) {
             this->stopGimmickSE(0);
-            this->stopGimmickSE(1);
+
         }
     }
 
@@ -50,6 +50,7 @@ void grPhendranaRidley::update(float deltaFrame)
 void grPhendranaRidley::activatePinch() {
     grPhendranaPinch::activatePinch();
     this->startGimmickSE(0);
+    this->m_soundEffects[1].m_generatorIndex = 1;
     this->startGimmickSE(1);
 }
 

@@ -119,7 +119,7 @@ void stPhendrana::createObjBlizzard(int mdlIndex, Vec2f* pos, float rot, float s
 }
 
 void stPhendrana::createObjPinch(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
-    grPhendranaPinch* platform = grPhendranaRidley::create(mdlIndex, "", "grPhendranaPinch");
+    grPhendranaPinch* platform = grPhendranaPinch::create(mdlIndex, "", "grPhendranaPinch");
     if(platform != NULL){
         addGround(platform);
         platform->setStageData(m_stageData);
