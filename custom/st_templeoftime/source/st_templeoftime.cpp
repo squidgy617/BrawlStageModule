@@ -43,7 +43,7 @@ void stTempleOfTime::createObj() {
     nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(Data_Type_Scene, 0, 0xfffe));
     this->registScnAnim(scnData, 0);
     this->initPosPokeTrainer(1, 0);
-    this->createObjPokeTrainer(this->m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
+    this->createObjPokeTrainer(this->m_fileData, 0x65, "PokeTrainer00", this->m_pokeTrainerPos, 0x0);
 }
 
 void stTempleOfTime::createObjGround(int mdlIndex) {

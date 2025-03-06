@@ -57,7 +57,7 @@ void stLunarHorizon::createObj() {
     this->scnAnimLength = resFile.GetResAnmScn(0)->m_animLength;
     registScnAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
-    createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_unk, 0x0);
+    createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_pokeTrainerPos, 0x0);
 
     stLunarHorizonData* stageData = static_cast<stLunarHorizonData*>(m_stageData);
     g_soWorld->m_gravityUp = stageData->startingGravityUp;
