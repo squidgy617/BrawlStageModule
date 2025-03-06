@@ -16,7 +16,7 @@ protected:
 
     State state;
     OcarinaSong<6> preludeOfLight;
-    StageParam* stageParam;
+    stParam* stageParam;
 
 public:
     grTempleOfTimeMedallion(const char* taskName) : grTempleOfTime(taskName)
@@ -35,7 +35,7 @@ public:
     virtual ~grTempleOfTimeMedallion(){};
 
     virtual void playOcarinaSong();
-    virtual void setStageParam(StageParam* stpm);
+    virtual void setStageParam(stParam* stpm);
 
     static grTempleOfTimeMedallion* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 };

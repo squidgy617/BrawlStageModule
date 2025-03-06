@@ -70,7 +70,7 @@ void grTempleOfTimeMedallion::playOcarinaSong() {
     this->startGimmickSE(1);
 }
 
-void grTempleOfTimeMedallion::setStageParam(StageParam* stageParam) {
+void grTempleOfTimeMedallion::setStageParam(stParam* stageParam) {
     this->stageParam = stageParam;
 }
 
