@@ -39,7 +39,7 @@ void stIzumi::createObj()
         ground->startup(m_fileData, 0, 0);
         ground->setDontMoveGround();
     }
-    grIzumiSpout* spout = grIzumiSpout::create(1, "", "grIzumiSpout");
+    grIzumiSpout* spout = grIzumiSpout::create(80, "", "grIzumiSpout");
     if (spout != NULL)
     {
         addGround(spout);
@@ -49,7 +49,7 @@ void stIzumi::createObj()
         spout->fountainInit(0);
         createCollision(m_fileData, 3, spout);
     }
-    spout = grIzumiSpout::create(2, "", "grIzumiSpout");
+    spout = grIzumiSpout::create(81, "", "grIzumiSpout");
     if (spout != NULL)
     {
         addGround(spout);
