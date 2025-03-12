@@ -49,7 +49,7 @@ void stFinalSub::createObj()
         ground->setType(2);
         ground->startup(m_fileData, 0, 0);
         ground->setStageData(m_stageData);
-        ground->setDontMoveGround();
+       //ground->setDontMoveGround();
     }
     createCollision(m_fileData, 2, NULL);
     initCameraParam();

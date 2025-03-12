@@ -17,28 +17,41 @@ void grFinal::startup(gfArchive* data, u32 unk1, u32 unk2) {
     if (this->type == 2) {
         u8 subStageKind = g_GameGlobal->m_modeMelee->m_meleeInitData.m_subStageKind;
         if (this->m_modelAnims[0]->m_resFile.GetResAnmChrNumEntries() > subStageKind) {
-            this->changeNodeAnim(subStageKind, 0);
+            for (int i = 0; i < this->m_modelAnimNum; i++) {
+                this->changeNodeAnim(subStageKind, i);
+            }
         }
         if (this->m_modelAnims[0]->m_resFile.GetResAnmVisNumEntries() > subStageKind) {
-            this->changeVisibleAnim(subStageKind, 0);
+            for (int i = 0; i < this->m_modelAnimNum; i++) {
+                this->changeVisibleAnim(subStageKind, i);
+            }
         }
         if (this->m_modelAnims[0]->m_resFile.GetResAnmTexPatNumEntries() > subStageKind) {
-            this->changeTexAnim(subStageKind, 0);
+            for (int i = 0; i < this->m_modelAnimNum; i++) {
+                this->changeTexAnim(subStageKind, i);
+            }
         }
         if (this->m_modelAnims[0]->m_resFile.GetResAnmTexSrtNumEntries() > subStageKind) {
-            this->changeTexSrtAnim(subStageKind, 0);
+            for (int i = 0; i < this->m_modelAnimNum; i++) {
+                this->changeTexSrtAnim(subStageKind, i);
+            }
         }
         if (this->m_modelAnims[0]->m_resFile.GetResAnmClrNumEntries() > subStageKind) {
-            this->changeMatColAnim(subStageKind, 0);
+            for (int i = 0; i < this->m_modelAnimNum; i++) {
+                this->changeMatColAnim(subStageKind, i);
+            }
         }
         if (this->m_modelAnims[0]->m_resFile.GetResAnmShpNumEntries() > subStageKind) {
-            this->changeShapeAnim(subStageKind, 0);
+            for (int i = 0; i < this->m_modelAnimNum; i++) {
+                this->changeShapeAnim(subStageKind, i);
+            }
         }
     }
 }
 
 void grFinal::update(float deltaFrame)
 {
+    grYakumono::update(deltaFrame);
     this->updateEff();
 }
 void grFinal::setType(int type)
