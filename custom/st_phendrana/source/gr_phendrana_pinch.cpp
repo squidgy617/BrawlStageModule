@@ -26,6 +26,8 @@ void grPhendranaPinch::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
     this->setMotion(0);
     this->setMotionRatio(0);
+
+    this->setNodeVisibilityAll(false, 0);
 }
 
 void grPhendranaPinch::update(float deltaFrame)
@@ -33,6 +35,11 @@ void grPhendranaPinch::update(float deltaFrame)
     grMadein::update(deltaFrame);
     if (!this->isActivated && this->checkForPinch()) {
         this->activatePinch();
+    }
+    if (this->m_gimmickMotionPath != NULL) {
+        if (this->m_gimmickMotionPath->isEndFrame()) {
+            this->setNodeVisibilityAll(false, 0);
+        }
     }
 }
 
@@ -47,6 +54,7 @@ void grPhendranaPinch::activatePinch() {
     this->isActivated = true;
     this->m_gimmickMotionPath->startMove();
     this->setMotionRatio(1.0);
+    this->setNodeVisibilityAll(true, 0);
 }
 
 bool grPhendranaPinch::checkForPinch() {
