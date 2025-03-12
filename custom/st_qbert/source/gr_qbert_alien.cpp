@@ -129,7 +129,7 @@ void grQbertAlien::updateMove(float frameDelta) {
         if (this->timer == qbertStageData->knockoutFrames) {
             this->setNodeVisibility(false, 0, "EnemyM", false, false);
             this->soundGenerator.playSE(snd_se_stage_Madein_08, 0x0, 0x0, 0xffffffff);
-            cmReqQuake(1, &(Vec3f){0,0,0});
+            cmReqQuake(cmQuake::Amplitude_M, &(Vec3f){0,0,0});
             if (this->teamId > 0 && this->teamId - 1 < NUM_PLAYERS) {
                 this->teamScoresWork[teamId - 1] += ALIEN_POINTS;
             }

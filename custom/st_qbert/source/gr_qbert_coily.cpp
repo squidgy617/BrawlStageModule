@@ -118,7 +118,7 @@ void grQbertCoily::updateMove(float frameDelta) {
         this->timer += frameDelta;
         if (this->timer == qbertStageData->knockoutFrames) {
             this->soundGenerator.playSE(snd_se_stage_Madein_08, 0x0, 0x0, 0xffffffff);
-            cmReqQuake(1, &(Vec3f){0,0,0});
+            cmReqQuake(cmQuake::Amplitude_M, &(Vec3f){0,0,0});
             if (this->attackerEntryId >= 0) {
                int team = g_ftManager->getTeam(this->attackerEntryId, false, false);
                 this->teamScoresWork[team] += COILY_POINTS;
