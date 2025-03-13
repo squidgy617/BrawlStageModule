@@ -6,7 +6,7 @@
 class grPhendranaBlizzard : public grPhendranaPinch
 {
     protected:
-
+        Stage *stage;
 
     public:
         grPhendranaBlizzard(const char* taskName) : grPhendranaPinch(taskName) {
@@ -17,6 +17,6 @@ class grPhendranaBlizzard : public grPhendranaPinch
         virtual void update(float deltaFrame);
         virtual void activatePinch();
 
-        static grPhendranaBlizzard* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
+        static grPhendranaBlizzard* create(int mdlIndex, const char* tgtNodeName, const char* taskName, Stage *stage);
 
 };

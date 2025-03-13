@@ -106,7 +106,7 @@ void stPhendrana::createObjRidley(int mdlIndex, Vec2f* pos, float rot, float sca
 }
 
 void stPhendrana::createObjBlizzard(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
-    grPhendranaBlizzard* platform = grPhendranaBlizzard::create(mdlIndex, "", "grPhendranaBlizzard");
+    grPhendranaBlizzard* platform = grPhendranaBlizzard::create(mdlIndex, "", "grPhendranaBlizzard", this);
     if(platform != NULL){
         addGround(platform);
         platform->setStageData(m_stageData);

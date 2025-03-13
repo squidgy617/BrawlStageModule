@@ -5,7 +5,7 @@
 #include <ft/ft_manager.h>
 #include <OS/OSError.h>
 
-grPhendranaBlizzard* grPhendranaBlizzard::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
+grPhendranaBlizzard* grPhendranaBlizzard::create(int mdlIndex, const char* tgtNodeName, const char* taskName, Stage *stage)
 {
     grPhendranaBlizzard* ground = new (Heaps::StageInstance) grPhendranaBlizzard(taskName);
     ground->setupMelee();
@@ -13,6 +13,7 @@ grPhendranaBlizzard* grPhendranaBlizzard::create(int mdlIndex, const char* tgtNo
     ground->m_heapType = Heaps::StageInstance;
     ground->makeCalcuCallback(1, Heaps::StageInstance);
     ground->setCalcuCallbackRoot(7);
+    ground->stage = stage;
 
     return ground;
 }
@@ -37,8 +38,6 @@ void grPhendranaBlizzard::update(float deltaFrame)
 void grPhendranaBlizzard::activatePinch() {
     grPhendranaPinch::activatePinch();
     this->startGimmickSE(0);
+    this->stage->m_stageParam->m_characterWindEnabled = true;
+    this->stage->createWind2ndOnly();
 }
-
-
-
-
