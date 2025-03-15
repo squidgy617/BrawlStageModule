@@ -11,12 +11,12 @@ grPhendrana* grPhendrana::create(int mdlIndex, const char* tgtNodeName, const ch
     return ground;
 }
 
-void grPhendrana::startup(gfArchive* archive, u32 unk1, u32 unk2) {
+void grPhendrana::startup(gfArchive* archive, u32 unk1, u32 unk2)
+{
     grYakumono::startup(archive, unk1, unk2);
 }
 
 void grPhendrana::update(float deltaFrame)
 {
     grYakumono::update(deltaFrame);
-
 }

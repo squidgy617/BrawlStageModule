@@ -1,7 +1,8 @@
 #include "st_phendrana.h"
 #include "gr_phendrana.h"
+#include "gr_phendrana_item.h"
 #include "gr_phendrana_ridley.h"
-#include "gr_phendrana_missile.h"
+#include "gr_phendrana_other.h"
 #include "gr_phendrana_blizzard.h"
 #include <ec/ec_mgr.h>
 #include <memory.h>
@@ -49,10 +50,25 @@ void stPhendrana::createObj()
     registScnAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_pokeTrainerPos, 0x0);
-
 }
 
-void stPhendrana::createObjAshiba(int mdlIndex) {
+bool checkIsRidleyNode(grPhendrana* ground, u32 nodeIndex)
+{
+    nw4r::g3d::ResNodeData* resNodeData = NULL;
+    u32 startIndex = ground->getNodeIndex(0, "RidleyNodes");
+    u32 endIndex = ground->getNodeIndex(0, "RidleyNodesEnd");
+    for (int i = startIndex + 1; i < endIndex; i++) {
+        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+        if (nodeIndex == (int)resNodeData->m_translation.m_x) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void stPhendrana::createObjAshiba(int mdlIndex)
+{
     grPhendrana* ground = grPhendrana::create(mdlIndex, "", "grPhendranaMain");
     if (ground != NULL)
     {
@@ -61,86 +77,85 @@ void stPhendrana::createObjAshiba(int mdlIndex) {
         ground->startup(m_fileData, 0, 0);
         ground->setDontMoveGround();
 
-        nw4r::g3d::ResNodeData *resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("Ridley").ptr();
-        this->createObjRidley(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+        nw4r::g3d::ResNodeData *resNodeData = NULL;
+        u32 startIndex, endIndex;
+
+        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("RidleyExSlotOnTransX").ptr();
+        if (resNodeData != NULL) {
+            this->ridleyExSlot = (int)resNodeData->m_translation.m_x;
+        }
+
+        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("Ridley").ptr();
+        this->createObjRidley(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                               resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
                               resNodeData->m_translation.m_z);
 
         resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("Blizzard").ptr();
-        this->createObjBlizzard(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+        this->createObjBlizzard(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                               resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
                               resNodeData->m_translation.m_z);
 
 
-        u32 pinchIndex = ground->getNodeIndex(0, "Pinch");
-        u32 otherIndex = ground->getNodeIndex(0, "Other");
-        u32 endIndex = ground->getNodeIndex(0, "End");
-        for (int i = pinchIndex + 1; i < otherIndex; i++) {
+        startIndex = ground->getNodeIndex(0, "Pinch");
+        endIndex = ground->getNodeIndex(0, "PinchEnd");
+        for (int i = startIndex + 1; i < endIndex; i++) {
             resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            this->createObjPinch(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+            this->createObjPinch(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                                     resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
                                     resNodeData->m_translation.m_z);
 
         }
-        for (int i = otherIndex + 1; i < endIndex; i++) {
+
+        startIndex = ground->getNodeIndex(0, "Other");
+        endIndex = ground->getNodeIndex(0, "OtherEnd");
+        for (int i = startIndex + 1; i < endIndex; i++) {
             resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            this->createObjMissile(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+            this->createObjOther(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                                   resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
                                   resNodeData->m_translation.m_z, resNodeData->m_scale.m_y);
-
         }
     }
 }
 
-void stPhendrana::createObjRidley(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
-    grPhendranaRidley* platform = grPhendranaRidley::create(mdlIndex, "", "grPhendranaRidley");
+void setupObj(grPhendranaItem* phendranaItem, void* stageData, gfArchive* fileData, Vec2f* pos, float rot, float scale, int motionPathIndex, u8 effectIndex = 0xFF)
+{
+    phendranaItem->setStageData(stageData);
+    phendranaItem->setMotionPathData(motionPathIndex, rot >= 360, effectIndex);
+    phendranaItem->startup(fileData,0,0);
+    phendranaItem->setPos(pos->m_x, pos->m_y, 0.0);
+    phendranaItem->setScale(scale, scale, scale);
+    phendranaItem->setRot(0.0, 0.0, rot);
+}
+
+void stPhendrana::createObjRidley(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
+    grPhendranaRidley* platform = grPhendranaRidley::create(mdlIndex, "grPhendranaRidley", this, isRidleyNode);
     if(platform != NULL){
         addGround(platform);
-        platform->setStageData(m_stageData);
-        platform->setMotionPathData(motionPathIndex, rot >= 360);
-        platform->startup(this->m_fileData,0,0);
-        platform->setPos(pos->m_x, pos->m_y, 0.0);
-        platform->setScale(scale, scale, scale);
-        platform->setRot(0.0, 0.0, rot);
+        setupObj(platform, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
     }
 }
 
-void stPhendrana::createObjBlizzard(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
-    grPhendranaBlizzard* platform = grPhendranaBlizzard::create(mdlIndex, "", "grPhendranaBlizzard", this);
+void stPhendrana::createObjBlizzard(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
+    grPhendranaBlizzard* platform = grPhendranaBlizzard::create(mdlIndex, "grPhendranaBlizzard", this, isRidleyNode);
     if(platform != NULL){
         addGround(platform);
-        platform->setStageData(m_stageData);
-        platform->setMotionPathData(motionPathIndex, rot >= 360);
-        platform->startup(this->m_fileData,0,0);
-        platform->setPos(pos->m_x, pos->m_y, 0.0);
-        platform->setScale(scale, scale, scale);
-        platform->setRot(0.0, 0.0, rot);
+        setupObj(platform, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
     }
 }
 
-void stPhendrana::createObjPinch(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
-    grPhendranaPinch* platform = grPhendranaPinch::create(mdlIndex, "", "grPhendranaPinch");
+void stPhendrana::createObjPinch(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
+    grPhendranaPinch* platform = grPhendranaPinch::create(mdlIndex, "grPhendranaPinch", this, isRidleyNode);
     if(platform != NULL){
         addGround(platform);
-        platform->setStageData(m_stageData);
-        platform->setMotionPathData(motionPathIndex, rot >= 360);
-        platform->startup(this->m_fileData,0,0);
-        platform->setPos(pos->m_x, pos->m_y, 0.0);
-        platform->setScale(scale, scale, scale);
-        platform->setRot(0.0, 0.0, rot);
+        setupObj(platform, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
     }
 }
 
-void stPhendrana::createObjMissile(int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, u8 effectIndex) {
-    grPhendranaMissile* platform = grPhendranaMissile::create(mdlIndex, "", "grPhendranaMissile");
+void stPhendrana::createObjOther(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, u8 effectIndex) {
+    grPhendranaOther* platform = grPhendranaOther::create(mdlIndex, "grPhendranaOther", this, isRidleyNode);
     if(platform != NULL){
         addGround(platform);
-        platform->setStageData(m_stageData);
-        platform->setMotionPathData(motionPathIndex, rot >= 360, effectIndex);
-        platform->startup(this->m_fileData,0,0);
-        platform->setPos(pos->m_x, pos->m_y, 0.0);
-        platform->setScale(scale, scale, scale);
-        platform->setRot(0.0, 0.0, rot);
+        setupObj(platform, m_stageData, m_fileData, pos, rot, scale, motionPathIndex, effectIndex);
     }
 }
 

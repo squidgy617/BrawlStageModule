@@ -5,18 +5,14 @@
 
 class grPhendranaRidley : public grPhendranaPinch
 {
-    protected:
-
-
     public:
-        grPhendranaRidley(const char* taskName) : grPhendranaPinch(taskName) {
-
-        };
+        grPhendranaRidley(const char* taskName) : grPhendranaPinch(taskName) {};
         virtual ~grPhendranaRidley() { };
+
         virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
         virtual void update(float deltaFrame);
+        
         virtual void activatePinch();
 
-        static grPhendranaRidley* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
-
+        static grPhendranaRidley* create(int mdlIndex, const char* taskName, stPhendrana* stage, bool isRidleyNode);
 };

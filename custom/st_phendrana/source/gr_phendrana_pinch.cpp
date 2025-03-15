@@ -3,22 +3,20 @@
 #include "gr_phendrana_pinch.h"
 #include <sc/sc_melee.h>
 #include <ft/ft_manager.h>
+#include <gm/gm_global_mode_melee.h>
 #include <OS/OSError.h>
 
-grPhendranaPinch* grPhendranaPinch::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
+grPhendranaPinch* grPhendranaPinch::create(int mdlIndex, const char* taskName, stPhendrana* stage, bool isRidleyNode)
 {
-    grPhendranaPinch* ground = new (Heaps::StageInstance) grPhendranaPinch(taskName);
-    ground->setupMelee();
-    ground->setMdlIndex(mdlIndex);
-    ground->m_heapType = Heaps::StageInstance;
-    ground->makeCalcuCallback(1, Heaps::StageInstance);
-    ground->setCalcuCallbackRoot(7);
+    grPhendranaPinch* phendranaPinch = new (Heaps::StageInstance) grPhendranaPinch(taskName);
+    phendranaPinch->setup(mdlIndex, taskName, stage, isRidleyNode);
 
-    return ground;
+    return phendranaPinch;
 }
 
-void grPhendranaPinch::startup(gfArchive* archive, u32 unk1, u32 unk2) {
-    grMadein::startup(archive, unk1, unk2);
+void grPhendranaPinch::startup(gfArchive* archive, u32 unk1, u32 unk2)
+{
+    grPhendranaItem::startup(archive, unk1, unk2);
 
     grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, this->isRotateMotionPath, true, 0, 0, 0, 0, 0, 0 };
     stTriggerData triggerData = {0,0,1,0};
@@ -32,8 +30,8 @@ void grPhendranaPinch::startup(gfArchive* archive, u32 unk1, u32 unk2) {
 
 void grPhendranaPinch::update(float deltaFrame)
 {
-    grMadein::update(deltaFrame);
-    if (!this->isActivated && this->checkForPinch()) {
+    grPhendranaItem::update(deltaFrame);
+    if (!this->isActivated && this->checkForPinch() & (!this->isRidleyNode || !this->checkForFighterRidley())) {
         this->activatePinch();
     }
     if (this->m_gimmickMotionPath != NULL) {
@@ -43,13 +41,6 @@ void grPhendranaPinch::update(float deltaFrame)
     }
 }
 
-
-void grPhendranaPinch::setMotionPathData(int mdlIndex, bool isRotateMotionPath) {
-    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Once, mdlIndex, 0};
-
-    this->isRotateMotionPath = isRotateMotionPath;
-}
-
 void grPhendranaPinch::activatePinch() {
     this->isActivated = true;
     this->m_gimmickMotionPath->startMove();
@@ -57,7 +48,12 @@ void grPhendranaPinch::activatePinch() {
     this->setNodeVisibilityAll(true, 0);
 }
 
-bool grPhendranaPinch::checkForPinch() {
+bool grPhendranaPinch::checkForPinch()
+{
+    if (g_GameGlobal->m_modeMelee->m_meleeInitData.m_gameMode == Game_Mode_Training) {
+        return false;
+    }
+
     scMelee* scene = static_cast<scMelee*>(gfSceneManager::getInstance()->searchScene("scMelee"));
     stOperatorRuleMelee* operatorRule = static_cast<stOperatorRuleMelee*>(scene->m_operatorRuleGameMode);
     if (operatorRule->m_remainingFrameTime < 3600) {
@@ -75,5 +71,3 @@ bool grPhendranaPinch::checkForPinch() {
 
     return false;
 }
-
-
