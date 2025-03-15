@@ -5,19 +5,16 @@
 #include <ft/ft_manager.h>
 #include <OS/OSError.h>
 
-grPhendranaRidley* grPhendranaRidley::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
+grPhendranaRidley* grPhendranaRidley::create(int mdlIndex, const char* taskName, stPhendrana* stage, bool isRidleyNode)
 {
-    grPhendranaRidley* ground = new (Heaps::StageInstance) grPhendranaRidley(taskName);
-    ground->setupMelee();
-    ground->setMdlIndex(mdlIndex);
-    ground->m_heapType = Heaps::StageInstance;
-    ground->makeCalcuCallback(1, Heaps::StageInstance);
-    ground->setCalcuCallbackRoot(7);
+    grPhendranaRidley* phendranaPinch = new (Heaps::StageInstance) grPhendranaRidley(taskName);
+    phendranaPinch->setup(mdlIndex, taskName, stage, isRidleyNode);
 
-    return ground;
+    return phendranaPinch;
 }
 
-void grPhendranaRidley::startup(gfArchive* archive, u32 unk1, u32 unk2) {
+void grPhendranaRidley::startup(gfArchive* archive, u32 unk1, u32 unk2)
+{
     grPhendranaPinch::startup(archive, unk1, unk2);
 
     this->createSoundWork(2,2);
@@ -32,7 +29,6 @@ void grPhendranaRidley::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     this->m_soundEffects[1].m_nodeIndex = this->getNodeIndex(0, "HipN");
     this->m_soundEffects[1].m_endFrame = 0;
     this->m_soundEffects[1].m_offsetPos = (Vec2f){0.0, 0.0};
-
 }
 
 void grPhendranaRidley::update(float deltaFrame)
@@ -41,19 +37,14 @@ void grPhendranaRidley::update(float deltaFrame)
     if (this->m_gimmickMotionPath != NULL) {
         if (this->m_gimmickMotionPath->isEndFrame()) {
             this->stopGimmickSE(0);
-
         }
     }
-
 }
 
-void grPhendranaRidley::activatePinch() {
+void grPhendranaRidley::activatePinch()
+{
     grPhendranaPinch::activatePinch();
     this->startGimmickSE(0);
     this->m_soundEffects[1].m_generatorIndex = 1;
     this->startGimmickSE(1);
 }
-
-
-
-

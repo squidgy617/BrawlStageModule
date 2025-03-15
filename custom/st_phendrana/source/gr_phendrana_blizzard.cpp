@@ -5,20 +5,16 @@
 #include <ft/ft_manager.h>
 #include <OS/OSError.h>
 
-grPhendranaBlizzard* grPhendranaBlizzard::create(int mdlIndex, const char* tgtNodeName, const char* taskName, Stage *stage)
+grPhendranaBlizzard* grPhendranaBlizzard::create(int mdlIndex, const char* taskName, stPhendrana* stage, bool isRidleyNode)
 {
-    grPhendranaBlizzard* ground = new (Heaps::StageInstance) grPhendranaBlizzard(taskName);
-    ground->setupMelee();
-    ground->setMdlIndex(mdlIndex);
-    ground->m_heapType = Heaps::StageInstance;
-    ground->makeCalcuCallback(1, Heaps::StageInstance);
-    ground->setCalcuCallbackRoot(7);
-    ground->stage = stage;
+    grPhendranaBlizzard* phendranaBlizzard = new (Heaps::StageInstance) grPhendranaBlizzard(taskName);
+    phendranaBlizzard->setup(mdlIndex, taskName, stage, isRidleyNode);
 
-    return ground;
+    return phendranaBlizzard;
 }
 
-void grPhendranaBlizzard::startup(gfArchive* archive, u32 unk1, u32 unk2) {
+void grPhendranaBlizzard::startup(gfArchive* archive, u32 unk1, u32 unk2)
+{
     grPhendranaPinch::startup(archive, unk1, unk2);
 
     this->createSoundWork(1,1);
@@ -29,13 +25,8 @@ void grPhendranaBlizzard::startup(gfArchive* archive, u32 unk1, u32 unk2) {
     this->m_soundEffects[0].m_offsetPos = (Vec2f){0.0, 0.0};
 }
 
-void grPhendranaBlizzard::update(float deltaFrame)
+void grPhendranaBlizzard::activatePinch()
 {
-    grPhendranaPinch::update(deltaFrame);
-
-}
-
-void grPhendranaBlizzard::activatePinch() {
     grPhendranaPinch::activatePinch();
     this->startGimmickSE(0);
     this->stage->m_stageParam->m_characterWindEnabled = true;
