@@ -33,7 +33,7 @@ void grPhendranaPinch::startup(gfArchive* archive, u32 unk1, u32 unk2)
 void grPhendranaPinch::update(float deltaFrame)
 {
     grPhendranaItem::update(deltaFrame);
-    if (!this->isActivated && this->checkForPinch() & (!this->isRidleyNode || !this->checkForFighterRidley())) {
+    if (!this->isActivated && this->checkForPinch() && (!this->isRidleyNode || !this->checkForFighterRidley())) {
         this->activatePinch();
     }
     if (this->isActivated && !this->isFinished) {
