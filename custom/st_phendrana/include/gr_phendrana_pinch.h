@@ -7,11 +7,13 @@ class grPhendranaPinch : public grPhendranaItem
 {
     protected:
         bool isActivated;
+        bool isFinished;
 
     public:
         grPhendranaPinch(const char* taskName) : grPhendranaItem(taskName)
         {
             isActivated = false;
+            isFinished = false;
         };
         virtual ~grPhendranaPinch() { };
         

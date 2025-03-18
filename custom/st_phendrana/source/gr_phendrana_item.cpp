@@ -51,11 +51,9 @@ bool grPhendranaItem::checkForFighterRidley() {
 
     for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
         int entryId = g_ftManager->getEntryIdFromIndex(i);
-        if (g_ftManager->isFighterActivate(entryId, -1)) {
-            Fighter* fighter = g_ftManager->getFighter(entryId, -1);
-            if (fighter->getFtKind() == (ftKind)this->stage->ridleyExSlot) {
-                return true;
-            }
+        Fighter* fighter = g_ftManager->getFighter(entryId, -1);
+        if (fighter->getFtKind() == (ftKind)this->stage->ridleyExSlot) {
+            return true;
         }
     }
 

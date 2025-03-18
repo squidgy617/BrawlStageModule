@@ -18,9 +18,11 @@ void grPhendranaPinch::startup(gfArchive* archive, u32 unk1, u32 unk2)
 {
     grPhendranaItem::startup(archive, unk1, unk2);
 
-    grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, this->isRotateMotionPath, true, 0, 0, 0, 0, 0, 0 };
-    stTriggerData triggerData = {0,0,1,0};
-    this->createAttachMotionPath(&motionPathInfo, &triggerData, "MovePlatformNode");
+    if (this->motionPathData.m_mdlIndex > 0) {
+        grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, this->isRotateMotionPath, true, 0, 0, 0, 0, 0, 0 };
+        stTriggerData triggerData = {0,0,1,0};
+        this->createAttachMotionPath(&motionPathInfo, &triggerData, "MovePlatformNode");
+    }
 
     this->setMotion(0);
     this->setMotionRatio(0);
@@ -34,16 +36,21 @@ void grPhendranaPinch::update(float deltaFrame)
     if (!this->isActivated && this->checkForPinch() & (!this->isRidleyNode || !this->checkForFighterRidley())) {
         this->activatePinch();
     }
-    if (this->m_gimmickMotionPath != NULL) {
-        if (this->m_gimmickMotionPath->isEndFrame()) {
-            this->setNodeVisibilityAll(false, 0);
+    if (this->isActivated && !this->isFinished) {
+        if (this->m_gimmickMotionPath != NULL) {
+            if (this->m_gimmickMotionPath->isEndFrame()) {
+                this->setNodeVisibilityAll(false, 0);
+                this->isFinished = true;
+            }
         }
     }
 }
 
 void grPhendranaPinch::activatePinch() {
     this->isActivated = true;
-    this->m_gimmickMotionPath->startMove();
+    if (this->m_gimmickMotionPath != NULL) {
+        this->m_gimmickMotionPath->startMove();
+    }
     this->setMotionRatio(1.0);
     this->setNodeVisibilityAll(true, 0);
 }

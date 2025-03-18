@@ -1,7 +1,7 @@
 #include "st_phendrana.h"
 #include "gr_phendrana.h"
 #include "gr_phendrana_item.h"
-#include "gr_phendrana_ridley.h"
+#include "gr_phendrana_ridleysfx.h"
 #include "gr_phendrana_other.h"
 #include "gr_phendrana_blizzard.h"
 #include <ec/ec_mgr.h>
@@ -83,10 +83,13 @@ void stPhendrana::createObjAshiba(int mdlIndex)
         resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("RidleyExSlotOnTransX").ptr();
         if (resNodeData != NULL) {
             this->ridleyExSlot = (int)resNodeData->m_translation.m_x;
+            this->ridleyIdleFrameCount = (int)resNodeData->m_rotation.m_x;
+            this->ridleyWingFlapFrame = (int)resNodeData->m_rotation.m_y;
+            this->ridleyPathFrameCount = (int)resNodeData->m_rotation.m_z;
         }
 
-        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("Ridley").ptr();
-        this->createObjRidley(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("RidleySfx").ptr();
+        this->createObjRidleySfx(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
                               resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
                               resNodeData->m_translation.m_z);
 
@@ -127,8 +130,8 @@ void setupObj(grPhendranaItem* phendranaItem, void* stageData, gfArchive* fileDa
     phendranaItem->setRot(0.0, 0.0, rot);
 }
 
-void stPhendrana::createObjRidley(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
-    grPhendranaRidley* platform = grPhendranaRidley::create(mdlIndex, "grPhendranaRidley", this, isRidleyNode);
+void stPhendrana::createObjRidleySfx(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
+    grPhendranaRidleySfx* platform = grPhendranaRidleySfx::create(mdlIndex, "grPhendranaRidleySfx", this, isRidleyNode);
     if(platform != NULL){
         addGround(platform);
         setupObj(platform, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
@@ -163,6 +166,7 @@ bool stPhendrana::isBamperVector()
 {
     return true;
 }
+
 int stPhendrana::getFinalTechniqColor()
 {
     return 0x14000496;
