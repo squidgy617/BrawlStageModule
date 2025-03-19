@@ -19,14 +19,14 @@ void grPhendranaRidleySfx::startup(gfArchive* archive, u32 unk1, u32 unk2)
 
     this->createSoundWork(2, 2);
     
-    this->m_soundEffects[0].m_id = snd_se_stage_Madein_12;
+    this->m_soundEffects[0].m_id = snd_se_stage_Pirates_17;
     this->m_soundEffects[0].m_repeatFrame = 0;
     this->m_soundEffects[0].m_nodeIndex = this->getNodeIndex(0, "RidleySfx_WingSfx");
     this->m_soundEffects[0].m_endFrame = 0;
     this->m_soundEffects[0].m_offsetPos = (Vec2f){0.0, 0.0};
     this->m_soundEffects[0].m_generatorIndex = 0;
 
-    this->m_soundEffects[1].m_id = snd_se_stage_Madein_13;
+    this->m_soundEffects[1].m_id = snd_se_stage_Pirates_16;
     this->m_soundEffects[1].m_repeatFrame = 0;
     this->m_soundEffects[1].m_nodeIndex = this->getNodeIndex(0, "RidleySfx_RoarSfx");
     this->m_soundEffects[1].m_endFrame = 0;
@@ -37,6 +37,7 @@ void grPhendranaRidleySfx::startup(gfArchive* archive, u32 unk1, u32 unk2)
 void grPhendranaRidleySfx::update(float deltaFrame)
 {
     grPhendranaPinch::update(deltaFrame);
+    
     if (this->isActivated && !this->isFinished) {
         this->currentLoop = int(this->getMotionFrame(0) / 152);
         if ((int)this->getMotionFrame(0) == 152 * currentLoop + 42) {

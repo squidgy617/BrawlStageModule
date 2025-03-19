@@ -8,8 +8,7 @@ class grPhendranaBlizzard : public grPhendranaPinch
     public:
         grPhendranaBlizzard(const char* taskName) : grPhendranaPinch(taskName) {};
         virtual ~grPhendranaBlizzard() { };
-        
-        virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
+
         virtual void activatePinch();
 
         static grPhendranaBlizzard* create(int mdlIndex, const char* taskName, stPhendrana* stage, bool isRidleyNode);

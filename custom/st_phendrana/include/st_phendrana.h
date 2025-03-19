@@ -11,6 +11,9 @@ const float POKETRAINER_Z = 0.0f;
 
 class stPhendrana : public stMelee
 {
+    protected:
+        nw4r::g3d::ResFileData* scnData;
+
     public:
         stPhendrana() : stMelee("stPhendrana", Stages::Final){
             ridleyExSlot = 0x2A;
@@ -34,7 +37,9 @@ class stPhendrana : public stMelee
         void createObjRidleySfx(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
         void createObjPinch(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
         void createObjBlizzard(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
-        void createObjOther(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, u8 effectIndex);
+        void createObjFlickerbat(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
+        void createObjOther(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, u8 effectIndex, int soundEffectIndex);
+        void changeScnAnim(int index);
 
         static stPhendrana* create();
 };

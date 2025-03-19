@@ -18,12 +18,6 @@ void grPhendranaPinch::startup(gfArchive* archive, u32 unk1, u32 unk2)
 {
     grPhendranaItem::startup(archive, unk1, unk2);
 
-    if (this->motionPathData.m_mdlIndex > 0) {
-        grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, this->isRotateMotionPath, true, 0, 0, 0, 0, 0, 0 };
-        stTriggerData triggerData = {0,0,1,0};
-        this->createAttachMotionPath(&motionPathInfo, &triggerData, "MovePlatformNode");
-    }
-
     this->setMotion(0);
     this->setMotionRatio(0);
 
@@ -33,6 +27,7 @@ void grPhendranaPinch::startup(gfArchive* archive, u32 unk1, u32 unk2)
 void grPhendranaPinch::update(float deltaFrame)
 {
     grPhendranaItem::update(deltaFrame);
+    
     if (!this->isActivated && this->checkForPinch() && (!this->isRidleyNode || !this->checkForFighterRidley())) {
         this->activatePinch();
     }

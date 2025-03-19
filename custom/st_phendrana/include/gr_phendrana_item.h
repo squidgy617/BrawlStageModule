@@ -11,6 +11,7 @@ class grPhendranaItem : public grMadein
         bool isRotateMotionPath;
         bool isRidleyNode;
         u8 effectIndex;
+        int soundEffectIndex;
 
     public:
         stPhendrana* stage;
@@ -18,13 +19,14 @@ class grPhendranaItem : public grMadein
         grPhendranaItem(const char* taskName) : grMadein(taskName) {
             isRidleyNode = false;
             effectIndex = 0xFF;
+            soundEffectIndex = 0;
         };
         virtual ~grPhendranaItem() { };
 
         virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
         virtual void update(float deltaFrame);
-        virtual void setMotionPathData(int mdlIndex, bool isRotateMotionPath, u8 effectIndex = 0xFF);
 
+        virtual void setMotionPathData(int mdlIndex, bool isRotateMotionPath, u8 effectIndex = 0, int soundEffectIndex = 0);
         virtual bool checkForFighterRidley();
 
         static grPhendranaItem* create(int mdlIndex, const char* taskName, stPhendrana* stage, bool isRidleyNode);
