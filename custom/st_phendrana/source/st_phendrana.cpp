@@ -81,9 +81,18 @@ void stPhendrana::createObjAshiba(int mdlIndex)
         nw4r::g3d::ResNodeData *resNodeData = NULL;
         u32 startIndex, endIndex;
 
-        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("RidleyExSlotOnTransX").ptr();
+        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("RidleyFighterIdOnTransX").ptr();
         if (resNodeData != NULL) {
-            this->ridleyExSlot = (int)resNodeData->m_translation.m_x;
+            this->ridleyFighterId = (int)resNodeData->m_translation.m_x;
+        }
+
+        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("RidleySlotIdOnTransX").ptr();
+        if (resNodeData != NULL) {
+            this->ridleySlotId = (int)resNodeData->m_translation.m_x;
+        }
+
+        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("RidleyAnimParams").ptr();
+        if (resNodeData != NULL) {
             this->ridleyIdleFrameCount = (int)resNodeData->m_rotation.m_x;
             this->ridleyWingFlapFrame = (int)resNodeData->m_rotation.m_y;
             this->ridleyPathFrameCount = (int)resNodeData->m_rotation.m_z;

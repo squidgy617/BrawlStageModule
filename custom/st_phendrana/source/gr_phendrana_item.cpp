@@ -51,7 +51,7 @@ void grPhendranaItem::setMotionPathData(int mdlIndex, bool isRotateMotionPath, u
 bool grPhendranaItem::checkForFighterRidley() {
     for (int i = 0; i < g_GameGlobal->m_modeMelee->m_meleeInitData.m_numPlayers; i++) {
         gmPlayerInitData* playerInitData = &g_GameGlobal->m_modeMelee->m_playersInitData[i];
-        if (playerInitData->m_characterKind == (gmCharacterKind)this->stage->ridleyExSlot) {
+        if (playerInitData->m_characterKind == (gmCharacterKind)this->stage->ridleySlotId) {
             return true;
         }
     }
@@ -59,7 +59,7 @@ bool grPhendranaItem::checkForFighterRidley() {
     for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
         int entryId = g_ftManager->getEntryIdFromIndex(i);
         Fighter* fighter = g_ftManager->getFighter(entryId, -1);
-        if (fighter->getFtKind() == (ftKind)this->stage->ridleyExSlot) {
+        if (fighter->getFtKind() == (ftKind)this->stage->ridleyFighterId) {
             return true;
         }
     }

@@ -16,14 +16,16 @@ class stPhendrana : public stMelee
 
     public:
         stPhendrana() : stMelee("stPhendrana", Stages::Final){
-            ridleyExSlot = 0x2A;
+            ridleyFighterId = 0x2A;
+            ridleySlotId = 0x38;
             ridleyIdleFrameCount = 152;
             ridleyWingFlapFrame = 34;
             ridleyPathFrameCount = 2199;
         };
         virtual ~stPhendrana() { this->releaseArchive(); };
 
-        int ridleyExSlot;
+        int ridleyFighterId;
+        int ridleySlotId;
         int ridleyIdleFrameCount;
         int ridleyWingFlapFrame;
         int ridleyPathFrameCount;
