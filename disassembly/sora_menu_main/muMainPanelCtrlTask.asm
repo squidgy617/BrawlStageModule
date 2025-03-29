@@ -869,14 +869,16 @@ loc_36808:
 muMainPanelCtrlTask__startupSpecialMelee:
     /* 00036824: */    stwu r1,-0x20(r1)
     /* 00036828: */    mflr r0
-    /* 0003682C: */    li r5,0x0
     /* 00036830: */    stw r0,0x24(r1)
-    /* 00036834: */    stw r31,0x1C(r1)
+    /* 00036834: */    #stw r31,0x1C(r1)
+    /* 00036840: */    #stw r30,0x18(r1)
+    /* 00036848: */    #stw r29,0x14(r1)
+    addi r11,r1,0x20
+    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_27")]
+    /* 0003682C: */    li r5,0x0
     /* 00036838: */    lis r31,0x0                              [R_PPC_ADDR16_HA(2, 5, "loc_4338")]
     /* 0003683C: */    addi r31,r31,0x0                         [R_PPC_ADDR16_LO(2, 5, "loc_4338")]
-    /* 00036840: */    stw r30,0x18(r1)
     /* 00036844: */    addi r4,r31,0xDC
-    /* 00036848: */    stw r29,0x14(r1)
     /* 0003684C: */    mr r29,r3
     /* 00036850: */    lwz r3,0x6C(r3)
     /* 00036854: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MuObject__setMotionDataF")]
@@ -904,7 +906,9 @@ muMainPanelCtrlTask__startupSpecialMelee:
     /* 000368AC: */    lbz r4,0x24(r31)
     /* 000368B0: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MuObject__setUpdateRateFlg")]
     /* 000368B4: */    lwz r3,0x64(r29)
-    /* 000368B8: */    lfs f1,0x0(r30)                          [R_PPC_ADDR16_LO(2, 4, "loc_159C")]
+    /* 000368B8: */    #lfs f1,0x0(r30)                          [R_PPC_ADDR16_LO(2, 4, "loc_159C")]
+    lis r10,0x0                              [R_PPC_ADDR16_HA(2, 4, "loc_1598")]
+    lfs f1,0x0(r10)                          [R_PPC_ADDR16_LO(2, 4, "loc_1598")]
     /* 000368BC: */    lwz r3,0x14(r3)
     /* 000368C0: */    bl __unresolved                          [R_PPC_REL24(0, 4, "gfModelAnimation__setUpdateRate")]
     /* 000368C4: */    lwz r3,0x68(r29)
@@ -917,9 +921,11 @@ muMainPanelCtrlTask__startupSpecialMelee:
     /* 000368E0: */    bl __unresolved                          [R_PPC_REL24(0, 4, "gfModelAnimation__setUpdateRate")]
     /* 000368E4: */    li r0,0x22
     /* 000368E8: */    stw r0,0x7C(r29)
-    /* 000368EC: */    lwz r31,0x1C(r1)
-    /* 000368F0: */    lwz r30,0x18(r1)
-    /* 000368F4: */    lwz r29,0x14(r1)
+    /* 000368EC: */    #lwz r31,0x1C(r1)
+    /* 000368F0: */    #lwz r30,0x18(r1)
+    /* 000368F4: */    #lwz r29,0x14(r1)
+    addi r11,r1,0x20
+    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___restgpr_27")]
     /* 000368F8: */    lwz r0,0x24(r1)
     /* 000368FC: */    mtlr r0
     /* 00036900: */    addi r1,r1,0x20
