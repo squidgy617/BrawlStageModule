@@ -41,6 +41,14 @@ void grPhendranaPinch::update(float deltaFrame)
     }
 }
 
+void grPhendranaPinch::setMotionPathData(int mdlIndex, bool isRotateMotionPath, u8 effectIndex, int soundEffectIndex)
+{
+    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Once, mdlIndex, 0};
+    this->isRotateMotionPath = isRotateMotionPath;
+    this->effectIndex = effectIndex;
+    this->soundEffectIndex = soundEffectIndex;
+}
+
 void grPhendranaPinch::activatePinch() {
     this->isActivated = true;
     if (this->m_gimmickMotionPath != NULL) {

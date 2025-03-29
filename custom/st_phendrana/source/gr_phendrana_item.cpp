@@ -42,7 +42,7 @@ void grPhendranaItem::update(float deltaFrame)
 
 void grPhendranaItem::setMotionPathData(int mdlIndex, bool isRotateMotionPath, u8 effectIndex, int soundEffectIndex)
 {
-    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Once, mdlIndex, 0};
+    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Loop, mdlIndex, 0};
     this->isRotateMotionPath = isRotateMotionPath;
     this->effectIndex = effectIndex;
     this->soundEffectIndex = soundEffectIndex;
