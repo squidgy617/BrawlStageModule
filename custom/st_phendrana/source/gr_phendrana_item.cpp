@@ -27,6 +27,12 @@ void grPhendranaItem::setup(int mdlIndex, const char* taskName, stPhendrana* sta
 void grPhendranaItem::startup(gfArchive* archive, u32 unk1, u32 unk2)
 {
     grMadein::startup(archive, unk1, unk2);
+
+    if (this->motionPathData.m_mdlIndex > 0) {
+        grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, this->isRotateMotionPath, true, 0, 0, 0, 0, 0, 0 };
+        stTriggerData triggerData = {0,0,1,0};
+        this->createAttachMotionPath(&motionPathInfo, &triggerData, "MovePlatformNode");
+    }
 }
 
 void grPhendranaItem::update(float deltaFrame)
@@ -34,28 +40,27 @@ void grPhendranaItem::update(float deltaFrame)
     grMadein::update(deltaFrame);
 }
 
-void grPhendranaItem::setMotionPathData(int mdlIndex, bool isRotateMotionPath, u8 effectIndex)
+void grPhendranaItem::setMotionPathData(int mdlIndex, bool isRotateMotionPath, u8 effectIndex, int soundEffectIndex)
 {
-    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Once, mdlIndex, 0};
+    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Loop, mdlIndex, 0};
     this->isRotateMotionPath = isRotateMotionPath;
     this->effectIndex = effectIndex;
+    this->soundEffectIndex = soundEffectIndex;
 }
 
 bool grPhendranaItem::checkForFighterRidley() {
     for (int i = 0; i < g_GameGlobal->m_modeMelee->m_meleeInitData.m_numPlayers; i++) {
         gmPlayerInitData* playerInitData = &g_GameGlobal->m_modeMelee->m_playersInitData[i];
-        if (playerInitData->m_characterKind == (gmCharacterKind)this->stage->ridleyExSlot) {
+        if (playerInitData->m_characterKind == (gmCharacterKind)this->stage->ridleySlotId) {
             return true;
         }
     }
 
     for (int i = 0; i < g_ftManager->getEntryCount(); i++) {
         int entryId = g_ftManager->getEntryIdFromIndex(i);
-        if (g_ftManager->isFighterActivate(entryId, -1)) {
-            Fighter* fighter = g_ftManager->getFighter(entryId, -1);
-            if (fighter->getFtKind() == (ftKind)this->stage->ridleyExSlot) {
-                return true;
-            }
+        Fighter* fighter = g_ftManager->getFighter(entryId, -1);
+        if (fighter->getFtKind() == (ftKind)this->stage->ridleyFighterId) {
+            return true;
         }
     }
 

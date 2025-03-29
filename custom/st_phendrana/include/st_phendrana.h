@@ -11,13 +11,24 @@ const float POKETRAINER_Z = 0.0f;
 
 class stPhendrana : public stMelee
 {
+    protected:
+        nw4r::g3d::ResFileData* scnData;
+
     public:
         stPhendrana() : stMelee("stPhendrana", Stages::Final){
-            ridleyExSlot = 0x2A;
+            ridleyFighterId = 0x2A;
+            ridleySlotId = 0x38;
+            ridleyIdleFrameCount = 152;
+            ridleyWingFlapFrame = 34;
+            ridleyPathFrameCount = 2199;
         };
         virtual ~stPhendrana() { this->releaseArchive(); };
 
-        int ridleyExSlot;
+        int ridleyFighterId;
+        int ridleySlotId;
+        int ridleyIdleFrameCount;
+        int ridleyWingFlapFrame;
+        int ridleyPathFrameCount;
 
         virtual void createObj();
         virtual bool loading();
@@ -25,10 +36,12 @@ class stPhendrana : public stMelee
         virtual int getFinalTechniqColor();
         virtual bool isBamperVector();
         void createObjAshiba(int mdlIndex);
-        void createObjRidley(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
+        void createObjRidleySfx(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
         void createObjPinch(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
         void createObjBlizzard(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
-        void createObjOther(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, u8 effectIndex);
+        void createObjFlickerbat(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
+        void createObjOther(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, u8 effectIndex, int soundEffectIndex);
+        void changeScnAnim(int index);
 
         static stPhendrana* create();
 };
