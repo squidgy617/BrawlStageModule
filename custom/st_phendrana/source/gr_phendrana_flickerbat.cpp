@@ -108,6 +108,5 @@ void grPhendranaFlickerbat::update(float deltaFrame)
 void grPhendranaFlickerbat::changeState(State state) {
     this->changeNodeAnim(state, 0);
     this->changeMatColAnim(state, 0);
-    this->changeTexSrtAnim(state, 0);
     this->state = state;
 }
