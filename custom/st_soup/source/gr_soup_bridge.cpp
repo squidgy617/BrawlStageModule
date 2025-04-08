@@ -24,7 +24,7 @@ void grSoupBridge::setupHitPoint() {
 void grSoupBridge::setHit() {
     // Done cause Brawl devs allocated ykData on the stack in grMadein::setupYakumonoClass leading to ykData being a garbage pointer so have to replace it in order to be able to change the HitSelfCategory
     this->m_yakumono->m_data = &this->yakumonoData;
-    this->m_yakumono->setCollisionHitSelfCatagory(9); // Changed category so that projectiles like Mario fireball don't get absorbed by it
+    this->m_yakumono->setCollisionHitSelfCatagory(soCollision::Category_Floor); // Changed category so that projectiles like Mario fireball don't get absorbed by it
 }
 
 void grSoupBridge::update(float deltaFrame) {
