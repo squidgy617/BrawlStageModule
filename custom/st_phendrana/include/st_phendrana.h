@@ -42,6 +42,7 @@ class stPhendrana : public stMelee
         void createObjFlickerbat(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
         void createObjOther(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, u8 effectIndex, int soundEffectIndex);
         void changeScnAnim(int index);
+        void enableWind();
 
         static stPhendrana* create();
 };

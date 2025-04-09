@@ -46,6 +46,7 @@ void stPhendrana::createObj()
         createStagePositions(&posData);
     }
     createWind2ndOnly();
+    m_wind2ndTrigger->setAreaSleep(true);
     loadStageAttrParam(m_fileData, 0x1E);
     this->scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(Data_Type_Scene, 0, 0xfffe));
     registScnAnim(this->scnData, 0);
@@ -191,6 +192,10 @@ void stPhendrana::createObjOther(bool isRidleyNode, int mdlIndex, Vec2f* pos, fl
 
 void stPhendrana::changeScnAnim(int index) {
     registScnAnim(this->scnData, index);
+}
+
+void stPhendrana::enableWind() {
+    this->m_wind2ndTrigger->setAreaSleep(false);
 }
 
 bool stPhendrana::isBamperVector()
