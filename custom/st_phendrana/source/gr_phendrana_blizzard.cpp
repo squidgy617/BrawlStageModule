@@ -17,7 +17,6 @@ void grPhendranaBlizzard::activatePinch()
 {
     grPhendranaPinch::activatePinch();
     this->stage->playSeBasic(snd_se_stage_Pirates_01, 0);
-    this->stage->m_stageParam->m_characterWindEnabled = true;
-    this->stage->createWind2ndOnly();
+    this->stage->enableWind();
     this->stage->changeScnAnim(1);
 }
