@@ -930,6 +930,7 @@ muMainPanelCtrlTask__startupSpecialMelee:
     /* 000368FC: */    mtlr r0
     /* 00036900: */    addi r1,r1,0x20
     /* 00036904: */    blr
+    nop 
 muPanelCtrlTask__getMsgData:
     /* 00036908: */    lwz r3,0x48(r3)
     /* 0003690C: */    lwz r3,0x4(r3)

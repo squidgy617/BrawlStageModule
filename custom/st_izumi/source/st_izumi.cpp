@@ -89,7 +89,7 @@ void stIzumi::createObj()
 
     createCollision(m_fileData, 2, NULL);
     initCameraParam();
-    nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 0x64, 0xfffe));
+    nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff ? 180 : 100, 0xfffe));
     if (posData.ptr() == NULL)
     {
         // if no stgPos model in pac, use defaults
