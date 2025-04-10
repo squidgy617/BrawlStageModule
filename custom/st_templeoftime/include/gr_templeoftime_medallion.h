@@ -3,10 +3,12 @@
 #include "gr_templeoftime.h"
 #include <memory.h>
 #include <st/stage.h>
+#include "st_templeoftime.h"
 
 class grTempleOfTimeMedallion : public grTempleOfTime {
 
 protected:
+    stTempleOfTime* stage;
 
     enum State {
         State_Closed = 0x0,
@@ -37,5 +39,5 @@ public:
     virtual void playOcarinaSong();
     virtual void setStageParam(stParam* stpm);
 
-    static grTempleOfTimeMedallion* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
+    static grTempleOfTimeMedallion* create(int mdlIndex, const char* tgtNodeName, const char* taskName, stTempleOfTime* stage);
 };

@@ -2,9 +2,6 @@
 
 #include <types.h>
 #include <st/st_melee.h>
-#include "gr_final.h"
-#include "gr_templeoftime_door.h"
-#include "gr_templeoftime_medallion.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -13,6 +10,7 @@ const float POKETRAINER_Z = 0.0f;
 
 class stTempleOfTime : public stMelee {
     protected:
+        nw4r::g3d::ResFileData* scnData;
 
     public:
         stTempleOfTime(srStageKind stageKind) : stMelee("stTempleOfTime", stageKind) {};
@@ -28,6 +26,7 @@ class stTempleOfTime : public stMelee {
         virtual void createObjGround(int mdlIndex);
         virtual void createObjDoor(int mdlIndex);
         virtual void createObjMedallion(int mdlIndex);
+        virtual void changeScnAnim(int index);
 
 
 };

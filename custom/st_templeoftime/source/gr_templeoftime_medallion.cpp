@@ -6,9 +6,10 @@
 #include <sc/sc_melee.h>
 #include <snd/snd_system.h>
 
-grTempleOfTimeMedallion* grTempleOfTimeMedallion::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
+grTempleOfTimeMedallion* grTempleOfTimeMedallion::create(int mdlIndex, const char* tgtNodeName, const char* taskName, stTempleOfTime* stage)
 {
     grTempleOfTimeMedallion* ground = new (Heaps::StageInstance) grTempleOfTimeMedallion(taskName);
+    ground->stage = stage;
     ground->setupMelee();
     ground->setMdlIndex(mdlIndex);
     ground->m_heapType = Heaps::StageInstance;
@@ -50,6 +51,7 @@ void grTempleOfTimeMedallion::update(float deltaFrame) {
                 this->state = State_Open;
                 this->startGimmickSE(2);
                 this->setMotion(State_Open);
+                this->stage->changeScnAnim(1);
                 this->state = State_Open;
             }
             break;

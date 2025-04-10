@@ -3,6 +3,9 @@
 #include <st/st_class_info.h>
 #include "st_templeoftime.h"
 #include <OS/OSError.h>
+#include "gr_final.h"
+#include "gr_templeoftime_door.h"
+#include "gr_templeoftime_medallion.h"
 
 static stClassInfoImpl<Stages::Final, stTempleOfTime> classInfo = stClassInfoImpl<Stages::Final, stTempleOfTime>();
 
@@ -40,8 +43,8 @@ void stTempleOfTime::createObj() {
 
     this->createWind2ndOnly();
     this->loadStageAttrParam(this->m_fileData, 0x1E);
-    nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(Data_Type_Scene, 0, 0xfffe));
-    this->registScnAnim(scnData, 0);
+    this->scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(Data_Type_Scene, 0, 0xfffe));
+    this->registScnAnim(this->scnData, 0);
     this->initPosPokeTrainer(1, 0);
     this->createObjPokeTrainer(this->m_fileData, 0x65, "PokeTrainer00", this->m_pokeTrainerPos, 0x0);
 }
@@ -70,7 +73,7 @@ void stTempleOfTime::createObjDoor(int mdlIndex) {
 }
 
 void stTempleOfTime::createObjMedallion(int mdlIndex) {
-    grTempleOfTimeMedallion* medallion = grTempleOfTimeMedallion::create(mdlIndex, "", "grTempleOfTimeMedallion");
+    grTempleOfTimeMedallion* medallion = grTempleOfTimeMedallion::create(mdlIndex, "", "grTempleOfTimeMedallion", this);
     if (medallion != NULL)
     {
         addGround(medallion);
@@ -91,6 +94,10 @@ bool stTempleOfTime::isBamperVector() {
 }
 int stTempleOfTime::getFinalTechniqColor() {
    return 0x14000496;
+}
+
+void stTempleOfTime::changeScnAnim(int index) {
+    registScnAnim(this->scnData, index);
 }
 
 template<Stages::srStageKind I, typename T>
