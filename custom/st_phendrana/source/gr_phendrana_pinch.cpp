@@ -91,7 +91,7 @@ bool grPhendranaPinch::checkForPinch()
                     return false;
                 }
             }
-            if (!pinchFighterFound && g_ftManager->getOwner(entryId)->getStockCount() == 1 && (!g_ftManager->m_isStamina || g_ftManager->getOwner(entryId)->getHitPoint() < 100)) {
+            if (!pinchFighterFound && g_ftManager->getOwner(entryId)->getStockCount() == 1 && (g_ftManager->getOwner(entryId)->getHitPointMax() == 0 || g_ftManager->getOwner(entryId)->getHitPoint() < 100)) {
                 pinchFighterFound = true;
             }
         }
