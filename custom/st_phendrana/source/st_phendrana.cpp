@@ -5,7 +5,7 @@
 #include "gr_phendrana_pinchtransition.h"
 #include "gr_phendrana_ridley.h"
 #include "gr_phendrana_ridleysfx.h"
-#include "gr_phendrana_blizzard.h"
+#include "gr_phendrana_pinchsnow.h"
 #include "gr_phendrana_other.h"
 #include "gr_phendrana_flickerbat.h"
 #include <ec/ec_mgr.h>
@@ -100,8 +100,8 @@ void stPhendrana::createObjAshiba(int mdlIndex)
             resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
             resNodeData->m_translation.m_z, ground);
 
-        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("Blizzard").ptr();
-        this->createObjBlizzard(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("PinchSnow").ptr();
+        this->createObjPinchSnow(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
             resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
             resNodeData->m_translation.m_z);
 
@@ -174,11 +174,11 @@ void stPhendrana::createObjRidleySfx(bool isRidleyNode, int mdlIndex, Vec2f* pos
         resNodeData->m_translation.m_z, phendranaRidleySfx);
 }
 
-void stPhendrana::createObjBlizzard(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
-    grPhendranaBlizzard* phendranaBlizzard = grPhendranaBlizzard::create(mdlIndex, "grPhendranaBlizzard", this, isRidleyNode);
-    if(phendranaBlizzard != NULL){
-        addGround(phendranaBlizzard);
-        setupObj(phendranaBlizzard, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
+void stPhendrana::createObjPinchSnow(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
+    grPhendranaPinchSnow* phendranaPinchSnow = grPhendranaPinchSnow::create(mdlIndex, "grPhendranaPinchSnow", this, isRidleyNode);
+    if(phendranaPinchSnow != NULL){
+        addGround(phendranaPinchSnow);
+        setupObj(phendranaPinchSnow, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
     }
 }
 
