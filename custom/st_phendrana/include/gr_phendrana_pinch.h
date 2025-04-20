@@ -10,8 +10,7 @@ class grPhendranaPinch : public grPhendranaItem
         bool isFinished;
 
     public:
-        grPhendranaPinch(const char* taskName) : grPhendranaItem(taskName)
-        {
+        grPhendranaPinch(const char* taskName) : grPhendranaItem(taskName) {
             isActivated = false;
             isFinished = false;
         };

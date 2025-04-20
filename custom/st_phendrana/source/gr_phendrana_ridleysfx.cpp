@@ -34,25 +34,12 @@ void grPhendranaRidleySfx::startup(gfArchive* archive, u32 unk1, u32 unk2)
     this->m_soundEffects[1].m_generatorIndex = 1;
 }
 
-void grPhendranaRidleySfx::update(float deltaFrame)
+void grPhendranaRidleySfx::playWingFlap()
 {
-    grPhendranaPinch::update(deltaFrame);
-    
-    if (this->isActivated && !this->isFinished) {
-        this->currentLoop = int(this->getMotionFrame(0) / 152);
-        if ((int)this->getMotionFrame(0) == 152 * currentLoop + 42) {
-            this->startGimmickSE(0);
-        }
-        if (this->getMotionFrame(0) == 880) {
-            this->startGimmickSE(1);
-        }
-        if (this->getMotionFrame(0) >= 2199) {
-            this->isFinished = true;
-        }
-    }
+    this->startGimmickSE(0);
 }
 
-void grPhendranaRidleySfx::activatePinch()
+void grPhendranaRidleySfx::playRoar()
 {
-    grPhendranaPinch::activatePinch();
+    this->startGimmickSE(1);
 }

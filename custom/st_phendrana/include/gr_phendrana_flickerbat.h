@@ -11,7 +11,7 @@ class grPhendranaFlickerbat : public grPhendranaOther
             State_GlideStart = 0x1,
             State_GlideLoop = 0x2,
             State_GlideEnd = 0x3,
-            State_Spin = 0x4,
+            State_Spin = 0x4
         };
 
         State state;

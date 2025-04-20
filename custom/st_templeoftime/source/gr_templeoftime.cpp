@@ -22,7 +22,7 @@ bool grTempleOfTime::checkForPinch() {
     if (operatorRule->m_isGameSet) {
         return false;
     }
-    if (operatorRule->m_remainingFrameTime < 3600) {
+    if (operatorRule->m_remainingFrameTime < 3600 && operatorRule->m_remainingFrameTime > 0) {
         return true;
     }
 

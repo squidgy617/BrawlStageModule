@@ -18,17 +18,11 @@ class stPhendrana : public stMelee
         stPhendrana() : stMelee("stPhendrana", Stages::Final){
             ridleyFighterId = 0x2A;
             ridleySlotId = 0x38;
-            ridleyIdleFrameCount = 152;
-            ridleyWingFlapFrame = 34;
-            ridleyPathFrameCount = 2199;
         };
         virtual ~stPhendrana() { this->releaseArchive(); };
 
         int ridleyFighterId;
         int ridleySlotId;
-        int ridleyIdleFrameCount;
-        int ridleyWingFlapFrame;
-        int ridleyPathFrameCount;
 
         virtual void createObj();
         virtual bool loading();
@@ -36,9 +30,11 @@ class stPhendrana : public stMelee
         virtual int getFinalTechniqColor();
         virtual bool isBamperVector();
         void createObjAshiba(int mdlIndex);
-        void createObjRidleySfx(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
+        void createObjRidley(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, Ground* phendranaRidleySfx);
+        void createObjRidleySfx(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, Ground* phendrana);
         void createObjPinch(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
-        void createObjBlizzard(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
+        void createObjPinchTransition(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
+        void createObjPinchSnow(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
         void createObjFlickerbat(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex);
         void createObjOther(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, u8 effectIndex, int soundEffectIndex);
         void changeScnAnim(int index);

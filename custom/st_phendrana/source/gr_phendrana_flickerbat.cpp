@@ -61,8 +61,8 @@ void grPhendranaFlickerbat::update(float deltaFrame)
         }
     }
     else {
-        if (this->lastMotionFrame != this->getMotionFrame(0)) {
-            this->lastMotionFrame = this->getMotionFrame(0);
+        if (this->lastMotionFrame != this->m_gimmickMotionPath->getFrame()) {
+            this->lastMotionFrame = this->m_gimmickMotionPath->getFrame();
             this->framesCounter++;
         }
     }
@@ -108,5 +108,6 @@ void grPhendranaFlickerbat::update(float deltaFrame)
 void grPhendranaFlickerbat::changeState(State state) {
     this->changeNodeAnim(state, 0);
     this->changeMatColAnim(state, 0);
+    this->changeVisibleAnim(state, 0);
     this->state = state;
 }

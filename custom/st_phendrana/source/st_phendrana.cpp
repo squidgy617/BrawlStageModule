@@ -1,8 +1,11 @@
 #include "st_phendrana.h"
 #include "gr_phendrana.h"
 #include "gr_phendrana_item.h"
+#include "gr_phendrana_pinch.h"
+#include "gr_phendrana_pinchtransition.h"
+#include "gr_phendrana_ridley.h"
 #include "gr_phendrana_ridleysfx.h"
-#include "gr_phendrana_blizzard.h"
+#include "gr_phendrana_pinchsnow.h"
 #include "gr_phendrana_other.h"
 #include "gr_phendrana_flickerbat.h"
 #include <ec/ec_mgr.h>
@@ -79,7 +82,7 @@ void stPhendrana::createObjAshiba(int mdlIndex)
         ground->startup(m_fileData, 0, 0);
         ground->setDontMoveGround();
 
-        nw4r::g3d::ResNodeData *resNodeData = NULL;
+        nw4r::g3d::ResNodeData* resNodeData = NULL;
         u32 startIndex, endIndex;
 
         resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("RidleyFighterIdOnTransX").ptr();
@@ -92,32 +95,32 @@ void stPhendrana::createObjAshiba(int mdlIndex)
             this->ridleySlotId = (int)resNodeData->m_translation.m_x;
         }
 
-        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("RidleyAnimParams").ptr();
-        if (resNodeData != NULL) {
-            this->ridleyIdleFrameCount = (int)resNodeData->m_rotation.m_x;
-            this->ridleyWingFlapFrame = (int)resNodeData->m_rotation.m_y;
-            this->ridleyPathFrameCount = (int)resNodeData->m_rotation.m_z;
-        }
-
         resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("RidleySfx").ptr();
         this->createObjRidleySfx(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
-                              resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
-                              resNodeData->m_translation.m_z);
+            resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
+            resNodeData->m_translation.m_z, ground);
 
-        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("Blizzard").ptr();
-        this->createObjBlizzard(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
-                              resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
-                              resNodeData->m_translation.m_z);
-
+        resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode("PinchSnow").ptr();
+        this->createObjPinchSnow(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+            resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
+            resNodeData->m_translation.m_z);
 
         startIndex = ground->getNodeIndex(0, "Pinch");
         endIndex = ground->getNodeIndex(0, "PinchEnd");
         for (int i = startIndex + 1; i < endIndex; i++) {
             resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             this->createObjPinch(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
-                                    resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
-                                    resNodeData->m_translation.m_z);
+                resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
+                resNodeData->m_translation.m_z);
+        }
 
+        startIndex = ground->getNodeIndex(0, "PinchTransition");
+        endIndex = ground->getNodeIndex(0, "PinchTransitionEnd");
+        for (int i = startIndex + 1; i < endIndex; i++) {
+            resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            this->createObjPinchTransition(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
+                resNodeData->m_translation.m_z);
         }
 
         startIndex = ground->getNodeIndex(0, "Flickerbats");
@@ -125,8 +128,8 @@ void stPhendrana::createObjAshiba(int mdlIndex)
         for (int i = startIndex + 1; i < endIndex; i++) {
             resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             this->createObjFlickerbat(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
-                                  resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
-                                  resNodeData->m_translation.m_z);
+                resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
+                resNodeData->m_translation.m_z);
         }
 
         startIndex = ground->getNodeIndex(0, "Other");
@@ -134,8 +137,8 @@ void stPhendrana::createObjAshiba(int mdlIndex)
         for (int i = startIndex + 1; i < endIndex; i++) {
             resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             this->createObjOther(checkIsRidleyNode(ground, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
-                                  resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
-                                  resNodeData->m_translation.m_z, resNodeData->m_scale.m_y, resNodeData->m_scale.m_z);
+                resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
+                resNodeData->m_translation.m_z, resNodeData->m_scale.m_y, resNodeData->m_scale.m_z);
         }
     }
 }
@@ -150,19 +153,32 @@ void setupObj(grPhendranaItem* phendranaItem, void* stageData, gfArchive* fileDa
     phendranaItem->setRot(0.0, 0.0, rot);
 }
 
-void stPhendrana::createObjRidleySfx(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
-    grPhendranaRidleySfx* phendranaRidley = grPhendranaRidleySfx::create(mdlIndex, "grPhendranaRidleySfx", this, isRidleyNode);
+void stPhendrana::createObjRidley(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, Ground* phendranaRidleySfx) {
+    grPhendranaRidley* phendranaRidley = grPhendranaRidley::create(mdlIndex, "grPhendranaRidley", this, isRidleyNode, (grPhendranaRidleySfx*)phendranaRidleySfx);
     if(phendranaRidley != NULL){
         addGround(phendranaRidley);
         setupObj(phendranaRidley, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
     }
 }
 
-void stPhendrana::createObjBlizzard(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
-    grPhendranaBlizzard* phendranaBlizzard = grPhendranaBlizzard::create(mdlIndex, "grPhendranaBlizzard", this, isRidleyNode);
-    if(phendranaBlizzard != NULL){
-        addGround(phendranaBlizzard);
-        setupObj(phendranaBlizzard, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
+void stPhendrana::createObjRidleySfx(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, Ground* phendrana) {
+    grPhendranaRidleySfx* phendranaRidleySfx = grPhendranaRidleySfx::create(mdlIndex, "grPhendranaRidleySfx", this, isRidleyNode);
+    if(phendranaRidleySfx != NULL){
+        addGround(phendranaRidleySfx);
+        setupObj(phendranaRidleySfx, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
+    }
+
+    nw4r::g3d::ResNodeData* resNodeData = phendrana->m_sceneModels[0]->m_resMdl.GetResNode("Ridley").ptr();
+    this->createObjRidley(checkIsRidleyNode((grPhendrana*)phendrana, resNodeData->m_nodeIndex), resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+        resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x,
+        resNodeData->m_translation.m_z, phendranaRidleySfx);
+}
+
+void stPhendrana::createObjPinchSnow(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
+    grPhendranaPinchSnow* phendranaPinchSnow = grPhendranaPinchSnow::create(mdlIndex, "grPhendranaPinchSnow", this, isRidleyNode);
+    if(phendranaPinchSnow != NULL){
+        addGround(phendranaPinchSnow);
+        setupObj(phendranaPinchSnow, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
     }
 }
 
@@ -171,6 +187,14 @@ void stPhendrana::createObjPinch(bool isRidleyNode, int mdlIndex, Vec2f* pos, fl
     if(phendranaPinch != NULL){
         addGround(phendranaPinch);
         setupObj(phendranaPinch, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
+    }
+}
+
+void stPhendrana::createObjPinchTransition(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex) {
+    grPhendranaPinchTransition* phendranaPinchTransition = grPhendranaPinchTransition::create(mdlIndex, "grPhendranaPinchTransition", this, isRidleyNode);
+    if(phendranaPinchTransition != NULL){
+        addGround(phendranaPinchTransition);
+        setupObj(phendranaPinchTransition, m_stageData, m_fileData, pos, rot, scale, motionPathIndex);
     }
 }
 
