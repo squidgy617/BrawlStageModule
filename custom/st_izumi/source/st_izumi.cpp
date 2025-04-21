@@ -123,9 +123,9 @@ bool stIzumi::isBamperVector()
 {
     return true;
 }
-int stIzumi::getFinalTechniqColor()
+GXColor stIzumi::getFinalTechniqColor()
 {
-    return 0x14000496;
+    return (GXColor){0x14000496};
 }
 
 ST_CLASS_INFO;

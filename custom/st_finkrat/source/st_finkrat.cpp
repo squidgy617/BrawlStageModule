@@ -94,8 +94,8 @@ void stFinkrat::update(float frameDelta){
 bool stFinkrat::isBamperVector() {
    return true;
 }
-int stFinkrat::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stFinkrat::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

@@ -264,9 +264,9 @@ bool stBoss::isBamperVector()
 {
     return true;
 }
-int stBoss::getFinalTechniqColor()
+GXColor stBoss::getFinalTechniqColor()
 {
-    return 0x14000496;
+    return (GXColor){0x14000496};
 }
 
 

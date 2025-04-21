@@ -2,11 +2,24 @@
 
 #include <types.h>
 #include <mt/mt_vector.h>
+#include <snd/snd_id.h>
 
 #define MOVE_ANIM_CHR_INDEX 2
 #define WAIT_SINK_RIPPLE_ANIM_INDEX 1
 #define NUM_STAR_COLOURS 5
 #define STAR_IT_GEN_KIND 20000
+#define SPOUT_FORCE_DOWN_MUL 3
+#define SPOUT_ITEM_APPEAR_SPEED_Y 4.0f
+#define SPOUT_FOOD_AMOUNT 6
+
+const int kStageSoundbankID = 0x200;
+const SndID snd_se_stage_Izumi_Tangible_Star_Entry = 0x402F + ((kStageSoundbankID - 0x144) * 0xA5);
+const SndID snd_se_stage_Izumi_Tangible_Star_Exit = snd_se_stage_Izumi_Tangible_Star_Entry + 1;
+const SndID snd_se_stage_Izumi_Ambience = snd_se_stage_Izumi_Tangible_Star_Exit + 1;
+const SndID snd_se_stage_Izumi_Ring_Left = snd_se_stage_Izumi_Ambience + 1;
+const SndID snd_se_stage_Izumi_Ring_Right = snd_se_stage_Izumi_Ring_Left + 1;
+const SndID snd_se_stage_Izumi_Spout = snd_se_stage_Izumi_Ring_Right + 1;
+
 
 struct stIzumiData {
     struct ItemDrop {

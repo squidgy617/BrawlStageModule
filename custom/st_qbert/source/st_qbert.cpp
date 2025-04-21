@@ -333,8 +333,8 @@ void stQbert::updateBgm(float frameDelta) {
 bool stQbert::isBamperVector() {
    return true;
 }
-int stQbert::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stQbert::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

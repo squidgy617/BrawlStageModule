@@ -19,7 +19,7 @@ void grIzumi::startup(gfArchive* archive, u32 unk1, u32 unk2) {
         Vec3f pos;
         this->getNodePosition(&pos, 0, nodeIndex);
         this->centerSoundGenerator.setPos(&pos);
-        this->centerSoundGenerator.playSE(snd_se_stage_Starfox_pleiadians_eng, 0, 0, -1);
+        this->centerSoundGenerator.playSE(snd_se_stage_Izumi_Ambience, 0, 0, -1);
     }
 
 }
@@ -36,7 +36,7 @@ void grIzumi::update(float deltaFrame)
             this->getNodePosition(&pos, 0, nodeIndex);
             this->ringSoundGenerators[0].stopSE(this->ringSndPtr[0], 0);
             this->ringSoundGenerators[0].setPos(&pos);
-            this->ringSoundGenerators[0].playSE(snd_se_stage_Starfox_arwin_shot, 0, 0, -1);
+            this->ringSoundGenerators[0].playSE(snd_se_stage_Izumi_Ring_Left, 0, 0, -1);
         }
     }
     if (animFrames == izumiData->ringSndStartFrame[1]) {
@@ -45,7 +45,7 @@ void grIzumi::update(float deltaFrame)
             this->getNodePosition(&pos, 0, nodeIndex);
             this->ringSoundGenerators[1].stopSE(this->ringSndPtr[1], 0);
             this->ringSoundGenerators[1].setPos(&pos);
-            this->ringSoundGenerators[1].playSE(snd_se_stage_Starfox_arwin_shot_2, 0, 0, -1);
+            this->ringSoundGenerators[1].playSE(snd_se_stage_Izumi_Ring_Right, 0, 0, -1);
         }
     }
 

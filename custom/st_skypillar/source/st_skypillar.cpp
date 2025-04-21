@@ -197,9 +197,9 @@ bool stSkyPillar::isBamperVector()
 {
     return true;
 }
-int stSkyPillar::getFinalTechniqColor()
+GXColor stSkyPillar::getFinalTechniqColor()
 {
-    return 0x14000496;
+    return (GXColor){0x14000496};
 }
 
 

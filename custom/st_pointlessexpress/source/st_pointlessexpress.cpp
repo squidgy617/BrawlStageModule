@@ -102,8 +102,8 @@ void stPointlessExpress::update(float frameDelta){
 bool stPointlessExpress::isBamperVector() {
    return true;
 }
-int stPointlessExpress::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stPointlessExpress::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

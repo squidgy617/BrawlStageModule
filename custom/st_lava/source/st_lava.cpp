@@ -79,8 +79,8 @@ void stLava::update(float frameDelta){
 bool stLava::isBamperVector() {
    return true;
 }
-int stLava::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stLava::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

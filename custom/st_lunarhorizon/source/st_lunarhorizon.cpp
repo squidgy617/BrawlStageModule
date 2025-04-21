@@ -170,8 +170,8 @@ void stLunarHorizon::update(float deltaFrame){
 bool stLunarHorizon::isBamperVector() {
    return true;
 }
-int stLunarHorizon::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stLunarHorizon::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

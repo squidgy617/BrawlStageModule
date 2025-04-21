@@ -88,8 +88,8 @@ void stPictSimple::update(float frameDelta){
 bool stPictSimple::isBamperVector() {
    return true;
 }
-int stPictSimple::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stPictSimple::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

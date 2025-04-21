@@ -23,7 +23,7 @@ class stWorldTournament : public stMelee {
         virtual void createObj();
         virtual bool loading();
         virtual void update(float frameDiff);
-        virtual int getFinalTechniqColor();
+        virtual GXColor getFinalTechniqColor();
         virtual bool isBamperVector();
         virtual ~stWorldTournament() {this->releaseArchive(); };
 

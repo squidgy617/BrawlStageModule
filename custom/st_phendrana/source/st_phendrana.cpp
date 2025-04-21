@@ -227,9 +227,9 @@ bool stPhendrana::isBamperVector()
     return true;
 }
 
-int stPhendrana::getFinalTechniqColor()
+GXColor stPhendrana::getFinalTechniqColor()
 {
-    return 0x14000496;
+    return (GXColor){0x14000496};
 }
 
 ST_CLASS_INFO;

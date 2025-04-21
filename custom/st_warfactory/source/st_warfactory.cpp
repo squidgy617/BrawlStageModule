@@ -82,8 +82,8 @@ void stWarFactory::update(float frameDelta){
 bool stWarFactory::isBamperVector() {
    return true;
 }
-int stWarFactory::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stWarFactory::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

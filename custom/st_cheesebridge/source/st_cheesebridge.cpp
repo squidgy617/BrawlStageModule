@@ -132,8 +132,8 @@ void stCheeseBridge::update(float frameDelta){
 bool stCheeseBridge::isBamperVector() {
    return true;
 }
-int stCheeseBridge::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stCheeseBridge::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

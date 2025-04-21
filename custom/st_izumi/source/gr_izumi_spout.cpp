@@ -5,9 +5,12 @@
 #include <mt/mt_vector.h>
 #include <mt/mt_prng.h>
 #include <ft/ft_manager.h>
+#include <it/it_manager.h>
 #include <st/stage.h>
+#include <gm/gm_global.h>
 #include <math.h>
 #include <hkmath/hkMath.h>
+#include <so/so_external_value_accesser.h>
 #include <OS/OSError.h>
 
 grIzumiSpout* grIzumiSpout::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
@@ -18,8 +21,6 @@ grIzumiSpout* grIzumiSpout::create(int mdlIndex, const char* tgtNodeName, const 
     ground->setTgtNode(tgtNodeName);
     return ground;
 }
-
-
 
 void grIzumiSpout::processAnim() {
     if (m_resFile.ptr() != NULL) {
@@ -128,7 +129,7 @@ void grIzumiSpout::fountainInit(u32 spoutId)
 
 	this->isActive = true;
     this->startFountainEffect();
-    this->sndPtr = this->soundGenerator.playSE(snd_se_stage_Starfox_arwin_eng, 0, 0, -1);
+    this->sndPtr = this->soundGenerator.playSE(snd_se_stage_Izumi_Spout, 0, 0, -1);
 
     if (g_GameGlobal->m_modeMelee->m_meleeInitData.m_isHazardOff) {
         this->level = Level_Off;
@@ -179,7 +180,7 @@ void grIzumiSpout::updateEff(float deltaFrame)
     else if (bonePos.m_y > izumiData->spoutEffectMinHeight && !this->isActive)
     {
         this->startFountainEffect();
-        this->sndPtr = this->soundGenerator.playSE(snd_se_stage_Starfox_arwin_eng, 0, 0, -1);
+        this->sndPtr = this->soundGenerator.playSE(snd_se_stage_Izumi_Spout, 0, 0, -1);
         this->isActive = true;
     }
     else if (this->isActive) {
@@ -217,7 +218,7 @@ void grIzumiSpout::updateLevel(float deltaFrame) {
                 this->spoutTimer -= deltaFrame;
             }
         }
-        if (this->spoutTimer <= 0 && (currentAnimFrame >= animFrameCount - 1 || this->anmChrIndex != WAIT_SINK_RIPPLE_ANIM_INDEX)) {
+        if (this->spoutTimer <= 0 && (currentAnimFrame >= animFrameCount - deltaFrame || this->anmChrIndex != WAIT_SINK_RIPPLE_ANIM_INDEX)) {
             this->changeDestFrame();
         }
         else if (this->spoutTimer <= izumiData->riseWarningFrames && this->level == Level_Sink) {
@@ -234,9 +235,10 @@ void grIzumiSpout::updateLevel(float deltaFrame) {
                 }
             }
             else if (dir < 0) {
-                frame -= deltaFrame*izumiData->spoutDescentSpeed;
+                frame -= this->isForceDown ? deltaFrame*izumiData->spoutDescentSpeed*SPOUT_FORCE_DOWN_MUL : deltaFrame*izumiData->spoutDescentSpeed;
                 if (frame <= this->destFrame) {
                     frame = this->destFrame;
+                    this->isForceDown = false;
                 }
             }
 
@@ -268,6 +270,8 @@ void grIzumiSpout::changeDestFrame() {
             this->spoutTimer = randf() * (izumiData->stationaryMaxFrames - izumiData->stationaryMinFrames) +
                                    izumiData->stationaryMinFrames;
             this->destFrame += deltaFrame;
+            this->destFrame = hkMath::min2<float>(this->destFrame, izumiData->spoutMaxFrame);
+            this->destFrame = hkMath::max2<float>(this->destFrame, izumiData->spoutMinFrame);
         }
         else {
             this->level = Level_Sink;
@@ -278,6 +282,8 @@ void grIzumiSpout::changeDestFrame() {
         }
     }
     else {
+        this->isForceDown = false;
+        this->isItemObtained = false;
         this->spoutTimer = randf() * (izumiData->stationaryMaxFrames - izumiData->stationaryMinFrames) +
                            izumiData->stationaryMinFrames;
         this->destFrame = izumiData->spoutReturnFrame;
@@ -293,9 +299,142 @@ void grIzumiSpout::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
     if (entryId >= 0) {
         stIzumiData* izumiData = static_cast<stIzumiData*>(this->getStageData());
 
-        //Fighter *fighter = g_ftManager->getFighter(entryId, -1);
-        if (this->spoutTimer < izumiData->cooldownRisingFrames) {
-            this->spoutTimer = izumiData->cooldownRisingFrames;
+        if (this->level == Level_Sink) {
+            if (this->spoutTimer <= izumiData->riseWarningFrames) {
+                Fighter *fighter = g_ftManager->getFighter(entryId, -1);
+                if (fighter != NULL) {
+                    if (!this->isItemObtained &&
+                        soExternalValueAccesser::getStatusKind(fighter) == Fighter::Status_Warpstar_Jump) {
+                        if (g_GameGlobal->m_modeMelee->m_meleeInitData.m_itSwitch.m_item.ex.m_stage) {
+                            Vec3f fighterPos = soExternalValueAccesser::getPos(fighter);
+                            Vec3f triggerPos;
+                            this->getNodePosition(&triggerPos, 0, "Trigger");
+                            float x = fabsf(fighterPos.m_x - triggerPos.m_x);
+                            float radius = izumiData->areaRange.m_x / 2;
+                            int i = 0;
+                            for (i = 0; i < SPOUT_FOOD_AMOUNT; i++) {
+                                if (x < (i+1)*radius/SPOUT_FOOD_AMOUNT){
+                                    break;
+                                }
+                            }
+
+                            itManager *itemManager = itManager::getInstance();
+                            itKind kind = i == 0 ? Item_MaximTomato : Item_Food;
+                            int amount = kind == Item_MaximTomato ? 1 : SPOUT_FOOD_AMOUNT + 1 - i;
+                            for (u32 i = 0; i < amount; i++) {
+                                BaseItem *item = itemManager->createItem(kind, 5000);
+                                if (item != NULL) {
+                                    item->warp(&triggerPos);
+                                    Vec3f speed = {0.0, SPOUT_ITEM_APPEAR_SPEED_Y, 0.0};
+                                    item->m_moduleAccesser->getKineticModule()->addSpeed(&speed,
+                                                                                         item->m_moduleAccesser);
+                                }
+                            }
+                        }
+                        this->isItemObtained = true;
+                    } else if (fighter->m_moduleAccesser->getItemManageModule()->getHaveItemKind(0) == Item_StarRod &&
+                               soExternalValueAccesser::getStatusKind(fighter) == Fighter::Status_Item_Swing_S4_Hold) {
+                        soItemInfo itemInfo;
+                        fighter->m_moduleAccesser->getItemManageModule()->getHaveItemInfo(&itemInfo, 0);
+                        if (itemInfo.m_item != NULL &&
+                            soExternalValueAccesser::getWorkInt(itemInfo.m_item, BaseItem::Instance_Work_Int_Value_1) > 0) {
+                            ipPadButton button = fighter->m_moduleAccesser->getControllerModule()->getButton();
+                            if (button.m_appealLw) {
+                                this->spoutTimer =
+                                        randf() * (izumiData->sinkMaxFrames - izumiData->sinkMinFrames) +
+                                        izumiData->sinkMinFrames;
+                                this->setMotion(2, 2, 2, 0);
+                                this->setFrame(0);
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                Fighter *fighter = g_ftManager->getFighter(entryId, -1);
+                if (fighter != NULL) {
+                    if (fighter->m_moduleAccesser->getItemManageModule()->getHaveItemKind(0) == Item_StarRod &&
+                        soExternalValueAccesser::getStatusKind(fighter) == Fighter::Status_Item_Swing_S4_Hold) {
+                        soItemInfo itemInfo;
+                        fighter->m_moduleAccesser->getItemManageModule()->getHaveItemInfo(&itemInfo, 0);
+                        if (itemInfo.m_item != NULL &&
+                            soExternalValueAccesser::getWorkInt(itemInfo.m_item, BaseItem::Instance_Work_Int_Value_1) > 0) {
+                            ipPadButton button = fighter->m_moduleAccesser->getControllerModule()->getButton();
+                            if (button.m_appealHi) {
+                                this->spoutTimer = izumiData->riseWarningFrames;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!this->isItemObtained && this->spoutTimer < izumiData->cooldownRisingFrames) {
+                this->spoutTimer = izumiData->cooldownRisingFrames;
+            }
+        }
+    }
+}
+
+void grIzumiSpout::receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3) {
+    if (this->level != Level_Off) {
+        stIzumiData* izumiData = static_cast<stIzumiData*>(this->getStageData());
+        CategoryFlag categoryFlagFighter(GROUND_COLL_STATUS_OWNER_TASK_CATEGORY_MASK_FIGHTER);
+        if (this->isCollisionStatusOwnerTask(collStatus, &categoryFlagFighter)) {
+            int entryId = g_ftManager->getEntryIdFromTaskId(collStatus->m_taskId, NULL);
+            if (entryId >= 0) {
+                Fighter *fighter = g_ftManager->getFighter(entryId, -1);
+                if (fighter != NULL) {
+                    if (fighter->m_moduleAccesser->getItemManageModule()->getHaveItemKind(0) == Item_StarRod &&
+                        soExternalValueAccesser::getStatusKind(fighter) == Fighter::Status_Item_Swing_S4_Hold) {
+                        soItemInfo itemInfo;
+                        fighter->m_moduleAccesser->getItemManageModule()->getHaveItemInfo(&itemInfo, 0);
+                        if (itemInfo.m_item != NULL &&
+                            soExternalValueAccesser::getWorkInt(itemInfo.m_item, BaseItem::Instance_Work_Int_Value_1) > 0) {
+                            ipPadButton button = fighter->m_moduleAccesser->getControllerModule()->getButton();
+                            if (button.m_appealHi) {
+                                this->destFrame += izumiData->spoutAscentSpeed;
+                                this->destFrame = hkMath::min2<float>(this->destFrame,
+                                                                      izumiData->spoutMaxFrame);
+                                this->spoutTimer =
+                                        randf() *
+                                        (izumiData->stationaryMaxFrames - izumiData->stationaryMinFrames) +
+                                        izumiData->stationaryMinFrames;
+                                this->level = Level_Active;
+                            } else if (button.m_appealLw && this->destFrame >= izumiData->spoutMinFrame) {
+                                this->destFrame -= izumiData->spoutAscentSpeed;
+                                this->destFrame = hkMath::max2<float>(this->destFrame,
+                                                                      izumiData->spoutMinFrame);
+                                this->spoutTimer =
+                                        randf() *
+                                        (izumiData->stationaryMaxFrames - izumiData->stationaryMinFrames) +
+                                        izumiData->stationaryMinFrames;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        CategoryFlag categoryFlagItem(GROUND_COLL_STATUS_OWNER_TASK_CATEGORY_MASK_ITEM);
+        if (this->isCollisionStatusOwnerTask(collStatus, &categoryFlagItem)) {
+            BaseItem *item = static_cast<BaseItem *>(gfTask::getTask(collStatus->m_taskId));
+            if (item != NULL && item->m_kind == Item_WarpStar &&
+                soExternalValueAccesser::getStatusKind(item) == BaseItem::Status_Have) {
+                float currentFrame = this->m_modelAnims[0]->m_anmObjChrRes->GetFrame();
+                float deltaFrame = (izumiData->spoutMaxMove + izumiData->spoutMinMove) / 2;
+                if (currentFrame - deltaFrame < izumiData->spoutMinFrame) {
+                    this->level = Level_Sink;
+                    this->spoutTimer =
+                            randf() * (izumiData->sinkMaxFrames - izumiData->sinkMinFrames) + izumiData->sinkMinFrames;
+                    this->destFrame = 0;
+                    this->enableArea();
+                }
+                else {
+                    this->destFrame = currentFrame - deltaFrame;
+                    this->spoutTimer = randf() * (izumiData->stationaryMaxFrames - izumiData->stationaryMinFrames) +
+                                       izumiData->stationaryMinFrames;
+                }
+                this->isForceDown = true;
+            }
         }
     }
 }

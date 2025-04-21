@@ -85,8 +85,8 @@ void stWorldTournament::update(float frameDelta){
 bool stWorldTournament::isBamperVector() {
    return true;
 }
-int stWorldTournament::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stWorldTournament::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

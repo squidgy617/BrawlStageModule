@@ -74,9 +74,9 @@ bool stFinal::isBamperVector()
 {
     return true;
 }
-int stFinal::getFinalTechniqColor()
+GXColor stFinal::getFinalTechniqColor()
 {
-    return 0x14000496;
+    return (GXColor){0x14000496};
 }
 
 ST_CLASS_INFO;

@@ -128,8 +128,8 @@ void stKongoJungleRedux::update(float frameDelta){
 bool stKongoJungleRedux::isBamperVector() {
    return true;
 }
-int stKongoJungleRedux::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stKongoJungleRedux::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

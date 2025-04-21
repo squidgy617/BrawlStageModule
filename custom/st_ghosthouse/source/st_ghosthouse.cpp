@@ -654,8 +654,8 @@ void stGhostHouse::changeEvent(GhostEvent event) {
 bool stGhostHouse::isBamperVector() {
    return true;
 }
-int stGhostHouse::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stGhostHouse::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

@@ -28,7 +28,7 @@ class stKrazoa : public stMelee {
         virtual void createObj();
         virtual bool loading();
         virtual void update(float frameDiff);
-        virtual int getFinalTechniqColor();
+        virtual GXColor getFinalTechniqColor();
         virtual bool isBamperVector();
         virtual void getItemPac(gfArchive** brres, gfArchive** param, itKind itemID, int variantID, gfArchive** commonParam, itCustomizerInterface** customizer);
 

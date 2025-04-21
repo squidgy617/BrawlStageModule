@@ -136,8 +136,8 @@ void stKrazoa::update(float frameDelta){
 bool stKrazoa::isBamperVector() {
    return true;
 }
-int stKrazoa::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stKrazoa::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

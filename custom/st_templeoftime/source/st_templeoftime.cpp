@@ -92,8 +92,8 @@ void stTempleOfTime::update(float frameDiff){
 bool stTempleOfTime::isBamperVector() {
    return true;
 }
-int stTempleOfTime::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stTempleOfTime::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 void stTempleOfTime::changeScnAnim(int index) {

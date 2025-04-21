@@ -14,7 +14,9 @@ protected:
     };
 
     u32 spoutId;
-	bool isActive;
+    bool isForceDown;
+    bool isItemObtained;
+    bool isActive;
     float effFrameCount;
     u32 effPtr;
     Level level;
@@ -37,11 +39,14 @@ public:
     grIzumiSpout(const char* taskName) : grYakumono(taskName)
     {
         anmChrIndex = -1;
+        isForceDown = false;
+        isItemObtained = false;
     };
     virtual void processAnim();
     virtual void update(float deltaFrame);
     virtual ~grIzumiSpout(){};
     virtual void onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId);
+    virtual void receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3);
 
     virtual void fountainInit(u32 spoutId);
     virtual void startFountainEffect();

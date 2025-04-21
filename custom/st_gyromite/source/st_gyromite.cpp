@@ -89,8 +89,8 @@ void stGyromite::update(float frameDelta){
 bool stGyromite::isBamperVector() {
    return true;
 }
-int stGyromite::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stGyromite::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

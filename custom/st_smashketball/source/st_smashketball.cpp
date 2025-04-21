@@ -149,8 +149,8 @@ void stSmashketball::update(float frameDelta){
 bool stSmashketball::isBamperVector() {
    return true;
 }
-int stSmashketball::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stSmashketball::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

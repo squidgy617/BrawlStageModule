@@ -386,8 +386,8 @@ void stGimmick::update(float frameDelta){
 bool stGimmick::isBamperVector() {
    return true;
 }
-int stGimmick::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stGimmick::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

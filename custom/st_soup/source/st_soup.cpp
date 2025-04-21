@@ -89,8 +89,8 @@ void stSoup::update(float frameDelta){
 bool stSoup::isBamperVector() {
    return true;
 }
-int stSoup::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stSoup::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

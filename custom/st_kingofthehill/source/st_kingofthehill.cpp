@@ -413,8 +413,8 @@ void stKingOfTheHill::update(float frameDelta){
 bool stKingOfTheHill::isBamperVector() {
    return true;
 }
-int stKingOfTheHill::getFinalTechniqColor() {
-   return 0x14000496;
+GXColor stKingOfTheHill::getFinalTechniqColor() {
+   return (GXColor){0x14000496};
 }
 
 template<srStageKind I, typename T>

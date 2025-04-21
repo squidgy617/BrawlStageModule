@@ -27,7 +27,7 @@ class stPhendrana : public stMelee
         virtual void createObj();
         virtual bool loading();
         virtual void update(float deltaFrame);
-        virtual int getFinalTechniqColor();
+        virtual GXColor getFinalTechniqColor();
         virtual bool isBamperVector();
         void createObjAshiba(int mdlIndex);
         void createObjRidley(bool isRidleyNode, int mdlIndex, Vec2f* pos, float rot, float scale, int motionPathIndex, Ground* phendranaRidleySfx);
