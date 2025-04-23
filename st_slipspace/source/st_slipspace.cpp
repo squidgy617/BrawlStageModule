@@ -1004,9 +1004,9 @@ bool stSlipspace::isBamperVector()
 {
     return true;
 }
-int stSlipspace::getFinalTechniqColor()
+GXColor stSlipspace::getFinalTechniqColor()
 {
-    return 0x14000496;
+    return (GXColor){0x14000496};
 }
 
 stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int enemyCreateId, int enemyMessageKind)
