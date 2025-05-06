@@ -105,16 +105,35 @@ void stSlipspace::update(float deltaFrame)
             }
         }
 
+        // Shuffle spawners
+        int randomizedSpawnerIndexes[] = {0, 0, 0, 0, 0};
+        // Populate randomized queue in order
+        for (int i = 0; i < _spawnerCount; i++)
+        {
+            randomizedSpawnerIndexes[i] = i;
+        }
+        for (int i = 0; i < _spawnerCount; i++)
+        {
+            // Get random spawner index
+            int randSpawnerIndex = randi(_spawnerCount - 1);
+            // Swap randomly selected spawner with current index
+            int temp = randomizedSpawnerIndexes[i];
+            randomizedSpawnerIndexes[i] = randomizedSpawnerIndexes[randSpawnerIndex];
+            randomizedSpawnerIndexes[randSpawnerIndex] = temp;
+        }
+
         // TODO: Pick spawners in random order
         // Iterate through spawners and spawn enemies
         for (int i = 0; i < _spawnerCount && _enemyCount < MAXSPAWNS && _spawnQueue[0] > -1; i++)
         {
+            int si = randomizedSpawnerIndexes[i];
             // Only spawn enemies from available spawners
             // TODO: Check not only timer, but also memory
-            if (_spawners[i].timer <= 0)
+            if (_spawners[si].timer <= 0)
             {
+                //OSReport("Spawning enemy at spawner: %d \n", si);
                 // Spawn enemy
-                this->putEnemy(_spawnQueue[0], _spawners[i].difficulty, _spawners[i].startStatus, &_spawners[i].pos, _spawners[i].motionPathIndex, _spawners[i].facingDirection);
+                this->putEnemy(_spawnQueue[0], _spawners[si].difficulty, _spawners[si].startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
                 // Pop from queue
                 for (int j = 0; j < MAXQUEUED; j++)
                 {
@@ -126,7 +145,7 @@ void stSlipspace::update(float deltaFrame)
                     _spawnQueue[j] = _spawnQueue[j + 1];
                 }
                 // Reset timer
-                _spawners[i].timer = SPAWNTIMER;
+                _spawners[si].timer = SPAWNTIMER;
             }
         }
 
