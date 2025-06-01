@@ -106,7 +106,7 @@ void stSlipspace::update(float deltaFrame)
         }
 
         // Shuffle spawners
-        int randomizedSpawnerIndexes[] = {0, 0, 0, 0, 0};
+        int randomizedSpawnerIndexes[] = {0, 0, 0, 0, 0}; // TODO: Initialize this better
         // Populate randomized queue in order
         for (int i = 0; i < _spawnerCount; i++)
         {
@@ -122,7 +122,6 @@ void stSlipspace::update(float deltaFrame)
             randomizedSpawnerIndexes[randSpawnerIndex] = temp;
         }
 
-        // TODO: Pick spawners in random order
         // Iterate through spawners and spawn enemies
         for (int i = 0; i < _spawnerCount && _enemyCount < MAXSPAWNS && _spawnQueue[0] > -1; i++)
         {
