@@ -137,7 +137,7 @@ void stSlipspace::update(float deltaFrame)
         for (int i = 0; i < _spawnerCount; i++)
         {
             // Get random spawner index
-            int randSpawnerIndex = randi(_spawnerCount - 1);
+            int randSpawnerIndex = randi(_spawnerCount);
             // Swap randomly selected spawner with current index
             int temp = randomizedSpawnerIndexes[i];
             randomizedSpawnerIndexes[i] = randomizedSpawnerIndexes[randSpawnerIndex];
@@ -175,7 +175,8 @@ void stSlipspace::update(float deltaFrame)
         {
             if (_spawnQueue[i] == -1)
             {
-                _spawnQueue[i] = _enemyTypes[randi(_enemyTypeCount - 1)]; // Spawn random enemy from enemy list
+                int randomIndex = randi(_enemyTypeCount);
+                _spawnQueue[i] = _enemyTypes[randomIndex]; // Spawn random enemy from enemy list
             }
         }
     }
