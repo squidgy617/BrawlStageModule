@@ -33,12 +33,13 @@ int MAXQUEUED = 5;
 
 int _enemyCount = 0; // Number of enemies currently spawned
 int _spawnerCount = 0; // Number of spawners in stage
+int _enemyTypeCount = 0; // Number of different types of enemies that can spawn
 
 struct EnemySpawner
 {
     int timer;
-    int enemyId;
-    int difficulty;
+    int enemyId; // TODO: Enemy ID can be replaced with something else probably? Or keep it as a way to force specific spawners to always spawn specific enemies?
+    int difficulty; // TODO: Should difficulty be tied to spawner or enemy?
     int startStatus;
     int facingDirection;
     Vec2f pos;
@@ -47,6 +48,7 @@ struct EnemySpawner
 
 EnemySpawner _spawners[100]; // List of spawners in stage
 int _spawnQueue[100]; // Holds queued spawns
+int _enemyTypes[100]; // List of enemy types in stage - TODO: might end up being a list of objects instead of ints if we want to store more than just the ID
 
 stSlipspace* stSlipspace::create()
 {
@@ -72,13 +74,14 @@ void stSlipspace::update(float deltaFrame)
         this->isItemsInitialized = true;
     }
 
-    // Store spawners
+    // Store spawners and enemies
     gfModuleManager* moduleManager = gfModuleManager::getInstance();
     if (moduleManager->isLoaded("sora_enemy.rel")) {
         emManager *enemyManager = emManager::getInstance();
         if (!this->isEnemiesInitialized && enemyManager->isCompArchiveAll()) {
             Ground* ground = this->getGround(0);
-            u32 itemsIndex = ground->getNodeIndex(0, "Enemies");
+            // Initialize spawners
+            u32 itemsIndex = ground->getNodeIndex(0, "Spawners");
             u32 endIndex = ground->getNodeIndex(0, "End");
             for (int i = itemsIndex + 1; i < endIndex; i++) {
                 nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
@@ -89,6 +92,15 @@ void stSlipspace::update(float deltaFrame)
                 _spawners[_spawnerCount].motionPathIndex = resNodeData->m_translation.m_z;
                 _spawners[_spawnerCount].facingDirection = resNodeData->m_rotation.m_z;
                 _spawnerCount++;
+            }
+            // Initialize enemies
+            itemsIndex = ground->getNodeIndex(0, "Enemies");
+            endIndex = ground->getNodeIndex(0, "Spawners");
+            for (int i = itemsIndex + 1; i < endIndex; i++)
+            {
+                nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+                _enemyTypes[_enemyTypeCount] = resNodeData->m_scale.m_x;
+                _enemyTypeCount++;
             }
             // Initialize _spawnQueue
             for (int i = 0; i < (sizeof(_spawnQueue) / sizeof(_spawnQueue[0])); i++)
@@ -163,7 +175,7 @@ void stSlipspace::update(float deltaFrame)
         {
             if (_spawnQueue[i] == -1)
             {
-                _spawnQueue[i] = 0; // TODO: Pick random enemy ID
+                _spawnQueue[i] = _enemyTypes[randi(_enemyTypeCount - 1)]; // Spawn random enemy from enemy list
             }
         }
     }
