@@ -46,7 +46,7 @@ struct EnemySpawner
 };
 
 EnemySpawner _spawners[100]; // List of spawners in stage
-int _spawnQueue[5] = {-1, -1, -1, -1, -1}; // TODO: Initialize this better
+int _spawnQueue[100]; // Holds queued spawns
 
 stSlipspace* stSlipspace::create()
 {
@@ -90,6 +90,11 @@ void stSlipspace::update(float deltaFrame)
                 _spawners[_spawnerCount].facingDirection = resNodeData->m_rotation.m_z;
                 _spawnerCount++;
             }
+            // Initialize _spawnQueue
+            for (int i = 0; i < (sizeof(_spawnQueue) / sizeof(_spawnQueue[0])); i++)
+            {
+                _spawnQueue[i] = -1;
+            }
             this->isEnemiesInitialized = true;
         }
     }
@@ -106,7 +111,12 @@ void stSlipspace::update(float deltaFrame)
         }
 
         // Shuffle spawners
-        int randomizedSpawnerIndexes[] = {0, 0, 0, 0, 0}; // TODO: Initialize this better
+        int randomizedSpawnerIndexes[100];
+        // Initialize random spawner index list
+        for (int i = 0; i < 100; i++)
+        {
+            randomizedSpawnerIndexes[i] = 0;
+        }
         // Populate randomized queue in order
         for (int i = 0; i < _spawnerCount; i++)
         {
