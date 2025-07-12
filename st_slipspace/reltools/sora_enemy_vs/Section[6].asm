@@ -308,7 +308,7 @@ loc_504:
 #include "./Enemies/bss/emRobohoming.asm"
 #include "./Enemies/bss/emRobopunch.asm"
 #include "./Enemies/bss/emArman.asm"
-#include "./Enemies/bss/emGalfire.asm"
+.include "./Enemies/bss/emGalfire.asm"
 #include "./Enemies/bss/emBosspackun.asm"
 #include "./Enemies/bss/emGhamghabase.asm"
 #include "./Enemies/bss/emGalleom.asm"

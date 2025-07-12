@@ -47133,7 +47133,7 @@ wnemSimple_Data____ct1:
 #include "./Enemies/asm/emRobohoming.asm"
 #include "./Enemies/asm/emRobopunch.asm"
 #include "./Enemies/asm/emArman.asm"
-#include "./Enemies/asm/emGalfire.asm"
+.include "./Enemies/asm/emGalfire.asm"
 #include "./Enemies/asm/emBosspackun.asm"
 #include "./Enemies/asm/emGhamghabase.asm"
 #include "./Enemies/asm/emGalleom.asm"

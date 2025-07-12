@@ -53,7 +53,7 @@ loc_0:
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emrobohomingparamaccessercpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emrobopunchparamaccessercpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emarmanparamaccessercpp____sinit_")]
-        #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emgalfireparamaccessercpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emgalfireparamaccessercpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "embosspackunparamaccessercpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emghamghabaseparamaccessercpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emgalleomparamaccessercpp____sinit_")]

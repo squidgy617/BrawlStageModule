@@ -1077,7 +1077,7 @@ loc_102C:
 #include "./Enemies/rodata/emRobohoming.asm"
 #include "./Enemies/rodata/emRobopunch.asm"
 #include "./Enemies/rodata/emArman.asm"
-#include "./Enemies/rodata/emGalfire.asm"
+.include "./Enemies/rodata/emGalfire.asm"
 #include "./Enemies/rodata/emBosspackun.asm"
 #include "./Enemies/rodata/emGhamghabase.asm"
 #include "./Enemies/rodata/emGalleom.asm"

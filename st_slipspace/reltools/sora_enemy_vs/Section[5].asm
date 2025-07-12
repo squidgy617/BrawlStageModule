@@ -7027,7 +7027,7 @@ loc_6EE8:
 #include "./Enemies/data/emRobohoming.asm"
 #include "./Enemies/data/emRobopunch.asm"
 #include "./Enemies/data/emArman.asm"
-#include "./Enemies/data/emGalfire.asm"
+.include "./Enemies/data/emGalfire.asm"
 #include "./Enemies/data/emBosspackun.asm"
 #include "./Enemies/data/emGhamghabase.asm"
 #include "./Enemies/data/emGalleom.asm"
