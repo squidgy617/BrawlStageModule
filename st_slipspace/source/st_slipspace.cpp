@@ -1056,6 +1056,8 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
     // TODO: When enemy is defeated, check if any other instances of the enemy exist, and if not, unload their resources (if we do external loading)
     if (enemyMessageKind == Enemy::Message_Damage)
     {
+        // TODO: If coin mode, enemies drop coins. If score mode, enemies give points. 
+        // If stock, at certain intervals, everyone but highest score loses stock, and scores reset?
         itManager* itemManager = itManager::getInstance();
         itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenId)(Item_Gen_Basic));
         itManager::ItemSwitch itemSwitch(true);
