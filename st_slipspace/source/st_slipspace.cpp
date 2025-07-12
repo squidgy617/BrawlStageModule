@@ -147,9 +147,10 @@ void stSlipspace::update(float deltaFrame)
         // Iterate through spawners and spawn enemies
         for (int i = 0; i < _spawnerCount && _enemyCount < MAXSPAWNS && _spawnQueue[0] > -1; i++)
         {
+            // TODO: Before checking if the enemy is ready to spawn, check if their resources are loaded, and if not, load them (if we do external loading)
             int si = randomizedSpawnerIndexes[i];
             // Only spawn enemies from available spawners
-            // TODO: Check not only timer, but also memory
+            // TODO: Check not only timer, but also memory and whether or not the enemy resources are loaded (if we do external loading)
             if (_spawners[si].timer <= 0)
             {
                 //OSReport("Spawning enemy at spawner: %d \n", si);
@@ -1052,6 +1053,7 @@ GXColor stSlipspace::getFinalTechniqColor()
 
 stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int enemyCreateId, int enemyMessageKind)
 {   
+    // TODO: When enemy is defeated, check if any other instances of the enemy exist, and if not, unload their resources (if we do external loading)
     if (enemyMessageKind == Enemy::Message_Damage)
     {
         itManager* itemManager = itManager::getInstance();
