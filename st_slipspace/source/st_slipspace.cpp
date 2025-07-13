@@ -46,9 +46,15 @@ struct EnemySpawner
     int motionPathIndex;
 };
 
+struct EnemyType
+{
+    int enemyId;
+    int startStatus;
+};
+
 EnemySpawner _spawners[100]; // List of spawners in stage
 int _spawnQueue[100]; // Holds queued spawns
-int _enemyTypes[100]; // List of enemy types in stage - TODO: might end up being a list of objects instead of ints if we want to store more than just the ID
+EnemyType _enemyTypes[100]; // List of enemy types in stage - TODO: might end up being a list of objects instead of ints if we want to store more than just the ID
 GameRule _gameMode; // Selected game mode
 
 stSlipspace* stSlipspace::create()
@@ -100,7 +106,8 @@ void stSlipspace::update(float deltaFrame)
             for (int i = itemsIndex + 1; i < endIndex; i++)
             {
                 nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-                _enemyTypes[_enemyTypeCount] = resNodeData->m_scale.m_x;
+                _enemyTypes[_enemyTypeCount].enemyId = resNodeData->m_scale.m_x;
+                _enemyTypes[_enemyTypeCount].startStatus = resNodeData->m_scale.m_z;
                 _enemyTypeCount++;
             }
             // Initialize _spawnQueue
@@ -155,8 +162,10 @@ void stSlipspace::update(float deltaFrame)
             if (_spawners[si].timer <= 0)
             {
                 //OSReport("Spawning enemy at spawner: %d \n", si);
+                // Find enemy list entry
+                EnemyType enemyToSpawn = _enemyTypes[_spawnQueue[0]];
                 // Spawn enemy
-                this->putEnemy(_spawnQueue[0], _spawners[si].difficulty, _spawners[si].startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
+                this->putEnemy(enemyToSpawn.enemyId, _spawners[si].difficulty, enemyToSpawn.startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
                 // Pop from queue
                 for (int j = 0; j < MAXQUEUED; j++)
                 {
@@ -178,7 +187,7 @@ void stSlipspace::update(float deltaFrame)
             if (_spawnQueue[i] == -1)
             {
                 int randomIndex = randi(_enemyTypeCount);
-                _spawnQueue[i] = _enemyTypes[randomIndex]; // Spawn random enemy from enemy list
+                _spawnQueue[i] = randomIndex; // Spawn random enemy from enemy list
             }
         }
     }
