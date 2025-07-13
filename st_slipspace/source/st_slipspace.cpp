@@ -49,6 +49,7 @@ struct EnemySpawner
 EnemySpawner _spawners[100]; // List of spawners in stage
 int _spawnQueue[100]; // Holds queued spawns
 int _enemyTypes[100]; // List of enemy types in stage - TODO: might end up being a list of objects instead of ints if we want to store more than just the ID
+GameRule _gameMode; // Selected game mode
 
 stSlipspace* stSlipspace::create()
 {
@@ -245,6 +246,13 @@ void stSlipspace::createObj()
 {
     if (g_GameGlobal->m_modeMelee->m_meleeInitData.m_gameMode == Game_Mode_Target) {
         this->patchInstructions();
+    }
+    // If coin, switch to time, so that players don't drop coins
+    GameRule gameRule = g_ftManager->m_gameRule;
+    // Store selected game mode for later
+    _gameMode = gameRule;
+    if (gameRule == Game_Rule_Coin) {
+        g_ftManager->m_gameRule = Game_Rule_Time;
     }
     // TODO: Look into switching UI to stock icon and number left if more than certain amount of targets (check IfCenter createModel functions)
 
@@ -1058,17 +1066,20 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
     {
         // TODO: If coin mode, enemies drop coins. If score mode, enemies give points. 
         // If stock, at certain intervals, everyone but highest score loses stock, and scores reset?
-        itManager* itemManager = itManager::getInstance();
-        itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenId)(Item_Gen_Basic));
-        itManager::ItemSwitch itemSwitch(true);
-        ItemKind itemKind = itemManager->getLotOneItemKind(&sheetKind, (itGenId)(Item_Gen_Basic), &itemSwitch, false);
-        BaseItem* item = itemManager->createItem(Item_Coin, itemKind.m_variation);
-    
-        emManager* enemyManager = emManager::getInstance();
-        Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
-        Vec3f pos = soExternalValueAccesser::getPos(enemy);
+        if (_gameMode == Game_Rule_Coin)
+        {
+            itManager* itemManager = itManager::getInstance();
+            itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenId)(Item_Gen_Basic));
+            itManager::ItemSwitch itemSwitch(true);
+            ItemKind itemKind = itemManager->getLotOneItemKind(&sheetKind, (itGenId)(Item_Gen_Basic), &itemSwitch, false);
+            BaseItem* item = itemManager->createItem(Item_Coin, itemKind.m_variation);
         
-        item->warp(&pos);
+            emManager* enemyManager = emManager::getInstance();
+            Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
+            Vec3f pos = soExternalValueAccesser::getPos(enemy);
+            
+            item->warp(&pos);
+        }
     }
     if (enemyMessageKind == Enemy::Message_Destruct)
     {
