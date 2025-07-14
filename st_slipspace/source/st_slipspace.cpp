@@ -1073,8 +1073,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
     // TODO: When enemy is defeated, check if any other instances of the enemy exist, and if not, unload their resources (if we do external loading)
     if (enemyMessageKind == Enemy::Message_Damage)
     {
-        // TODO: If coin mode, enemies drop coins. If score mode, enemies give points. 
-        // If stock, at certain intervals, everyone but highest score loses stock, and scores reset?
+        // If coin mode, enemies drop coins 
         if (_gameMode == Game_Rule_Coin)
         {
             itManager* itemManager = itManager::getInstance();
@@ -1089,6 +1088,30 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
             
             item->warp(&pos);
         }
+        // If score mode, enemies give points
+        else if (_gameMode == Game_Rule_Time)
+        {
+            emManager* enemyManager = emManager::getInstance();
+            Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
+            soDamageModule* damageModule = enemy->m_moduleAccesser->getDamageModule();
+            soDamageAttackerInfo* attackerInfo = damageModule->getAttackerInfo();
+            int playerEntryId = g_ftManager->getEntryIdFromTaskId(attackerInfo->m_indirectTaskId, (int*)0x0);
+            if (playerEntryId != -1)
+            {
+                ftEntry* playerEntry = g_ftManager->m_entryManager->getEntity(playerEntryId);
+                if (playerEntry != NULL)
+                {
+                    int playerIndex = playerEntry->m_playerNo;
+                    ftOwner* playerOwner = playerEntry->m_owner;
+                    if (playerOwner != NULL)
+                    {
+                        int currentBeatCount = playerOwner->getBeatCount(6); // We store KOs on player index 6 (player 7) which is a multi-man slot, not a real player
+                        playerOwner->setBeatCount(6, currentBeatCount + 1); // Increment KO count by 1
+                    }
+                }
+            }
+        }
+        // TODO: If stock, at certain intervals, everyone but highest score loses stock, and scores reset?
     }
     if (enemyMessageKind == Enemy::Message_Destruct)
     {
