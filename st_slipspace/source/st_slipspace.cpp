@@ -282,12 +282,12 @@ void stSlipspace::createObj()
         emWeaponManager::create();
         emWeaponManager* weaponManager = emWeaponManager::getInstance();
         weaponManager->clean();
-        weaponManager->m_list1.m_last = NULL;
-        weaponManager->m_list1.m_first = NULL;
-        weaponManager->m_list1.m_length = 0;
-        weaponManager->m_list2.m_last = NULL;
-        weaponManager->m_list2.m_first = NULL;
-        weaponManager->m_list2.m_length = 0;
+        // weaponManager->m_list1.m_last = NULL;
+        // weaponManager->m_list1.m_first = NULL;
+        // weaponManager->m_list1.m_length = 0;
+        // weaponManager->m_list2.m_last = NULL;
+        // weaponManager->m_list2.m_first = NULL;
+        // weaponManager->m_list2.m_length = 0;
         weaponManager->m_numStageObjects = NUM_WEAPON_STAGE_OBJECTS
         weaponManager->m_stageObjects = new (Heaps::StageInstance) wnemSimple[weaponManager->m_numStageObjects];
         for (int i = 0; i < weaponManager->m_numStageObjects; i++) {
@@ -1000,7 +1000,7 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
         Vec3f warpPos = (Vec3f){pos->m_x, pos->m_y, 0.0};
         item->warp(&warpPos);
         item->setVanishMode(false);
-        item->m_moduleAccesser->getCameraModule()->setEnableCamera(0, -1);
+        item->m_moduleAccesser->getCameraModule().setEnableCamera(0, -1);
         if (startStatus > 1) {
             item->changeStatus(startStatus);
         }
@@ -1050,7 +1050,7 @@ void stSlipspace::putEnemy(int enemyId, int difficulty, int startStatus, Vec2f* 
 
     int id = enemyManager->createEnemy(&create);
     Enemy* enemy = enemyManager->getEnemyPtrFromId(id);
-    enemy->m_moduleAccesser->getCameraModule()->setEnableCamera(0, -1);
+    enemy->m_moduleAccesser->getCameraModule().setEnableCamera(0, -1);
 
     // Increase enemy count
     _enemyCount++;
@@ -1093,8 +1093,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
         {
             emManager* enemyManager = emManager::getInstance();
             Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
-            soDamageModule* damageModule = enemy->m_moduleAccesser->getDamageModule();
-            soDamageAttackerInfo* attackerInfo = damageModule->getAttackerInfo();
+            soDamageAttackerInfo* attackerInfo = enemy->m_moduleAccesser->getDamageModule().getAttackerInfo();
             int playerEntryId = g_ftManager->getEntryIdFromTaskId(attackerInfo->m_indirectTaskId, (int*)0x0);
             if (playerEntryId != -1)
             {

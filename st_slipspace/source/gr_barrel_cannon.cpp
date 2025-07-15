@@ -327,8 +327,8 @@ void grAdventureBarrelCannon::update(float frameDelta)
             int entryId = g_ftManager->getEntryIdFromIndex(i);
             if (g_ftManager->isFighterActivate(entryId, -1)) {
                 Fighter* fighter = g_ftManager->getFighter(entryId, -1);
-                if (fighter->m_moduleAccesser->getStatusModule()->getStatusKind() == 192 && fighter->m_moduleAccesser->getWorkManageModule()->getInt(0x20000000) != 0) {
-                    fighter->m_moduleAccesser->getCollisionHitModule()->setWhole(0, 0);
+                if (fighter->m_moduleAccesser->getStatusModule().getStatusKind() == 192 && fighter->m_moduleAccesser->getWorkManageModule().getInt(0x20000000) != 0) {
+                    fighter->m_moduleAccesser->getCollisionHitModule().setWhole(0, 0);
                 }
             }
         }
