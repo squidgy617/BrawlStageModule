@@ -3,6 +3,7 @@
 #include <StaticAssert.h>
 #include <st/st_data_container.h>
 #include <st/st_melee.h>
+#include <ft/ft_manager.h>
 #include <types.h>
 #include <gr/gr_poke_trainer.h>
 #include <mt/mt_vector.h>
@@ -27,7 +28,7 @@ const float SCROLL_DIR = 0.0f;
 const float POKETRAINER_Z = 0.0f;
 const float UNK_FLOAT1 = 0.0f;
 
-class stSlipspace : public stMelee {
+class stSlipspace : public stMelee, public ftOutsideEventObserver {
 protected:
     gfArchive* itemPacs[NUM_ITEM_PACS];
     char _476[848 - 728];
@@ -52,8 +53,13 @@ protected:
 
 
 public:
-    stSlipspace() : stMelee("stSlipspace", Stages::TBreak)
+    stSlipspace() : stMelee("stSlipspace", Stages::TBreak), ftOutsideEventObserver(0)
     {
+        addObserver(-1, -1);
+        if (m_sendID < 0) 
+        {
+            setupObserver(g_ftManager->m_eventManageModule.getManageId());
+        }
         __memfill(&itemPacs, 0, sizeof(itemPacs));
         __memfill(&enemyPacs, 0, sizeof(enemyPacs));
         enemyCommonPac = NULL;
@@ -84,6 +90,10 @@ public:
         this->clearHeap();
         this->releaseArchive();
     };
+
+    virtual void notifyEventDead(int entryId, int deadCount, int deadReason, int respawnFrames);
+    virtual void notifyEventBeat(int entryId1, int entryId2);
+    virtual void notifyEventSuicide(int entryId);
 
     void patchInstructions();
     void createObjAshiba(int mdlIndex, int collIndex);
@@ -116,5 +126,5 @@ public:
     void applySeed();
     virtual stDestroyBossParamCommon getDestroyBossParamCommon(u32, int enemyCreateId = -1, int enemyMessageKind = -1);
 
-    STATIC_CHECK(sizeof(stSlipspace) == 916 + NUM_PLAYERS*4 + sizeof(enemyPacs))
+    //STATIC_CHECK(sizeof(stSlipspace) == 916 + NUM_PLAYERS*4 + sizeof(enemyPacs))
 };

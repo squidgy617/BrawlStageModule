@@ -30,6 +30,7 @@ static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<
 int SPAWNTIMER = 60; // Minimum time before spawner can be used again
 int MAXSPAWNS = 5;
 int MAXQUEUED = 5;
+int KO_PLAYERINDEX = 6; // We store KOs on player index 6 (player 7) which is a multi-man slot, not a real player
 
 int _enemyCount = 0; // Number of enemies currently spawned
 int _spawnerCount = 0; // Number of spawners in stage
@@ -1068,6 +1069,60 @@ GXColor stSlipspace::getFinalTechniqColor()
     return (GXColor){0x14000496};
 }
 
+void stSlipspace::notifyEventBeat(int entryId1, int entryId2)
+{
+    if (_gameMode == Game_Rule_Time)
+    {
+        // If a player is defeated, copy their KOs to their killer
+        ftEntry* defeatedPlayer = g_ftManager->m_entryManager->getEntity(entryId2);
+        if (defeatedPlayer != NULL && defeatedPlayer->m_playerNo < 4 && defeatedPlayer->m_owner != NULL)
+        {
+            int defeatedBeatCount = defeatedPlayer->m_owner->getBeatCount(KO_PLAYERINDEX);
+            // If the player was defeated by another player, copy their KOs to the other player
+            ftEntry* killerPlayer = g_ftManager->m_entryManager->getEntity(entryId1);
+            if (killerPlayer != NULL && killerPlayer->m_playerNo < 4 && killerPlayer->m_owner != NULL)
+            {
+                int killerBeatCount = killerPlayer->m_owner->getBeatCount(KO_PLAYERINDEX);
+                // Give defeated player kills to killer
+                killerPlayer->m_owner->setBeatCount(KO_PLAYERINDEX, killerBeatCount + defeatedBeatCount);
+                // Neutralize the player beat counts so killing players doesn't give points
+                defeatedPlayer->m_owner->setBeatCount(killerPlayer->m_playerNo, 0);
+                killerPlayer->m_owner->setBeatCount(defeatedPlayer->m_playerNo, 0);
+            }
+        }
+    }
+}
+
+void stSlipspace::notifyEventDead(int entryId, int deadCount, int deadReason, int respawnFrames)
+{
+    if (_gameMode == Game_Rule_Time)
+    {
+        // If a player is dead, erase their KOs
+        ftEntry* defeatedPlayer = g_ftManager->m_entryManager->getEntity(entryId);
+        if (defeatedPlayer != NULL && defeatedPlayer->m_playerNo < 4 && defeatedPlayer->m_owner != NULL)
+        {
+            // Set beat count to 0
+            defeatedPlayer->m_owner->setBeatCount(KO_PLAYERINDEX, 0);
+            // Set dead count to 0 so player doesn't lose an extra KO
+            defeatedPlayer->m_owner->setDeadCount(0);
+        }
+    }
+}
+
+void stSlipspace::notifyEventSuicide(int entryId)
+{
+    if (_gameMode == Game_Rule_Time)
+    {
+        // If a player SDs, set suicide count to 0 so it matches death count
+        ftEntry* defeatedPlayer = g_ftManager->m_entryManager->getEntity(entryId);
+        if (defeatedPlayer != NULL && defeatedPlayer->m_playerNo < 4 && defeatedPlayer->m_owner != NULL)
+        {
+            // For some reason, if there aren't at least as many deaths as SDs, it shows -99999 on the result screen, so this fixes that
+            defeatedPlayer->m_owner->setSuicideCount(0);
+        }
+    }
+}
+
 stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int enemyCreateId, int enemyMessageKind)
 {   
     // TODO: When enemy is defeated, check if any other instances of the enemy exist, and if not, unload their resources (if we do external loading)
@@ -1104,8 +1159,8 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
                     ftOwner* playerOwner = playerEntry->m_owner;
                     if (playerOwner != NULL)
                     {
-                        int currentBeatCount = playerOwner->getBeatCount(6); // We store KOs on player index 6 (player 7) which is a multi-man slot, not a real player
-                        playerOwner->setBeatCount(6, currentBeatCount + 1); // Increment KO count by 1
+                        int currentBeatCount = playerOwner->getBeatCount(KO_PLAYERINDEX);
+                        playerOwner->setBeatCount(KO_PLAYERINDEX, currentBeatCount + 1); // Increment KO count by 1
                     }
                 }
             }
