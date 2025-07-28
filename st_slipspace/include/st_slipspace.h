@@ -28,6 +28,14 @@ const float SCROLL_DIR = 0.0f;
 const float POKETRAINER_Z = 0.0f;
 const float UNK_FLOAT1 = 0.0f;
 
+struct EnemyDrops
+{
+    int gold;
+    int silver;
+    int bronze;
+    int bills;
+};
+
 class stSlipspace : public stMelee, public ftOutsideEventObserver {
 protected:
     gfArchive* itemPacs[NUM_ITEM_PACS];
@@ -124,6 +132,7 @@ public:
     void applyNameCheatsStart();
     void applyNameCheats();
     void applySeed();
+    EnemyDrops calcCoins(int points);
     virtual stDestroyBossParamCommon getDestroyBossParamCommon(u32, int enemyCreateId = -1, int enemyMessageKind = -1);
 
     //STATIC_CHECK(sizeof(stSlipspace) == 916 + NUM_PLAYERS*4 + sizeof(enemyPacs))

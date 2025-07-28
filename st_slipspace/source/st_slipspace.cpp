@@ -51,6 +51,7 @@ struct EnemyType
 {
     int enemyId;
     int startStatus;
+    int points;
 };
 
 EnemySpawner _spawners[100]; // List of spawners in stage
@@ -109,6 +110,7 @@ void stSlipspace::update(float deltaFrame)
                 nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
                 _enemyTypes[_enemyTypeCount].enemyId = resNodeData->m_scale.m_x;
                 _enemyTypes[_enemyTypeCount].startStatus = resNodeData->m_scale.m_z;
+                _enemyTypes[_enemyTypeCount].points = resNodeData->m_translation.m_x;
                 _enemyTypeCount++;
             }
             // Initialize _spawnQueue
@@ -1123,6 +1125,56 @@ void stSlipspace::notifyEventSuicide(int entryId)
     }
 }
 
+// EnemyDrops stSlipspace::calcCoins(int points)
+// {
+//     EnemyDrops drops = {};
+
+//     drops.bills = points / 10;
+//     points %= 10;
+
+//     drops.gold = points / 6;
+//     points %= 6;
+    
+//     drops.silver = points / 3;
+//     points %= 3;
+    
+//     drops.bronze = points;
+
+//     return drops;
+// }
+
+EnemyDrops stSlipspace::calcCoins(int points)
+{
+    EnemyDrops drops = {};
+
+    int remaining = points / 10;
+
+    int maxBills = remaining / 10;
+    if (maxBills > 0)
+    {
+        drops.bills = randi(maxBills);
+        remaining -= drops.bills * 10;
+    }
+
+    int maxGold = remaining / 6;
+    if (maxGold > 0)
+    {
+        drops.gold = randi(maxGold);
+        remaining -= drops.gold * 6;
+    }
+
+    int maxSilver = remaining / 3;
+    if (maxSilver > 0)
+    {
+        drops.silver = randi(maxSilver);
+        remaining -= drops.silver * 3;
+    }
+
+    drops.bronze = remaining;
+
+    return drops;
+}
+
 stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int enemyCreateId, int enemyMessageKind)
 {   
     // TODO: When enemy is defeated, check if any other instances of the enemy exist, and if not, unload their resources (if we do external loading)
@@ -1135,13 +1187,37 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
             itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenId)(Item_Gen_Basic));
             itManager::ItemSwitch itemSwitch(true);
             ItemKind itemKind = itemManager->getLotOneItemKind(&sheetKind, (itGenId)(Item_Gen_Basic), &itemSwitch, false);
-            BaseItem* item = itemManager->createItem(Item_Coin, itemKind.m_variation);
+            // TODO: Actually use enemy points value to calculate, instead of hardcoded 200
+            EnemyDrops coinDrops = calcCoins(200);
         
             emManager* enemyManager = emManager::getInstance();
             Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
             Vec3f pos = soExternalValueAccesser::getPos(enemy);
             
-            item->warp(&pos);
+            // TODO: Add variance to spawn positions so they are slightly offset from exact enemy position
+            for(int i = 0; i < coinDrops.bills; i++)
+            {
+                BaseItem* item = itemManager->createItem(Item_Bill, itemKind.m_variation);
+                item->warp(&pos);
+            }
+
+            for(int i = 0; i < coinDrops.gold; i++)
+            {
+                BaseItem* item = itemManager->createItem(Item_Coin, 0);
+                item->warp(&pos);
+            }
+
+            for(int i = 0; i < coinDrops.silver; i++)
+            {
+                BaseItem* item = itemManager->createItem(Item_Coin, 1);
+                item->warp(&pos);
+            }
+
+            for(int i = 0; i < coinDrops.bronze; i++)
+            {
+                BaseItem* item = itemManager->createItem(Item_Coin, 2);
+                item->warp(&pos);
+            }
         }
         // If score mode, enemies give points
         else if (_gameMode == Game_Rule_Time)
