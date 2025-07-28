@@ -47,16 +47,10 @@ struct EnemySpawner
     int motionPathIndex;
 };
 
-struct EnemyType
-{
-    int enemyId;
-    int startStatus;
-    int points;
-};
-
 EnemySpawner _spawners[100]; // List of spawners in stage
 int _spawnQueue[100]; // Holds queued spawns
 EnemyType _enemyTypes[100]; // List of enemy types in stage - TODO: might end up being a list of objects instead of ints if we want to store more than just the ID
+SlipspaceEnemy _spawnedEnemyTypes[100]; // List of currently spawned enemies in the stage
 GameRule _gameMode; // Selected game mode
 
 stSlipspace* stSlipspace::create()
@@ -118,6 +112,12 @@ void stSlipspace::update(float deltaFrame)
             {
                 _spawnQueue[i] = -1;
             }
+            // Initialize spawned enemies
+            for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
+            {
+                _spawnedEnemyTypes[i].enemyType.enemyId = -1;
+                _spawnedEnemyTypes[i].enemyCreateId = -1;
+            }
             this->isEnemiesInitialized = true;
         }
     }
@@ -168,7 +168,7 @@ void stSlipspace::update(float deltaFrame)
                 // Find enemy list entry
                 EnemyType enemyToSpawn = _enemyTypes[_spawnQueue[0]];
                 // Spawn enemy
-                this->putEnemy(enemyToSpawn.enemyId, _spawners[si].difficulty, enemyToSpawn.startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
+                this->putEnemy(enemyToSpawn, _spawners[si].difficulty, enemyToSpawn.startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
                 // Pop from queue
                 for (int j = 0; j < MAXQUEUED; j++)
                 {
@@ -1018,7 +1018,7 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
     }
 }
 
-void stSlipspace::putEnemy(int enemyId, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr) {
+void stSlipspace::putEnemy(EnemyType enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr) {
     // TODO: MotionPath index investigate if can make every enemy follow it?
 
     emManager* enemyManager = emManager::getInstance();
@@ -1026,7 +1026,7 @@ void stSlipspace::putEnemy(int enemyId, int difficulty, int startStatus, Vec2f* 
     emCreate create;
     create.m_teamNo = 10000;
     create.m_difficulty = difficulty % 15;
-    create.m_enemyKind = (EnemyKind)enemyId;
+    create.m_enemyKind = (EnemyKind)enemyToSpawn.enemyId;
     create.m_startStatusKind = startStatus;
 
     create.m_startPos = (Vec3f){pos->m_x, pos->m_y, 0.0};
@@ -1057,6 +1057,17 @@ void stSlipspace::putEnemy(int enemyId, int difficulty, int startStatus, Vec2f* 
 
     // Increase enemy count
     _enemyCount++;
+
+    // Add to spawned enemies list
+    for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
+    {
+        if (_spawnedEnemyTypes[i].enemyCreateId == -1)
+        {
+            _spawnedEnemyTypes[i].enemyType = enemyToSpawn;
+            _spawnedEnemyTypes[i].enemyCreateId = id;
+            break;
+        }
+    }
 
     // TODO: Change death to use similar explosion as fighter ko
     // TODO: Fix death so that 2p doesn't get hit by it
@@ -1175,9 +1186,25 @@ EnemyDrops stSlipspace::calcCoins(int points)
     return drops;
 }
 
+SlipspaceEnemy stSlipspace::getSpawnedEnemy(int enemyCreateId)
+{
+    SlipspaceEnemy enemy = {};
+    enemy.enemyCreateId = -1;
+    for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
+    {
+        if (_spawnedEnemyTypes[i].enemyCreateId == enemyCreateId)
+        {
+            enemy = _spawnedEnemyTypes[i];
+            break;
+        }
+    }
+    return enemy;
+}
+
 stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int enemyCreateId, int enemyMessageKind)
 {   
     // TODO: When enemy is defeated, check if any other instances of the enemy exist, and if not, unload their resources (if we do external loading)
+    SlipspaceEnemy spawnedEnemy = getSpawnedEnemy(enemyCreateId);
     if (enemyMessageKind == Enemy::Message_Damage)
     {
         // If coin mode, enemies drop coins 
@@ -1187,8 +1214,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
             itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenId)(Item_Gen_Basic));
             itManager::ItemSwitch itemSwitch(true);
             ItemKind itemKind = itemManager->getLotOneItemKind(&sheetKind, (itGenId)(Item_Gen_Basic), &itemSwitch, false);
-            // TODO: Actually use enemy points value to calculate, instead of hardcoded 200
-            EnemyDrops coinDrops = calcCoins(200);
+            EnemyDrops coinDrops = calcCoins(spawnedEnemy.enemyType.points);
         
             emManager* enemyManager = emManager::getInstance();
             Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
@@ -1247,6 +1273,13 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
     {
         // Reduce enemy count
         _enemyCount--;
+
+        // Remove from spawned enemy list
+        if (spawnedEnemy.enemyCreateId > -1)
+        {
+            spawnedEnemy.enemyType.enemyId = -1;
+            spawnedEnemy.enemyCreateId = -1;
+        }
     }
 
     return stDestroyBossParamCommon();
