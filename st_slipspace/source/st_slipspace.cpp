@@ -1201,6 +1201,24 @@ SlipspaceEnemy stSlipspace::getSpawnedEnemy(int enemyCreateId)
     return enemy;
 }
 
+Vec3f* getRandomOffset(Vec3f* pos)
+{
+    int xoffset = 10;
+    int yoffset = 10;
+    Vec3f basePos = {};
+    Vec3f* newPos = &basePos;
+    newPos->m_y = pos->m_y + (randf() * yoffset) + 2; // Offset by 2 to help prevent coins from spawning under platforms
+    // Get whether we should use negative value for x or not
+    int multiplier = 1;
+    if (randi(2) == 1)
+    {
+        multiplier = -1;
+    }
+    newPos->m_x = pos->m_x + (randf() * (multiplier * xoffset));
+    newPos->m_z = pos->m_z;
+    return newPos;
+}
+
 stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int enemyCreateId, int enemyMessageKind)
 {   
     // TODO: When enemy is defeated, check if any other instances of the enemy exist, and if not, unload their resources (if we do external loading)
@@ -1224,25 +1242,25 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
             for(int i = 0; i < coinDrops.bills; i++)
             {
                 BaseItem* item = itemManager->createItem(Item_Bill, itemKind.m_variation);
-                item->warp(&pos);
+                item->warp(getRandomOffset(&pos));
             }
 
             for(int i = 0; i < coinDrops.gold; i++)
             {
                 BaseItem* item = itemManager->createItem(Item_Coin, 0);
-                item->warp(&pos);
+                item->warp(getRandomOffset(&pos));
             }
 
             for(int i = 0; i < coinDrops.silver; i++)
             {
                 BaseItem* item = itemManager->createItem(Item_Coin, 1);
-                item->warp(&pos);
+                item->warp(getRandomOffset(&pos));
             }
 
             for(int i = 0; i < coinDrops.bronze; i++)
             {
                 BaseItem* item = itemManager->createItem(Item_Coin, 2);
-                item->warp(&pos);
+                item->warp(getRandomOffset(&pos));
             }
         }
         // If score mode, enemies give points
