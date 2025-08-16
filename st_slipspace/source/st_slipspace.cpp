@@ -1279,8 +1279,9 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
                     ftOwner* playerOwner = playerEntry->m_owner;
                     if (playerOwner != NULL)
                     {
+                        int enemyBeats = ((spawnedEnemy.enemyType.points / 100) / 2);
                         int currentBeatCount = playerOwner->getBeatCount(KO_PLAYERINDEX);
-                        playerOwner->setBeatCount(KO_PLAYERINDEX, currentBeatCount + 1); // Increment KO count by 1
+                        playerOwner->setBeatCount(KO_PLAYERINDEX, currentBeatCount + enemyBeats); // Increment KO count by 1
                     }
                 }
             }
