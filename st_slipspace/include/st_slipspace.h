@@ -33,6 +33,7 @@ struct EnemyType
     int enemyId;
     int startStatus;
     int points;
+    int size;
 };
 
 struct EnemyDrops

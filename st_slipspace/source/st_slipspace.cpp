@@ -105,6 +105,7 @@ void stSlipspace::update(float deltaFrame)
                 _enemyTypes[_enemyTypeCount].enemyId = resNodeData->m_scale.m_x;
                 _enemyTypes[_enemyTypeCount].startStatus = resNodeData->m_scale.m_z;
                 _enemyTypes[_enemyTypeCount].points = resNodeData->m_translation.m_x;
+                _enemyTypes[_enemyTypeCount].size = resNodeData->m_translation.m_y;
                 _enemyTypeCount++;
             }
             // Initialize _spawnQueue
@@ -162,11 +163,12 @@ void stSlipspace::update(float deltaFrame)
             int si = randomizedSpawnerIndexes[i];
             // Only spawn enemies from available spawners
             // TODO: Check not only timer, but also memory and whether or not the enemy resources are loaded (if we do external loading)
-            if (_spawners[si].timer <= 0)
+            EnemyType enemyToSpawn = _enemyTypes[_spawnQueue[0]];
+            int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
+            if (_spawners[si].timer <= 0 && enemyToSpawn.size < availableMemory)
             {
                 //OSReport("Spawning enemy at spawner: %d \n", si);
                 // Find enemy list entry
-                EnemyType enemyToSpawn = _enemyTypes[_spawnQueue[0]];
                 // Spawn enemy
                 this->putEnemy(enemyToSpawn, _spawners[si].difficulty, enemyToSpawn.startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
                 // Pop from queue
@@ -1020,7 +1022,7 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
 
 void stSlipspace::putEnemy(EnemyType enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr) {
     // TODO: MotionPath index investigate if can make every enemy follow it?
-
+    int startingMem = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
     emManager* enemyManager = emManager::getInstance();
 
     emCreate create;
@@ -1068,6 +1070,11 @@ void stSlipspace::putEnemy(EnemyType enemyToSpawn, int difficulty, int startStat
             break;
         }
     }
+
+    int enemyMem = startingMem - gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
+
+    // TODO: Remove this stuff when we no longer need it for debugging
+    OSReport("Enemy ID %d uses %d mem \n", enemyToSpawn.enemyId, enemyMem);
 
     // TODO: Change death to use similar explosion as fighter ko
     // TODO: Fix death so that 2p doesn't get hit by it
