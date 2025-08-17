@@ -1120,6 +1120,24 @@ void stSlipspace::notifyEventDead(int entryId, int deadCount, int deadReason, in
             defeatedPlayer->m_owner->setDeadCount(0);
         }
     }
+    // TODO: Killing player steals your coins on KO?
+    else if (_gameMode == Game_Rule_Coin)
+    {
+        // Get KOed fighter
+        // Fighter* fighter = g_ftManager->getFighter(entryId, -1);
+        // Vec3f pos = soExternalValueAccesser::getPos(fighter);
+        // EnemyDrops coinDrops = calcCoins(10);
+        // dropCoins(pos, coinDrops);
+
+        // If a player is dead, erase their coins
+        ftEntry* defeatedPlayer = g_ftManager->m_entryManager->getEntity(entryId);
+        if (defeatedPlayer != NULL && defeatedPlayer->m_playerNo < 4 && defeatedPlayer->m_owner != NULL)
+        {
+            int coins = defeatedPlayer->m_owner->getCoin();
+            // Subtract all coins from player
+            defeatedPlayer->m_owner->addCoin(-1 * coins);
+        }
+    }
 }
 
 void stSlipspace::notifyEventSuicide(int entryId)
@@ -1154,11 +1172,11 @@ void stSlipspace::notifyEventSuicide(int entryId)
 //     return drops;
 // }
 
-EnemyDrops stSlipspace::calcCoins(int points)
+EnemyDrops stSlipspace::calcCoins(int coins)
 {
     EnemyDrops drops = {};
 
-    int remaining = points / 10;
+    int remaining = coins;
 
     int maxBills = remaining / 10;
     if (maxBills > 0)
@@ -1219,6 +1237,38 @@ Vec3f* getRandomOffset(Vec3f* pos)
     return newPos;
 }
 
+void stSlipspace::dropCoins(Vec3f position, EnemyDrops coinDrops)
+{
+    itManager* itemManager = itManager::getInstance();
+    itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenId)(Item_Gen_Basic));
+    itManager::ItemSwitch itemSwitch(true);
+    ItemKind itemKind = itemManager->getLotOneItemKind(&sheetKind, (itGenId)(Item_Gen_Basic), &itemSwitch, false);
+
+    for(int i = 0; i < coinDrops.bills; i++)
+    {
+        BaseItem* item = itemManager->createItem(Item_Bill, itemKind.m_variation);
+        item->warp(getRandomOffset(&position));
+    }
+
+    for(int i = 0; i < coinDrops.gold; i++)
+    {
+        BaseItem* item = itemManager->createItem(Item_Coin, 0);
+        item->warp(getRandomOffset(&position));
+    }
+
+    for(int i = 0; i < coinDrops.silver; i++)
+    {
+        BaseItem* item = itemManager->createItem(Item_Coin, 1);
+        item->warp(getRandomOffset(&position));
+    }
+
+    for(int i = 0; i < coinDrops.bronze; i++)
+    {
+        BaseItem* item = itemManager->createItem(Item_Coin, 2);
+        item->warp(getRandomOffset(&position));
+    }
+}
+
 stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int enemyCreateId, int enemyMessageKind)
 {   
     // TODO: When enemy is defeated, check if any other instances of the enemy exist, and if not, unload their resources (if we do external loading)
@@ -1228,40 +1278,13 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
         // If coin mode, enemies drop coins 
         if (_gameMode == Game_Rule_Coin)
         {
-            itManager* itemManager = itManager::getInstance();
-            itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenId)(Item_Gen_Basic));
-            itManager::ItemSwitch itemSwitch(true);
-            ItemKind itemKind = itemManager->getLotOneItemKind(&sheetKind, (itGenId)(Item_Gen_Basic), &itemSwitch, false);
-            EnemyDrops coinDrops = calcCoins(spawnedEnemy.enemyType.points);
+            EnemyDrops coinDrops = calcCoins(spawnedEnemy.enemyType.points / 10); // Total coins are points / 10
         
             emManager* enemyManager = emManager::getInstance();
             Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
             Vec3f pos = soExternalValueAccesser::getPos(enemy);
-            
-            // TODO: Add variance to spawn positions so they are slightly offset from exact enemy position
-            for(int i = 0; i < coinDrops.bills; i++)
-            {
-                BaseItem* item = itemManager->createItem(Item_Bill, itemKind.m_variation);
-                item->warp(getRandomOffset(&pos));
-            }
 
-            for(int i = 0; i < coinDrops.gold; i++)
-            {
-                BaseItem* item = itemManager->createItem(Item_Coin, 0);
-                item->warp(getRandomOffset(&pos));
-            }
-
-            for(int i = 0; i < coinDrops.silver; i++)
-            {
-                BaseItem* item = itemManager->createItem(Item_Coin, 1);
-                item->warp(getRandomOffset(&pos));
-            }
-
-            for(int i = 0; i < coinDrops.bronze; i++)
-            {
-                BaseItem* item = itemManager->createItem(Item_Coin, 2);
-                item->warp(getRandomOffset(&pos));
-            }
+            dropCoins(pos, coinDrops);
         }
         // If score mode, enemies give points
         else if (_gameMode == Game_Rule_Time)
@@ -1269,6 +1292,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
             emManager* enemyManager = emManager::getInstance();
             Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
             soDamageAttackerInfo* attackerInfo = enemy->m_moduleAccesser->getDamageModule().getAttackerInfo();
+            // TODO: Check if there is a proper direct attacker and use that if there is one, so Goomba stomps count?
             int playerEntryId = g_ftManager->getEntryIdFromTaskId(attackerInfo->m_indirectTaskId, (int*)0x0);
             if (playerEntryId != -1)
             {

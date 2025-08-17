@@ -146,6 +146,7 @@ public:
     void applyNameCheats();
     void applySeed();
     EnemyDrops calcCoins(int points);
+    void dropCoins(Vec3f position, EnemyDrops coinDrops);
     SlipspaceEnemy getSpawnedEnemy(int enemyCreateId);
     virtual stDestroyBossParamCommon getDestroyBossParamCommon(u32, int enemyCreateId = -1, int enemyMessageKind = -1);
 
