@@ -28,7 +28,7 @@
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
 int SPAWNTIMER = 60; // Minimum time before spawner can be used again
-int MAXSPAWNS = 5;
+int MAXSPAWNS = 5; // TODO: Load max spawns/max queued from a bone in the stage pac?
 int MAXQUEUED = 5;
 int KO_PLAYERINDEX = 6; // We store KOs on player index 6 (player 7) which is a multi-man slot, not a real player
 
@@ -49,7 +49,7 @@ struct EnemySpawner
 
 EnemySpawner _spawners[100]; // List of spawners in stage
 int _spawnQueue[100]; // Holds queued spawns
-EnemyType _enemyTypes[100]; // List of enemy types in stage - TODO: might end up being a list of objects instead of ints if we want to store more than just the ID
+EnemyType _enemyTypes[100]; // List of enemy types in stage
 SlipspaceEnemy _spawnedEnemyTypes[100]; // List of currently spawned enemies in the stage
 GameRule _gameMode; // Selected game mode
 
@@ -1073,8 +1073,7 @@ void stSlipspace::putEnemy(EnemyType enemyToSpawn, int difficulty, int startStat
 
     int enemyMem = startingMem - gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
 
-    // TODO: Remove this stuff when we no longer need it for debugging
-    OSReport("Enemy ID %d uses %d mem \n", enemyToSpawn.enemyId, enemyMem);
+    OSReport("Spawned enemy ID %d. Uses %d memory. \n", enemyToSpawn.enemyId, enemyMem);
 
     // TODO: Change death to use similar explosion as fighter ko
     // TODO: Fix death so that 2p doesn't get hit by it
