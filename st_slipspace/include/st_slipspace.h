@@ -73,10 +73,20 @@ protected:
     u32 numTargetsHitPerPlayer[NUM_PLAYERS]; // 916 (Required offset for stOperatorRuleTargetBreak!)
     gfArchive* enemyPacs[NUM_ENEMY_TYPES*2];
 
+    bool cameraStopped;
+    bool cameraStoppedOut;
+    bool gameIsStarting;
+    int cameraFrames;
+    int cameraFramesOut;
 
 public:
     stSlipspace() : stMelee("stSlipspace", Stages::TBreak), ftOutsideEventObserver(0)
     {
+        cameraStopped = true;
+        cameraStoppedOut = true;
+        gameIsStarting = true;
+        cameraFrames = 0;
+        cameraFramesOut = 0;
         addObserver(-1, -1);
         if (m_sendID < 0) 
         {
@@ -103,6 +113,7 @@ public:
     virtual void createObj();
     virtual bool loading();
     virtual void update(float deltaFrame);
+    virtual void processFixCamera();
     virtual GXColor getFinalTechniqColor();
     virtual bool isBamperVector();
     virtual void getItemPac(gfArchive** brres, gfArchive** param, itKind itemID, int variantID, gfArchive** commonParam, itCustomizerInterface** customizer);
@@ -116,6 +127,11 @@ public:
     virtual void notifyEventDead(int entryId, int deadCount, int deadReason, int respawnFrames);
     virtual void notifyEventBeat(int entryId1, int entryId2);
     virtual void notifyEventSuicide(int entryId);
+    virtual void notifyEventOnDamage(int entryId, u32 hp, soDamage* damage);
+    virtual void notifyEventInfoReady();
+    virtual void moveCamera();
+    virtual void addCameraFrames(int frames);
+    virtual void getKirifudaPos(Vec3f* posData, int type);
 
     void patchInstructions();
     void createObjAshiba(int mdlIndex, int collIndex);

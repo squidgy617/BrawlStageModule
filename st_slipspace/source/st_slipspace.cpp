@@ -27,10 +27,23 @@
 
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
+struct STDTData {
+    float minCamX;
+    float maxCamX;
+    float minCamY;
+    float maxCamY;
+    int stopFramesHit;
+    int stopFramesDeath;
+    float stopKBRatio;
+    int minStop;
+    int maxStop;
+};
+
 int SPAWNTIMER = 60; // Minimum time before spawner can be used again
 int MAXSPAWNS = 5; // TODO: Load max spawns/max queued from a bone in the stage pac?
 int MAXQUEUED = 5;
 int KO_PLAYERINDEX = 6; // We store KOs on player index 6 (player 7) which is a multi-man slot, not a real player
+bool DYNAMIC_BLASTZONES = false; // Indicates whether we should use dynamic blast zones
 
 int _enemyCount = 0; // Number of enemies currently spawned
 int _spawnerCount = 0; // Number of spawners in stage
@@ -65,6 +78,28 @@ bool stSlipspace::loading()
 
 void stSlipspace::update(float deltaFrame)
 {
+    // Dynamic blast zone stuff
+    if (this->gameIsStarting) {
+        return;
+    }
+    if (this->cameraFrames > 0)
+    {
+        this->cameraFrames -= deltaFrame;
+    } else
+    {
+        this->cameraStopped = false;
+        this->cameraFrames = 0;
+    }
+    if (this->cameraFramesOut > 0)
+    {
+        this->cameraFramesOut -= deltaFrame;
+    } else
+    {
+        this->cameraStoppedOut = false;
+        this->cameraFramesOut = 0;
+    }
+    // End dynamic blast zone stuff
+
     itManager* itemManager = itManager::getInstance();
     if (!this->isItemsInitialized && itemManager->isCompItemKindArchive(Item_Hammer, 0, true)) {
         Ground* ground = this->getGround(0);
@@ -440,8 +475,19 @@ void stSlipspace::getEnemyPac(gfArchive **brres, gfArchive **param, gfArchive **
 }
 
 void stSlipspace::notifyEventInfoGo() {
+    // Dynamic blast zones
+    this->cameraStopped = false;
+    this->gameIsStarting = false;
     if (g_GameGlobal->m_modeMelee->m_meleeInitData.m_gameMode == Game_Mode_Target) {
     }
+}
+
+void stSlipspace::notifyEventInfoReady()
+{
+    // Dynamic blast zones
+    this->cameraStopped = true;
+    this->gameIsStarting = true;
+    STDTData* stageData = static_cast<STDTData*>(m_stageData);
 }
 
 
@@ -1088,6 +1134,20 @@ GXColor stSlipspace::getFinalTechniqColor()
     return (GXColor){0x14000496};
 }
 
+void stSlipspace::notifyEventOnDamage(int entryId, u32 hp, soDamage* damage)
+{
+    // Dynamic blast zones
+    this->cameraStopped = true;
+    float reaction;
+    float frames;
+    STDTData* stageData = static_cast<STDTData*>(m_stageData);
+    if (stageData != NULL && DYNAMIC_BLASTZONES == true) {
+        reaction = stageData->stopKBRatio*damage->m_reaction;
+        frames = static_cast<float>(stageData->stopFramesHit);
+        this->addCameraFrames(static_cast<int>(frames*reaction));
+    }
+}
+
 void stSlipspace::notifyEventBeat(int entryId1, int entryId2)
 {
     if (_gameMode == Game_Rule_Time)
@@ -1114,6 +1174,13 @@ void stSlipspace::notifyEventBeat(int entryId1, int entryId2)
 
 void stSlipspace::notifyEventDead(int entryId, int deadCount, int deadReason, int respawnFrames)
 {
+    // Dynamic blast zones
+    this->cameraStopped = true;
+    STDTData* stageData = static_cast<STDTData*>(m_stageData);
+    if (stageData != NULL && DYNAMIC_BLASTZONES == true) {
+        this->addCameraFrames(stageData->stopFramesDeath);
+    }
+    
     if (_gameMode == Game_Rule_Time)
     {
         // If a player is dead, erase their KOs
@@ -1333,5 +1400,132 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
 
     return stDestroyBossParamCommon();
 }
+
+// Dynamic blast zone stuff
+
+void stSlipspace::processFixCamera()
+{
+  if (DYNAMIC_BLASTZONES == false)
+  {
+    Stage::processFixCamera();
+    return;
+  }
+  
+  stPositions* psVar4;
+  
+  if (this->m_stagePositions != (stPositions *)0x0)
+  {
+    this->moveCamera();
+  }
+  Stage::processFixCamera();
+  this->updateStagePositions();
+  return;
+}
+
+void stSlipspace::moveCamera()
+{
+    STDTData* stageData = static_cast<STDTData*>(m_stageData);
+
+    gfCameraManager* cameraManager = gfCameraManager::getManager();
+    CameraController* cameraController = CameraController::getInstance();
+    int currentControllerKind = cameraController->m_currentControllerKind;
+
+    this->m_stageParam->m_iceClimbersFinalPos.m_x = this->m_stagePositions->m_centerPos.m_x;
+    // TODO, Find a way to change Pause Camera's Center
+    this->m_stageParam->m_pauseCamCenterPos.m_x = this->m_stagePositions->m_centerPos.m_x;
+    cameraController->m_stageCameraParamPaused.m_centerPos.m_x = this->m_stagePositions->m_centerPos.m_x;
+
+
+    //Camera zoom-in kill fix
+    //When doing final smashes, pausing in training or getting Tingle's effect
+    //the blastzones would center on you, permitting cheeky kills
+    if (currentControllerKind > 0x6) {
+        this->cameraStoppedOut = true;
+        this->cameraFramesOut = 30;
+        return;
+    }
+
+    //Anti-Swoop
+    //Camera snaps back and forth if you're near the edge of the screen facing the blastzone and turn around
+    //the camera movement would kill everyone on the other side of the stage
+    if (cameraManager->m_cameras[0].m_centerPos.m_z > 400.0) {
+        this->cameraStoppedOut = true;
+        this->cameraFramesOut = 30;
+        return;
+    }
+
+    if (!this->cameraStopped and !this->cameraStoppedOut) {
+        this->m_stagePositions->m_centerPos.m_x = cameraManager->m_cameras[0].m_targetPos.m_x;
+        this->m_stagePositions->m_centerPos.m_y = cameraManager->m_cameras[0].m_targetPos.m_y;
+    }
+    if (stageData != NULL) {
+        if (this->m_stagePositions->m_centerPos.m_x < stageData->minCamX)
+        {
+            this->m_stagePositions->m_centerPos.m_x = stageData->minCamX;
+        } else if (this->m_stagePositions->m_centerPos.m_x > stageData->maxCamX)
+        {
+            this->m_stagePositions->m_centerPos.m_x = stageData->maxCamX;
+        }
+        if (this->m_stagePositions->m_centerPos.m_y < stageData->minCamY)
+        {
+            this->m_stagePositions->m_centerPos.m_y = stageData->minCamY;
+        } else if (this->m_stagePositions->m_centerPos.m_y > stageData->maxCamY)
+        {
+            this->m_stagePositions->m_centerPos.m_y = stageData->maxCamY;
+        }
+    }
+    return;
+}
+
+void stSlipspace::addCameraFrames(int frames)
+{
+    if (frames == -1) {
+        return;
+    }
+    STDTData* stageData = static_cast<STDTData*>(m_stageData);
+    if (stageData != NULL) {
+        if (frames < stageData->minStop)
+        {
+            frames = stageData->minStop;
+        } else if (frames > stageData->maxStop)
+        {
+            frames = stageData->maxStop;
+        }
+    }
+    if (frames > this->cameraFrames)
+    {
+        this->cameraFrames = frames;
+    }
+}
+
+void stSlipspace::getKirifudaPos(Vec3f* posData,int type)
+{
+  posData->m_z = 0;
+  posData->m_y = 0;
+  posData->m_x = 0;
+  if (type == 5) {
+    if (this->m_stageParam == 0x0) {
+      return;
+    }
+    posData->m_x = this->m_stageParam->m_iceClimbersFinalPos.m_x;
+    posData->m_y = this->m_stageParam->m_iceClimbersFinalPos.m_y;
+    posData->m_z = this->m_stageParam->m_iceClimbersFinalPos.m_z;
+    return;
+  }
+  if (type == 6) {  //Pit's Final Smash - Palutena's position
+    gfCameraManager* cameraManager = gfCameraManager::getManager();
+    posData->m_x = cameraManager->m_cameras[0].m_targetPos.m_x;
+    posData->m_y = cameraManager->m_cameras[0].m_targetPos.m_y;
+    posData->m_z = -1700;
+    return;
+  }
+  if (this->m_stagePositions == (stPositions *)0x0) {
+    return;
+  }
+  this->m_stagePositions->getKirifudaPos(type, posData);
+  return;
+}
+
+// End dynamic blast zone stuff
 
 ST_CLASS_INFO;
