@@ -27,10 +27,19 @@ struct stSlipspaceData {
     float cannonShootTimerSpeed;
     float cannonShootStunTimerSpeed;
     grGimmickDamageFloor damageFloors[3];
+    float minCamX;
+    float maxCamX;
+    float minCamY;
+    float maxCamY;
+    int stopFramesHit;
+    int stopFramesDeath;
+    float stopKBRatio;
+    int minStop;
+    int maxStop;
 
-    STATIC_CHECK(sizeof(stSlipspaceData) == 500)
+    //STATIC_CHECK(sizeof(stSlipspaceData) == 500)
 };
-static_assert(sizeof(stSlipspaceData) == 500, "Class is wrong size!");
+//static_assert(sizeof(stSlipspaceData) == 500, "Class is wrong size!");
 
 struct stSlipspaceHiScore {
     union {

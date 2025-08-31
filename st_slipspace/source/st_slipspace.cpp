@@ -27,23 +27,11 @@
 
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
-struct STDTData {
-    float minCamX;
-    float maxCamX;
-    float minCamY;
-    float maxCamY;
-    int stopFramesHit;
-    int stopFramesDeath;
-    float stopKBRatio;
-    int minStop;
-    int maxStop;
-};
-
 int SPAWNTIMER = 60; // Minimum time before spawner can be used again
 int MAXSPAWNS = 5; // TODO: Load max spawns/max queued from a bone in the stage pac?
 int MAXQUEUED = 5;
 int KO_PLAYERINDEX = 6; // We store KOs on player index 6 (player 7) which is a multi-man slot, not a real player
-bool DYNAMIC_BLASTZONES = false; // Indicates whether we should use dynamic blast zones
+bool DYNAMIC_BLASTZONES = true; // Indicates whether we should use dynamic blast zones
 
 int _enemyCount = 0; // Number of enemies currently spawned
 int _spawnerCount = 0; // Number of spawners in stage
@@ -487,7 +475,7 @@ void stSlipspace::notifyEventInfoReady()
     // Dynamic blast zones
     this->cameraStopped = true;
     this->gameIsStarting = true;
-    STDTData* stageData = static_cast<STDTData*>(m_stageData);
+    stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
 }
 
 
@@ -1140,7 +1128,7 @@ void stSlipspace::notifyEventOnDamage(int entryId, u32 hp, soDamage* damage)
     this->cameraStopped = true;
     float reaction;
     float frames;
-    STDTData* stageData = static_cast<STDTData*>(m_stageData);
+    stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
     if (stageData != NULL && DYNAMIC_BLASTZONES == true) {
         reaction = stageData->stopKBRatio*damage->m_reaction;
         frames = static_cast<float>(stageData->stopFramesHit);
@@ -1176,7 +1164,7 @@ void stSlipspace::notifyEventDead(int entryId, int deadCount, int deadReason, in
 {
     // Dynamic blast zones
     this->cameraStopped = true;
-    STDTData* stageData = static_cast<STDTData*>(m_stageData);
+    stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
     if (stageData != NULL && DYNAMIC_BLASTZONES == true) {
         this->addCameraFrames(stageData->stopFramesDeath);
     }
@@ -1424,7 +1412,7 @@ void stSlipspace::processFixCamera()
 
 void stSlipspace::moveCamera()
 {
-    STDTData* stageData = static_cast<STDTData*>(m_stageData);
+    stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
 
     gfCameraManager* cameraManager = gfCameraManager::getManager();
     CameraController* cameraController = CameraController::getInstance();
@@ -1472,6 +1460,7 @@ void stSlipspace::moveCamera()
         averageY = averageY / playerCount;
         this->m_stagePositions->m_centerPos.m_x = averageX;
         this->m_stagePositions->m_centerPos.m_y = averageY;
+        cameraController->m_stageCameraParam.m_centerPos = this->m_stagePositions->m_centerPos;
     }
     if (stageData != NULL) {
         if (this->m_stagePositions->m_centerPos.m_x < stageData->minCamX)
@@ -1497,7 +1486,7 @@ void stSlipspace::addCameraFrames(int frames)
     if (frames == -1) {
         return;
     }
-    STDTData* stageData = static_cast<STDTData*>(m_stageData);
+    stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
     if (stageData != NULL) {
         if (frames < stageData->minStop)
         {
