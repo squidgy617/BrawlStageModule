@@ -1455,8 +1455,23 @@ void stSlipspace::moveCamera()
     }
 
     if (!this->cameraStopped and !this->cameraStoppedOut) {
-        this->m_stagePositions->m_centerPos.m_x = cameraManager->m_cameras[0].m_targetPos.m_x;
-        this->m_stagePositions->m_centerPos.m_y = cameraManager->m_cameras[0].m_targetPos.m_y;
+        // Get average position of players
+        float averageX = 0;
+        float averageY = 0;
+        int playerCount = 0;
+        for (int i = 0; i < g_ftManager->getEntryCount(); i++) 
+        {
+            int entryId = g_ftManager->getEntryIdFromIndex(i);
+            Fighter* fighter = g_ftManager->getFighter(entryId, -1);
+            Vec3f pos = soExternalValueAccesser::getPos(fighter);
+            averageX += pos.m_x;
+            averageY += pos.m_y;
+            playerCount++;
+        }
+        averageX = averageX / playerCount;
+        averageY = averageY / playerCount;
+        this->m_stagePositions->m_centerPos.m_x = averageX;
+        this->m_stagePositions->m_centerPos.m_y = averageY;
     }
     if (stageData != NULL) {
         if (this->m_stagePositions->m_centerPos.m_x < stageData->minCamX)
