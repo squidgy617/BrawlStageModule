@@ -681,3 +681,48 @@ Collision3 Hazard Team Id
 Default: -1
 	/EndDescription
 1
+
+Minimum Camera X
+Default: -12000
+	/EndDescription
+0
+
+Maximum Camera X
+Default: 12000
+	/EndDescription
+0
+
+Minimum Camera Y
+Default: -12000
+	/EndDescription
+0
+
+Maximum Camera Y
+Default: 12000
+	/EndDescription
+0
+
+Stop Frames On Hit
+Default: 15
+	/EndDescription
+1
+
+Stop Frames On Death
+Default: 120
+	/EndDescription
+1
+
+Stop Knockback Ratio
+Default: 0.04
+	/EndDescription
+0
+
+Minimum Stop
+Default: 15
+	/EndDescription
+1
+
+Maximum Stop
+Default: 180
+	/EndDescription
+1
