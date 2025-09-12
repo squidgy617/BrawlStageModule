@@ -36,6 +36,9 @@ struct stSlipspaceData {
     float stopKBRatio;
     int minStop;
     int maxStop;
+    int maxSpawns;
+    int spawnTimer;
+    bool dynamicBlastZones;
 
     //STATIC_CHECK(sizeof(stSlipspaceData) == 500)
 };

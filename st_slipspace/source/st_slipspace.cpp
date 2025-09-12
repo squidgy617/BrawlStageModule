@@ -27,11 +27,7 @@
 
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
-int SPAWNTIMER = 60; // Minimum time before spawner can be used again
-int MAXSPAWNS = 5; // TODO: Load max spawns/max queued from a bone in the stage pac?
-int MAXQUEUED = 5;
 int KO_PLAYERINDEX = 6; // We store KOs on player index 6 (player 7) which is a multi-man slot, not a real player
-bool DYNAMIC_BLASTZONES = true; // Indicates whether we should use dynamic blast zones
 
 int _enemyCount = 0; // Number of enemies currently spawned
 int _spawnerCount = 0; // Number of spawners in stage
@@ -87,6 +83,8 @@ void stSlipspace::update(float deltaFrame)
         this->cameraFramesOut = 0;
     }
     // End dynamic blast zone stuff
+
+    stSlipspaceData* stageData = static_cast<stSlipspaceData*>(this->m_stageData);
 
     itManager* itemManager = itManager::getInstance();
     if (!this->isItemsInitialized && itemManager->isCompItemKindArchive(Item_Hammer, 0, true)) {
@@ -181,7 +179,7 @@ void stSlipspace::update(float deltaFrame)
         }
 
         // Iterate through spawners and spawn enemies
-        for (int i = 0; i < _spawnerCount && _enemyCount < MAXSPAWNS && _spawnQueue[0] > -1; i++)
+        for (int i = 0; i < _spawnerCount && _enemyCount < stageData->maxSpawns && _spawnQueue[0] > -1; i++)
         {
             EnemyType enemyToSpawn = _enemyTypes[_spawnQueue[0]];
             // If enemy assets are not yet loaded and there is enough space to load them, start loading them
@@ -218,9 +216,9 @@ void stSlipspace::update(float deltaFrame)
                 // Spawn enemy
                 this->putEnemy(enemyToSpawn, _spawners[si].difficulty, enemyToSpawn.startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
                 // Pop from queue
-                for (int j = 0; j < MAXQUEUED; j++)
+                for (int j = 0; j < stageData->maxSpawns; j++)
                 {
-                    if (j == MAXQUEUED - 1)
+                    if (j == stageData->maxSpawns - 1)
                     {
                         _spawnQueue[j] = -1;
                         break;
@@ -228,12 +226,12 @@ void stSlipspace::update(float deltaFrame)
                     _spawnQueue[j] = _spawnQueue[j + 1];
                 }
                 // Reset timer
-                _spawners[si].timer = SPAWNTIMER;
+                _spawners[si].timer = stageData->spawnTimer;
             }
         }
 
         // Queue spawns if there's room
-        for (int i = 0; i < MAXQUEUED; i++)
+        for (int i = 0; i < stageData->maxSpawns; i++)
         {
             if (_spawnQueue[i] == -1)
             {
@@ -1153,7 +1151,7 @@ void stSlipspace::notifyEventOnDamage(int entryId, u32 hp, soDamage* damage)
     float reaction;
     float frames;
     stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
-    if (stageData != NULL && DYNAMIC_BLASTZONES == true) {
+    if (stageData != NULL && stageData->dynamicBlastZones == true) {
         reaction = stageData->stopKBRatio*damage->m_reaction;
         frames = static_cast<float>(stageData->stopFramesHit);
         this->addCameraFrames(static_cast<int>(frames*reaction));
@@ -1189,7 +1187,7 @@ void stSlipspace::notifyEventDead(int entryId, int deadCount, int deadReason, in
     // Dynamic blast zones
     this->cameraStopped = true;
     stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
-    if (stageData != NULL && DYNAMIC_BLASTZONES == true) {
+    if (stageData != NULL && stageData->dynamicBlastZones == true) {
         this->addCameraFrames(stageData->stopFramesDeath);
     }
     
@@ -1426,7 +1424,8 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
 
 void stSlipspace::processFixCamera()
 {
-  if (DYNAMIC_BLASTZONES == false)
+  stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
+  if (stageData->dynamicBlastZones == false)
   {
     Stage::processFixCamera();
     return;

@@ -726,3 +726,18 @@ Maximum Stop
 Default: 180
 	/EndDescription
 1
+
+Maximum Enemies
+Default: 5
+	/EndDescription
+1
+
+Spawn Delay
+Default: 60
+	/EndDescription
+1
+
+dynamicBlastZones, _, _, _
+Default: true, false, false, false
+	/EndDescription
+6
