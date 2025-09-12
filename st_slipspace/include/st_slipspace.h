@@ -31,6 +31,7 @@ const float UNK_FLOAT1 = 0.0f;
 struct EnemyType
 {
     int enemyId;
+    int difficulty;
     int startStatus;
     int points;
     int size;

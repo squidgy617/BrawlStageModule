@@ -36,8 +36,6 @@ int _enemyTypeCount = 0; // Number of different types of enemies that can spawn
 struct EnemySpawner
 {
     int timer;
-    int enemyId; // TODO: Enemy ID can be replaced with something else probably? Or keep it as a way to force specific spawners to always spawn specific enemies?
-    int difficulty; // TODO: Should difficulty be tied to spawner or enemy?
     int startStatus;
     int facingDirection;
     Vec2f pos;
@@ -109,8 +107,6 @@ void stSlipspace::update(float deltaFrame)
             u32 endIndex = ground->getNodeIndex(0, "End");
             for (int i = itemsIndex + 1; i < endIndex; i++) {
                 nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-                _spawners[_spawnerCount].enemyId = resNodeData->m_scale.m_x;
-                _spawners[_spawnerCount].difficulty = resNodeData->m_scale.m_y;
                 _spawners[_spawnerCount].startStatus = resNodeData->m_scale.m_z;
                 _spawners[_spawnerCount].pos = resNodeData->m_translation.m_xy;
                 _spawners[_spawnerCount].motionPathIndex = resNodeData->m_translation.m_z;
@@ -124,6 +120,7 @@ void stSlipspace::update(float deltaFrame)
             {
                 nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
                 _enemyTypes[_enemyTypeCount].enemyId = resNodeData->m_scale.m_x;
+                _enemyTypes[_enemyTypeCount].difficulty = resNodeData->m_scale.m_y;
                 _enemyTypes[_enemyTypeCount].startStatus = resNodeData->m_scale.m_z;
                 _enemyTypes[_enemyTypeCount].points = resNodeData->m_translation.m_x;
                 _enemyTypes[_enemyTypeCount].size = resNodeData->m_translation.m_y;
@@ -214,7 +211,7 @@ void stSlipspace::update(float deltaFrame)
                 //OSReport("Spawning enemy at spawner: %d \n", si);
                 // Find enemy list entry
                 // Spawn enemy
-                this->putEnemy(enemyToSpawn, _spawners[si].difficulty, enemyToSpawn.startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
+                this->putEnemy(enemyToSpawn, enemyToSpawn.difficulty, enemyToSpawn.startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
                 // Pop from queue
                 for (int j = 0; j < stageData->maxSpawns; j++)
                 {

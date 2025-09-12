@@ -323,6 +323,20 @@ sora_enemy.rel file index = 301
 
 **Scale Z** - Starting status/action
 
+**Translation X** - Points
+
+**Translation Y** - Instance Memory
+
+**Translation Z** - Resource Memory
+
+**Translation Z** - Motion Path ModelData Index (node to follow must be called "MoveNode")
+
+## Spawner
+
+EnmCommon file index = 300
+
+sora_enemy.rel file index = 301
+
 **Rotation Z** - Starting facing direction
 
 **Translation X,Y** - Position
