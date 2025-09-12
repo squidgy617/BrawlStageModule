@@ -34,6 +34,9 @@ struct EnemyType
     int startStatus;
     int points;
     int size;
+    int assetSize;
+    bool loading;
+    int resourceMemory;
 };
 
 struct EnemyDrops
