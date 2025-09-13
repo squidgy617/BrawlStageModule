@@ -37,6 +37,7 @@ struct EnemyType
     int size;
     int assetSize;
     bool loading;
+    bool loaded;
     int resourceMemory;
 };
 

@@ -156,6 +156,8 @@ void stSlipspace::update(float deltaFrame)
             }
         }
 
+        // TODO: Load enemy resources before looping through spawners, so they're ready as soon as a spawner comes into view
+
         // Shuffle spawners
         int randomizedSpawnerIndexes[100];
         // Initialize random spawner index list
@@ -164,14 +166,25 @@ void stSlipspace::update(float deltaFrame)
             randomizedSpawnerIndexes[i] = 0;
         }
         // Populate randomized queue in order
+        int availableSpawnerCount = 0;
+        Rect2D blastZone;
+        this->m_stagePositions->getDeadRange(&blastZone);
+        Vec3f center = this->m_stagePositions->m_centerPos;
         for (int i = 0; i < _spawnerCount; i++)
         {
-            randomizedSpawnerIndexes[i] = i;
+            // Only add spawners that are within the blast zone
+            if (_spawners[i].pos.m_x < center.m_x + blastZone.m_right && _spawners[i].pos.m_x > center.m_x + blastZone.m_left
+            && _spawners[i].pos.m_y < center.m_y + blastZone.m_up && _spawners[i].pos.m_y > center.m_y + blastZone.m_down)
+            {
+                randomizedSpawnerIndexes[availableSpawnerCount] = i;
+                availableSpawnerCount++;
+            }
+            
         }
-        for (int i = 0; i < _spawnerCount; i++)
+        for (int i = 0; i < availableSpawnerCount; i++)
         {
             // Get random spawner index
-            int randSpawnerIndex = randi(_spawnerCount);
+            int randSpawnerIndex = randi(availableSpawnerCount);
             // Swap randomly selected spawner with current index
             int temp = randomizedSpawnerIndexes[i];
             randomizedSpawnerIndexes[i] = randomizedSpawnerIndexes[randSpawnerIndex];
@@ -179,7 +192,7 @@ void stSlipspace::update(float deltaFrame)
         }
 
         // Iterate through spawners and spawn enemies
-        for (int i = 0; i < _spawnerCount && _enemyCount < stageData->maxSpawns && _spawnQueue[0] > -1; i++)
+        for (int i = 0; i < availableSpawnerCount && _enemyCount < stageData->maxSpawns && _spawnQueue[0] > -1; i++)
         {
             EnemyType enemyToSpawn = _enemyTypes[_spawnQueue[0]];
             // If enemy assets are not yet loaded and there is enough space to load them, start loading them
