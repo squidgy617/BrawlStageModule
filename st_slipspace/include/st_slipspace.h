@@ -28,17 +28,17 @@ const float SCROLL_DIR = 0.0f;
 const float POKETRAINER_Z = 0.0f;
 const float UNK_FLOAT1 = 0.0f;
 
-struct EnemyType
+class EnemyType
 {
-    int enemyId;
-    int difficulty;
-    int startStatus;
-    int points;
-    int size;
-    int assetSize;
-    bool loading;
-    bool loaded;
-    int resourceMemory;
+    public:
+        int enemyId;
+        int difficulty;
+        int startStatus;
+        int points;
+        int size;
+        int assetSize;
+        bool loading;
+        int resourceMemory;
 };
 
 struct EnemyDrops

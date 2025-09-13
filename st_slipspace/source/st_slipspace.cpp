@@ -156,7 +156,42 @@ void stSlipspace::update(float deltaFrame)
             }
         }
 
-        // TODO: Load enemy resources before looping through spawners, so they're ready as soon as a spawner comes into view
+        for (int i = 0; i < stageData->maxSpawns; i++)
+        {
+            if (_spawnQueue[i] != -1)
+            {
+                EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue[i]];
+                // If enemy assets are not yet loaded and there is enough space to load them, start loading them
+                emManager *enemyManager = emManager::getInstance();
+                int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)enemyToSpawn->enemyId);
+                bool enemyLoaded = enemyManager->isCompArchive(enemyCreateId);
+                int availableStageMemory = gfHeapManager::getMaxFreeSize(Heaps::StageResource);
+                // If an enemy is still loading, break so we don't load multiple enemies at once
+                if (!enemyLoaded && enemyToSpawn->loading)
+                {
+                    break;
+                }
+                // TODO: Shouldn't have to use assetSize + size, this should hopefully be addressed with a change to sora_enemy
+                if (!enemyLoaded && !enemyToSpawn->loading && (enemyToSpawn->assetSize + enemyToSpawn->size) < availableStageMemory)
+                {
+                    gfArchive* brres;
+                    gfArchive* param;
+                    gfArchive* enmCommon;
+                    gfArchive* primFaceBrres;
+                    this->getEnemyPac(&brres, &param, &enmCommon, &primFaceBrres, (EnemyKind)enemyToSpawn->enemyId);
+                    int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, (EnemyKind)enemyToSpawn->enemyId, true);
+                    enemyToSpawn->loading = true;
+                    enemyToSpawn->resourceMemory = availableStageMemory;
+                    break;
+                }
+                else if (enemyLoaded && enemyToSpawn->loading)
+                {
+                    enemyToSpawn->loading = false;
+                    enemyToSpawn->resourceMemory = enemyToSpawn->resourceMemory - availableStageMemory;
+                    OSReport("Loaded resources for enemy %d. Uses %d resource memory. \n", enemyToSpawn->enemyId, enemyToSpawn->resourceMemory);
+                }
+            }
+        }
 
         // Shuffle spawners
         int randomizedSpawnerIndexes[100];
@@ -195,36 +230,15 @@ void stSlipspace::update(float deltaFrame)
         for (int i = 0; i < availableSpawnerCount && _enemyCount < stageData->maxSpawns && _spawnQueue[0] > -1; i++)
         {
             EnemyType enemyToSpawn = _enemyTypes[_spawnQueue[0]];
-            // If enemy assets are not yet loaded and there is enough space to load them, start loading them
+            int si = randomizedSpawnerIndexes[i];
             emManager *enemyManager = emManager::getInstance();
+            // TODO: Track loaded via EnemyType?
             int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)enemyToSpawn.enemyId);
             bool enemyLoaded = enemyManager->isCompArchive(enemyCreateId);
-            int availableStageMemory = gfHeapManager::getMaxFreeSize(Heaps::StageResource);
-            if (!enemyLoaded && !enemyToSpawn.loading && enemyToSpawn.assetSize < availableStageMemory)
-            {
-                gfArchive* brres;
-                gfArchive* param;
-                gfArchive* enmCommon;
-                gfArchive* primFaceBrres;
-                this->getEnemyPac(&brres, &param, &enmCommon, &primFaceBrres, (EnemyKind)enemyToSpawn.enemyId);
-                int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, (EnemyKind)enemyToSpawn.enemyId, true);
-                enemyToSpawn.loading = true;
-                enemyToSpawn.resourceMemory = availableStageMemory;
-                _enemyTypes[_spawnQueue[0]] = enemyToSpawn;
-            }
-            else if (enemyLoaded && enemyToSpawn.loading)
-            {
-                enemyToSpawn.loading = false;
-                enemyToSpawn.resourceMemory = enemyToSpawn.resourceMemory - availableStageMemory;
-                _enemyTypes[_spawnQueue[0]] = enemyToSpawn;
-                OSReport("Loaded resources for enemy %d. Uses %d resource memory. \n", enemyToSpawn.enemyId, enemyToSpawn.resourceMemory);
-            }
-            int si = randomizedSpawnerIndexes[i];
             // Only spawn enemies from available spawners and if enemy assets are loaded
             int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
             if (enemyLoaded && _spawners[si].timer <= 0 && enemyToSpawn.size < availableMemory)
             {
-                //OSReport("Spawning enemy at spawner: %d \n", si);
                 // Find enemy list entry
                 // Spawn enemy
                 this->putEnemy(enemyToSpawn, enemyToSpawn.difficulty, enemyToSpawn.startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
@@ -1420,6 +1434,9 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
             emManager *enemyManager = emManager::getInstance();
             int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)spawnedEnemy.enemyType.enemyId);
             enemyManager->removeArchive(enemyCreateId);
+            int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
+            // TODO: Sometimes enemies just stop spawning - why?
+            OSReport("Memory Remaining: %d - Enemy Count: %d \n", availableMemory, _enemyCount);
         }
 
         // Remove from spawned enemy list
