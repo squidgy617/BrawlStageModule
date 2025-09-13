@@ -38,6 +38,7 @@ class EnemyType
         int size;
         int assetSize;
         bool loading;
+        bool loaded;
         int resourceMemory;
 };
 
@@ -49,10 +50,11 @@ struct EnemyDrops
     int bills;
 };
 
-struct SlipspaceEnemy
+class SlipspaceEnemy
 {
-    EnemyType enemyType;
-    int enemyCreateId;
+    public:
+        EnemyType* enemyType;
+        int enemyCreateId;
 };
 
 class stSlipspace : public stMelee, public ftOutsideEventObserver {
@@ -159,7 +161,7 @@ public:
     void createItemPac(u32 index);
     void createEnemyPac(u32 index);
     void putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos, int motionPathIndex);
-    void putEnemy(EnemyType enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr);
+    void putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr);
     void clearHeap();
     bool calcHighScore();
     void startGhost();

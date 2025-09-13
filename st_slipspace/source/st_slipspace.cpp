@@ -138,7 +138,6 @@ void stSlipspace::update(float deltaFrame)
             // Initialize spawned enemies
             for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
             {
-                _spawnedEnemyTypes[i].enemyType.enemyId = -1;
                 _spawnedEnemyTypes[i].enemyCreateId = -1;
             }
             this->isEnemiesInitialized = true;
@@ -166,6 +165,7 @@ void stSlipspace::update(float deltaFrame)
                 int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)enemyToSpawn->enemyId);
                 bool enemyLoaded = enemyManager->isCompArchive(enemyCreateId);
                 int availableStageMemory = gfHeapManager::getMaxFreeSize(Heaps::StageResource);
+                enemyToSpawn->loaded = enemyLoaded;
                 // If an enemy is still loading, break so we don't load multiple enemies at once
                 if (!enemyLoaded && enemyToSpawn->loading)
                 {
@@ -229,19 +229,16 @@ void stSlipspace::update(float deltaFrame)
         // Iterate through spawners and spawn enemies
         for (int i = 0; i < availableSpawnerCount && _enemyCount < stageData->maxSpawns && _spawnQueue[0] > -1; i++)
         {
-            EnemyType enemyToSpawn = _enemyTypes[_spawnQueue[0]];
+            EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue[0]];
             int si = randomizedSpawnerIndexes[i];
             emManager *enemyManager = emManager::getInstance();
-            // TODO: Track loaded via EnemyType?
-            int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)enemyToSpawn.enemyId);
-            bool enemyLoaded = enemyManager->isCompArchive(enemyCreateId);
             // Only spawn enemies from available spawners and if enemy assets are loaded
             int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
-            if (enemyLoaded && _spawners[si].timer <= 0 && enemyToSpawn.size < availableMemory)
+            if (enemyToSpawn->loaded && _spawners[si].timer <= 0 && enemyToSpawn->size < availableMemory)
             {
                 // Find enemy list entry
                 // Spawn enemy
-                this->putEnemy(enemyToSpawn, enemyToSpawn.difficulty, enemyToSpawn.startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
+                this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
                 // Pop from queue
                 for (int j = 0; j < stageData->maxSpawns; j++)
                 {
@@ -1103,7 +1100,7 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
     }
 }
 
-void stSlipspace::putEnemy(EnemyType enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr) {
+void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr) {
     // TODO: MotionPath index investigate if can make every enemy follow it?
     int startingMem = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
     emManager* enemyManager = emManager::getInstance();
@@ -1111,7 +1108,7 @@ void stSlipspace::putEnemy(EnemyType enemyToSpawn, int difficulty, int startStat
     emCreate create;
     create.m_teamNo = 10000;
     create.m_difficulty = difficulty % 15;
-    create.m_enemyKind = (EnemyKind)enemyToSpawn.enemyId;
+    create.m_enemyKind = (EnemyKind)enemyToSpawn->enemyId;
     create.m_startStatusKind = startStatus;
 
     create.m_startPos = (Vec3f){pos->m_x, pos->m_y, 0.0};
@@ -1156,7 +1153,7 @@ void stSlipspace::putEnemy(EnemyType enemyToSpawn, int difficulty, int startStat
 
     int enemyMem = startingMem - gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
 
-    OSReport("Spawned enemy ID %d. Uses %d instance memory. \n", enemyToSpawn.enemyId, enemyMem);
+    OSReport("Spawned enemy ID %d. Uses %d instance memory. \n", enemyToSpawn->enemyId, enemyMem);
 
     // TODO: Change death to use similar explosion as fighter ko
     // TODO: Fix death so that 2p doesn't get hit by it
@@ -1387,7 +1384,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
         // If coin mode, enemies drop coins 
         if (_gameMode == Game_Rule_Coin)
         {
-            EnemyDrops coinDrops = calcCoins(spawnedEnemy.enemyType.points / 10); // Total coins are points / 10
+            EnemyDrops coinDrops = calcCoins(spawnedEnemy.enemyType->points / 10); // Total coins are points / 10
         
             emManager* enemyManager = emManager::getInstance();
             Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
@@ -1412,7 +1409,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
                     ftOwner* playerOwner = playerEntry->m_owner;
                     if (playerOwner != NULL)
                     {
-                        int enemyBeats = ((spawnedEnemy.enemyType.points / 100) / 2);
+                        int enemyBeats = ((spawnedEnemy.enemyType->points / 100) / 2);
                         int currentBeatCount = playerOwner->getBeatCount(KO_PLAYERINDEX);
                         playerOwner->setBeatCount(KO_PLAYERINDEX, currentBeatCount + enemyBeats); // Increment KO count by 1
                     }
@@ -1428,21 +1425,20 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
 
         // Unload enemy resources on defeat
         emManager* enemyManager = emManager::getInstance();
-        if (spawnedEnemy.enemyType.enemyId > -1 && enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy.enemyType.enemyId) < 1)
+        if (spawnedEnemy.enemyType->enemyId > -1 && enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy.enemyType->enemyId) < 1)
         {
-            OSReport("Unloading resources for enemy %d. \n", spawnedEnemy.enemyType.enemyId);
+            OSReport("Unloading resources for enemy %d. \n", spawnedEnemy.enemyType->enemyId);
             emManager *enemyManager = emManager::getInstance();
-            int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)spawnedEnemy.enemyType.enemyId);
+            int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)spawnedEnemy.enemyType->enemyId);
             enemyManager->removeArchive(enemyCreateId);
+            spawnedEnemy.enemyType->loaded = false;
+            spawnedEnemy.enemyType->loading = false;
             int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
-            // TODO: Sometimes enemies just stop spawning - why?
-            OSReport("Memory Remaining: %d - Enemy Count: %d \n", availableMemory, _enemyCount);
         }
 
         // Remove from spawned enemy list
         if (spawnedEnemy.enemyCreateId > -1)
         {
-            spawnedEnemy.enemyType.enemyId = -1;
             spawnedEnemy.enemyCreateId = -1;
         }
     }
