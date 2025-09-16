@@ -172,7 +172,7 @@ void stSlipspace::update(float deltaFrame)
                     break;
                 }
                 // TODO: Shouldn't have to use assetSize + size, this should hopefully be addressed with a change to sora_enemy
-                if (!enemyLoaded && !enemyToSpawn->loading && (enemyToSpawn->assetSize + enemyToSpawn->size) < availableStageMemory)
+                if (!enemyLoaded && !enemyToSpawn->loading && enemyToSpawn->assetSize < availableStageMemory)
                 {
                     gfArchive* brres;
                     gfArchive* param;
@@ -257,6 +257,7 @@ void stSlipspace::update(float deltaFrame)
         // Queue spawns if there's room
         for (int i = 0; i < stageData->maxSpawns; i++)
         {
+            // TODO: Group enemies of the same type together in queue?
             if (_spawnQueue[i] == -1)
             {
                 int randomIndex = randi(_enemyTypeCount);
@@ -1418,14 +1419,15 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
         }
         // TODO: If stock, at certain intervals, everyone but highest score loses stock, and scores reset?
     }
-    if (enemyMessageKind == Enemy::Message_Destruct)
+    if (enemyMessageKind == Enemy::Message_Destruct || enemyMessageKind == Enemy::Message_Remove)
     {
         // Reduce enemy count
         _enemyCount--;
 
-        // Unload enemy resources on defeat
+        // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
         emManager* enemyManager = emManager::getInstance();
-        if (spawnedEnemy.enemyType->enemyId > -1 && enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy.enemyType->enemyId) < 1)
+        if (spawnedEnemy.enemyType->enemyId > -1 && enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy.enemyType->enemyId) < 1
+            && _spawnQueue[0] != spawnedEnemy.enemyType->enemyId)
         {
             OSReport("Unloading resources for enemy %d. \n", spawnedEnemy.enemyType->enemyId);
             emManager *enemyManager = emManager::getInstance();
