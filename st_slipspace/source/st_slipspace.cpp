@@ -139,6 +139,7 @@ void stSlipspace::update(float deltaFrame)
             for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
             {
                 _spawnedEnemyTypes[i].enemyCreateId = -1;
+                _spawnedEnemyTypes[i].killTimer = 300;
             }
             this->isEnemiesInitialized = true;
         }
@@ -152,6 +153,42 @@ void stSlipspace::update(float deltaFrame)
             if (_spawners[i].timer > 0)
             {
                 _spawners[i].timer--;
+            }
+        }
+
+        // Remove enemies outside of blast zones
+        emManager* enemyManager = emManager::getInstance();
+        for(int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
+        {
+            if (_spawnedEnemyTypes[i].enemyCreateId > -1 && enemyManager->isEnemyExist(_spawnedEnemyTypes[i].enemyCreateId))
+            {
+                Enemy* enemy = enemyManager->getEnemyPtrFromId(_spawnedEnemyTypes[i].enemyCreateId);
+                Vec3f pos = soExternalValueAccesser::getPos(enemy);
+                Vec2f pos2;
+                pos2.m_x = pos.m_x;
+                pos2.m_y = pos.m_y;
+                // Check if in blast zone
+                bool result = inBlastZone(pos2);
+                if (!result)
+                {
+                    // If not in blast zone and timer is out, remove the enemy
+                    if (_spawnedEnemyTypes[i].killTimer <= 0)
+                    {
+                        OSReport("Removing enemy %d \n", _spawnedEnemyTypes[i].enemyType->enemyId);
+                        enemyManager->removeEnemy(_spawnedEnemyTypes[i].enemyCreateId);
+                        _spawnedEnemyTypes[i].killTimer = 300;
+                    }
+                    // If timer is not out, decrement it
+                    else
+                    {
+                        _spawnedEnemyTypes[i].killTimer--;
+                    }
+                }
+                // If enemy is in blast zone, reset timer
+                else
+                {
+                    _spawnedEnemyTypes[i].killTimer = 300;
+                }
             }
         }
 
@@ -202,14 +239,10 @@ void stSlipspace::update(float deltaFrame)
         }
         // Populate randomized queue in order
         int availableSpawnerCount = 0;
-        Rect2D blastZone;
-        this->m_stagePositions->getDeadRange(&blastZone);
-        Vec3f center = this->m_stagePositions->m_centerPos;
         for (int i = 0; i < _spawnerCount; i++)
         {
             // Only add spawners that are within the blast zone
-            if (_spawners[i].pos.m_x < center.m_x + blastZone.m_right && _spawners[i].pos.m_x > center.m_x + blastZone.m_left
-            && _spawners[i].pos.m_y < center.m_y + blastZone.m_up && _spawners[i].pos.m_y > center.m_y + blastZone.m_down)
+            if (inBlastZone(_spawners[i].pos))
             {
                 randomizedSpawnerIndexes[availableSpawnerCount] = i;
                 availableSpawnerCount++;
@@ -1325,6 +1358,14 @@ SlipspaceEnemy stSlipspace::getSpawnedEnemy(int enemyCreateId)
         }
     }
     return enemy;
+}
+
+bool stSlipspace::inBlastZone(Vec2f pos)
+{
+    Rect2D blastZone;
+    this->m_stagePositions->getDeadRange(&blastZone);
+    Vec3f center = this->m_stagePositions->m_centerPos;
+    return (pos.m_x < center.m_x + blastZone.m_right && pos.m_x > center.m_x + blastZone.m_left && pos.m_y < center.m_y + blastZone.m_up && pos.m_y > center.m_y + blastZone.m_down);
 }
 
 Vec3f* getRandomOffset(Vec3f* pos)

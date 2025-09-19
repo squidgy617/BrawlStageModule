@@ -55,6 +55,7 @@ class SlipspaceEnemy
     public:
         EnemyType* enemyType;
         int enemyCreateId;
+        int killTimer;
 };
 
 class stSlipspace : public stMelee, public ftOutsideEventObserver {
@@ -171,6 +172,7 @@ public:
     void applySeed();
     EnemyDrops calcCoins(int points);
     void dropCoins(Vec3f position, EnemyDrops coinDrops);
+    bool inBlastZone(Vec2f position);
     SlipspaceEnemy getSpawnedEnemy(int enemyCreateId);
     virtual stDestroyBossParamCommon getDestroyBossParamCommon(u32, int enemyCreateId = -1, int enemyMessageKind = -1);
 
