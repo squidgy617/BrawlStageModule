@@ -1467,11 +1467,6 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
     if (enemyMessageKind == Enemy::Message_Destruct || enemyMessageKind == Enemy::Message_Remove)
     {
         emManager* enemyManager = emManager::getInstance();
-        // Reduce enemy count
-        if (spawnedEnemy.enemyCreateId > -1)
-        {
-            _enemyCount--;
-        }
         // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
         if (spawnedEnemy.enemyCreateId > -1 && spawnedEnemy.enemyType->enemyId > -1 
             && enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy.enemyType->enemyId) < 1
@@ -1485,10 +1480,22 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
             spawnedEnemy.enemyType->loading = false;
         }
 
-        // Remove from spawned enemy list
-        if (spawnedEnemy.enemyCreateId > -1)
+        // Remove from spawned enemy list and reduce enemy count
+        if (spawnedEnemy.enemyCreateId > -1 && !enemyManager->isEnemyExist(spawnedEnemy.enemyCreateId))
         {
+            _enemyCount--;
             spawnedEnemy.enemyCreateId = -1;
+        }
+
+        // Update array of spawned enemies
+        // TODO: is there a way to do this properly with a pointer or something?
+        for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
+        {
+            if (_spawnedEnemyTypes[i].enemyCreateId == enemyCreateId)
+            {
+                _spawnedEnemyTypes[i] = spawnedEnemy;
+                break;
+            }
         }
     }
 
