@@ -208,17 +208,21 @@ void stSlipspace::update(float deltaFrame)
                 {
                     break;
                 }
-                // TODO: Shouldn't have to use assetSize + size, this should hopefully be addressed with a change to sora_enemy
-                if (!enemyLoaded && !enemyToSpawn->loading && enemyToSpawn->assetSize < availableStageMemory)
+                if (!enemyLoaded && !enemyToSpawn->loading)
                 {
-                    gfArchive* brres;
-                    gfArchive* param;
-                    gfArchive* enmCommon;
-                    gfArchive* primFaceBrres;
-                    this->getEnemyPac(&brres, &param, &enmCommon, &primFaceBrres, (EnemyKind)enemyToSpawn->enemyId);
-                    int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, (EnemyKind)enemyToSpawn->enemyId, true);
-                    enemyToSpawn->loading = true;
-                    enemyToSpawn->resourceMemory = availableStageMemory;
+                    // Only load enemy if there is space to do so
+                    if (enemyToSpawn->assetSize < availableStageMemory)
+                    {
+                        gfArchive* brres;
+                        gfArchive* param;
+                        gfArchive* enmCommon;
+                        gfArchive* primFaceBrres;
+                        this->getEnemyPac(&brres, &param, &enmCommon, &primFaceBrres, (EnemyKind)enemyToSpawn->enemyId);
+                        int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, (EnemyKind)enemyToSpawn->enemyId, true);
+                        enemyToSpawn->loading = true;
+                        enemyToSpawn->resourceMemory = availableStageMemory;
+                    }
+                    // Break even if enemy can't load, to prevent enemies further back in the queue from loading
                     break;
                 }
                 else if (enemyLoaded && enemyToSpawn->loading)
@@ -1462,13 +1466,16 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
     }
     if (enemyMessageKind == Enemy::Message_Destruct || enemyMessageKind == Enemy::Message_Remove)
     {
-        // Reduce enemy count
-        _enemyCount--;
-
-        // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
         emManager* enemyManager = emManager::getInstance();
-        if (spawnedEnemy.enemyType->enemyId > -1 && enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy.enemyType->enemyId) < 1
-            && _spawnQueue[0] != spawnedEnemy.enemyType->enemyId)
+        // Reduce enemy count
+        if (spawnedEnemy.enemyCreateId > -1)
+        {
+            _enemyCount--;
+        }
+        // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
+        if (spawnedEnemy.enemyCreateId > -1 && spawnedEnemy.enemyType->enemyId > -1 
+            && enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy.enemyType->enemyId) < 1
+            && _enemyTypes[_spawnQueue[0]].enemyId != spawnedEnemy.enemyType->enemyId)
         {
             OSReport("Unloading resources for enemy %d. \n", spawnedEnemy.enemyType->enemyId);
             emManager *enemyManager = emManager::getInstance();
@@ -1476,7 +1483,6 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
             enemyManager->removeArchive(enemyCreateId);
             spawnedEnemy.enemyType->loaded = false;
             spawnedEnemy.enemyType->loading = false;
-            int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
         }
 
         // Remove from spawned enemy list
