@@ -323,6 +323,8 @@ sora_enemy.rel file index = 301
 
 **Scale Z** - Starting status/action
 
+**Rotation X** - Frequency
+
 **Rotation Z** - Enabled/disabled
 
 **Translation X** - Points

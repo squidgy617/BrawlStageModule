@@ -32,6 +32,7 @@ int KO_PLAYERINDEX = 6; // We store KOs on player index 6 (player 7) which is a 
 int _enemyCount = 0; // Number of enemies currently spawned
 int _spawnerCount = 0; // Number of spawners in stage
 int _enemyTypeCount = 0; // Number of different types of enemies that can spawn
+int _maxFrequency = 0; // Highest enemy frequency in stage
 
 struct EnemySpawner
 {
@@ -119,7 +120,7 @@ void stSlipspace::update(float deltaFrame)
             for (int i = itemsIndex + 1; i < endIndex; i++)
             {
                 nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-                if (resNodeData->m_rotation.m_z == 1)
+                if (resNodeData->m_rotation.m_z == 1) // Only add enabled enemies
                 {
                     _enemyTypes[_enemyTypeCount].enemyId = resNodeData->m_scale.m_x;
                     _enemyTypes[_enemyTypeCount].difficulty = resNodeData->m_scale.m_y;
@@ -127,6 +128,12 @@ void stSlipspace::update(float deltaFrame)
                     _enemyTypes[_enemyTypeCount].points = resNodeData->m_translation.m_x;
                     _enemyTypes[_enemyTypeCount].size = resNodeData->m_translation.m_y;
                     _enemyTypes[_enemyTypeCount].assetSize = resNodeData->m_translation.m_z;
+                    _enemyTypes[_enemyTypeCount].frequency = resNodeData->m_rotation.m_x;
+                    // Update max frequency so it matches highest in stage
+                    if (_enemyTypes[_enemyTypeCount].frequency > _maxFrequency)
+                    {
+                        _maxFrequency = _enemyTypes[_enemyTypeCount].frequency;
+                    }
                     _enemyTypeCount++;
                 }
             }
@@ -213,6 +220,7 @@ void stSlipspace::update(float deltaFrame)
                     // Only load enemy if there is space to do so
                     if (enemyToSpawn->assetSize < availableStageMemory)
                     {
+                        // OSReport("Loading enemy %d. Available memory: %d \n", enemyToSpawn->enemyId, availableStageMemory);
                         gfArchive* brres;
                         gfArchive* param;
                         gfArchive* enmCommon;
@@ -294,11 +302,28 @@ void stSlipspace::update(float deltaFrame)
         // Queue spawns if there's room
         for (int i = 0; i < stageData->maxSpawns; i++)
         {
+            // Select random frequency
+            int selectedFrequency = randi(100);
+            if (selectedFrequency > _maxFrequency)
+            {
+                selectedFrequency = _maxFrequency;
+            }
+            // Only allow enemies >= frequency to be queued
+            int allowedEnemyTypes[100];
+            int numEnemyTypesAllowed = 0;
+            for (int j = 0; j < _enemyTypeCount; j++)
+            {
+                if (_enemyTypes[j].frequency >= selectedFrequency)
+                {
+                    allowedEnemyTypes[numEnemyTypesAllowed] = j;
+                    numEnemyTypesAllowed++;
+                }
+            }
             // TODO: Group enemies of the same type together in queue?
             if (_spawnQueue[i] == -1)
             {
-                int randomIndex = randi(_enemyTypeCount);
-                _spawnQueue[i] = randomIndex; // Spawn random enemy from enemy list
+                int randomIndex = randi(numEnemyTypesAllowed);
+                _spawnQueue[i] = allowedEnemyTypes[randomIndex]; // Spawn random enemy from enemy list
             }
         }
         // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue[0]].enemyId, _enemyTypes[_spawnQueue[1]].enemyId, _enemyTypes[_spawnQueue[2]].enemyId, _enemyTypes[_spawnQueue[3]].enemyId, _enemyTypes[_spawnQueue[4]].enemyId);

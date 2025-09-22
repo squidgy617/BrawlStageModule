@@ -40,6 +40,7 @@ class EnemyType
         bool loading;
         bool loaded;
         int resourceMemory;
+        int frequency;
 };
 
 struct EnemyDrops
