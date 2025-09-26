@@ -323,9 +323,7 @@ sora_enemy.rel file index = 301
 
 **Scale Z** - Starting status/action
 
-**Rotation X** - Frequency
-
-**Rotation Z** - Enabled/disabled
+**Rotation Z** - Frequency of enemy spawns, 1 - 100, 0 means enemy will never spawn
 
 **Translation X** - Points
 

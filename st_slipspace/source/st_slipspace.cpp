@@ -120,7 +120,7 @@ void stSlipspace::update(float deltaFrame)
             for (int i = itemsIndex + 1; i < endIndex; i++)
             {
                 nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-                if (resNodeData->m_rotation.m_z == 1) // Only add enabled enemies
+                if (resNodeData->m_rotation.m_z > 0) // Only add enemies with frequency > 0
                 {
                     _enemyTypes[_enemyTypeCount].enemyId = resNodeData->m_scale.m_x;
                     _enemyTypes[_enemyTypeCount].difficulty = resNodeData->m_scale.m_y;
@@ -128,7 +128,7 @@ void stSlipspace::update(float deltaFrame)
                     _enemyTypes[_enemyTypeCount].points = resNodeData->m_translation.m_x;
                     _enemyTypes[_enemyTypeCount].size = resNodeData->m_translation.m_y;
                     _enemyTypes[_enemyTypeCount].assetSize = resNodeData->m_translation.m_z;
-                    _enemyTypes[_enemyTypeCount].frequency = resNodeData->m_rotation.m_x;
+                    _enemyTypes[_enemyTypeCount].frequency = resNodeData->m_rotation.m_z;
                     // Update max frequency so it matches highest in stage
                     if (_enemyTypes[_enemyTypeCount].frequency > _maxFrequency)
                     {
@@ -303,7 +303,7 @@ void stSlipspace::update(float deltaFrame)
         for (int i = 0; i < stageData->maxSpawns; i++)
         {
             // Select random frequency
-            int selectedFrequency = randi(100);
+            int selectedFrequency = randi(100) + 1; // Add 1 so it's 1 - 100 instead of 0 - 99
             if (selectedFrequency > _maxFrequency)
             {
                 selectedFrequency = _maxFrequency;
