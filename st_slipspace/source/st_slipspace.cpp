@@ -101,7 +101,7 @@ void stSlipspace::update(float deltaFrame)
         u32 endIndex = ground->getNodeIndex(0, "Enemies");
         for (int i = itemsIndex + 1; i < endIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            this->putItem(resNodeData->m_scale.m_x, resNodeData->m_scale.m_y, resNodeData->m_scale.m_z, &resNodeData->m_translation.m_xy, resNodeData->m_translation.m_z);
+            this->putItem(resNodeData->m_scale.m_x, resNodeData->m_scale.m_y, resNodeData->m_scale.m_z, resNodeData->m_translation.xy(), resNodeData->m_translation.m_z);
         }
         this->isItemsInitialized = true;
     }
@@ -128,7 +128,7 @@ void stSlipspace::update(float deltaFrame)
                 {
                     nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(j).ptr();
                     _spawners[_spawnerCount].startStatus = resNodeData->m_scale.m_z;
-                    _spawners[_spawnerCount].pos = resNodeData->m_translation.m_xy;
+                    _spawners[_spawnerCount].pos = *resNodeData->m_translation.xy();
                     _spawners[_spawnerCount].motionPathIndex = resNodeData->m_translation.m_z;
                     _spawners[_spawnerCount].facingDirection = resNodeData->m_rotation.m_z;
                     _spawners[_spawnerCount].groupIndex = i;
@@ -398,11 +398,6 @@ void stSlipspace::update(float deltaFrame)
             if (resNodeData->m_rotation.m_x > 0) {
                 this->playSeBasic((SndID)resNodeData->m_rotation.m_x, 0);
             }
-            for (u32 i = 0; i < NUM_SHADES; i++) {
-                if (this->shades[i] != NULL) {
-                    this->shades[i]->setComplete();
-                }
-            }
         }
         else if (g_GameGlobal->m_resultInfo->m_decisionKind == gmResultInfo::Decision_Failure) {
             this->isEndProcessed = true;
@@ -410,12 +405,6 @@ void stSlipspace::update(float deltaFrame)
             if (resNodeData->m_rotation.m_y > 0) {
                 this->playSeBasic((SndID)resNodeData->m_rotation.m_y, 0);
             }
-        }
-    }
-
-    for (u32 i = 0; i < NUM_SHADES; i++) {
-        if (this->shades[i] != NULL) {
-            this->shades[i]->update(deltaFrame);
         }
     }
 }
@@ -504,7 +493,6 @@ void stSlipspace::createObj()
     this->setStageAttackData(&stageData->damageFloors[2], 2);
 
     if (g_GameGlobal->m_modeMelee->m_meleeInitData.m_gameMode == Game_Mode_Target) {
-        this->applyNameCheatsStart();
         this->applySeed();
     }
 }
@@ -673,13 +661,6 @@ void stSlipspace::clearHeap() {
 
     gfModuleManager::getInstance()->destroy("sora_enemy.rel");
 
-    for (u32 i = 0; i < NUM_SHADES; i++) {
-        if (this->shades[i] != NULL) {
-            delete this->shades[i];
-            this->shades[i] = NULL;
-        }
-    }
-
     g_gfSceneRoot->m_transformFlag.m_reverseLr = false;
 }
 
@@ -714,13 +695,13 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
         for (int i = targetsIndex + 1; i < disksIndex; i++) {
             this->targetsLeft++;
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            this->createObjTarget(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy, &resNodeData->m_scale,
+            this->createObjTarget(resNodeData->m_rotation.m_x, resNodeData->m_translation.xy(), &resNodeData->m_scale,
                                   resNodeData->m_translation.m_z, resNodeData->m_rotation.m_z, resNodeData->m_rotation.m_y);
         }
         for (int i = disksIndex + 1; i < platformsIndex; i++) {
             this->targetsLeft++;
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            this->createObjDisk(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+            this->createObjDisk(resNodeData->m_rotation.m_x, resNodeData->m_translation.xy(),
                                 resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x, resNodeData->m_scale.m_y,
                                 resNodeData->m_translation.m_z, resNodeData->m_rotation.m_y, resNodeData->m_scale.m_z);
         }
@@ -729,26 +710,26 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
 
             switch (int(resNodeData->m_scale.m_z)) {
                 case 2:
-                    this->createObjBreak(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                    this->createObjBreak(resNodeData->m_rotation.m_x, resNodeData->m_translation.xy(),
                                          resNodeData->m_rotation.m_z, resNodeData->m_translation.m_z,
                                          resNodeData->m_rotation.m_y, resNodeData->m_scale.m_x,
                                          resNodeData->m_scale.m_y);
                     break;
                 case 3:
-                    this->createObjLand(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                    this->createObjLand(resNodeData->m_rotation.m_x, resNodeData->m_translation.xy(),
                                         resNodeData->m_rotation.m_z, resNodeData->m_translation.m_z,
                                         resNodeData->m_rotation.m_y, resNodeData->m_scale.m_x,
                                         resNodeData->m_scale.m_y);
                     break;
                 default:
                     if (resNodeData->m_scale.m_z < 0) {
-                        this->createObjElevator(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
-                                                &resNodeData->m_scale.m_xy, resNodeData->m_rotation.m_y,
+                        this->createObjElevator(resNodeData->m_rotation.m_x, resNodeData->m_translation.xy(),
+                                                resNodeData->m_scale.xy(), resNodeData->m_rotation.m_y,
                                                 resNodeData->m_rotation.m_z, resNodeData->m_translation.m_z,
                                                 -resNodeData->m_scale.m_z);
                     }
                     else {
-                        this->createObjPlatform(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+                        this->createObjPlatform(resNodeData->m_rotation.m_x, resNodeData->m_translation.xy(),
                                                 resNodeData->m_rotation.m_z, resNodeData->m_scale.m_x, resNodeData->m_translation.m_z,
                                                 resNodeData->m_rotation.m_y);
                     }
@@ -764,8 +745,8 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
         }
         for (int i = springsIndex + 1; i < cannonsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            this->createObjSpring(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y, &resNodeData->m_translation.m_xy,
-                                  resNodeData->m_rotation.m_z, &resNodeData->m_scale.m_xy, resNodeData->m_scale.m_z,
+            this->createObjSpring(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y, resNodeData->m_translation.xy(),
+                                  resNodeData->m_rotation.m_z, resNodeData->m_scale.xy(), resNodeData->m_scale.m_z,
                                   resNodeData->m_translation.m_z);
         }
         for (int i = cannonsIndex + 1; i < laddersIndex; i++) {
@@ -773,13 +754,13 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
             u32 rotateFlags = resNodeData->m_scale.m_y;
             bool alwaysRotate = rotateFlags & 1;
             bool fullRotate = rotateFlags & 2;
-            this->createObjCannon(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy,
+            this->createObjCannon(resNodeData->m_rotation.m_x, resNodeData->m_translation.xy(),
                                   resNodeData->m_rotation.m_z, resNodeData->m_rotation.m_y, resNodeData->m_scale.m_z,
                                   resNodeData->m_translation.m_z, alwaysRotate, fullRotate, resNodeData->m_scale.m_x);
         }
         for (int i = laddersIndex + 1; i < catapultsIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            this->createObjLadder(resNodeData->m_rotation.m_x, &resNodeData->m_translation.m_xy, resNodeData->m_translation.m_z,
+            this->createObjLadder(resNodeData->m_rotation.m_x, resNodeData->m_translation.xy(), resNodeData->m_translation.m_z,
                                   resNodeData->m_rotation.m_y, resNodeData->m_rotation.m_z);
         }
         for (int i = catapultsIndex + 1; i < warpsIndex; i++) {
@@ -791,17 +772,17 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
         for (int i = warpsIndex + 1; i < toxinsIndex; i += 2) {
             nw4r::g3d::ResNodeData* resNodeDataFrom = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             nw4r::g3d::ResNodeData* resNodeDataTo = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
-            this->createObjWarpZone(resNodeDataFrom->m_rotation.m_x, &resNodeDataFrom->m_translation.m_xy,
+            this->createObjWarpZone(resNodeDataFrom->m_rotation.m_x, resNodeDataFrom->m_translation.xy(),
                                     resNodeDataFrom->m_rotation.m_z, resNodeDataFrom->m_scale.m_z,
-                                    &resNodeDataFrom->m_scale.m_xy, resNodeDataFrom->m_translation.m_z,
+                                    resNodeDataFrom->m_scale.xy(), resNodeDataFrom->m_translation.m_z,
                                     resNodeDataFrom->m_rotation.m_y,
-                                    &resNodeDataTo->m_translation.m_xy, resNodeDataTo->m_scale.m_z, resNodeDataTo->m_rotation.m_z,
+                                    resNodeDataTo->m_translation.xy(), resNodeDataTo->m_scale.m_z, resNodeDataTo->m_rotation.m_z,
                                     resNodeDataTo->m_rotation.m_x, resNodeDataTo->m_translation.m_z);
         }
         for (int i = toxinsIndex + 1; i < conveyorsIndex; i += 2) {
             nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
-            this->createTriggerHitPointEffect(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
+            this->createTriggerHitPointEffect(resNodeDataSW->m_translation.xy(), resNodeDataNE->m_translation.xy(),
                                               resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y,
                                               resNodeDataNE->m_rotation.m_x, resNodeDataNE->m_rotation.m_z, &resNodeDataSW->m_scale,
                                               resNodeDataNE->m_translation.m_z, resNodeDataNE->m_rotation.m_y);
@@ -810,7 +791,7 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
         for (int i = conveyorsIndex + 1; i < watersIndex; i += 2) {
             nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
-            this->createTriggerConveyor(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
+            this->createTriggerConveyor(resNodeDataSW->m_translation.xy(), resNodeDataNE->m_translation.xy(),
                                         resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y,
                                         resNodeDataNE->m_rotation.m_x, resNodeDataNE->m_rotation.m_z, &resNodeDataSW->m_scale,
                                         resNodeDataNE->m_translation.m_z, resNodeDataNE->m_rotation.m_y);
@@ -818,7 +799,7 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
         for (int i = watersIndex + 1; i < windsIndex; i += 2) {
             nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
-            this->createTriggerWater(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
+            this->createTriggerWater(resNodeDataSW->m_translation.xy(), resNodeDataNE->m_translation.xy(),
                                      resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y,
                                      resNodeDataNE->m_rotation.m_x, resNodeDataNE->m_rotation.m_z, &resNodeDataSW->m_scale,
                                      resNodeDataNE->m_translation.m_z, resNodeDataNE->m_rotation.m_y);
@@ -826,7 +807,7 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
         for (int i = windsIndex + 1; i < itemsIndex; i += 2) {
             nw4r::g3d::ResNodeData* resNodeDataSW = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             nw4r::g3d::ResNodeData* resNodeDataNE = ground->m_sceneModels[0]->m_resMdl.GetResNode(i + 1).ptr();
-            this->createTriggerWind(&resNodeDataSW->m_translation.m_xy, &resNodeDataNE->m_translation.m_xy,
+            this->createTriggerWind(resNodeDataSW->m_translation.xy(), resNodeDataNE->m_translation.xy(),
                                     resNodeDataNE->m_scale.m_x, resNodeDataNE->m_scale.m_y,
                                     resNodeDataNE->m_rotation.m_x, resNodeDataNE->m_rotation.m_z, &resNodeDataSW->m_scale,
                                     resNodeDataNE->m_translation.m_z, resNodeDataNE->m_rotation.m_y);
@@ -958,12 +939,13 @@ void stSlipspace::createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, float
     grSpring* spring = grSpring::create(mdlIndex, "grSpring");
     if (spring != NULL) {
         addGround(spring);
+        Vec2f areaPos = Vec2f(0.0, 0.0);
         grGimmickSpringData springData(
                 pos,
                 rot,
                 bounce,
                 mdlIndex,
-                &(Vec2f){0.0, 0.0},
+                &areaPos,
                 range);
         spring->setMotionPathData(motionPathIndex, rot >= 360);
         spring->setGimmickData(&springData); // Note: gimmickData will only apply in next function since was allocated on the stack
@@ -989,9 +971,11 @@ void stSlipspace::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex,
     grLadder* ladder = grLadder::create(mdlIndex, "grLadder");
     if (ladder != NULL) {
         addGround(ladder);
+        Vec2f areaPos = Vec2f(0.0, 0.0);
+        Vec2f araeRange = Vec2f(0.0, 0.0);
         grGimmickLadderData ladderData(
                 mdlIndex, 0, restrictUpExit, unk2, "",
-                &(Vec2f){0.0, 0.0}, &(Vec2f){0.0, 0.0}
+                &areaPos, &araeRange
                 );
         ladder->setMotionPathData(motionPathIndex);
         ladder->startupLadder(this->m_fileData,0,0,&ladderData);
@@ -1012,14 +996,16 @@ void stSlipspace::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, float s
     grWarpZone* warpZone = grWarpZone::create(mdlIndex, "grWarpZone");
     if (warpZone != NULL) {
         addGround(warpZone);
+        Vec2f areaPos = Vec2f(0.0, 0.0);
         grGimmickWarpData warpData(
                 pos, mdlIndex, snd_se_ADVstage_common_FIGHTER_IN, snd_se_invalid,
-                &(Vec2f){0.0, 0.0}, range
+                &areaPos, range
                 );
 
         warpZone->setStageData(m_stageData);
         warpZone->prepareWarpData(motionPathIndex, deactivateFrames, rot >= 360);
-        warpZone->setWarpAttrData(&(Vec3f){warpDest->m_x, warpDest->m_y, 0.0}, warpType, isNotAuto);
+        Vec3f warpDestPos = Vec3f(warpDest->m_x, warpDest->m_y, 0.0);
+        warpZone->setWarpAttrData(&warpDestPos, warpType, isNotAuto);
         warpZone->setGimmickData(&warpData); // Note: gimmickData will only apply in next function since was allocated on the stack
         warpZone->startup(m_fileData, 0, 0);
         warpZone->setRot(0, 0, rot);
@@ -1031,7 +1017,8 @@ void stSlipspace::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, float s
                 addGround(toWarpZone);
                 toWarpZone->setStageData(m_stageData);
                 toWarpZone->prepareWarpData(connectedMotionPathIndex, deactivateFrames, rot >= 360);
-                toWarpZone->setWarpAttrData(&(Vec3f){pos->m_x, pos->m_y, 0.0}, warpType, isNotAuto);
+                warpDestPos = Vec3f(pos->m_x, pos->m_y, 0.0);
+                toWarpZone->setWarpAttrData(&warpDestPos, warpType, isNotAuto);
                 toWarpZone->setGimmickData(&warpData); // Note: gimmickData will only apply in next function since was allocated on the stack
                 toWarpZone->startup(m_fileData, 0, 0);
                 toWarpZone->setRot(0, 0, rot);
@@ -1045,14 +1032,15 @@ void stSlipspace::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, float s
 }
 
 void stSlipspace::createTriggerHitPointEffect(Vec2f* posSW, Vec2f* posNE, float damage, short detectionRate, int mdlIndex, float rot, Vec3f* scale, int motionPathIndex, int collIndex) {
-    Vec2f pos = {0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y)};
+    Vec2f pos = Vec2f(0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y));
+    Vec2f areaRange = Vec2f(posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y);
 
     grGimmickHitPointEffectData hitPointEffectData(
             fabsf(damage),
-            damage < 0 ? true : false,
+            damage < 0,
             detectionRate,
             &pos,
-            &(Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y}
+            &areaRange
             );
 
     stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick::Area_HitPoint_Effect, -1);
@@ -1077,14 +1065,16 @@ void stSlipspace::createTriggerHitPointEffect(Vec2f* posSW, Vec2f* posNE, float 
 }
 
 void stSlipspace::createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed, bool isRightDirection, int mdlIndex, float rot, Vec3f* scale, int motionPathIndex, int collIndex) {
-    Vec3f pos = {0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0};
+    Vec3f pos = Vec3f(0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0);
+    Vec2f areaPos = Vec2f(0.0, 0.0);
+    Vec2f areaRange = Vec2f(posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y);
 
     grGimmickBeltConveyorData beltConveyorAreaData(
             &pos,
             speed,
             isRightDirection,
-            &(Vec2f){0.0, 0.0},
-            &(Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y},
+            &areaPos,
+            &areaRange,
             gfArea::Shape_Rectangle
             );
 
@@ -1110,14 +1100,15 @@ void stSlipspace::createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed,
 }
 
 void stSlipspace::createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bool canDrown, int mdlIndex, float rot, Vec3f* scale, int motionPathIndex, int collIndex) {
-    Vec2f pos = {0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y)};
+    Vec2f pos = Vec2f(0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y));
+    Vec2f areaRange = Vec2f(posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y);
 
     grGimmickWaterData waterAreaData(
             posNE->m_y,
             canDrown,
             speed,
             &pos,
-            &(Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y}
+            &areaRange
             );
 
     stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick::Area_Water, -1);
@@ -1142,14 +1133,16 @@ void stSlipspace::createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bo
 }
 
 void stSlipspace::createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength, float angle, int mdlIndex, float rot, Vec3f* scale, int motionPathIndex, int collIndex) {
-    Vec3f pos = {0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0};
+    Vec3f pos = Vec3f(0.5*(posSW->m_x + posNE->m_x), 0.5*(posSW->m_y + posNE->m_y), 0.0);
+    Vec2f areaPos = Vec2f(0.0, 0.0);
+    Vec2f areaRange = Vec2f(posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y);
 
     grGimmickWindData windAreaData(
                 &pos,
                 strength,
                 angle,
-                &(Vec2f){0.0, 0.0},
-                &(Vec2f){posNE->m_x - posSW->m_x, posNE->m_y - posSW->m_y}
+                &areaPos,
+                &areaRange
                 );
     stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick::Area_Wind, -1);
     trigger->setWindTrigger(&windAreaData);
@@ -1176,7 +1169,7 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
     itManager *itemManager = itManager::getInstance();
     BaseItem *item = itemManager->createItem((itKind) itemID, variantID, -1, 0, 0, 0xffff, 0, 0xffff);
     if (item != NULL) {
-        Vec3f warpPos = (Vec3f){pos->m_x, pos->m_y, 0.0};
+        Vec3f warpPos = Vec3f(pos->m_x, pos->m_y, 0.0);
         item->warp(&warpPos);
         item->setVanishMode(false);
         item->m_moduleAccesser->getCameraModule().setEnableCamera(0, -1);
@@ -1205,7 +1198,7 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
     create.m_enemyKind = (EnemyKind)enemyToSpawn->enemyId;
     create.m_startStatusKind = startStatus;
 
-    create.m_startPos = (Vec3f){pos->m_x, pos->m_y, 0.0};
+    create.m_startPos = Vec3f(pos->m_x, pos->m_y, 0.0);
 
     create.m_startLr = lr;
     create.m_level = 1 + difficulty / 15;
@@ -1451,7 +1444,7 @@ Vec3f* getRandomOffset(Vec3f* pos)
 {
     int xoffset = 10;
     int yoffset = 10;
-    Vec3f basePos = {};
+    Vec3f basePos = Vec3f(0,0,0);
     Vec3f* newPos = &basePos;
     newPos->m_y = pos->m_y + (randf() * yoffset) + 2; // Offset by 2 to help prevent coins from spawning under platforms
     // Get whether we should use negative value for x or not

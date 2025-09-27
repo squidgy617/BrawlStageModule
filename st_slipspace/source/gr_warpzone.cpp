@@ -41,7 +41,7 @@ void grWarpZone::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
         Vec3f currentPos = soExternalValueAccesser::getPos(fighter);
         float currentLr = soExternalValueAccesser::getLr(fighter);
         int correct = fighter->m_moduleAccesser->getGroundModule().getCorrect(0);
-        Vec3f zeroVec = {0, 0, 0};
+        Vec3f zeroVec = Vec3f(0, 0, 0);
         switch(this->m_warpType) {
             case 10:
                 if (this->isInHitstun(fighter)) {

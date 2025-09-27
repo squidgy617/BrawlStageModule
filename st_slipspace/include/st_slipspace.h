@@ -20,7 +20,6 @@
 #include "gr_catapult.h"
 #include "gr_item.h"
 #include "gr_area.h"
-#include "st_slipspace_shade.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -76,8 +75,6 @@ protected:
     gfArchive* primFacePac;
     char _860[892 - 872];
     gfFileIOHandle handle;
-    stSlipspaceShade<SHADE_FRAME_LENGTH>* shades[NUM_SHADES];
-    stSlipspaceGhost<GHOST_FRAME_LENGTH>* ghost;
     grPokeTrainer* pokeTrainerGround;
     float totalDamage; // 912 (Required offset for stOperatorRuleTargetBreak!)
     u32 numTargetsHitPerPlayer[NUM_PLAYERS]; // 916 (Required offset for stOperatorRuleTargetBreak!)
@@ -114,8 +111,6 @@ public:
         targetsHit = 0;
         totalDamage = 0.0;
         __memfill(&numTargetsHitPerPlayer, 0, sizeof(numTargetsHitPerPlayer));
-        __memfill(&shades, 0, sizeof(shades));
-        ghost = NULL;
 
     };
     static stSlipspace* create();
