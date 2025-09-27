@@ -349,6 +349,8 @@ EnmCommon file index = 300
 
 sora_enemy.rel file index = 301
 
+**Rotation Y** - Number of frames before spawner can be used again after spawning an enemy
+
 **Rotation Z** - Starting facing direction
 
 **Translation X,Y** - Position
