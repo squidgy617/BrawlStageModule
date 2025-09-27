@@ -17,6 +17,9 @@ public:
     virtual void update(float deltaFrame);
     virtual void updateEffect(float deltaFrame);
 
+    bool getNodeIndexWithFormat(u32* nodeIndex, u32 sceneModelIndex, const char* nodeFormat, u32 index);
+    u32 getNumNodesWithFormat(const char* nodeFormat);
+
     virtual void setTrigger(stTrigger* trigger);
     virtual void setMotionPathData(int mdlIndex, bool isRotateMotionPath);
 

@@ -31,6 +31,7 @@ int KO_PLAYERINDEX = 6; // We store KOs on player index 6 (player 7) which is a 
 
 int _enemyCount = 0; // Number of enemies currently spawned
 int _spawnerCount = 0; // Number of spawners in stage
+int _spawnGroupCount = 0; // Number of spawner groups in stage
 int _enemyTypeCount = 0; // Number of different types of enemies that can spawn
 int _maxFrequency = 0; // Highest enemy frequency in stage
 
@@ -41,6 +42,7 @@ struct EnemySpawner
     int facingDirection;
     Vec2f pos;
     int motionPathIndex;
+    int groupIndex;
 };
 
 EnemySpawner _spawners[100]; // List of spawners in stage
@@ -102,21 +104,33 @@ void stSlipspace::update(float deltaFrame)
     if (moduleManager->isLoaded("sora_enemy.rel")) {
         emManager *enemyManager = emManager::getInstance();
         if (!this->isEnemiesInitialized && enemyManager->isCompArchiveAll()) {
-            Ground* ground = this->getGround(0);
+            grArea* ground = static_cast<grArea*>(this->getGround(0));
             // Initialize spawners
-            u32 itemsIndex = ground->getNodeIndex(0, "Spawners");
-            u32 endIndex = ground->getNodeIndex(0, "End");
-            for (int i = itemsIndex + 1; i < endIndex; i++) {
-                nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-                _spawners[_spawnerCount].startStatus = resNodeData->m_scale.m_z;
-                _spawners[_spawnerCount].pos = resNodeData->m_translation.m_xy;
-                _spawners[_spawnerCount].motionPathIndex = resNodeData->m_translation.m_z;
-                _spawners[_spawnerCount].facingDirection = resNodeData->m_rotation.m_z;
-                _spawnerCount++;
+            int spawnGroups = ground->getNumNodesWithFormat("SpawnGroup%d");
+            // Iterate through spawner groups
+            for (int i = 0; i < spawnGroups; i++) {
+                u32 itemsIndex;
+                u32 endIndex;
+                ground->getNodeIndexWithFormat(&itemsIndex, 0, "SpawnGroup%d", i);
+                ground->getNodeIndexWithFormat(&endIndex, 0, "SpawnGroupEnd%d", i);
+                // TODO: Capture more spawn group data
+                nw4r::g3d::ResNodeData* spawnGroupData = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(itemsIndex)).ptr();
+                // Iterate through spawners in group
+                for (int j = itemsIndex + 1; j < endIndex; j++)
+                {
+                    nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(j).ptr();
+                    _spawners[_spawnerCount].startStatus = resNodeData->m_scale.m_z;
+                    _spawners[_spawnerCount].pos = resNodeData->m_translation.m_xy;
+                    _spawners[_spawnerCount].motionPathIndex = resNodeData->m_translation.m_z;
+                    _spawners[_spawnerCount].facingDirection = resNodeData->m_rotation.m_z;
+                    _spawners[_spawnerCount].groupIndex = i;
+                    _spawnerCount++;
+                }
+                _spawnGroupCount++;
             }
             // Initialize enemies
-            itemsIndex = ground->getNodeIndex(0, "Enemies");
-            endIndex = ground->getNodeIndex(0, "Spawners");
+            int itemsIndex = ground->getNodeIndex(0, "Enemies");
+            int endIndex = ground->getNodeIndex(0, "Spawners");
             for (int i = itemsIndex + 1; i < endIndex; i++)
             {
                 nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();

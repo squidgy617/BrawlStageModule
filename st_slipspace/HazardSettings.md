@@ -333,7 +333,15 @@ sora_enemy.rel file index = 301
 
 **Translation Z** - Motion Path ModelData Index (node to follow must be called "MoveNode")
 
+## Spawner Groups
+
+To create spawners you must create spawner groups. These are children of the "Spawners" bone and are always named "SpawnGroup#", where # starts with 0 and is incremented for each group you create.
+
+Child bones of the spawner group represent individual spawners (see below). The last child should always be named "SpawnGroupEnd#", where # matches the # of the parent bone.
+
 ## Spawner
+
+Spawners are child bones of spawner groups (see above).
 
 EnmCommon file index = 300
 
