@@ -132,7 +132,7 @@ void stSlipspace::update(float deltaFrame)
                     _spawners[_spawnerCount].motionPathIndex = resNodeData->m_translation.m_z;
                     _spawners[_spawnerCount].facingDirection = resNodeData->m_rotation.m_z;
                     _spawners[_spawnerCount].groupIndex = i;
-                    _spawners[_spawnerCount].respawnTimerLength = resNodeData->m_rotation.m_y;
+                    _spawners[_spawnerCount].respawnTimerLength = resNodeData->m_scale.m_x;
                     _spawnerCount++;
                 }
                 _spawnGroupCount++;
