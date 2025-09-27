@@ -1,6 +1,7 @@
 .set HEAP_TYPE, 0xf #0x25 EnemyInstance -> StageInstance
 .set WEAPON_HEAP_TYPE, 0xf #0x27 WeaponInstance -> StageInstance
 .set RESOURCE_HEAP_TYPE, 0x11
+.set ENEMY_KIND_TERM, 0x3D
 
 globaldestructorchain____register_global_object:
     /* 00000000: */    lis r6,0x0                               [R_PPC_ADDR16_HA(41, 6, "loc_0")]
@@ -2199,9 +2200,9 @@ loc_enemyNames:
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_17258")] # 0x2D - emGalfire
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_17508")] # 0x2E - emBosspackun
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_17DE8")] # 0x2F - emGhamghabase
-    .4byte 0x00000000
-    .4byte 0x00000000
-    .4byte 0x00000000
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_17DE8")] # 0x30 - emGhamghabase
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_17DE8")] # 0x31 - emGhamghabase
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_17DE8")] # 0x32 - emGhamghabase
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_180A8")] # 0x33 - emGalleom
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_18C08")] # 0x34 - emRidley
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_18EF0")] # 0x35 - emRayquaza
@@ -2352,7 +2353,9 @@ loc_commonString:
 loc_wpnString:
     .asciz "Wpn"
 loc_formatVariantPath:
-    .asciz "/%s/%s/%s/%s%s%d%s.%s"
+    .asciz "/%s/%s/%s/%s%s%02d%s.%s"
+loc_formatFacePath:
+    .asciz "/%s/%s/%s/%s%s%s%02d%s.%s"
     .balign 4
 # soCollisionReflectorEventObserver____dt:
 #     /* 000022F8: */    stwu r1,-0x10(r1)
@@ -2365,14 +2368,14 @@ loc_formatVariantPath:
 #     /* 00002314: */    cmpwi r3,0x0
 #     /* 00002318: */    beq- loc_2338
 #     /* 0000231C: */    li r0,0x0
-nop #     /* 00002320: */    extsh r4,r0
-nop #     /* 00002324: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soEventObserver_33soCollisionReflectorEventObserver_____dt")]
-nop #     /* 00002328: */    extsh. r0,r31
-nop #     /* 0000232C: */    ble- loc_2338
-nop #     /* 00002330: */    mr r3,r30
-nop #     /* 00002334: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srcommon____dl")]
+#     /* 00002320: */    extsh r4,r0
+#     /* 00002324: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soEventObserver_33soCollisionReflectorEventObserver_____dt")]
+#     /* 00002328: */    extsh. r0,r31
+#     /* 0000232C: */    ble- loc_2338
+#     /* 00002330: */    mr r3,r30
+#     /* 00002334: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srcommon____dl")]
 # loc_2338:
-nop #     /* 00002338: */    mr r3,r30
+#     /* 00002338: */    mr r3,r30
 nop #     /* 0000233C: */    lwz r31,0xC(r1)
 nop #     /* 00002340: */    lwz r30,0x8(r1)
 nop #     /* 00002344: */    lwz r0,0x14(r1)
@@ -2919,10 +2922,10 @@ loc_emPrimSuperScope:
         .balign 4
 loc_emPrimSword:
         .asciz "emPrimSword"
-loc_primFace:
-        .asciz "PrimFace"
+loc_faceString:
+        .asciz "Face"
         .balign 4
-#24    
+#23    
 # soTransitionModuleImpl____dt:
 #     /* 00002AC4: */    stwu r1,-0x10(r1)
 #     /* 00002AC8: */    mflr r0
@@ -2948,7 +2951,7 @@ loc_primFace:
 #     /* 00002B14: */    lwz r0,0x14(r1)
 #     /* 00002B18: */    mtlr r0
 #     /* 00002B1C: */    addi r1,r1,0x10
-#     /* 00002B20: */    blr
+nop #     /* 00002B20: */    blr
 soTransitionModuleEntity_3_1_____dt:
     /* 00002B24: */    stwu r1,-0x10(r1)
     /* 00002B28: */    mflr r0
@@ -12911,11 +12914,18 @@ emArchive__reqLoad:
     mtlr r0
     addi r1,r1,0x20
     blr
-    #17
+    #15
 emArchive__reqEnemyLoad:
+    # TODO: Handle Ghamghabase
+
     stwu r1,-0xA0(r1)
     mflr r0
     stw r0,0xA4(r1)
+    stw r31, 0xBC(r1)
+    mr r31, r5
+
+    rlwinm r11,r4,24,16,31  # \ 0x00XXXXYY (XXXX = variant id, YY = enemy id)
+    andi. r0, r4, 0xff      # /
 
     lis r8,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_enmString")]
     addi r8,r8,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_enmString")]
@@ -12923,7 +12933,7 @@ emArchive__reqEnemyLoad:
     addi r6,r6,0x0                           [R_PPC_ADDR16_LO(41, 5, "loc_28C")]
     lis r12,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_enemyNames")]
     addi r12,r12,0x0                          [R_PPC_ADDR16_LO(41, 1, "loc_enemyNames")]    
-    mulli r7, r4, 4   
+    mulli r7, r0, 4   
     cmpwi r3, 0x0             # \ check if primid
     beq+ loc_notPrimidFolder  # /
     li r7, 4*0x17
@@ -12938,32 +12948,63 @@ loc_notPrimidFolder:
     addi r10, r10, 0x6
     cmpwi r3, 0x0      # \ check if primid
     beq+ loc_notParam  # /
-    mulli r9, r4, 4     # \
-    add r9, r12, r9     # | enemyNames[id] + 2 (skip the em)
+    mulli r9, r0, 4     # \
+    lwzx r9, r12, r9     # | enemyNames[id] + 2 (skip the em)
     addi r9, r9, 0x2    # /
 loc_notParam:
     lis r12,0x0                              [R_PPC_ADDR16_HA(41, 1, "loc_pacString")]
     addi r12,r12,0x0                         [R_PPC_ADDR16_LO(41, 1, "loc_pacString")]
     stw r12, 0x8(r1)
-    addi r3, r1, 0x10
     lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_formatPath")]
     addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_formatPath")]
+
+    cmpwi r11, 0x0
+    beq+ loc_notVariant
+    stw r12, 0xC(r1)
+    stw r10, 0x8(r1)
+    mr r10, r11
+    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_formatVariantPath")]
+    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_formatVariantPath")]
+loc_notVariant:
+    lis r12,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_stageOverrideFolder")]
+    addi r12,r12,0x0                          [R_PPC_ADDR16_LO(41, 4, "loc_stageOverrideFolder")]
+    cmplwi r11, 0x8000
+    addi r11, r12, 13
+    bge+ loc_stageOverride
+    subi r12, r12, 0xC
+    lbz r3,0x0(r12)
+    cmpwi r3, 0x0
+    beq+ loc_notOverride
+loc_stageOverride:
+    lbzx r11, r11, r0 
+    li r0, 0x1 
+    slw r0, r0, r5
+    and r11, r11, r0
+    cmpwi r11, 0x0
+    beq+ loc_notOverride
+    mr r5, r6
+    mr r6, r12
+    b loc_override
+loc_notOverride:
     addi r4, r4, 0x1
     addi r5, r8, 0x3
+loc_override:
+    addi r3, r1, 0x10
     bl __unresolved                          [R_PPC_REL24(0, 4, "printf__sprintf")]
     
     li r3,0x1   
     bl __unresolved                          [R_PPC_REL24(27, 1, "soArchiveDb__getManager")]
     addi r4, r1, 0x10
     li r5, RESOURCE_HEAP_TYPE
-    li r6, 0x0
+    mulli r6, r31, 0x2   # if it's a brres then share with existing (stage module would manage whether it is safe to unload)
     bl emArchive__reqLoad
     
+    lwz r31, 0xBC(r1)
     lwz r0,0xA4(r1)
     mtlr r0
     addi r1,r1,0xA0
     blr 
-    #43
+    #75
 emArchive__reqCommonLoad:
     stwu r1,-0xA0(r1)
     mflr r0
@@ -12984,45 +13025,22 @@ emArchive__reqCommonLoad:
     addi r3, r1, 0x10
     lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_formatPath")]
     addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_formatPath")]
-    addi r4, r4, 0x4
-    bl __unresolved                          [R_PPC_REL24(0, 4, "printf__sprintf")]
-
-    li r3,0x1
-    bl __unresolved                          [R_PPC_REL24(27, 1, "soArchiveDb__getManager")]
-    addi r4, r1, 0x10
-    li r5, RESOURCE_HEAP_TYPE
-    li r6, 0x0
-    bl emArchive__reqLoad
-
-    lwz r0,0xA4(r1)
-    mtlr r0
-    addi r1,r1,0xA0
-    blr
-    #27
-emArchive__reqPrimFaceLoad:
-    stwu r1,-0xA0(r1)
-    mflr r0
-    stw r0,0xA4(r1)
-
-    lis r8,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_wpnString")]
-    addi r8,r8,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_wpnString")]
-    addi r5, r8, 0x3
-    lis r6,0x0                               [R_PPC_ADDR16_HA(41, 5, "loc_28C")]
-    addi r6,r6,0x0                           [R_PPC_ADDR16_LO(41, 5, "loc_28C")]
-    lis r7,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_C228")]
-    addi r7,r7,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_C228")]
-    lis r9,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_primFace")]
-    addi r9,r9,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_primFace")]
-    mr r10, r3
-    lis r12,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_brresString")]
-    addi r12,r12,0x0                          [R_PPC_ADDR16_LO(41, 1, "loc_brresString")]
-    stw r12, 0x8(r1)
-    addi r3, r1, 0x10
-    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_formatVariantPath")]
-    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_formatVariantPath")]
-    addi r4, r4, 0x1
-    bl __unresolved                          [R_PPC_REL24(0, 4, "printf__sprintf")]
+    addi r4,r4,0x4
     
+    lis r12,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_enemyOverrideFolder")]
+    addi r12,r12,0x0                          [R_PPC_ADDR16_LO(41, 4, "loc_enemyOverrideFolder")]
+    lbz r11,0x0(r12)
+    cmpwi r11, 0x0
+    beq+ loc_notOverrideCommon
+    lbz r11, 0x18(r12)
+    andi. r11, r11, 0x2
+    beq+ loc_notOverrideCommon
+    mr r5, r6
+    mr r6, r12
+    subi r4, r4, 0x1
+loc_notOverrideCommon:
+    bl __unresolved                          [R_PPC_REL24(0, 4, "printf__sprintf")]
+
     li r3,0x1
     bl __unresolved                          [R_PPC_REL24(27, 1, "soArchiveDb__getManager")]
     addi r4, r1, 0x10
@@ -13034,7 +13052,129 @@ emArchive__reqPrimFaceLoad:
     mtlr r0
     addi r1,r1,0xA0
     blr
-    #28
+    #30
+emArchive__reqPrimFaceLoad:
+    stwu r1,-0xA0(r1)
+    mflr r0
+    stw r0,0xA4(r1)
+    
+    rlwinm r11,r4,24,16,31  # \ 0x00XXXXYY (XXXX = variant id, YY = enemy id)
+    andi. r0, r4, 0xff      # /
+
+    lis r8,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_enmString")]
+    addi r8,r8,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_enmString")]
+    lis r6,0x0                               [R_PPC_ADDR16_HA(41, 5, "loc_28C")]
+    addi r6,r6,0x0                           [R_PPC_ADDR16_LO(41, 5, "loc_28C")]
+    lis r12,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_enemyNames")]
+    addi r12,r12,0x0                          [R_PPC_ADDR16_LO(41, 1, "loc_enemyNames")]    
+    mulli r7, r0, 4   
+    cmpwi r3, 0x0                   # \ check if primid
+    beq+ loc_notPrimidFolderFace    # /
+    li r7, 4*0x17
+loc_notPrimidFolderFace:
+    lwzx r7, r12, r7     # \ enemyNames[id] + 2 (skip the em)
+    addi r7, r7, 0x2    # /
+    mr r9, r7
+    
+    lis r12,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_brresString")]
+    addi r12,r12,0x0                          [R_PPC_ADDR16_LO(41, 1, "loc_brresString")]
+    stw r12, 0xC(r1)
+    lis r12,0x0                              [R_PPC_ADDR16_HA(41, 1, "loc_pacString")]
+    addi r12,r12,0x0                         [R_PPC_ADDR16_LO(41, 1, "loc_pacString")]
+    stw r12, 0x10(r1)
+    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_formatFacePath")]
+    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_formatFacePath")]
+
+    lis r12,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_stageOverrideFolder")]
+    addi r12,r12,0x0                          [R_PPC_ADDR16_LO(41, 4, "loc_stageOverrideFolder")]
+    cmplwi r11, 0x8000
+    addi r11, r12, 13
+    lbzx r11, r11, r0
+    bge+ loc_stageOverrideFace
+    subi r12, r12, 0xC
+    lbz r3,0x0(r12)
+    cmpwi r3, 0x0
+    beq+ loc_notOverrideFace
+loc_stageOverrideFace:
+    andi. r0, r11, 0x1
+    beq+ loc_notOverrideFace
+    mr r5, r6
+    mr r6, r12
+    b loc_overrideFace
+loc_notOverrideFace:
+    addi r4, r4, 0x1
+    addi r5, r8, 0x3
+loc_overrideFace:
+    srwi r11, r11, 3
+    subi r11, r11, 0x1
+    stw r11, 0x8(r1)
+    addi r3, r1, 0x14
+    lis r10,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_faceString")]
+    addi r10,r10,0x0                          [R_PPC_ADDR16_LO(41, 1, "loc_faceString")]
+    bl __unresolved                          [R_PPC_REL24(0, 4, "printf__sprintf")]
+    
+    li r3,0x1   
+    bl __unresolved                          [R_PPC_REL24(27, 1, "soArchiveDb__getManager")]
+    addi r4, r1, 0x14
+    li r5, RESOURCE_HEAP_TYPE
+    li r6, 0x0   
+    bl emArchive__reqLoad
+    
+    lwz r0,0xA4(r1)
+    mtlr r0
+    addi r1,r1,0xA0
+    blr 
+
+# 60
+
+#     stwu r1,-0xA0(r1)
+#     mflr r0
+#     stw r0,0xA4(r1)
+
+#     lis r8,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_wpnString")]
+#     addi r8,r8,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_wpnString")]
+#     addi r5, r8, 0x3
+#     lis r6,0x0                               [R_PPC_ADDR16_HA(41, 5, "loc_28C")]
+#     addi r6,r6,0x0                           [R_PPC_ADDR16_LO(41, 5, "loc_28C")]
+#     lis r7,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_C228")]
+#     addi r7,r7,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_C228")]
+#     lis r9,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_primFace")]
+#     addi r9,r9,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_primFace")]
+#     li r10, 0x0
+#     lis r12,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_brresString")]
+#     addi r12,r12,0x0                          [R_PPC_ADDR16_LO(41, 1, "loc_brresString")]
+#     stw r12, 0xC(r1)
+#     addi r3, r1, 0x14
+#     lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_formatFacePath")]
+#     addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_formatFacePath")]
+#     addi r4, r4, 0x1
+    
+# #     lis r12,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_enemyOverrideFolder")]
+# #     addi r12,r12,0x0                          [R_PPC_ADDR16_LO(41, 4, "loc_enemyOverrideFolder")]
+# #     lbz r11,0x0(r12)
+# #     cmpwi r11, 0x0
+# #     beq+ loc_notOverrideCommon
+# #     lbz r11, 0x18(r12)
+# #     andi. r11, r11, 0x2
+# #     beq+ loc_notOverrideCommon
+# #     mr r5, r6
+# #     mr r6, r12
+# #     subi r4, r4, 0x1
+# # loc_notOverrideCommon:
+#     bl __unresolved                          [R_PPC_REL24(0, 4, "printf__sprintf")]
+    
+#     li r3,0x1
+#     bl __unresolved                          [R_PPC_REL24(27, 1, "soArchiveDb__getManager")]
+#     addi r4, r1, 0x14
+#     li r5, RESOURCE_HEAP_TYPE
+#     li r6, 0x0
+#     bl emArchive__reqLoad
+
+#     lwz r0,0xA4(r1)
+#     mtlr r0
+#     addi r1,r1,0xA0
+#     blr
+    #31
 
 emArchive____ct1:
     /* 0000D8D4: */    stwu r1,-0x20(r1)
@@ -13109,6 +13249,7 @@ loc_setCommon:
     /* 0000D978: */    bne- loc__D990
     cmpwi r30, 0x0
     bne+ loc_primFaceNotNull
+    mr r4, r31
     bl emArchive__reqPrimFaceLoad
     b loc_setPrimFace
 loc_primFaceNotNull:
@@ -13126,7 +13267,15 @@ loc__D990:
     /* 0000D9A0: */    mtlr r0
     /* 0000D9A4: */    addi r1,r1,0x20
     /* 0000D9A8: */    blr
-    # 0x50
+    # 0x51
+emInfo__getNamePtr:
+    lis r10,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_enemyNames")]
+    addi r10,r10,0x0                          [R_PPC_ADDR16_LO(41, 1, "loc_enemyNames")]    
+    mulli r9, r4, 4     # \
+    add r9, r10, r9     # | enemyNames[id] + 2 (skip the em)
+    addi r3, r9, 0x2    # /
+    blr
+    # 0x6
 
 # soTransitionModuleImpl__getLastTransitionInfo:
 #     /* 0000BD90: */    addi r3,r3,0xC
@@ -13353,94 +13502,94 @@ loc__D990:
 #     /* 0000C0AC: */    stwx r5,r4,r0
 #     /* 0000C0B0: */    addi r6,r6,0x1
 # loc_C0B4:
-nop #     /* 0000C0B4: */    cmpw r6,r7
-nop #     /* 0000C0B8: */    blt+ loc_C0A0
-nop #     /* 0000C0BC: */    blr
+#     /* 0000C0B4: */    cmpw r6,r7
+#     /* 0000C0B8: */    blt+ loc_C0A0
+#     /* 0000C0BC: */    blr
 # soGeneralWorkSimple__getFlagWorkSize:
-nop #     /* 0000C0C0: */    lwz r3,0x20(r3)
-nop #     /* 0000C0C4: */    blr
+#     /* 0000C0C0: */    lwz r3,0x20(r3)
+#     /* 0000C0C4: */    blr
 # soGeneralWorkSimple__turnOffFlag:
-nop #     /* 0000C0C8: */    stwu r1,-0x20(r1)
-nop #     /* 0000C0CC: */    mflr r0
-nop #     /* 0000C0D0: */    stw r0,0x24(r1)
-nop #     /* 0000C0D4: */    addi r11,r1,0x20
-nop #     /* 0000C0D8: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_28")]
-nop #     /* 0000C0DC: */    mr r28,r3
-nop #     /* 0000C0E0: */    mr r29,r4
-nop #     /* 0000C0E4: */    mr r30,r5
-nop #     /* 0000C0E8: */    lwz r12,0x8(r3)
-nop #     /* 0000C0EC: */    lwz r12,0x60(r12)
-nop #     /* 0000C0F0: */    mtctr r12
-nop #     /* 0000C0F4: */    bctrl
-nop #     /* 0000C0F8: */    mr r31,r3
-nop #     /* 0000C0FC: */    cmplwi r3,0x1
-nop #     /* 0000C100: */    bne- loc_C120
-nop #     /* 0000C104: */    mr r3,r28
-nop #     /* 0000C108: */    mr r4,r29
-nop #     /* 0000C10C: */    mr r5,r30
-nop #     /* 0000C110: */    lwz r12,0x8(r28)
-nop #     /* 0000C114: */    lwz r12,0x58(r12)
-nop #     /* 0000C118: */    mtctr r12
-nop #     /* 0000C11C: */    bctrl
+#     /* 0000C0C8: */    stwu r1,-0x20(r1)
+#     /* 0000C0CC: */    mflr r0
+#     /* 0000C0D0: */    stw r0,0x24(r1)
+#     /* 0000C0D4: */    addi r11,r1,0x20
+#     /* 0000C0D8: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_28")]
+#     /* 0000C0DC: */    mr r28,r3
+#     /* 0000C0E0: */    mr r29,r4
+#     /* 0000C0E4: */    mr r30,r5
+#     /* 0000C0E8: */    lwz r12,0x8(r3)
+#     /* 0000C0EC: */    lwz r12,0x60(r12)
+#     /* 0000C0F0: */    mtctr r12
+#     /* 0000C0F4: */    bctrl
+#     /* 0000C0F8: */    mr r31,r3
+#     /* 0000C0FC: */    cmplwi r3,0x1
+#     /* 0000C100: */    bne- loc_C120
+#     /* 0000C104: */    mr r3,r28
+#     /* 0000C108: */    mr r4,r29
+#     /* 0000C10C: */    mr r5,r30
+#     /* 0000C110: */    lwz r12,0x8(r28)
+#     /* 0000C114: */    lwz r12,0x58(r12)
+#     /* 0000C118: */    mtctr r12
+#     /* 0000C11C: */    bctrl
 # loc_C120:
-nop #     /* 0000C120: */    mr r3,r31
-nop #     /* 0000C124: */    addi r11,r1,0x20
-nop #     /* 0000C128: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___restgpr_28")]
-nop #     /* 0000C12C: */    lwz r0,0x24(r1)
-nop #     /* 0000C130: */    mtlr r0
-nop #     /* 0000C134: */    addi r1,r1,0x20
-nop #     /* 0000C138: */    blr
+#     /* 0000C120: */    mr r3,r31
+#     /* 0000C124: */    addi r11,r1,0x20
+#     /* 0000C128: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___restgpr_28")]
+#     /* 0000C12C: */    lwz r0,0x24(r1)
+#     /* 0000C130: */    mtlr r0
+#     /* 0000C134: */    addi r1,r1,0x20
+#     /* 0000C138: */    blr
 # soGeneralWorkSimple__isFlag:
-nop #     /* 0000C13C: */    lwz r3,0x1C(r3)
-nop #     /* 0000C140: */    rlwinm r0,r5,2,0,29
-nop #     /* 0000C144: */    lwzx r0,r3,r0
-nop #     /* 0000C148: */    and r3,r4,r0
-nop #     /* 0000C14C: */    subic r0,r3,0x1
-nop #     /* 0000C150: */    subfe r3,r0,r3
-nop #     /* 0000C154: */    blr
+#     /* 0000C13C: */    lwz r3,0x1C(r3)
+#     /* 0000C140: */    rlwinm r0,r5,2,0,29
+#     /* 0000C144: */    lwzx r0,r3,r0
+#     /* 0000C148: */    and r3,r4,r0
+#     /* 0000C14C: */    subic r0,r3,0x1
+#     /* 0000C150: */    subfe r3,r0,r3
+#     /* 0000C154: */    blr
 # soGeneralWorkSimple__offFlag:
-nop #     /* 0000C158: */    lwz r6,0x1C(r3)
-nop #     /* 0000C15C: */    rlwinm r3,r5,2,0,29
-nop #     /* 0000C160: */    lwzx r0,r6,r3
-nop #     /* 0000C164: */    andc r0,r0,r4
-nop #     /* 0000C168: */    stwx r0,r6,r3
-nop #     /* 0000C16C: */    blr
+#     /* 0000C158: */    lwz r6,0x1C(r3)
+#     /* 0000C15C: */    rlwinm r3,r5,2,0,29
+#     /* 0000C160: */    lwzx r0,r6,r3
+#     /* 0000C164: */    andc r0,r0,r4
+#     /* 0000C168: */    stwx r0,r6,r3
+#     /* 0000C16C: */    blr
 # soGeneralWorkSimple__clearFlag:
-nop #     /* 0000C170: */    li r5,0x0
-nop #     /* 0000C174: */    lwz r3,0x1C(r3)
-nop #     /* 0000C178: */    rlwinm r0,r4,2,0,29
-nop #     /* 0000C17C: */    stwx r5,r3,r0
-nop #     /* 0000C180: */    blr
+#     /* 0000C170: */    li r5,0x0
+#     /* 0000C174: */    lwz r3,0x1C(r3)
+#     /* 0000C178: */    rlwinm r0,r4,2,0,29
+#     /* 0000C17C: */    stwx r5,r3,r0
+#     /* 0000C180: */    blr
 # soGeneralWorkSimple__onFlag:
-nop #     /* 0000C184: */    lwz r6,0x1C(r3)
-nop #     /* 0000C188: */    rlwinm r3,r5,2,0,29
-nop #     /* 0000C18C: */    lwzx r0,r6,r3
-nop #     /* 0000C190: */    or r0,r0,r4
-nop #     /* 0000C194: */    stwx r0,r6,r3
-nop #     /* 0000C198: */    blr
+#     /* 0000C184: */    lwz r6,0x1C(r3)
+#     /* 0000C188: */    rlwinm r3,r5,2,0,29
+#     /* 0000C18C: */    lwzx r0,r6,r3
+#     /* 0000C190: */    or r0,r0,r4
+#     /* 0000C194: */    stwx r0,r6,r3
+#     /* 0000C198: */    blr
 # soGeneralWorkSimple__getFloatWorkSize:
-nop #     /* 0000C19C: */    lwz r3,0x18(r3)
-nop #     /* 0000C1A0: */    blr
+#     /* 0000C19C: */    lwz r3,0x18(r3)
+#     /* 0000C1A0: */    blr
 # soGeneralWorkSimple__divFloatWork:
-nop #     /* 0000C1A4: */    lis r5,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_18")]
-nop #     /* 0000C1A8: */    lfs f0,0x0(r5)                           [R_PPC_ADDR16_LO(41, 4, "loc_18")]
-nop #     /* 0000C1AC: */    fcmpu cr0,f0,f1
-nop #     /* 0000C1B0: */    beqlr-
-nop #     /* 0000C1B4: */    lwz r3,0x14(r3)
-nop #     /* 0000C1B8: */    rlwinm r0,r4,2,0,29
-nop #     /* 0000C1BC: */    lfsx f0,r3,r0
-nop #     /* 0000C1C0: */    fdivs f0,f0,f1
-nop #     /* 0000C1C4: */    stfsx f0,r3,r0
-nop #     /* 0000C1C8: */    blr
+#     /* 0000C1A4: */    lis r5,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_18")]
+#     /* 0000C1A8: */    lfs f0,0x0(r5)                           [R_PPC_ADDR16_LO(41, 4, "loc_18")]
+#     /* 0000C1AC: */    fcmpu cr0,f0,f1
+#     /* 0000C1B0: */    beqlr-
+#     /* 0000C1B4: */    lwz r3,0x14(r3)
+#     /* 0000C1B8: */    rlwinm r0,r4,2,0,29
+#     /* 0000C1BC: */    lfsx f0,r3,r0
+#     /* 0000C1C0: */    fdivs f0,f0,f1
+#     /* 0000C1C4: */    stfsx f0,r3,r0
+#     /* 0000C1C8: */    blr
 # soGeneralWorkSimple__mulFloatWork:
-nop #     /* 0000C1CC: */    lwz r3,0x14(r3)
-nop #     /* 0000C1D0: */    rlwinm r0,r4,2,0,29
-nop #     /* 0000C1D4: */    lfsx f0,r3,r0
-nop #     /* 0000C1D8: */    fmuls f0,f0,f1
-nop #     /* 0000C1DC: */    stfsx f0,r3,r0
-nop #     /* 0000C1E0: */    blr
+#     /* 0000C1CC: */    lwz r3,0x14(r3)
+#     /* 0000C1D0: */    rlwinm r0,r4,2,0,29
+#     /* 0000C1D4: */    lfsx f0,r3,r0
+#     /* 0000C1D8: */    fmuls f0,f0,f1
+#     /* 0000C1DC: */    stfsx f0,r3,r0
+#     /* 0000C1E0: */    blr
 # soGeneralWorkSimple__subFloatWork:
-nop #     /* 0000C1E4: */    lwz r3,0x14(r3)
+#     /* 0000C1E4: */    lwz r3,0x14(r3)
 nop #     /* 0000C1E8: */    rlwinm r0,r4,2,0,29
 nop #     /* 0000C1EC: */    lfsx f0,r3,r0
 nop #     /* 0000C1F0: */    fsubs f0,f0,f1
@@ -15370,22 +15519,30 @@ loc_F290:
     /* 0000F2A0: */    addi r1,r1,0x10
     /* 0000F2A4: */    blr
 emInfo__isInvalidKind:
-    /* 0000F2A8: */    cmpwi r4,-0x1
-    /* 0000F2AC: */    ble- loc_F2B8
-    /* 0000F2B0: */    cmpwi r4,0x3D
-    /* 0000F2B4: */    blt- loc_F2C0
-loc_F2B8:
-    /* 0000F2B8: */    li r3,0x1
-    /* 0000F2BC: */    blr
-loc_F2C0:
-    /* 0000F2C0: */    li r3,0x0
-    /* 0000F2C4: */    blr
+    li r3,0x1
+    cmpwi r4,-0x1
+    blelr-
+    andi. r4, r4, 0xFF
+    cmpwi r4, ENEMY_KIND_TERM
+    bgelr+
+    li r3, 0x0
+    blr
+#    /* 0000F2A8: */    cmpwi r4,-0x1
+#    /* 0000F2AC: */    ble- loc_F2B8
+#    /* 0000F2B0: */    cmpwi r4,0x3D
+#    /* 0000F2B4: */    blt- loc_F2C0
+#loc_F2B8:
+#    /* 0000F2B8: */    li r3,0x1
+#    /* 0000F2BC: */    blr
+#loc_F2C0:
+#    /* 0000F2C0: */    li r3,0x0
+#    /* 0000F2C4: */    blr
 emInfo__isPrimKind:
     /* 0000F2C8: */    stwu r1,-0x10(r1)
     /* 0000F2CC: */    mflr r0
     /* 0000F2D0: */    stw r0,0x14(r1)
     /* 0000F2D4: */    stw r31,0xC(r1)
-    /* 0000F2D8: */    mr r31,r4
+    /* 0000F2D8: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F2DC: */    lwz r12,0x0(r3)
     /* 0000F2E0: */    lwz r12,0xC(r12)
     /* 0000F2E4: */    mtctr r12
@@ -15421,7 +15578,7 @@ emInfo__getNodeNum:
     /* 0000F344: */    mflr r0
     /* 0000F348: */    stw r0,0x14(r1)
     /* 0000F34C: */    stw r31,0xC(r1)
-    /* 0000F350: */    mr r31,r4
+    /* 0000F350: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F354: */    lwz r12,0x0(r3)
     /* 0000F358: */    lwz r12,0xC(r12)
     /* 0000F35C: */    mtctr r12
@@ -15446,7 +15603,7 @@ emInfo__getMotionNum:
     /* 0000F39C: */    mflr r0
     /* 0000F3A0: */    stw r0,0x14(r1)
     /* 0000F3A4: */    stw r31,0xC(r1)
-    /* 0000F3A8: */    mr r31,r4
+    /* 0000F3A8: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F3AC: */    lwz r12,0x0(r3)
     /* 0000F3B0: */    lwz r12,0xC(r12)
     /* 0000F3B4: */    mtctr r12
@@ -15471,7 +15628,7 @@ emInfo__getStatusNum:
     /* 0000F3F4: */    mflr r0
     /* 0000F3F8: */    stw r0,0x14(r1)
     /* 0000F3FC: */    stw r31,0xC(r1)
-    /* 0000F400: */    mr r31,r4
+    /* 0000F400: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F404: */    lwz r12,0x0(r3)
     /* 0000F408: */    lwz r12,0xC(r12)
     /* 0000F40C: */    mtctr r12
@@ -15496,7 +15653,7 @@ emInfo__getKineticEnergyNum:
     /* 0000F44C: */    mflr r0
     /* 0000F450: */    stw r0,0x14(r1)
     /* 0000F454: */    stw r31,0xC(r1)
-    /* 0000F458: */    mr r31,r4
+    /* 0000F458: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F45C: */    lwz r12,0x0(r3)
     /* 0000F460: */    lwz r12,0xC(r12)
     /* 0000F464: */    mtctr r12
@@ -15521,7 +15678,7 @@ emInfo__getKineticEnergyParamAryPtrGetId:
     /* 0000F4A4: */    mflr r0
     /* 0000F4A8: */    stw r0,0x14(r1)
     /* 0000F4AC: */    stw r31,0xC(r1)
-    /* 0000F4B0: */    mr r31,r4
+    /* 0000F4B0: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F4B4: */    lwz r12,0x0(r3)
     /* 0000F4B8: */    lwz r12,0xC(r12)
     /* 0000F4BC: */    mtctr r12
@@ -15546,7 +15703,7 @@ emInfo__getAreaNum:
     /* 0000F4FC: */    mflr r0
     /* 0000F500: */    stw r0,0x14(r1)
     /* 0000F504: */    stw r31,0xC(r1)
-    /* 0000F508: */    mr r31,r4
+    /* 0000F508: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F50C: */    lwz r12,0x0(r3)
     /* 0000F510: */    lwz r12,0xC(r12)
     /* 0000F514: */    mtctr r12
@@ -15571,7 +15728,7 @@ emInfo__getAreaParamAryPtrGetId:
     /* 0000F554: */    mflr r0
     /* 0000F558: */    stw r0,0x14(r1)
     /* 0000F55C: */    stw r31,0xC(r1)
-    /* 0000F560: */    mr r31,r4
+    /* 0000F560: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F564: */    lwz r12,0x0(r3)
     /* 0000F568: */    lwz r12,0xC(r12)
     /* 0000F56C: */    mtctr r12
@@ -15596,7 +15753,7 @@ emInfo__getTargetSearchNum:
     /* 0000F5AC: */    mflr r0
     /* 0000F5B0: */    stw r0,0x14(r1)
     /* 0000F5B4: */    stw r31,0xC(r1)
-    /* 0000F5B8: */    mr r31,r4
+    /* 0000F5B8: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F5BC: */    lwz r12,0x0(r3)
     /* 0000F5C0: */    lwz r12,0xC(r12)
     /* 0000F5C4: */    mtctr r12
@@ -15621,7 +15778,7 @@ emInfo__getTargetSearchParamAryPtrGetId:
     /* 0000F604: */    mflr r0
     /* 0000F608: */    stw r0,0x14(r1)
     /* 0000F60C: */    stw r31,0xC(r1)
-    /* 0000F610: */    mr r31,r4
+    /* 0000F610: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F614: */    lwz r12,0x0(r3)
     /* 0000F618: */    lwz r12,0xC(r12)
     /* 0000F61C: */    mtctr r12
@@ -15646,7 +15803,7 @@ emInfo__getAINum:
     /* 0000F65C: */    mflr r0
     /* 0000F660: */    stw r0,0x14(r1)
     /* 0000F664: */    stw r31,0xC(r1)
-    /* 0000F668: */    mr r31,r4
+    /* 0000F668: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F66C: */    lwz r12,0x0(r3)
     /* 0000F670: */    lwz r12,0xC(r12)
     /* 0000F674: */    mtctr r12
@@ -15671,7 +15828,7 @@ emInfo__getCreateFuncPtr:
     /* 0000F6B4: */    mflr r0
     /* 0000F6B8: */    stw r0,0x14(r1)
     /* 0000F6BC: */    stw r31,0xC(r1)
-    /* 0000F6C0: */    mr r31,r4
+    /* 0000F6C0: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F6C4: */    lwz r12,0x0(r3)
     /* 0000F6C8: */    lwz r12,0xC(r12)
     /* 0000F6CC: */    mtctr r12
@@ -15696,7 +15853,7 @@ emInfo__getExParamModifyFuncPtr:
     /* 0000F70C: */    mflr r0
     /* 0000F710: */    stw r0,0x14(r1)
     /* 0000F714: */    stw r31,0xC(r1)
-    /* 0000F718: */    mr r31,r4
+    /* 0000F718: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F71C: */    lwz r12,0x0(r3)
     /* 0000F720: */    lwz r12,0xC(r12)
     /* 0000F724: */    mtctr r12
@@ -15721,7 +15878,7 @@ emInfo__getExParamDeleteFuncPtr:
     /* 0000F764: */    mflr r0
     /* 0000F768: */    stw r0,0x14(r1)
     /* 0000F76C: */    stw r31,0xC(r1)
-    /* 0000F770: */    mr r31,r4
+    /* 0000F770: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F774: */    lwz r12,0x0(r3)
     /* 0000F778: */    lwz r12,0xC(r12)
     /* 0000F77C: */    mtctr r12
@@ -15746,7 +15903,7 @@ emInfo__getSEId:
     /* 0000F7BC: */    mflr r0
     /* 0000F7C0: */    stw r0,0x14(r1)
     /* 0000F7C4: */    stw r31,0xC(r1)
-    /* 0000F7C8: */    mr r31,r4
+    /* 0000F7C8: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F7CC: */    lwz r12,0x0(r3)
     /* 0000F7D0: */    lwz r12,0xC(r12)
     /* 0000F7D4: */    mtctr r12
@@ -15771,7 +15928,7 @@ emInfo__StandByStatusKind:
     /* 0000F814: */    mflr r0
     /* 0000F818: */    stw r0,0x14(r1)
     /* 0000F81C: */    stw r31,0xC(r1)
-    /* 0000F820: */    mr r31,r4
+    /* 0000F820: */    andi. r31, r4, 0xFF #mr r31,r4
     /* 0000F824: */    lwz r12,0x0(r3)
     /* 0000F828: */    lwz r12,0xC(r12)
     /* 0000F82C: */    mtctr r12
@@ -15791,9 +15948,9 @@ loc_F854:
     /* 0000F85C: */    mtlr r0
     /* 0000F860: */    addi r1,r1,0x10
     /* 0000F864: */    blr
-emInfo__getNamePtr:
-    /* 0000F868: */    li r3,0x0
-    /* 0000F86C: */    blr
+# emInfo__getNamePtr:
+nop #    /* 0000F868: */    li r3,0x0
+nop #    /* 0000F86C: */    blr
 eminfocpp____sinit_:
     /* 0000F870: */    stwu r1,-0x10(r1)
     /* 0000F874: */    mflr r0
@@ -33157,14 +33314,14 @@ loc_22DF8:
 #     /* 00022E58: */    mtlr r0
 #     /* 00022E5C: */    addi r1,r1,0x10
 #     /* 00022E60: */    blr
-emExtendParamAccesser__reset:
-    /* 00022E64: */    rlwinm r0,r4,2,0,29
+emExtendParamAccesser__reset: 
+    /* 00022E64: */    rlwinm r0,r4,2,22,29 #rlwinm r0,r4,2,0,29
     /* 00022E68: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 6, "loc_BC")]
     /* 00022E6C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 6, "loc_BC")]
     /* 00022E70: */    stwx r3,r4,r0
     /* 00022E74: */    blr
 emExtendParamAccesser__getAccesser:
-    /* 00022E78: */    rlwinm r0,r3,2,0,29
+    /* 00022E78: */    rlwinm r0,r3,2,22,29 #rlwinm r0,r3,2,0,29
     /* 00022E7C: */    lis r3,0x0                               [R_PPC_ADDR16_HA(41, 6, "loc_BC")]
     /* 00022E80: */    addi r3,r3,0x0                           [R_PPC_ADDR16_LO(41, 6, "loc_BC")]
     /* 00022E84: */    lwzx r3,r3,r0
