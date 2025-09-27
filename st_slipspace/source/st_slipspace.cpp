@@ -183,7 +183,7 @@ void stSlipspace::update(float deltaFrame)
         {
             if (_spawners[i].timer > 0)
             {
-                _spawners[i].timer--;
+                _spawners[i].timer -= deltaFrame;
             }
         }
 
@@ -212,7 +212,7 @@ void stSlipspace::update(float deltaFrame)
                     // If timer is not out, decrement it
                     else
                     {
-                        _spawnedEnemyTypes[i].killTimer--;
+                        _spawnedEnemyTypes[i].killTimer -= deltaFrame;
                     }
                 }
                 // If enemy is in blast zone, reset timer
