@@ -35,6 +35,11 @@ int _spawnGroupCount = 0; // Number of spawner groups in stage
 int _enemyTypeCount = 0; // Number of different types of enemies that can spawn
 int _maxFrequency = 0; // Highest enemy frequency in stage
 
+struct SpawnerGroup
+{
+    int maxSpawns;
+};
+
 struct EnemySpawner
 {
     int timer;
@@ -45,6 +50,7 @@ struct EnemySpawner
     int groupIndex;
 };
 
+SpawnerGroup _spawnerGroups[100]; // List of spawner groups in stage
 EnemySpawner _spawners[100]; // List of spawners in stage
 int _spawnQueue[100]; // Holds queued spawns
 EnemyType _enemyTypes[100]; // List of enemy types in stage
@@ -113,8 +119,9 @@ void stSlipspace::update(float deltaFrame)
                 u32 endIndex;
                 ground->getNodeIndexWithFormat(&itemsIndex, 0, "SpawnGroup%d", i);
                 ground->getNodeIndexWithFormat(&endIndex, 0, "SpawnGroupEnd%d", i);
-                // TODO: Capture more spawn group data
+                // Get spawn group data
                 nw4r::g3d::ResNodeData* spawnGroupData = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(itemsIndex)).ptr();
+                _spawnerGroups[_spawnGroupCount].maxSpawns = spawnGroupData->m_rotation.m_z;
                 // Iterate through spawners in group
                 for (int j = itemsIndex + 1; j < endIndex; j++)
                 {
@@ -161,6 +168,7 @@ void stSlipspace::update(float deltaFrame)
             {
                 _spawnedEnemyTypes[i].enemyCreateId = -1;
                 _spawnedEnemyTypes[i].killTimer = 300;
+                _spawnedEnemyTypes[i].groupIndex = -1;
             }
             this->isEnemiesInitialized = true;
         }
@@ -267,8 +275,8 @@ void stSlipspace::update(float deltaFrame)
         int availableSpawnerCount = 0;
         for (int i = 0; i < _spawnerCount; i++)
         {
-            // Only add spawners that are within the blast zone
-            if (inBlastZone(_spawners[i].pos))
+            // Only add spawners that are within the blast zone and aren't part of an already maxed out group
+            if (inBlastZone(_spawners[i].pos) && canSpawnEnemyInGroup(_spawners[i].groupIndex))
             {
                 randomizedSpawnerIndexes[availableSpawnerCount] = i;
                 availableSpawnerCount++;
@@ -297,7 +305,7 @@ void stSlipspace::update(float deltaFrame)
             {
                 // Find enemy list entry
                 // Spawn enemy
-                this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection);
+                this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection, _spawners[si].groupIndex);
                 // Pop from queue
                 for (int j = 0; j < stageData->maxSpawns; j++)
                 {
@@ -1177,7 +1185,7 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
     }
 }
 
-void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr) {
+void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr, int groupIndex) {
     // TODO: MotionPath index investigate if can make every enemy follow it?
     int startingMem = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
     emManager* enemyManager = emManager::getInstance();
@@ -1224,6 +1232,7 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
         {
             _spawnedEnemyTypes[i].enemyType = enemyToSpawn;
             _spawnedEnemyTypes[i].enemyCreateId = id;
+            _spawnedEnemyTypes[i].groupIndex = groupIndex;
             break;
         }
     }
@@ -1411,6 +1420,24 @@ bool stSlipspace::inBlastZone(Vec2f pos)
     return (pos.m_x < center.m_x + blastZone.m_right && pos.m_x > center.m_x + blastZone.m_left && pos.m_y < center.m_y + blastZone.m_up && pos.m_y > center.m_y + blastZone.m_down);
 }
 
+int stSlipspace::getGroupEnemyCount(int groupIndex)
+{
+    int groupCount = 0;
+    for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
+    {
+        if (_spawnedEnemyTypes[i].groupIndex == groupIndex)
+        {
+            groupCount++;
+        }
+    }
+    return groupCount;
+}
+
+bool stSlipspace::canSpawnEnemyInGroup(int groupIndex)
+{
+    return _spawnerGroups[groupIndex].maxSpawns == 0 || getGroupEnemyCount(groupIndex) < _spawnerGroups[groupIndex].maxSpawns;
+}
+
 Vec3f* getRandomOffset(Vec3f* pos)
 {
     int xoffset = 10;
@@ -1524,6 +1551,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
         {
             _enemyCount--;
             spawnedEnemy.enemyCreateId = -1;
+            spawnedEnemy.groupIndex = -1;
         }
 
         // Update array of spawned enemies

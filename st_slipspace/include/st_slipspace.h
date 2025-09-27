@@ -57,6 +57,7 @@ class SlipspaceEnemy
         EnemyType* enemyType;
         int enemyCreateId;
         int killTimer;
+        int groupIndex;
 };
 
 class stSlipspace : public stMelee, public ftOutsideEventObserver {
@@ -163,7 +164,7 @@ public:
     void createItemPac(u32 index);
     void createEnemyPac(u32 index);
     void putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos, int motionPathIndex);
-    void putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr);
+    void putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr, int groupIndex);
     void clearHeap();
     bool calcHighScore();
     void startGhost();
@@ -174,6 +175,8 @@ public:
     EnemyDrops calcCoins(int points);
     void dropCoins(Vec3f position, EnemyDrops coinDrops);
     bool inBlastZone(Vec2f position);
+    int getGroupEnemyCount(int groupIndex);
+    bool canSpawnEnemyInGroup(int groupIndex);
     SlipspaceEnemy getSpawnedEnemy(int enemyCreateId);
     virtual stDestroyBossParamCommon getDestroyBossParamCommon(u32, int enemyCreateId = -1, int enemyMessageKind = -1);
 
