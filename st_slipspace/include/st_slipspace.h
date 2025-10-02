@@ -169,6 +169,7 @@ public:
     void applySeed();
     EnemyDrops calcCoins(int points);
     void dropCoins(Vec3f position, EnemyDrops coinDrops);
+    bool inCameraRange(Vec2f position);
     bool inBlastZone(Vec2f position);
     int getGroupEnemyCount(int groupIndex);
     bool canSpawnEnemyInGroup(int groupIndex);

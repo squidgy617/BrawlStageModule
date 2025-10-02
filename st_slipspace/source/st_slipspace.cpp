@@ -277,8 +277,8 @@ void stSlipspace::update(float deltaFrame)
         int availableSpawnerCount = 0;
         for (int i = 0; i < _spawnerCount; i++)
         {
-            // Only add spawners that are within the blast zone and aren't part of an already maxed out group
-            if (inBlastZone(_spawners[i].pos) && canSpawnEnemyInGroup(_spawners[i].groupIndex))
+            // Only add spawners that are within the camera range and aren't part of an already maxed out group
+            if (inCameraRange(_spawners[i].pos) && canSpawnEnemyInGroup(_spawners[i].groupIndex))
             {
                 randomizedSpawnerIndexes[availableSpawnerCount] = i;
                 availableSpawnerCount++;
@@ -1420,6 +1420,14 @@ bool stSlipspace::inBlastZone(Vec2f pos)
     this->m_stagePositions->getDeadRange(&blastZone);
     Vec3f center = this->m_stagePositions->m_centerPos;
     return (pos.m_x < center.m_x + blastZone.m_right && pos.m_x > center.m_x + blastZone.m_left && pos.m_y < center.m_y + blastZone.m_up && pos.m_y > center.m_y + blastZone.m_down);
+}
+
+bool stSlipspace::inCameraRange(Vec2f pos)
+{
+    Rect2D cameraRange;
+    this->m_stagePositions->getCameraRange(&cameraRange);
+    Vec3f center = this->m_stagePositions->m_centerPos;
+    return (pos.m_x < center.m_x + cameraRange.m_right && pos.m_x > center.m_x + cameraRange.m_left && pos.m_y < center.m_y + cameraRange.m_up && pos.m_y > center.m_y + cameraRange.m_down);
 }
 
 int stSlipspace::getGroupEnemyCount(int groupIndex)
