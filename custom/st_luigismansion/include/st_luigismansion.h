@@ -12,9 +12,7 @@ const float POKETRAINER_Z = 0.0f;
 class stLuigisMansion : public stMelee {
 public:
 
-    stLuigisMansion() : stMelee("stLuigisMansion", Stages::Final){
-
-    };
+    stLuigisMansion(srStageKind stageKind) : stMelee("stLuigisMansion", stageKind) {};
     static stLuigisMansion* create();
 
     virtual void createObj();
@@ -24,6 +22,7 @@ public:
     virtual bool isBamperVector();
     virtual ~stLuigisMansion() { this->releaseArchive(); };
 
+    virtual void createObjGround(int mdlIndex);
     virtual void createObjLightning(int mdlIndex);
 
     //STATIC_CHECK(sizeof(stLuigisMansion) == 0x1D8)

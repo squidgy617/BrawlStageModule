@@ -2,13 +2,14 @@
 #include "gr_luigismansion.h"
 #include <memory.h>
 #include <st/st_class_info.h>
+#include "gr_final.h"
 #include "gr_luigismansion_lightning.h"
 
 static stClassInfoImpl<Stages::Final, stLuigisMansion> classInfo = stClassInfoImpl<Stages::Final, stLuigisMansion>();
 
 stLuigisMansion* stLuigisMansion::create()
 {
-    stLuigisMansion* stage = new (Heaps::StageInstance) stLuigisMansion();
+    stLuigisMansion* stage = new (Heaps::StageInstance) stLuigisMansion(Stages::Final);
     return stage;
 }
 bool stLuigisMansion::loading()
@@ -24,25 +25,9 @@ void stLuigisMansion::createObj()
 {
     testStageParamInit(m_fileData, 0xA);
     testStageDataInit(m_fileData, 0x14, 1);
-    grLuigisMansion* ground = grLuigisMansion::create(1, "", "grFinalMainBg");
-    if (ground != NULL)
-    {
-        addGround(ground);
-        ground->setType(0);
-        ground->startup(m_fileData, 0, 0);
-        ground->setStageData(m_stageData);
-        ground->setDontMoveGround();
-    }
-    ground = grLuigisMansion::create(2, "", "grFinalStage");
-    if (ground != NULL)
-    {
-        addGround(ground);
-        ground->setType(1);
-        ground->startup(m_fileData, 0, 0);
-        ground->setStageData(m_stageData);
-        ground->setDontMoveGround();
-    }
 
+    this->createObjGround(1);
+    this->createObjGround(2);
     this->createObjLightning(3);
 
     createCollision(m_fileData, 2, NULL);
@@ -65,6 +50,17 @@ void stLuigisMansion::createObj()
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_pokeTrainerPos, 0x0);
 }
 
+void stLuigisMansion::createObjGround(int mdlIndex) {
+    grFinal* ground = grFinal::create(mdlIndex, "", "grFinal");
+    if (ground != NULL)
+    {
+        addGround(ground);
+        ground->startup(m_fileData, 0, 0);
+        ground->setStageData(m_stageData);
+        ground->setDontMoveGround();
+    }
+}
+
 void stLuigisMansion::createObjLightning(int mdlIndex) {
     grLuigisMansionLightning* lightning = grLuigisMansionLightning::create(mdlIndex, "", "grLuigisMansionLightning");
     if (lightning != NULL)
@@ -84,4 +80,18 @@ GXColor stLuigisMansion::getFinalTechniqColor()
     return (GXColor){0x14000496};
 }
 
-ST_CLASS_INFO;
+template<Stages::srStageKind I, typename T>
+T* stClassInfoImpl<I, T>::create(){
+    T* stage = new(Heaps::StageInstance) T(I);
+    return stage;
+}
+
+template<Stages::srStageKind I, typename T>
+stClassInfoImpl<I, T>::~stClassInfoImpl() {
+   setClassInfo(I,0);
+}
+
+template<Stages::srStageKind I, typename T>
+void stClassInfoImpl<I, T>::preload() {
+   return;
+}
