@@ -339,6 +339,10 @@ To create spawners you must create spawner groups. These are children of the "Sp
 
 Child bones of the spawner group represent individual spawners (see below). The last child should always be named "SpawnGroupEnd#", where # matches the # of the parent bone.
 
+**Rotation X** - Group spawn timer. If max enemy spawns are hit (Rotation Y), no more enemies can spawn from the group until a number of frames equal to this timer have passed.
+
+**Rotation Y** - Maximum number of enemies that can be spawned from grouped spawners before spawn timer is triggered. A value of 0 will not limit total spawns.
+
 **Rotation Z** - Maximum number of enemies that can be spawned from grouped spawners at one time. A value of 0 will not limit enemy spawns.
 
 ## Spawner
