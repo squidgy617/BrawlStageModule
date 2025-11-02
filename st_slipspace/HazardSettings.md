@@ -355,6 +355,8 @@ sora_enemy.rel file index = 301
 
 **Scale X** - Number of frames before spawner can be used again after spawning an enemy
 
+**Rotation Y** - Visibility ModelData Index (bone to determine visibility must be called "VisNode"). When visibility is toggled off by VIS0 animation, spawner will not spawn enemies.
+
 **Rotation Z** - Starting facing direction
 
 **Translation X,Y** - Position

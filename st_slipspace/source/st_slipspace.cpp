@@ -51,9 +51,11 @@ struct EnemySpawner
     int facingDirection;
     Vec2f pos;
     int motionPathIndex;
+    int visNodeIndex;
     int groupIndex;
     int respawnTimerLength;
     grMotionPath* motionPath;
+    grMotionPath* visNode;
 };
 
 SpawnerGroup _spawnerGroups[100]; // List of spawner groups in stage
@@ -137,6 +139,7 @@ void stSlipspace::update(float deltaFrame)
                     _spawners[_spawnerCount].startStatus = resNodeData->m_scale.m_z;
                     _spawners[_spawnerCount].pos = *resNodeData->m_translation.xy();
                     _spawners[_spawnerCount].motionPathIndex = resNodeData->m_translation.m_z;
+                    _spawners[_spawnerCount].visNodeIndex = resNodeData->m_rotation.m_y;
                     _spawners[_spawnerCount].facingDirection = resNodeData->m_rotation.m_z;
                     _spawners[_spawnerCount].groupIndex = i;
                     _spawners[_spawnerCount].respawnTimerLength = resNodeData->m_scale.m_x;
@@ -182,6 +185,23 @@ void stSlipspace::update(float deltaFrame)
                 else
                 {
                     _spawners[i].motionPath = NULL;
+                }
+            }
+            // Initialize spawner visibility nodes
+            for (int i = 0; i < _spawnerCount; i++)
+            {
+                if (_spawners[i].visNodeIndex != 0)
+                {
+                    grMotionPath* ground = grMotionPath::create(_spawners[i].visNodeIndex, "VisNode", "grMotionPath");
+                    if (ground != NULL) {
+                        addGround(ground);
+                        ground->startup(m_fileData, 0, 0);
+                    }
+                    _spawners[i].visNode = ground;
+                }
+                else
+                {
+                    _spawners[i].visNode = NULL;
                 }
             }
             // Initialize _spawnQueue
@@ -318,7 +338,8 @@ void stSlipspace::update(float deltaFrame)
                 Vec3f motionPathPos = _spawners[i].motionPath->getPos();
                 pos = Vec2f(motionPathPos.m_x, motionPathPos.m_y);
             }
-            if (inCameraRange(pos) && canSpawnEnemyInGroup(_spawners[i].groupIndex))
+            if (inCameraRange(pos) && canSpawnEnemyInGroup(_spawners[i].groupIndex) 
+            && (_spawners[i].visNode == NULL || _spawners[i].visNode->isNodeVisible(0, _spawners[i].visNode->m_nodeIndex)))
             {
                 randomizedSpawnerIndexes[availableSpawnerCount] = i;
                 availableSpawnerCount++;
