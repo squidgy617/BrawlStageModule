@@ -317,7 +317,7 @@ EnmCommon file index = 300
 
 sora_enemy.rel file index = 301
 
-**Scale X** - Enemy Id
+**Scale X** - Enemy Id. To load an enemy variant instead, write the enemy ID in hex like XXXXYY, where XXXX is the variant ID and YY is the enemy ID. Convert this value to decimal and place it in this field to load that variant. Enemy variant PAC files are named EnmXXEnemyName.pac and EnmXXEnemyNameBrres.pac.
 
 **Scale Y** - Difficulty
 
