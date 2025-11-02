@@ -53,6 +53,7 @@ struct EnemySpawner
     int motionPathIndex;
     int groupIndex;
     int respawnTimerLength;
+    grMotionPath* motionPath;
 };
 
 SpawnerGroup _spawnerGroups[100]; // List of spawner groups in stage
@@ -164,6 +165,23 @@ void stSlipspace::update(float deltaFrame)
                         _maxFrequency = _enemyTypes[_enemyTypeCount].frequency;
                     }
                     _enemyTypeCount++;
+                }
+            }
+            // Initialize spawner motion paths
+            for (int i = 0; i < _spawnerCount; i++)
+            {
+                if (_spawners[i].motionPathIndex != 0) 
+                {
+                    grMotionPath* ground = grMotionPath::create(_spawners[i].motionPathIndex, "MoveNode", "grMotionPath");
+                    if (ground != NULL) {
+                        addGround(ground);
+                        ground->startup(m_fileData, 0, 0);
+                    }
+                    _spawners[i].motionPath = ground;
+                }
+                else
+                {
+                    _spawners[i].motionPath = NULL;
                 }
             }
             // Initialize _spawnQueue
@@ -293,7 +311,14 @@ void stSlipspace::update(float deltaFrame)
         for (int i = 0; i < _spawnerCount; i++)
         {
             // Only add spawners that are within the camera range and aren't part of an already maxed out group
-            if (inCameraRange(_spawners[i].pos) && canSpawnEnemyInGroup(_spawners[i].groupIndex))
+            Vec2f pos = _spawners[i].pos;
+            // If spawner has a motion path, use motion path position for spawning
+            if (_spawners[i].motionPath != NULL)
+            {
+                Vec3f motionPathPos = _spawners[i].motionPath->getPos();
+                pos = Vec2f(motionPathPos.m_x, motionPathPos.m_y);
+            }
+            if (inCameraRange(pos) && canSpawnEnemyInGroup(_spawners[i].groupIndex))
             {
                 randomizedSpawnerIndexes[availableSpawnerCount] = i;
                 availableSpawnerCount++;
@@ -322,7 +347,7 @@ void stSlipspace::update(float deltaFrame)
             {
                 // Find enemy list entry
                 // Spawn enemy
-                this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si].pos, _spawners[si].motionPathIndex, _spawners[si].facingDirection, _spawners[si].groupIndex);
+                this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si].pos, 0, _spawners[si].facingDirection, _spawners[si].groupIndex, _spawners[si].motionPath);
                 // Pop from queue
                 for (int j = 0; j < stageData->maxSpawns; j++)
                 {
@@ -1214,7 +1239,7 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
     }
 }
 
-void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr, int groupIndex) {
+void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr, int groupIndex, grMotionPath* spawnerMotionPath) {
     // TODO: MotionPath index investigate if can make every enemy follow it?
     int startingMem = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
     emManager* enemyManager = emManager::getInstance();
@@ -1234,6 +1259,8 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
     create.m_connectedTriggerId = 0;
 
     create.m_motionPath = NULL;
+    // Set enemy motion path
+    // TODO: Enemy path needs to go on spawner somewhere? Only works for certain enemies probably
     if (motionPathIndex != 0) {
         grMotionPath* ground = grMotionPath::create(motionPathIndex, "MoveNode", "grMotionPath");
         if (ground != NULL) {
@@ -1241,6 +1268,12 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
             ground->startup(m_fileData, 0, 0);
         }
         create.m_motionPath = ground;
+    }
+    // Set starting position to spawner motion path
+    if (spawnerMotionPath != NULL)
+    {
+        Vec3f groundPos = spawnerMotionPath->getPos();
+        create.m_startPos = Vec3f(groundPos.m_x, groundPos.m_y, 0.0);
     }
     create.m_epbm = NULL;
     create.m_epsp = NULL;

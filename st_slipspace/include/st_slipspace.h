@@ -159,7 +159,7 @@ public:
     void createItemPac(u32 index);
     void createEnemyPac(u32 index);
     void putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos, int motionPathIndex);
-    void putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr, int groupIndex);
+    void putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr, int groupIndex, grMotionPath* spawnerMotionPath);
     void clearHeap();
     bool calcHighScore();
     void startGhost();
