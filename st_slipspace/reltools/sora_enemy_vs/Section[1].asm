@@ -47602,7 +47602,7 @@ wnemSimple_Data____ct1:
 #include "./Enemies/asm/emBotron.asm"
 #include "./Enemies/asm/emGyraan.asm"
 #include "./Enemies/asm/emMite.asm"
-#include "./Enemies/asm/emPrim.asm"
+.include "./Enemies/asm/emPrim.asm"
 #include "./Enemies/asm/emCataguard.asm"
 #include "./Enemies/asm/emKuribo.asm"
 .include "./Enemies/asm/emFlows.asm"
@@ -47686,3 +47686,17 @@ __unresolved:
     /* 0006B7F8: */    b __unresolved                           [R_PPC_REL24(0, 4, "module__moUnResolvedMessage")]
 
 # 0x34A2C
+
+emManager__preloadModule:
+    stwu r1,-0x40(r1)
+    mflr r0
+    stw r0,0x44(r1)
+    addi r11,r1,0x40
+    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_23")]
+
+    addi r11,r1,0x40
+    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___restgpr_23")]
+    lwz r0,0x44(r1)
+    mtlr r0
+    addi r1,r1,0x40
+    blr
