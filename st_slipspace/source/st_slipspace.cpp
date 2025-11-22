@@ -507,6 +507,15 @@ void stSlipspace::createObj()
     gfModuleHeader* moduleHeader = static_cast<gfModuleHeader*>(m_secondaryFileData->getData(Data_Type_Misc, 301, &size, 0xfffe));
     if (moduleHeader != NULL) {
         moduleManager->loadModuleRequestOnImage("sora_enemy.rel", Heaps::OverlayStage, moduleHeader, &size);
+        // Set up overrides
+        // int nodeSize;
+        // EnemyOverride* enemyOverride = static_cast<EnemyOverride*>(this->m_fileData->getData(Data_Type_Misc, 30000, &nodeSize, 0xfffe));
+        // g_EnemyOverride = *enemyOverride;
+        // OSReport("Enemy Folder: %s \n", g_EnemyOverride.m_enmOverrideFolder);
+        // OSReport("Goomba Override Setting: %d \n", g_EnemyOverride.m_overrideGoomba);
+        // OSReport("Goomba Face: %d \n", g_EnemyOverride.m_faceIndexGoomba);
+        // OSReport("Goomba Module: %d \n", g_EnemyOverride.m_overrideModuleGoomba);
+
         emManager::create(0x1e,0x14,0);
         //gfHeapManager::dumpList();
         emWeaponManager::create();
