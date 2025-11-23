@@ -90,17 +90,20 @@ void stSlipspace::update(float deltaFrame)
                 {
                     // Enable score display
                     g_IfMngr->m_ifPlayers[i]->m_scoreDisplay = true;
+                    g_IfMngr->m_ifPlayers[i]->updateStockCoin(g_GameGlobal->m_resultInfo->m_playersResultInfo[i].m_koCount);
+                    // Example snippet - force coin display on, in case you want to force coin mode behavior even outside of a coin battle
                     // g_IfMngr->m_ifPlayers[i]->updateCoinScoreSub(0);
                     // g_IfMngr->m_ifPlayers[i]->m_gameRule = Game_Rule_Coin;
                     // Update UI with score
-                    g_IfMngr->m_ifPlayers[i]->updateStockCoin(g_GameGlobal->m_resultInfo->m_playersResultInfo[i].m_koCount);
-                    // if (g_ftManager->m_isTeams && i > 3)
-                    // {
-                    //     g_IfMngr->m_ifPlayers[i]->teamNo = 1;
-                    // }
                 }
             }
         }
+    }
+
+    // Force our dummy fighter slot to team 5 so KO tracking works right
+    if (g_ftManager->m_isTeams)
+    {
+        g_GameGlobal->m_resultInfo->m_playersResultInfo[KO_PLAYERINDEX].m_teamNo = 5;
     }
 
     // Dynamic blast zone stuff
@@ -519,6 +522,12 @@ void stSlipspace::createObj()
     if (_gameMode == Game_Rule_Coin) {
         g_ftManager->m_gameRule = Game_Rule_Time;
     }
+    // Example snippet to force coin mode result screen instead of time result screen
+    // else if (_gameMode == Game_Rule_Time) {
+    //     g_GameGlobal->m_modeMelee->m_meleeInitData.m_gameRule = Game_Rule_Coin;
+    //     g_GameGlobal->m_resultInfo->m_gameRule = Game_Rule_Coin;
+    // }
+    
     // TODO: Look into switching UI to stock icon and number left if more than certain amount of targets (check IfCenter createModel functions)
 
     this->level = 0; // TODO
