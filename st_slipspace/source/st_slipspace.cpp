@@ -24,6 +24,7 @@
 #include <gf/gf_slow_manager.h>
 #include <mt/mt_trig.h>
 #include <gf/gf_3d_scene.h>
+#include <if/if_mngr.h>
 
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
@@ -77,6 +78,31 @@ bool stSlipspace::loading()
 
 void stSlipspace::update(float deltaFrame)
 {
+    // If time mode, force score display on
+    if (_gameMode == Game_Rule_Time)
+    {
+        if (g_IfMngr != NULL)
+        {
+            // Loop through players and enable score display
+            for (int i = 0; i < (sizeof(g_IfMngr->m_ifPlayers) / sizeof(g_IfMngr->m_ifPlayers[0])); i++)
+            {
+                if (g_IfMngr->m_ifPlayers[i] != NULL)
+                {
+                    // Enable score display
+                    g_IfMngr->m_ifPlayers[i]->m_scoreDisplay = true;
+                    // g_IfMngr->m_ifPlayers[i]->updateCoinScoreSub(0);
+                    // g_IfMngr->m_ifPlayers[i]->m_gameRule = Game_Rule_Coin;
+                    // Update UI with score
+                    g_IfMngr->m_ifPlayers[i]->updateStockCoin(g_GameGlobal->m_resultInfo->m_playersResultInfo[i].m_koCount);
+                    // if (g_ftManager->m_isTeams && i > 3)
+                    // {
+                    //     g_IfMngr->m_ifPlayers[i]->teamNo = 1;
+                    // }
+                }
+            }
+        }
+    }
+
     // Dynamic blast zone stuff
     if (this->gameIsStarting) {
         return;
@@ -490,7 +516,7 @@ void stSlipspace::createObj()
     GameRule gameRule = g_ftManager->m_gameRule;
     // Store selected game mode for later
     _gameMode = gameRule;
-    if (gameRule == Game_Rule_Coin) {
+    if (_gameMode == Game_Rule_Coin) {
         g_ftManager->m_gameRule = Game_Rule_Time;
     }
     // TODO: Look into switching UI to stock icon and number left if more than certain amount of targets (check IfCenter createModel functions)
