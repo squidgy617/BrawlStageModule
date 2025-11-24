@@ -1763,6 +1763,10 @@ void stSlipspace::moveCamera()
         // Get average position of players
         float averageX = 0;
         float averageY = 0;
+        float offsetX = 0;
+        float offsetY = 0;
+        float camOffsetX = 0;
+        float camOffsetY = 0;
         int playerCount = 0;
         for (int i = 0; i < g_ftManager->getEntryCount(); i++) 
         {
@@ -1775,9 +1779,17 @@ void stSlipspace::moveCamera()
         }
         averageX = averageX / playerCount;
         averageY = averageY / playerCount;
-        this->m_stagePositions->m_centerPos.m_x = averageX;
-        this->m_stagePositions->m_centerPos.m_y = averageY;
-        cameraController->m_stageCameraParam.m_centerPos = this->m_stagePositions->m_centerPos;
+        // Get offsets from actual position of StgPosition bone
+        nw4r::g3d::ResNodeData* resNodeData = m_stagePositions->m_scnMdl->m_resMdl.GetResNode(0).ptr();
+        offsetX = 0 - resNodeData->m_translation.m_x;
+        offsetY = 0 - resNodeData->m_translation.m_y;
+        nw4r::g3d::ResNodeData* camCtrlData = m_stagePositions->m_scnMdl->m_resMdl.GetResNode(1).ptr();
+        camOffsetX = camCtrlData->m_translation.m_x;
+        camOffsetY = camCtrlData->m_translation.m_y;
+        this->m_stagePositions->m_centerPos.m_x = averageX + offsetX + camOffsetX;
+        this->m_stagePositions->m_centerPos.m_y = averageY + offsetY + camOffsetY;
+        // cameraController->m_stageCameraParam.m_centerPos = this->m_stagePositions->m_centerPos;
+        // cameraController->m_stageCameraParam.m_centerPos.m_y += camOffsetY;
     }
     if (stageData != NULL) {
         if (this->m_stagePositions->m_centerPos.m_x < stageData->minCamX)
