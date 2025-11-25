@@ -1552,7 +1552,8 @@ bool stSlipspace::inCameraRange(Vec2f pos)
     Rect2D cameraRange;
     this->m_stagePositions->getCameraRange(&cameraRange);
     Vec3f center = this->m_stagePositions->m_centerPos;
-    return (pos.m_x < center.m_x + cameraRange.m_right && pos.m_x > center.m_x + cameraRange.m_left && pos.m_y < center.m_y + cameraRange.m_up && pos.m_y > center.m_y + cameraRange.m_down);
+    Vec2f offsets = getStgPositionOffset();
+    return (pos.m_x < center.m_x - offsets.m_x + cameraRange.m_right && pos.m_x > center.m_x - offsets.m_x + cameraRange.m_left && pos.m_y < center.m_y - offsets.m_y + cameraRange.m_up && pos.m_y > center.m_y - offsets.m_y + cameraRange.m_down);
 }
 
 int stSlipspace::getGroupEnemyCount(int groupIndex)
@@ -1727,6 +1728,22 @@ void stSlipspace::processFixCamera()
   return;
 }
 
+Vec2f stSlipspace::getStgPositionOffset()
+{
+    // Get offsets from actual position of StgPosition bone
+    float offsetX = 0;
+    float offsetY = 0;
+    float camOffsetX = 0;
+    float camOffsetY = 0;
+    nw4r::g3d::ResNodeData* resNodeData = m_stagePositions->m_scnMdl->m_resMdl.GetResNode(0).ptr();
+    offsetX = 0 - resNodeData->m_translation.m_x;
+    offsetY = 0 - resNodeData->m_translation.m_y;
+    nw4r::g3d::ResNodeData* camCtrlData = m_stagePositions->m_scnMdl->m_resMdl.GetResNode(1).ptr();
+    camOffsetX = camCtrlData->m_translation.m_x;
+    camOffsetY = camCtrlData->m_translation.m_y;
+    return Vec2f(offsetX + camOffsetX, offsetY + camOffsetY);
+}
+
 void stSlipspace::moveCamera()
 {
     stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
@@ -1763,10 +1780,6 @@ void stSlipspace::moveCamera()
         // Get average position of players
         float averageX = 0;
         float averageY = 0;
-        float offsetX = 0;
-        float offsetY = 0;
-        float camOffsetX = 0;
-        float camOffsetY = 0;
         int playerCount = 0;
         for (int i = 0; i < g_ftManager->getEntryCount(); i++) 
         {
@@ -1779,15 +1792,9 @@ void stSlipspace::moveCamera()
         }
         averageX = averageX / playerCount;
         averageY = averageY / playerCount;
-        // Get offsets from actual position of StgPosition bone
-        nw4r::g3d::ResNodeData* resNodeData = m_stagePositions->m_scnMdl->m_resMdl.GetResNode(0).ptr();
-        offsetX = 0 - resNodeData->m_translation.m_x;
-        offsetY = 0 - resNodeData->m_translation.m_y;
-        nw4r::g3d::ResNodeData* camCtrlData = m_stagePositions->m_scnMdl->m_resMdl.GetResNode(1).ptr();
-        camOffsetX = camCtrlData->m_translation.m_x;
-        camOffsetY = camCtrlData->m_translation.m_y;
-        this->m_stagePositions->m_centerPos.m_x = averageX + offsetX + camOffsetX;
-        this->m_stagePositions->m_centerPos.m_y = averageY + offsetY + camOffsetY;
+        Vec2f offsets = getStgPositionOffset();
+        this->m_stagePositions->m_centerPos.m_x = averageX + offsets.m_x;
+        this->m_stagePositions->m_centerPos.m_y = averageY + offsets.m_y;
         // cameraController->m_stageCameraParam.m_centerPos = this->m_stagePositions->m_centerPos;
         // cameraController->m_stageCameraParam.m_centerPos.m_y += camOffsetY;
     }
