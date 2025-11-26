@@ -1735,12 +1735,16 @@ Vec2f stSlipspace::getStgPositionOffset()
     float offsetY = 0;
     float camOffsetX = 0;
     float camOffsetY = 0;
-    nw4r::g3d::ResNodeData* resNodeData = m_stagePositions->m_scnMdl->m_resMdl.GetResNode(0).ptr();
-    offsetX = 0 - resNodeData->m_translation.m_x;
-    offsetY = 0 - resNodeData->m_translation.m_y;
-    nw4r::g3d::ResNodeData* camCtrlData = m_stagePositions->m_scnMdl->m_resMdl.GetResNode(1).ptr();
-    camOffsetX = camCtrlData->m_translation.m_x;
-    camOffsetY = camCtrlData->m_translation.m_y;
+    stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
+    if (stageData->dynamicBlastZones)
+    {
+        nw4r::g3d::ResNodeData* resNodeData = m_stagePositions->m_scnMdl->m_resMdl.GetResNode(0).ptr();
+        offsetX = 0 - resNodeData->m_translation.m_x;
+        offsetY = 0 - resNodeData->m_translation.m_y;
+        nw4r::g3d::ResNodeData* camCtrlData = m_stagePositions->m_scnMdl->m_resMdl.GetResNode(1).ptr();
+        camOffsetX = camCtrlData->m_translation.m_x;
+        camOffsetY = camCtrlData->m_translation.m_y;
+    }
     return Vec2f(offsetX + camOffsetX, offsetY + camOffsetY);
 }
 
