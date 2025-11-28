@@ -70,6 +70,7 @@ protected:
     bool isItemsInitialized;
     bool isEnemiesInitialized;
     bool isAssistInitialized;
+    bool isRespawnsInitialized;
     bool isEndProcessed;
     gfArchive* enemyCommonPac;
     gfArchive* primFacePac;
@@ -106,6 +107,7 @@ public:
         isItemsInitialized = false;
         isEnemiesInitialized = false;
         isAssistInitialized = true;
+        isRespawnsInitialized = false;
         isEndProcessed = false;
         targetsLeft = 0;
         targetsHit = 0;
@@ -124,6 +126,7 @@ public:
     virtual void getItemPac(gfArchive** brres, gfArchive** param, itKind itemID, int variantID, gfArchive** commonParam, itCustomizerInterface** customizer);
     virtual void getEnemyPac(gfArchive **brres, gfArchive **param, gfArchive **enmCommon, gfArchive **primFaceBrres, EnemyKind enemyID);
     virtual void notifyEventInfoGo();
+    virtual void getFighterReStartPos(Vec3f* startPos, int fighterIndex);
     virtual ~stSlipspace() {
         this->clearHeap();
         this->releaseArchive();

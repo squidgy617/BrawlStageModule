@@ -35,6 +35,7 @@ int _spawnerCount = 0; // Number of spawners in stage
 int _spawnGroupCount = 0; // Number of spawner groups in stage
 int _enemyTypeCount = 0; // Number of different types of enemies that can spawn
 int _maxFrequency = 0; // Highest enemy frequency in stage
+int _respawnPointCount = 0; // Number of respawn points in stage;
 
 struct SpawnerGroup
 {
@@ -59,12 +60,18 @@ struct EnemySpawner
     grMotionPath* visNode;
 };
 
+struct RespawnPoint
+{
+    Vec3f position;
+};
+
 SpawnerGroup _spawnerGroups[100]; // List of spawner groups in stage
 EnemySpawner _spawners[100]; // List of spawners in stage
 int _spawnQueue[100]; // Holds queued spawns
 EnemyType _enemyTypes[100]; // List of enemy types in stage
 SlipspaceEnemy _spawnedEnemyTypes[100]; // List of currently spawned enemies in the stage
 GameRule _gameMode; // Selected game mode
+RespawnPoint _respawnPoints[100]; // List of respawn points in stage
 
 stSlipspace* stSlipspace::create()
 {
@@ -460,6 +467,18 @@ void stSlipspace::update(float deltaFrame)
             }
         }
         // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue[0]].enemyId, _enemyTypes[_spawnQueue[1]].enemyId, _enemyTypes[_spawnQueue[2]].enemyId, _enemyTypes[_spawnQueue[3]].enemyId, _enemyTypes[_spawnQueue[4]].enemyId);
+    }
+
+    if (!this->isRespawnsInitialized) {
+        Ground* ground = this->getGround(0);
+        u32 respawnsIndex = ground->getNodeIndex(0, "Respawns");
+        u32 endIndex = ground->getNodeIndex(0, "End");
+        for (int i = respawnsIndex + 1; i < endIndex; i++) {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            _respawnPoints[_respawnPointCount].position = resNodeData->m_translation;
+            _respawnPointCount++;
+        }
+        this->isRespawnsInitialized = true;
     }
 
     if (!this->isAssistInitialized && itemManager->isCompItemKindArchive(itemManager->m_nextAssistInfo.m_kind, itemManager->m_nextAssistInfo.m_variation, true)) {
@@ -1704,6 +1723,37 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
     }
 
     return stDestroyBossParamCommon();
+}
+
+void stSlipspace::getFighterReStartPos(Vec3f* startPos, int fighterIndex)
+{
+    if (_respawnPointCount > 0)
+    {
+        // Get stage position
+        Vec3f stagePos = this->m_stagePositions->m_centerPos;
+        Vec2f offsets = getStgPositionOffset();
+        stagePos.m_x -= offsets.m_x;
+        stagePos.m_y -= offsets.m_y;
+        // Get shortest distance
+        int shortestIndex = 0;
+        for (int i = 0; i < _respawnPointCount; i++)
+        {
+            float newDistance = stagePos.distance(&_respawnPoints[i].position);
+            float currentDistance = stagePos.distance(&_respawnPoints[shortestIndex].position);
+            if (newDistance < currentDistance)
+            {
+                shortestIndex = i;
+            }
+        }
+
+        startPos->m_x = _respawnPoints[shortestIndex].position.m_x;
+        startPos->m_y = _respawnPoints[shortestIndex].position.m_y;
+        startPos->m_z = _respawnPoints[shortestIndex].position.m_z;
+    }
+    else
+    {
+        Stage::getFighterReStartPos(startPos, fighterIndex);
+    }
 }
 
 // Dynamic blast zone stuff
