@@ -1563,7 +1563,8 @@ bool stSlipspace::inBlastZone(Vec2f pos)
     Rect2D blastZone;
     this->m_stagePositions->getDeadRange(&blastZone);
     Vec3f center = this->m_stagePositions->m_centerPos;
-    return (pos.m_x < center.m_x + blastZone.m_right && pos.m_x > center.m_x + blastZone.m_left && pos.m_y < center.m_y + blastZone.m_up && pos.m_y > center.m_y + blastZone.m_down);
+    Vec2f offsets = getStgPositionOffset();
+    return (pos.m_x < center.m_x - offsets.m_x + blastZone.m_right && pos.m_x > center.m_x - offsets.m_x + blastZone.m_left && pos.m_y < center.m_y - offsets.m_y + blastZone.m_up && pos.m_y > center.m_y - offsets.m_y + blastZone.m_down);
 }
 
 bool stSlipspace::inCameraRange(Vec2f pos)
