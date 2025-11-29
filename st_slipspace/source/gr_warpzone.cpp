@@ -13,23 +13,23 @@ grWarpZone* grWarpZone::create(int mdlIndex, const char* taskName) {
 }
 
 void grWarpZone::prepareWarpData(int motionPathIndex, float deactivateFrames, bool isRotateMotionPath) {
-    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Loop, motionPathIndex, 0};
+    this->motionPathData.set(1.0, 0, grGimmickMotionPathData::Path_Loop, motionPathIndex, 0);
 
     this->deactivateFrames = deactivateFrames;
     this->isRotateMotionPath = isRotateMotionPath;
 };
 
-void grWarpZone::startup(gfArchive* archive, u32 unk1, u32 unk2) {
-    grGimmickWarpZone::startup(archive, unk1, unk2);
+void grWarpZone::startup(gfArchive* archive, u32 unk1, gfSceneRoot::LayerType layerType) {
+    grGimmickWarpZone::startup(archive, unk1, layerType);
 
-    grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, this->isRotateMotionPath, true, 0, 0, 0, 0, 0, 0 };
+    grGimmickMotionPathInfo motionPathInfo(archive, &this->motionPathData, this->isRotateMotionPath, true);
     this->createAttachMotionPath(&motionPathInfo, NULL, "MoveNode");
 
     this->changeTexSrtAnim(0,0);
     this->changeNodeAnim(0,0);
 }
 
-void grWarpZone::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
+void grWarpZone::onGimmickEvent(soGimmickEventArgs* eventInfo, int* taskId) {
     if (eventInfo->m_kind == 0x32) {
         g_stTriggerMng->setTriggerFlag(&this->m_warpData->m_warpTriggerData);
         int entryId = g_ftManager->getEntryId(this->getPlayerNumber(taskId));
@@ -59,7 +59,7 @@ void grWarpZone::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId) {
                 this->startGimmickSE(0);
                 g_ftManager->setWarpFighter(entryId, &warpDest, currentLr, 0x3);
                 if (correct == 1 || correct == 2 || correct == 3) {
-                    fighter->m_moduleAccesser->getStatusModule().changeStatusRequest(Fighter::Status_Fall, fighter->m_moduleAccesser);
+                    fighter->m_moduleAccesser->getStatusModule().changeStatusRequest(Fighter::Status::Fall, fighter->m_moduleAccesser);
                 }
                 break;
             case 12:
@@ -116,7 +116,7 @@ void grWarpZone::update(float deltaFrame) {
 
 bool grWarpZone::isInHitstun(Fighter* fighter) {
     int status = fighter->m_moduleAccesser->getStatusModule().getStatusKind();
-    if (status == Fighter::Status_Damage || status == Fighter::Status_Damage_Air || status == Fighter::Status_Damage_Fly) {
+    if (status == Fighter::Status::Damage || status == Fighter::Status::Damage_Air || status == Fighter::Status::Damage_Fly) {
         return true;
     }
     return false;

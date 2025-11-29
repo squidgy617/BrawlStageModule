@@ -9,11 +9,11 @@ grSpring* grSpring::create(int mdlIndex, const char* taskName) {
     return spring;
 }
 
-void grSpring::startup(gfArchive* archive, u32 unk1, u32 unk2) {
-    grGimmickSpring::startup(archive, unk1, unk2);
+void grSpring::startup(gfArchive* archive, u32 unk1, gfSceneRoot::LayerType layerType) {
+    grGimmickSpring::startup(archive, unk1, layerType);
     this->m_bounce = this->m_springData->m_bounce; // Copy to struct so that springData can be changed
 
-    grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, this->isRotateMotionPath, true, 0, 0, 0, 0, 0, 0 };
+    grGimmickMotionPathInfo motionPathInfo(archive, &this->motionPathData, this->isRotateMotionPath, true);
     this->createAttachMotionPath(&motionPathInfo, NULL, "MoveNode");
 
     this->createSoundWork(1,1);
@@ -51,6 +51,9 @@ void grSpring::update(float deltaFrame) {
                 this->presentShootEvent();
                 this->setMotionOff();
             }
+            break;
+        default:
+            break;
     }
     this->m_animFrame += deltaFrame;
 
@@ -76,13 +79,10 @@ void grSpring::update(float deltaFrame) {
 }
 
 void grSpring::presentShootEvent() {
-    soGimmickSpringEventInfo eventInfo;
-    eventInfo.m_kind = Gimmick::Spring_Event_Shoot;
-    eventInfo.m_sendID = 0;
-    this->getTopNode(&eventInfo.m_topPos);
-    eventInfo.m_bounce = this->m_bounce;
-    eventInfo.m_rot = this->getRot().m_z;
-    this->m_yakumono->presentEventGimmick(&eventInfo, -1);
+    Vec3f pos;
+    this->getTopNode(&pos);
+    soGimmickSpringEventArgs_Shoot springEvent(pos, this->m_bounce, this->getRot().m_z);
+    this->m_yakumono->presentEventGimmick(&springEvent, -1);
 }
 
 void grSpring::setMotionOff() {
@@ -95,7 +95,7 @@ void grSpring::setMotionOff() {
 };
 
 void grSpring::setMotionPathData(int mdlIndex, bool isRotateMotionPath) {
-    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Loop, mdlIndex, 0};
+    this->motionPathData.set(1.0, 0, grGimmickMotionPathData::Path_Loop, mdlIndex, 0);
 
     this->isRotateMotionPath = isRotateMotionPath;
 }

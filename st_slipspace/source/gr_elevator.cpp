@@ -28,9 +28,9 @@ void grAdventureElevator::prepareElevatorData(Vec2f* areaOffsetPos, Vec2f* areaR
     this->elevatorData.posMdlIndex = posMdlIndex;
 }
 
-void grAdventureElevator::startup(gfArchive* archive, u32 unk1, u32 unk2)
+void grAdventureElevator::startup(gfArchive* archive, u32 unk1, gfSceneRoot::LayerType layerType)
 {
-    grYakumono::startup(archive, unk1, unk2);
+    grYakumono::startup(archive, unk1, layerType);
     this->elevatorPosGround = grAdventure2::create(this->elevatorData.posMdlIndex, "");
     this->elevatorPosGround->m_connectedTask = this;
     gfTask* task = this->m_attachedTask;
@@ -45,7 +45,7 @@ void grAdventureElevator::startup(gfArchive* archive, u32 unk1, u32 unk2)
         }
         lastTask->m_nextTask = this->elevatorPosGround;
     }
-    this->elevatorPosGround->startup(archive, unk1, unk2);
+    this->elevatorPosGround->startup(archive, unk1, layerType);
     if (this->m_modelAnims != NULL)
     {
         (this->m_modelAnims[0])->unbindNodeAnim(this->m_sceneModels[0]);
@@ -61,7 +61,7 @@ void grAdventureElevator::startup(gfArchive* archive, u32 unk1, u32 unk2)
 
     this->setPos(&pos);
     this->nextFloor = this->prevFloor;
-    this->areaData = (soAreaData){ 0, gfArea::Stage_Group_Gimmick_Elevator, AREA_SHAPE_FLAG_FOLLOW_NODE, 0, 0, 0, this->elevatorData.areaOffsetPos, this->elevatorData.areaRange };
+    this->areaData.set(gfArea::Shape_Rectangle, gfArea::Stage_Group_Gimmick_Elevator, AREA_SHAPE_FLAG_FOLLOW_NODE, 0, 0, 0, this->elevatorData.areaOffsetPos, this->elevatorData.areaRange );
     this->setAreaGimmick(&this->areaData, &this->areaInit, &this->areaInfo, false);
     stTrigger* trigger = g_stTriggerMng->createTrigger(Gimmick::Area_Elevator, -1);
     trigger->setObserveYakumono(this->m_yakumono);
@@ -99,12 +99,12 @@ void grAdventureElevator::update(float deltaFrame)
 
 }
 
-void grAdventureElevator::onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId)
+void grAdventureElevator::onGimmickEvent(soGimmickEventArgs* eventInfo, int* taskId)
 {
-    soGimmickElevatorEventInfo* elevatorEventInfo = (soGimmickElevatorEventInfo*)eventInfo;
     if (this->state == Elevator_State_Rest) {
-        switch(elevatorEventInfo->m_kind) {
-            case 0x2b:
+        switch(eventInfo->m_kind) {
+            case 0x2b: {
+                soGimmickElevatorEventArgs_On* elevatorEventInfo = (soGimmickElevatorEventArgs_On*)eventInfo;
                 if (this->prevFloor + 1 < this->numFloors) {
                     elevatorEventInfo->m_canGoUp = true;
                 }
@@ -117,6 +117,7 @@ void grAdventureElevator::onGimmickEvent(soGimmickEventInfo* eventInfo, int* tas
                 else {
                     elevatorEventInfo->m_canGoDown = true;
                 }
+            }
                 break;
             case 0x2c:
                 this->nextFloor = this->prevFloor + 1;

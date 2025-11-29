@@ -22,7 +22,7 @@ struct grGimmickBarrelCannonData {
     float autoFireFrames;
     bool fullRotate;
     bool alwaysRotate;
-    unsigned short field_0xce;
+    unsigned short breakHitstopFrame;
     stTriggerData enterCannonTriggerData;
     stTriggerData motionPathTriggerData;
     stTriggerData isValidTriggerData;
@@ -117,8 +117,8 @@ public:
     };
     virtual void processFixPosition();
     virtual void update(float frameDiff);
-    virtual void startup(gfArchive* data, u32 unk1, u32 unk2);
-    virtual void onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId);
+    virtual void startup(gfArchive* data, u32 unk1, gfSceneRoot::LayerType layerType);
+    virtual void onGimmickEvent(soGimmickEventArgs* eventInfo, int* taskId);
     virtual ~grAdventureBarrelCannon() { };
     virtual void setInitializeFlag();
     virtual void createMotionPath();

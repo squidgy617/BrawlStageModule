@@ -16,11 +16,11 @@ grArea* grArea::create(int mdlIndex, const char* tgtNodeName, const char* taskNa
     return ground;
 }
 
-void grArea::startup(gfArchive* archive, u32 unk1, u32 unk2) {
-    grMadein::startup(archive, unk1, unk2);
+void grArea::startup(gfArchive* archive, u32 unk1, gfSceneRoot::LayerType layerType) {
+    grMadein::startup(archive, unk1, layerType);
 
-    grGimmickMotionPathInfo motionPathInfo = { archive, &this->motionPathData, this->isRotateMotionPath, true, 0, 0, 0, 0, 0, 0 };
-    stTriggerData triggerData = {0,0,1,0};
+    grGimmickMotionPathInfo motionPathInfo(archive, &this->motionPathData, this->isRotateMotionPath, true);
+    stTriggerData triggerData(0,true,stTriggerData::Keep_None);
     this->createAttachMotionPath(&motionPathInfo, &triggerData, "MoveNode");
 
     int endNodeIndex = this->getNodeIndex(0, "EndNode");
@@ -87,7 +87,7 @@ void grArea::setTrigger(stTrigger* trigger) {
 }
 
 void grArea::setMotionPathData(int mdlIndex, bool isRotateMotionPath) {
-    this->motionPathData = (grGimmickMotionPathData){1.0, 0, grGimmickMotionPathData::Path_Loop, mdlIndex, 0};
+    this->motionPathData.set(1.0, 0, grGimmickMotionPathData::Path_Loop, mdlIndex, 0);
 
     this->isRotateMotionPath = isRotateMotionPath;
 }

@@ -16,8 +16,8 @@ public:
         connectedWarp = NULL;
     };
     virtual ~grWarpZone() {}
-    virtual void onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId);
-    virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
+    virtual void onGimmickEvent(soGimmickEventArgs* eventInfo, int* taskId);
+    virtual void startup(gfArchive* archive, u32 unk1, gfSceneRoot::LayerType layerType);
     virtual void update(float deltaFrame);
     virtual bool isInHitstun(Fighter* fighter);
     virtual void deactivateWarp();

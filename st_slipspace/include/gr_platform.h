@@ -31,12 +31,12 @@ class grPlatform : public grMadein
             landTimer = 0;
         };
         virtual ~grPlatform() { };
-        virtual void startup(gfArchive* archive, u32 unk1, u32 unk2);
+        virtual void startup(gfArchive* archive, u32 unk1, gfSceneRoot::LayerType layerType);
         virtual void update(float deltaFrame);
         virtual void onDamage(int index, soDamage* damage, soDamageAttackerInfo* attackerInfo);
         virtual void receiveCollMsg_Landing(grCollStatus* collStatus, grCollisionJoint* collisionJoint, bool unk3);
         virtual void onInflictEach(soCollisionLog* collisionLog, float power);
-        virtual void onGimmickEvent(soGimmickEventInfo* eventInfo, int* taskId);
+        virtual void onGimmickEvent(soGimmickEventArgs* eventInfo, int* taskId);
 
         virtual void setMotionPathData(int mdlIndex, bool isRotateMotionPath);
         virtual void setupHitPoint(float maxDamage, float respawnFrame);

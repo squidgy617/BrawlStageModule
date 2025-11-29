@@ -214,7 +214,7 @@ void stSlipspace::update(float deltaFrame)
                     grMotionPath* ground = grMotionPath::create(_spawners[i].motionPathIndex, "MoveNode", "grMotionPath");
                     if (ground != NULL) {
                         addGround(ground);
-                        ground->startup(m_fileData, 0, 0);
+                        ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
                     }
                     _spawners[i].motionPath = ground;
                 }
@@ -231,7 +231,7 @@ void stSlipspace::update(float deltaFrame)
                     grMotionPath* ground = grMotionPath::create(_spawners[i].visNodeIndex, "VisNode", "grMotionPath");
                     if (ground != NULL) {
                         addGround(ground);
-                        ground->startup(m_fileData, 0, 0);
+                        ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
                     }
                     _spawners[i].visNode = ground;
                 }
@@ -809,7 +809,7 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
     if (ground != NULL)
     {
         addGround(ground);
-        ground->startup(m_fileData, 0, 0);
+        ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
         ground->setStageData(m_stageData);
         createCollision(m_fileData, collIndex, ground);
         u32 targetsIndex = ground->getNodeIndex(0, "Targets");
@@ -961,7 +961,7 @@ void stSlipspace::createObjTarget(int mdlIndex, Vec2f* pos, Vec3f* scale, int mo
         if (collIndex < 0) {
             target->setupAttack(&stageData->damageFloors[(-collIndex) - 1].m_attackData);
         }
-        target->startup(this->m_fileData,0,0);
+        target->startup(this->m_fileData,0, gfSceneRoot::Layer_Ground);
         target->setPos(pos->m_x, pos->m_y, 0);
         target->setScale(scale);
         if (collIndex > 0) {
@@ -978,7 +978,7 @@ void stSlipspace::createObjDisk(int mdlIndex, Vec2f* pos, float rot, float scale
         addGround(disk);
         disk->setStageData(m_stageData);
         disk->setTargetInfo(motionPathIndex, 0, &this->targetsHit, &this->targetsLeft, this->numTargetsHitPerPlayer, &this->totalDamage, mode);
-        disk->startup(this->m_fileData,0,0);
+        disk->startup(this->m_fileData,0, gfSceneRoot::Layer_Ground);
         disk->setPos(pos->m_x, pos->m_y, 0.0);
         disk->setScale(scaleX, 1.0, scaleZ);
         disk->setRot(0.0, 0.0, rot);
@@ -992,7 +992,7 @@ void stSlipspace::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, float s
         addGround(platform);
         platform->setStageData(m_stageData);
         platform->setMotionPathData(motionPathIndex, rot >= 360);
-        platform->startup(this->m_fileData,0,0);
+        platform->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
         platform->initializeEntity();
         platform->startEntity();
         platform->setPos(pos->m_x, pos->m_y, 0.0);
@@ -1017,7 +1017,7 @@ void stSlipspace::createObjBreak(int mdlIndex, Vec2f* pos, float rot, int motion
         addGround(platform);
         platform->setStageData(m_stageData);
         platform->setMotionPathData(motionPathIndex, rot >= 360);
-        platform->startup(this->m_fileData,0,0);
+        platform->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
         platform->setupHitPoint(maxDamage, respawnTime);
         if (collIndex < 0) {
             platform->setupAttack(&stageData->damageFloors[(-collIndex) - 1].m_attackData);
@@ -1039,7 +1039,7 @@ void stSlipspace::createObjLand(int mdlIndex, Vec2f* pos, float rot, int motionP
         addGround(platform);
         platform->setStageData(m_stageData);
         platform->setMotionPathData(motionPathIndex, rot >= 360);
-        platform->startup(this->m_fileData,0,0);
+        platform->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
         platform->initializeEntity();
         platform->startEntity();
         platform->setupLanding(maxLandings, respawnTime);
@@ -1056,7 +1056,7 @@ void stSlipspace::createObjElevator(int mdlIndex, Vec2f* pos, Vec2f* range, int 
     {
         addGround(elevator);
         elevator->prepareElevatorData(pos, range, speed, deltaSpeed, posIndex);
-        elevator->startup(m_fileData, 0, 0);
+        elevator->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
         createCollision(m_fileData, collIndex, elevator);
     }
 }
@@ -1067,7 +1067,7 @@ void stSlipspace::createObjPunchSlider(int mdlIndex, int sliderPathIndex, int mo
         addGround(slider);
         slider->setStageData(m_stageData);
         slider->prepareSliderData(motionPathIndex, sliderPathIndex, unk1, unk2, unk3, unk4, unk5, unk6);
-        slider->startup(m_fileData, 0, 0);
+        slider->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
     }
 }
 
@@ -1085,7 +1085,7 @@ void stSlipspace::createObjSpring(int mdlIndex, int collIndex, Vec2f* pos, float
                 range);
         spring->setMotionPathData(motionPathIndex, rot >= 360);
         spring->setGimmickData(&springData); // Note: gimmickData will only apply in next function since was allocated on the stack
-        spring->startup(this->m_fileData,0,0);
+        spring->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
         this->createGimmickCollision(collIndex, spring, this->m_fileData);
     }
 }
@@ -1098,7 +1098,7 @@ void stSlipspace::createObjCannon(int mdlIndex, Vec2f* pos, float rot, float rot
         addGround(cannon);
         cannon->setStageData(m_stageData);
         cannon->prepareCannonData(pos, rot, rotSpeed, maxRot, motionPathIndex, alwaysRotate, fullRotate, autoFireFrames);
-        cannon->startup(m_fileData, 0, 0);
+        cannon->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
     }
 }
 
@@ -1114,7 +1114,7 @@ void stSlipspace::createObjLadder(int mdlIndex, Vec2f* pos, int motionPathIndex,
                 &areaPos, &araeRange
                 );
         ladder->setMotionPathData(motionPathIndex);
-        ladder->startupLadder(this->m_fileData,0,0,&ladderData);
+        ladder->startupLadder(this->m_fileData,0,gfSceneRoot::Layer_Ground,&ladderData);
         ladder->setPos(pos->m_x, pos->m_y, 0.0);
     }
 }
@@ -1124,7 +1124,7 @@ void stSlipspace::createObjCatapult(int mdlIndex, float vector, float motionRati
     if (catapult != NULL) {
         addGround(catapult);
         catapult->prepareCatapultData(vector, motionRatio, motionPathIndex, framesBeforeStartMove, unk1, unk2);
-        catapult->startup(m_fileData, 0, 0);
+        catapult->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
     }
 }
 
@@ -1143,7 +1143,7 @@ void stSlipspace::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, float s
         Vec3f warpDestPos = Vec3f(warpDest->m_x, warpDest->m_y, 0.0);
         warpZone->setWarpAttrData(&warpDestPos, warpType, isNotAuto);
         warpZone->setGimmickData(&warpData); // Note: gimmickData will only apply in next function since was allocated on the stack
-        warpZone->startup(m_fileData, 0, 0);
+        warpZone->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
         warpZone->setRot(0, 0, rot);
         warpZone->setScale(scale, scale, scale);
         if (connectedMdlIndex > 0) {
@@ -1156,7 +1156,7 @@ void stSlipspace::createObjWarpZone(int mdlIndex, Vec2f* pos, float rot, float s
                 warpDestPos = Vec3f(pos->m_x, pos->m_y, 0.0);
                 toWarpZone->setWarpAttrData(&warpDestPos, warpType, isNotAuto);
                 toWarpZone->setGimmickData(&warpData); // Note: gimmickData will only apply in next function since was allocated on the stack
-                toWarpZone->startup(m_fileData, 0, 0);
+                toWarpZone->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
                 toWarpZone->setRot(0, 0, rot);
                 toWarpZone->setScale(scale, scale, scale);
 
@@ -1189,7 +1189,7 @@ void stSlipspace::createTriggerHitPointEffect(Vec2f* posSW, Vec2f* posNE, float 
             ground->setTrigger(trigger);
             ground->setMotionPathData(motionPathIndex, rot >= 360);
             ground->setStageData(m_stageData);
-            ground->startup(this->m_fileData,0,0);
+            ground->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
             ground->setPos(pos.m_x, pos.m_y, 0.0);
             ground->setRot(0.0, 0.0, rot);
             ground->setScale(scale);
@@ -1224,7 +1224,7 @@ void stSlipspace::createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed,
             ground->setTrigger(trigger);
             ground->setMotionPathData(motionPathIndex, rot >= 360);
             ground->setStageData(m_stageData);
-            ground->startup(this->m_fileData,0,0);
+            ground->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
             ground->setPos(pos.m_x, pos.m_y, 0.0);
             ground->setRot(0.0, 0.0, rot);
             ground->setScale(scale);
@@ -1257,7 +1257,7 @@ void stSlipspace::createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bo
             ground->setTrigger(trigger);
             ground->setMotionPathData(motionPathIndex, rot >= 360);
             ground->setStageData(m_stageData);
-            ground->startup(this->m_fileData,0,0);
+            ground->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
             ground->setPos(pos.m_x, pos.m_y, 0.0);
             ground->setRot(0.0, 0.0, rot);
             ground->setScale(scale);
@@ -1290,7 +1290,7 @@ void stSlipspace::createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength, 
             ground->setTrigger(trigger);
             ground->setMotionPathData(motionPathIndex, rot >= 360);
             ground->setStageData(m_stageData);
-            ground->startup(this->m_fileData,0,0);
+            ground->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
             ground->setPos(pos.m_x, pos.m_y, 0.0);
             ground->setRot(0.0, 0.0, rot);
             ground->setScale(scale);
@@ -1316,7 +1316,7 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
             grItem* ground = grItem::create(motionPathIndex, "MoveNode", "grItem", item->m_instanceId);
             if (ground != NULL) {
                 addGround(ground);
-                ground->startup(m_fileData, 0, 0);
+                ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
                 ground->startMove();
             }
         }
@@ -1349,7 +1349,7 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
         grMotionPath* ground = grMotionPath::create(motionPathIndex, "MoveNode", "grMotionPath");
         if (ground != NULL) {
             addGround(ground);
-            ground->startup(m_fileData, 0, 0);
+            ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
         }
         create.m_motionPath = ground;
     }
