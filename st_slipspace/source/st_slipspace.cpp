@@ -72,6 +72,7 @@ EnemyType _enemyTypes[100]; // List of enemy types in stage
 SlipspaceEnemy _spawnedEnemyTypes[100]; // List of currently spawned enemies in the stage
 GameRule _gameMode; // Selected game mode
 RespawnPoint _respawnPoints[100]; // List of respawn points in stage
+int _lastUsedSpawnerIndex = -1; // Last spawner index used
 
 stSlipspace* stSlipspace::create()
 {
@@ -1728,29 +1729,50 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
 
 void stSlipspace::getFighterReStartPos(Vec3f* startPos, int fighterIndex)
 {
-    if (_respawnPointCount > 0)
+    // Get all valid respawn points
+    int validRespawnerCount = 0;
+    int validRespawners[100];
+    for (int i = 0; i < _respawnPointCount; i++)
     {
-        // Get stage position
-        Vec3f stagePos = this->m_stagePositions->m_centerPos;
-        Vec2f offsets = getStgPositionOffset();
-        stagePos.m_x -= offsets.m_x;
-        stagePos.m_y -= offsets.m_y;
-        // Get shortest distance
-        int shortestIndex = 0;
-        for (int i = 0; i < _respawnPointCount; i++)
+        Vec2f respawnPos = Vec2f(_respawnPoints[i].position.m_x, _respawnPoints[i].position.m_y);
+        if (inCameraRange(respawnPos))
         {
-            float newDistance = stagePos.distance(&_respawnPoints[i].position);
-            float currentDistance = stagePos.distance(&_respawnPoints[shortestIndex].position);
-            if (newDistance < currentDistance)
+            validRespawners[validRespawnerCount] = i;
+            validRespawnerCount++;
+        }
+    }
+    // If there are any valid respawners, try to find the right one to use
+    if (validRespawnerCount > 0)
+    {
+        int shortestIndex = 0;
+        // If count is greater than 1, find nearest
+        if (validRespawnerCount > 1)
+        {
+            // Get stage position
+            Vec3f stagePos = this->m_stagePositions->m_centerPos;
+            Vec2f offsets = getStgPositionOffset();
+            stagePos.m_x -= offsets.m_x;
+            stagePos.m_y -= offsets.m_y;
+            // Get shortest distance
+            for (int i = 0; i < validRespawnerCount; i++)
             {
-                shortestIndex = i;
+                float newDistance = stagePos.distance(&_respawnPoints[validRespawners[i]].position);
+                float currentDistance = stagePos.distance(&_respawnPoints[validRespawners[shortestIndex]].position);
+                // Skip respawners that were already used
+                if (newDistance < currentDistance && _lastUsedSpawnerIndex != validRespawners[i])
+                {
+                    shortestIndex = i;
+                }
             }
         }
-
-        startPos->m_x = _respawnPoints[shortestIndex].position.m_x;
-        startPos->m_y = _respawnPoints[shortestIndex].position.m_y;
-        startPos->m_z = _respawnPoints[shortestIndex].position.m_z;
+        // Set respawn position
+        startPos->m_x = _respawnPoints[validRespawners[shortestIndex]].position.m_x;
+        startPos->m_y = _respawnPoints[validRespawners[shortestIndex]].position.m_y;
+        startPos->m_z = _respawnPoints[validRespawners[shortestIndex]].position.m_z;
+        // Set last used spawner
+        _lastUsedSpawnerIndex = validRespawners[shortestIndex];
     }
+    // Otherwise, use normal stgPosition respawn points
     else
     {
         Stage::getFighterReStartPos(startPos, fighterIndex);
