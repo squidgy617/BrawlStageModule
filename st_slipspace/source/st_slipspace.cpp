@@ -25,6 +25,7 @@
 #include <mt/mt_trig.h>
 #include <gf/gf_3d_scene.h>
 #include <if/if_mngr.h>
+#include <st/st_enemy_id_manager.h>
 
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
@@ -575,6 +576,7 @@ void stSlipspace::createObj()
         //gfHeapManager::dumpList();
         emWeaponManager::create();
         emWeaponManager* weaponManager = emWeaponManager::getInstance();
+        g_stEnemyIdManager->create();
         weaponManager->clean();
         // weaponManager->m_list1.m_last = NULL;
         // weaponManager->m_list1.m_first = NULL;
@@ -763,6 +765,11 @@ void stSlipspace::clearHeap() {
         if (this->itemPacs[i] != NULL) {
             delete this->itemPacs[i];
         }
+    }
+
+    if (g_stEnemyIdManager != NULL)
+    {
+        stEnemyIdManager::remove();
     }
 
    if (gfModuleManager::getInstance()->isLoaded("sora_enemy.rel")) {
@@ -1384,6 +1391,12 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
         }
     }
 
+    // Add to CPU list
+    if (g_stEnemyIdManager != NULL)
+    {
+        g_stEnemyIdManager->addEnemyId(id);
+    }
+
     int enemyMem = startingMem - gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
 
     OSReport("Spawned enemy ID %d. Uses %d instance memory. \n", enemyToSpawn->enemyId, enemyMem);
@@ -1702,6 +1715,12 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
             enemyManager->removeArchive(enemyCreateId);
             spawnedEnemy.enemyType->loaded = false;
             spawnedEnemy.enemyType->loading = false;
+        }
+
+        // Remove from CPU list
+        if (g_stEnemyIdManager != NULL)
+        {
+            g_stEnemyIdManager->removeEnemyId(spawnedEnemy.enemyCreateId);
         }
 
         // Remove from spawned enemy list and reduce enemy count

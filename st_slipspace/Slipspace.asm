@@ -1,7 +1,6 @@
 ########################################################################
 enemyMessageCallback calls getDestroyBossParamCommon [Squidgy, Kapedani]
-# This way we can hijack getDestroyBossParamCommon to use it
-# for other things
+# This way we can hijack getDestroyBossParamCommon to get enemy events
 ########################################################################
 .alias g_Stage = 0x80B8A428
 .macro lwd(<reg>, <addr>)
@@ -78,7 +77,8 @@ HOOK @ $80966ab0 # phaseInit/[stOperatorDefeatBoss]
 }
 
 ############################################################
-Always update score for all players lots [Squidgy, Kapedani]
+Always update score for all player slots [Squidgy, Kapedani]
+# Used by Slipspace to track score in a multi-man slot
 ############################################################
 # Remove state checks for active ports
 op nop @ $80955a98
@@ -100,3 +100,10 @@ op li r0, 7 @ $8095600c
 op li r0, 7 @ $809560d0
 op li r0, 7 @ $80955fe8
 op li r0, 7 @ $809560ac
+
+############################################
+CPUs will attack enemies [Squidgy, Kapedani]
+############################################
+op nop @ $80908f50
+op nop @ $80908f54
+op nop @ $80908f58
