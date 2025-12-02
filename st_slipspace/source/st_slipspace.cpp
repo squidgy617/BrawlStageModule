@@ -1881,10 +1881,14 @@ void stSlipspace::moveCamera()
         {
             int entryId = g_ftManager->getEntryIdFromIndex(i);
             Fighter* fighter = g_ftManager->getFighter(entryId, -1);
-            Vec3f pos = soExternalValueAccesser::getPos(fighter);
-            averageX += pos.m_x;
-            averageY += pos.m_y;
-            playerCount++;
+            int status = fighter->m_moduleAccesser->getStatusModule().getStatusKind();
+            if (status != Fighter::Status::Dead)
+            {
+                Vec3f pos = soExternalValueAccesser::getPos(fighter);
+                averageX += pos.m_x;
+                averageY += pos.m_y;
+                playerCount++;
+            }
         }
         averageX = averageX / playerCount;
         averageY = averageY / playerCount;
