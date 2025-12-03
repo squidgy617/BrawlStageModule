@@ -63,7 +63,11 @@ struct EnemySpawner
 
 struct RespawnPoint
 {
-    Vec3f position;
+    Vec2f position;
+    int motionPathIndex;
+    int visNodeIndex;
+    grMotionPath* motionPath;
+    grMotionPath* visNode;
 };
 
 SpawnerGroup _spawnerGroups[100]; // List of spawner groups in stage
@@ -471,13 +475,45 @@ void stSlipspace::update(float deltaFrame)
         // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue[0]].enemyId, _enemyTypes[_spawnQueue[1]].enemyId, _enemyTypes[_spawnQueue[2]].enemyId, _enemyTypes[_spawnQueue[3]].enemyId, _enemyTypes[_spawnQueue[4]].enemyId);
     }
 
+    // Initialize respawns
     if (!this->isRespawnsInitialized) {
         Ground* ground = this->getGround(0);
         u32 respawnsIndex = ground->getNodeIndex(0, "Respawns");
         u32 endIndex = ground->getNodeIndex(0, "End");
         for (int i = respawnsIndex + 1; i < endIndex; i++) {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            _respawnPoints[_respawnPointCount].position = resNodeData->m_translation;
+            _respawnPoints[_respawnPointCount].position.m_x = resNodeData->m_translation.m_x;
+            _respawnPoints[_respawnPointCount].position.m_y = resNodeData->m_translation.m_y;
+            _respawnPoints[_respawnPointCount].motionPathIndex = resNodeData->m_translation.m_z;
+            _respawnPoints[_respawnPointCount].visNodeIndex = resNodeData->m_rotation.m_z;
+            // Initialize motion path
+            if (_respawnPoints[_respawnPointCount].motionPathIndex != 0)
+            {
+                grMotionPath* ground = grMotionPath::create(_respawnPoints[_respawnPointCount].motionPathIndex, "MoveNode", "grMotionPath");
+                if (ground != NULL) {
+                    addGround(ground);
+                    ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
+                }
+                _respawnPoints[_respawnPointCount].motionPath = ground;
+            }
+            else
+            {
+                _respawnPoints[_respawnPointCount].motionPath = NULL;
+            }
+            // Initialize vis node
+            if (_respawnPoints[_respawnPointCount].visNodeIndex != 0)
+            {
+                grMotionPath* ground = grMotionPath::create(_respawnPoints[_respawnPointCount].visNodeIndex, "VisNode", "grMotionPath");
+                if (ground != NULL) {
+                    addGround(ground);
+                    ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
+                }
+                _respawnPoints[_respawnPointCount].visNode = ground;
+            }
+            else
+            {
+                _respawnPoints[_respawnPointCount].visNode = NULL;
+            }
             _respawnPointCount++;
         }
         this->isRespawnsInitialized = true;
@@ -1746,17 +1782,33 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
     return stDestroyBossParamCommon();
 }
 
+struct RespawnerStruct
+{
+    int index;
+    RespawnPoint* respawn;
+    Vec2f currentPos;
+};
+
 void stSlipspace::getFighterReStartPos(Vec3f* startPos, int fighterIndex)
 {
     // Get all valid respawn points
     int validRespawnerCount = 0;
-    int validRespawners[100];
+    RespawnerStruct validRespawners[100];
     for (int i = 0; i < _respawnPointCount; i++)
     {
+        // Only add respawns that are within the camera range and are visible
         Vec2f respawnPos = Vec2f(_respawnPoints[i].position.m_x, _respawnPoints[i].position.m_y);
-        if (inCameraRange(respawnPos))
+        // If respawn point has a motion path, use motion path position for camera range
+        if (_respawnPoints[i].motionPath != NULL)
         {
-            validRespawners[validRespawnerCount] = i;
+            Vec3f motionPathPos = _respawnPoints[i].motionPath->getPos();
+            respawnPos = Vec2f(motionPathPos.m_x, motionPathPos.m_y);
+        }
+        if (inCameraRange(respawnPos) && (_respawnPoints[i].visNode == NULL || _respawnPoints[i].visNode->isNodeVisible(0, _respawnPoints[i].visNode->m_nodeIndex)))
+        {
+            validRespawners[validRespawnerCount].respawn = &_respawnPoints[i];
+            validRespawners[validRespawnerCount].currentPos = respawnPos;
+            validRespawners[validRespawnerCount].index = i;
             validRespawnerCount++;
         }
     }
@@ -1768,28 +1820,29 @@ void stSlipspace::getFighterReStartPos(Vec3f* startPos, int fighterIndex)
         if (validRespawnerCount > 1)
         {
             // Get stage position
-            Vec3f stagePos = this->m_stagePositions->m_centerPos;
+            Vec2f stagePos = Vec2f(this->m_stagePositions->m_centerPos.m_x, this->m_stagePositions->m_centerPos.m_y);
             Vec2f offsets = getStgPositionOffset();
             stagePos.m_x -= offsets.m_x;
             stagePos.m_y -= offsets.m_y;
             // Get shortest distance
             for (int i = 0; i < validRespawnerCount; i++)
             {
-                float newDistance = stagePos.distance(&_respawnPoints[validRespawners[i]].position);
-                float currentDistance = stagePos.distance(&_respawnPoints[validRespawners[shortestIndex]].position);
+                // Calculate distance
+                float newDistance = stagePos.distance(&validRespawners[i].respawn->position);
+                float currentDistance = stagePos.distance(&validRespawners[shortestIndex].respawn->position);
                 // Skip respawners that were already used
-                if (newDistance < currentDistance && _lastUsedSpawnerIndex != validRespawners[i])
+                if (newDistance < currentDistance && _lastUsedSpawnerIndex != validRespawners[i].index)
                 {
                     shortestIndex = i;
                 }
             }
         }
         // Set respawn position
-        startPos->m_x = _respawnPoints[validRespawners[shortestIndex]].position.m_x;
-        startPos->m_y = _respawnPoints[validRespawners[shortestIndex]].position.m_y;
-        startPos->m_z = _respawnPoints[validRespawners[shortestIndex]].position.m_z;
+        startPos->m_x = validRespawners[shortestIndex].currentPos.m_x;
+        startPos->m_y = validRespawners[shortestIndex].currentPos.m_y;
+        startPos->m_z = 0.0;
         // Set last used spawner
-        _lastUsedSpawnerIndex = validRespawners[shortestIndex];
+        _lastUsedSpawnerIndex = validRespawners[shortestIndex].index;
     }
     // Otherwise, use normal stgPosition respawn points
     else
