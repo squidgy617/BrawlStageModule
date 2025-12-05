@@ -64,6 +64,7 @@ struct EnemySpawner
 struct RespawnPoint
 {
     Vec2f position;
+    char* nodeName;
     int motionPathIndex;
     int visNodeIndex;
     grMotionPath* motionPath;
@@ -477,19 +478,21 @@ void stSlipspace::update(float deltaFrame)
 
     // Initialize respawns
     if (!this->isRespawnsInitialized) {
-        Ground* ground = this->getGround(0);
+        grArea* ground = static_cast<grArea*>(this->getGround(0));
         u32 respawnsIndex = ground->getNodeIndex(0, "Respawns");
         u32 endIndex = ground->getNodeIndex(0, "End");
         for (int i = respawnsIndex + 1; i < endIndex; i++) {
-            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
+            nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
             _respawnPoints[_respawnPointCount].position.m_x = resNodeData->m_translation.m_x;
             _respawnPoints[_respawnPointCount].position.m_y = resNodeData->m_translation.m_y;
+            _respawnPoints[_respawnPointCount].nodeName = ground->getNodeName(resNode);
             _respawnPoints[_respawnPointCount].motionPathIndex = resNodeData->m_translation.m_z;
             _respawnPoints[_respawnPointCount].visNodeIndex = resNodeData->m_rotation.m_z;
             // Initialize motion path
             if (_respawnPoints[_respawnPointCount].motionPathIndex != 0)
             {
-                grMotionPath* ground = grMotionPath::create(_respawnPoints[_respawnPointCount].motionPathIndex, "MoveNode", "grMotionPath");
+                grMotionPath* ground = grMotionPath::create(_respawnPoints[_respawnPointCount].motionPathIndex, _respawnPoints[_respawnPointCount].nodeName, "grMotionPath");
                 if (ground != NULL) {
                     addGround(ground);
                     ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
@@ -503,7 +506,7 @@ void stSlipspace::update(float deltaFrame)
             // Initialize vis node
             if (_respawnPoints[_respawnPointCount].visNodeIndex != 0)
             {
-                grMotionPath* ground = grMotionPath::create(_respawnPoints[_respawnPointCount].visNodeIndex, "VisNode", "grMotionPath");
+                grMotionPath* ground = grMotionPath::create(_respawnPoints[_respawnPointCount].visNodeIndex, _respawnPoints[_respawnPointCount].nodeName, "grMotionPath");
                 if (ground != NULL) {
                     addGround(ground);
                     ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);

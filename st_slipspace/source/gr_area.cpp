@@ -133,5 +133,17 @@ u32 grArea::getNumNodesWithFormat(const char* nodeFormat) {
 
 }
 
+char* grArea::getNodeName(nw4r::g3d::ResNode resNode)
+{
+    nw4r::g3d::ResNodeData* data = resNode.ptr();
+
+    if (!data || data->m_nodeNameStrOffset == 0)
+    {
+        return nullptr;
+    }
+    char* base = reinterpret_cast<char*>(data);
+    return base + data->m_nodeNameStrOffset;
+}
+
 
 

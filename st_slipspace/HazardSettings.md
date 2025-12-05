@@ -367,8 +367,8 @@ sora_enemy.rel file index = 301
 
 Spawn points for players, for use with dynamic blast zones. The game will attempt to respawn players at these positions if they are nearby.
 
-**Rotation Z** - Visibility ModelData Index (bone to determine visibility must be called "VisNode"). When visibility is toggled off by VIS0 animation, respawn point will not be used.
+**Rotation Z** - Visibility ModelData Index (name of node to determine visibility must match this bone name). When visibility is toggled off by VIS0 animation, respawn point will not be used.
 
 **Translation X,Y** - Position
 
-**Translation Z** - Motion Path ModelData Index (node to follow must be called "MoveNode")
+**Translation Z** - Motion Path ModelData Index (name of node to follow must match this bone name)

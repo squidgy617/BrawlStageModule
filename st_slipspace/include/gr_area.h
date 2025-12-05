@@ -19,6 +19,7 @@ public:
 
     bool getNodeIndexWithFormat(u32* nodeIndex, u32 sceneModelIndex, const char* nodeFormat, u32 index);
     u32 getNumNodesWithFormat(const char* nodeFormat);
+    char* getNodeName(nw4r::g3d::ResNode resNode);
 
     virtual void setTrigger(stTrigger* trigger);
     virtual void setMotionPathData(int mdlIndex, bool isRotateMotionPath);
