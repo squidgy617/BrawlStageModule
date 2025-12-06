@@ -169,6 +169,7 @@ void stSlipspace::update(float deltaFrame)
             // Initialize spawners
             int spawnGroups = ground->getNumNodesWithFormat("SpawnGroup%d");
             // Iterate through spawner groups
+            int currentSpawner = -1;
             for (int i = 0; i < spawnGroups; i++) {
                 u32 itemsIndex;
                 u32 endIndex;
@@ -181,7 +182,6 @@ void stSlipspace::update(float deltaFrame)
                 _spawnerGroups[_spawnGroupCount].maxSimultaneousSpawns = spawnGroupData->m_rotation.m_z;
                 // Iterate through spawners in group
                 bool inList = false;
-                int currentSpawner = -1;
                 for (int j = itemsIndex + 1; j < endIndex; j++)
                 {
                     nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(j);
