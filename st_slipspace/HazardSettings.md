@@ -363,6 +363,26 @@ sora_enemy.rel file index = 301
 
 **Translation Z** - Motion Path ModelData Index (name of node to follow must match this bone name)
 
+## Whitelist
+
+Whitelists are child bones of spawners. They allow you to make it so that only enemies in the whitelist are allowed to appear at that spawner. To create a whitelist, add a child bone to your Spawner named "Whitelist". Your spawner may only have a blacklist or whitelist, not both.
+
+Each child bone of the whitelist represents a whitelisted enemy. The final bone in the whitelist should always be named "WhitelistEnd".
+
+The following values are used by each child of the whitelist bone:
+
+**Scale Z** - Index of enemy in "Enemy" bone, zero-indexed. Whatever index is specified here will be allowed to spawn at the spawner. For example, the first entry in your enemy list would have an index of 0.
+
+## Blacklist
+
+Blacklists are child bones of spawners. They allow you to make it so certain enemies are not allowed to appear at that spawner. To create a blacklist, add a child bone to your Spawner named "Blacklist". Your spawner may only have a blacklist or whitelist, not both.
+
+Each child bone of the blacklist represents a blacklisted enemy. The final bone in the blacklist should always be named "BlacklistEnd".
+
+The following values are used by each child of the blacklist bone:
+
+**Scale Z** - Index of enemy in "Enemy" bone, zero-indexed. Whatever index is specified here will not be allowed to spawn at the spawner. For example, the first entry in your enemy list would have an index of 0.
+
 ## Respawns
 
 Spawn points for players, for use with dynamic blast zones. The game will attempt to respawn players at these positions if they are nearby.

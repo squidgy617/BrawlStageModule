@@ -32,7 +32,7 @@ static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<
 int KO_PLAYERINDEX = 6; // We store KOs on player index 6 (player 7) which is a multi-man slot, not a real player
 
 int _enemyCount = 0; // Number of enemies currently spawned
-int _spawnerCount = -1; // Number of spawners in stage
+int _spawnerCount = 0; // Number of spawners in stage
 int _spawnGroupCount = 0; // Number of spawner groups in stage
 int _enemyTypeCount = 0; // Number of different types of enemies that can spawn
 int _maxFrequency = 0; // Highest enemy frequency in stage
@@ -60,8 +60,9 @@ struct EnemySpawner
     int respawnTimerLength;
     grMotionPath* motionPath;
     grMotionPath* visNode;
-    int whitelistSize;
-    int whitelistedEnemies[100];
+    int listSize;
+    int listedEnemies[100];
+    bool isWhitelist;
 };
 
 struct RespawnPoint
@@ -179,48 +180,53 @@ void stSlipspace::update(float deltaFrame)
                 _spawnerGroups[_spawnGroupCount].maxTotalSpawns = spawnGroupData->m_rotation.m_y;
                 _spawnerGroups[_spawnGroupCount].maxSimultaneousSpawns = spawnGroupData->m_rotation.m_z;
                 // Iterate through spawners in group
-                bool inWhitelist = false;
+                bool inList = false;
+                int currentSpawner = -1;
                 for (int j = itemsIndex + 1; j < endIndex; j++)
                 {
                     nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(j);
+                    char* nodeName = ground->getNodeName(resNode);
                     nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
                     // Start whitelist
-                    if (strcmp(ground->getNodeName(resNode), "Whitelist") == 0)
+                    if (strcmp(nodeName, "Whitelist") == 0)
                     {
-                        inWhitelist = true;
+                        inList = true;
+                        _spawners[currentSpawner].isWhitelist = true;
                     }
-                    // End whitelist
-                    else if (strcmp(ground->getNodeName(resNode), "WhitelistEnd") == 0)
+                    // Start blacklist
+                    else if (strcmp(nodeName, "Blacklist") == 0)
                     {
-                        inWhitelist = false;
+                        inList = true;
+                        _spawners[currentSpawner].isWhitelist = false;
                     }
-                    // If in whitelist, add enemies to it
-                    else if (inWhitelist)
+                    // End list
+                    else if (strcmp(nodeName, "WhitelistEnd") == 0 || strcmp(nodeName, "BlacklistEnd") == 0)
                     {
-                        _spawners[_spawnerCount].whitelistedEnemies[_spawners[_spawnerCount].whitelistSize] = resNodeData->m_scale.m_z;
-                        _spawners[_spawnerCount].whitelistSize++;
+                        inList = false;
+                    }
+                    // If in list, add enemies to it
+                    else if (inList)
+                    {
+                        _spawners[currentSpawner].listedEnemies[_spawners[currentSpawner].listSize] = resNodeData->m_scale.m_z;
+                        _spawners[currentSpawner].listSize++;
                     }
                     // Otherwise, add spawner
                     else
                     {
+                        currentSpawner++;
+                        _spawners[currentSpawner].startStatus = resNodeData->m_scale.m_z;
+                        _spawners[currentSpawner].pos = *resNodeData->m_translation.xy();
+                        _spawners[currentSpawner].nodeName = nodeName;
+                        _spawners[currentSpawner].motionPathIndex = resNodeData->m_translation.m_z;
+                        _spawners[currentSpawner].visNodeIndex = resNodeData->m_rotation.m_y;
+                        _spawners[currentSpawner].facingDirection = resNodeData->m_rotation.m_z;
+                        _spawners[currentSpawner].groupIndex = i;
+                        _spawners[currentSpawner].respawnTimerLength = resNodeData->m_scale.m_x;
+                        _spawners[currentSpawner].listSize = 0;
                         _spawnerCount++;
-                        _spawners[_spawnerCount].startStatus = resNodeData->m_scale.m_z;
-                        _spawners[_spawnerCount].pos = *resNodeData->m_translation.xy();
-                        _spawners[_spawnerCount].nodeName = ground->getNodeName(resNode);
-                        _spawners[_spawnerCount].motionPathIndex = resNodeData->m_translation.m_z;
-                        _spawners[_spawnerCount].visNodeIndex = resNodeData->m_rotation.m_y;
-                        _spawners[_spawnerCount].facingDirection = resNodeData->m_rotation.m_z;
-                        _spawners[_spawnerCount].groupIndex = i;
-                        _spawners[_spawnerCount].respawnTimerLength = resNodeData->m_scale.m_x;
-                        _spawners[_spawnerCount].whitelistSize = 0;
                     }
                 }
                 _spawnGroupCount++;
-            }
-            // Set spawner count to 0 if there were no spawners
-            if (_spawnerCount <= -1)
-            {
-                _spawnerCount = 0;
             }
             // Initialize enemies
             int itemsIndex = ground->getNodeIndex(0, "Enemies");
@@ -443,16 +449,29 @@ void stSlipspace::update(float deltaFrame)
             // Only spawn enemies from available spawners and if enemy assets are loaded
             int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
             // Check if enemy is in whitelist
-            bool whitelisted = _spawners[si].whitelistSize <= 0;
-            for (int j = 0; j < _spawners[si].whitelistSize; j++)
+            bool whitelisted = !_spawners[si].isWhitelist;
+            for (int j = 0; j < _spawners[si].listSize; j++)
             {
-                if (_spawners[si].whitelistedEnemies[j] == enemyToSpawn->index)
+                if (_spawners[si].listedEnemies[j] == enemyToSpawn->index)
                 {
                     whitelisted = true;
                     break;
                 }
             }
-            if (enemyToSpawn->loaded && _spawners[si].timer <= 0 && enemyToSpawn->size < availableMemory && whitelisted)
+            // Check if enemy is in blacklist
+            bool blacklisted = false;
+            if (!_spawners[si].isWhitelist)
+            {
+                for (int j = 0; j < _spawners[si].listSize; j++)
+                {
+                    if (_spawners[si].listedEnemies[j] == enemyToSpawn->index)
+                    {
+                        blacklisted = true;
+                        break;
+                    }
+                }
+            }
+            if (enemyToSpawn->loaded && _spawners[si].timer <= 0 && enemyToSpawn->size < availableMemory && whitelisted && !blacklisted)
             {
                 // Find enemy list entry
                 // Spawn enemy
