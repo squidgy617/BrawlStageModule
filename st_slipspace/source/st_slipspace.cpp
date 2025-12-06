@@ -61,7 +61,7 @@ struct EnemySpawner
     grMotionPath* motionPath;
     grMotionPath* visNode;
     int listSize;
-    int listedEnemies[100];
+    soArrayList<u32, 32> listedEnemies;
     bool isWhitelist;
 };
 
@@ -207,7 +207,7 @@ void stSlipspace::update(float deltaFrame)
                     // If in list, add enemies to it
                     else if (inList)
                     {
-                        _spawners[currentSpawner].listedEnemies[_spawners[currentSpawner].listSize] = resNodeData->m_scale.m_z;
+                        _spawners[currentSpawner].listedEnemies.push(resNodeData->m_scale.m_z);
                         _spawners[currentSpawner].listSize++;
                     }
                     // Otherwise, add spawner
@@ -452,7 +452,7 @@ void stSlipspace::update(float deltaFrame)
             bool whitelisted = !_spawners[si].isWhitelist;
             for (int j = 0; j < _spawners[si].listSize; j++)
             {
-                if (_spawners[si].listedEnemies[j] == enemyToSpawn->index)
+                if (_spawners[si].listedEnemies.at(j) == enemyToSpawn->index)
                 {
                     whitelisted = true;
                     break;
@@ -464,7 +464,7 @@ void stSlipspace::update(float deltaFrame)
             {
                 for (int j = 0; j < _spawners[si].listSize; j++)
                 {
-                    if (_spawners[si].listedEnemies[j] == enemyToSpawn->index)
+                    if (_spawners[si].listedEnemies.at(j) == enemyToSpawn->index)
                     {
                         blacklisted = true;
                         break;
