@@ -77,7 +77,7 @@ struct RespawnPoint
 
 SpawnerGroup _spawnerGroups[100]; // List of spawner groups in stage
 EnemySpawner _spawners[100]; // List of spawners in stage
-int _spawnQueue[100]; // Holds queued spawns
+soArrayList<u32, 32> _spawnQueue; // Holds queued spawns
 EnemyType _enemyTypes[100]; // List of enemy types in stage
 SlipspaceEnemy _spawnedEnemyTypes[100]; // List of currently spawned enemies in the stage
 GameRule _gameMode; // Selected game mode
@@ -288,11 +288,6 @@ void stSlipspace::update(float deltaFrame)
                     _spawners[i].visNode = NULL;
                 }
             }
-            // Initialize _spawnQueue
-            for (int i = 0; i < (sizeof(_spawnQueue) / sizeof(_spawnQueue[0])); i++)
-            {
-                _spawnQueue[i] = -1;
-            }
             // Initialize spawned enemies
             for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
             {
@@ -362,9 +357,9 @@ void stSlipspace::update(float deltaFrame)
 
         for (int i = 0; i < stageData->maxSpawns; i++)
         {
-            if (_spawnQueue[i] != -1)
+            if (_spawnQueue.size() > i)
             {
-                EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue[i]];
+                EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue.at(i)];
                 // If enemy assets are not yet loaded and there is enough space to load them, start loading them
                 emManager *enemyManager = emManager::getInstance();
                 int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)enemyToSpawn->enemyId);
@@ -441,9 +436,9 @@ void stSlipspace::update(float deltaFrame)
         }
 
         // Iterate through spawners and spawn enemies
-        for (int i = 0; i < availableSpawnerCount && _enemyCount < stageData->maxSpawns && _spawnQueue[0] > -1; i++)
+        for (int i = 0; i < availableSpawnerCount && _enemyCount < stageData->maxSpawns && _spawnQueue.size() > 0; i++)
         {
-            EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue[0]];
+            EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue.at(0)];
             int si = randomizedSpawnerIndexes[i];
             emManager *enemyManager = emManager::getInstance();
             // Only spawn enemies from available spawners and if enemy assets are loaded
@@ -477,15 +472,7 @@ void stSlipspace::update(float deltaFrame)
                 // Spawn enemy
                 this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si].pos, 0, _spawners[si].facingDirection, _spawners[si].groupIndex, _spawners[si].motionPath);
                 // Pop from queue
-                for (int j = 0; j < stageData->maxSpawns; j++)
-                {
-                    if (j == stageData->maxSpawns - 1)
-                    {
-                        _spawnQueue[j] = -1;
-                        break;
-                    }
-                    _spawnQueue[j] = _spawnQueue[j + 1];
-                }
+                _spawnQueue.pop();
                 // Reset timer
                 if (_spawners[si].respawnTimerLength > stageData->spawnTimer)
                 {
@@ -531,10 +518,10 @@ void stSlipspace::update(float deltaFrame)
                 }
             }
             // TODO: Group enemies of the same type together in queue?
-            if (_spawnQueue[i] == -1)
+            if (_spawnQueue.size() < stageData->maxSpawns)
             {
                 int randomIndex = randi(numEnemyTypesAllowed);
-                _spawnQueue[i] = allowedEnemyTypes[randomIndex]; // Spawn random enemy from enemy list
+                _spawnQueue.push(allowedEnemyTypes[randomIndex]); // Spawn random enemy from enemy list
             }
         }
         // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue[0]].enemyId, _enemyTypes[_spawnQueue[1]].enemyId, _enemyTypes[_spawnQueue[2]].enemyId, _enemyTypes[_spawnQueue[3]].enemyId, _enemyTypes[_spawnQueue[4]].enemyId);
@@ -1810,7 +1797,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
         // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
         if (spawnedEnemy.enemyCreateId > -1 && spawnedEnemy.enemyType->enemyId > -1 
             && enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy.enemyType->enemyId) < 1
-            && _enemyTypes[_spawnQueue[0]].enemyId != spawnedEnemy.enemyType->enemyId)
+            && (_spawnQueue.size() > 0 && _enemyTypes[_spawnQueue.at(0)].enemyId != spawnedEnemy.enemyType->enemyId))
         {
             OSReport("Unloading resources for enemy %d. \n", spawnedEnemy.enemyType->enemyId);
             emManager *enemyManager = emManager::getInstance();
@@ -2002,7 +1989,9 @@ void stSlipspace::moveCamera()
             int entryId = g_ftManager->getEntryIdFromIndex(i);
             Fighter* fighter = g_ftManager->getFighter(entryId, -1);
             int status = fighter->m_moduleAccesser->getStatusModule().getStatusKind();
-            if (status != Fighter::Status::Dead)
+            // TODO: Make it so that when it's just one player alive, the camera position stays where it's at
+            // Checking for solo play because otherwise every time they get screen/star KOed they go to a void
+            if (g_ftManager->getEntryCount() == 1 || status != Fighter::Status::Dead)
             {
                 Vec3f pos = soExternalValueAccesser::getPos(fighter);
                 averageX += pos.m_x;
