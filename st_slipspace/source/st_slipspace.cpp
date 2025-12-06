@@ -32,7 +32,7 @@ static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<
 int KO_PLAYERINDEX = 6; // We store KOs on player index 6 (player 7) which is a multi-man slot, not a real player
 
 int _enemyCount = 0; // Number of enemies currently spawned
-int _spawnerCount = 0; // Number of spawners in stage
+int _spawnerCount = -1; // Number of spawners in stage
 int _spawnGroupCount = 0; // Number of spawner groups in stage
 int _enemyTypeCount = 0; // Number of different types of enemies that can spawn
 int _maxFrequency = 0; // Highest enemy frequency in stage
@@ -60,6 +60,8 @@ struct EnemySpawner
     int respawnTimerLength;
     grMotionPath* motionPath;
     grMotionPath* visNode;
+    int whitelistSize;
+    int whitelistedEnemies[100];
 };
 
 struct RespawnPoint
@@ -177,30 +179,59 @@ void stSlipspace::update(float deltaFrame)
                 _spawnerGroups[_spawnGroupCount].maxTotalSpawns = spawnGroupData->m_rotation.m_y;
                 _spawnerGroups[_spawnGroupCount].maxSimultaneousSpawns = spawnGroupData->m_rotation.m_z;
                 // Iterate through spawners in group
+                bool inWhitelist = false;
                 for (int j = itemsIndex + 1; j < endIndex; j++)
                 {
                     nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(j);
                     nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
-                    _spawners[_spawnerCount].startStatus = resNodeData->m_scale.m_z;
-                    _spawners[_spawnerCount].pos = *resNodeData->m_translation.xy();
-                    _spawners[_spawnerCount].nodeName = ground->getNodeName(resNode);
-                    _spawners[_spawnerCount].motionPathIndex = resNodeData->m_translation.m_z;
-                    _spawners[_spawnerCount].visNodeIndex = resNodeData->m_rotation.m_y;
-                    _spawners[_spawnerCount].facingDirection = resNodeData->m_rotation.m_z;
-                    _spawners[_spawnerCount].groupIndex = i;
-                    _spawners[_spawnerCount].respawnTimerLength = resNodeData->m_scale.m_x;
-                    _spawnerCount++;
+                    // Start whitelist
+                    if (strcmp(ground->getNodeName(resNode), "Whitelist") == 0)
+                    {
+                        inWhitelist = true;
+                    }
+                    // End whitelist
+                    else if (strcmp(ground->getNodeName(resNode), "WhitelistEnd") == 0)
+                    {
+                        inWhitelist = false;
+                    }
+                    // If in whitelist, add enemies to it
+                    else if (inWhitelist)
+                    {
+                        _spawners[_spawnerCount].whitelistedEnemies[_spawners[_spawnerCount].whitelistSize] = resNodeData->m_scale.m_z;
+                        _spawners[_spawnerCount].whitelistSize++;
+                    }
+                    // Otherwise, add spawner
+                    else
+                    {
+                        _spawnerCount++;
+                        _spawners[_spawnerCount].startStatus = resNodeData->m_scale.m_z;
+                        _spawners[_spawnerCount].pos = *resNodeData->m_translation.xy();
+                        _spawners[_spawnerCount].nodeName = ground->getNodeName(resNode);
+                        _spawners[_spawnerCount].motionPathIndex = resNodeData->m_translation.m_z;
+                        _spawners[_spawnerCount].visNodeIndex = resNodeData->m_rotation.m_y;
+                        _spawners[_spawnerCount].facingDirection = resNodeData->m_rotation.m_z;
+                        _spawners[_spawnerCount].groupIndex = i;
+                        _spawners[_spawnerCount].respawnTimerLength = resNodeData->m_scale.m_x;
+                        _spawners[_spawnerCount].whitelistSize = 0;
+                    }
                 }
                 _spawnGroupCount++;
+            }
+            // Set spawner count to 0 if there were no spawners
+            if (_spawnerCount <= -1)
+            {
+                _spawnerCount = 0;
             }
             // Initialize enemies
             int itemsIndex = ground->getNodeIndex(0, "Enemies");
             int endIndex = ground->getNodeIndex(0, "Spawners");
+            int maxEnemyIndex = 0;
             for (int i = itemsIndex + 1; i < endIndex; i++)
             {
                 nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
                 if (resNodeData->m_rotation.m_z > 0) // Only add enemies with frequency > 0
                 {
+                    _enemyTypes[_enemyTypeCount].index = maxEnemyIndex;
                     _enemyTypes[_enemyTypeCount].enemyId = resNodeData->m_scale.m_x;
                     _enemyTypes[_enemyTypeCount].difficulty = resNodeData->m_scale.m_y;
                     _enemyTypes[_enemyTypeCount].startStatus = resNodeData->m_scale.m_z;
@@ -215,6 +246,7 @@ void stSlipspace::update(float deltaFrame)
                     }
                     _enemyTypeCount++;
                 }
+                maxEnemyIndex++;
             }
             // Initialize spawner motion paths
             for (int i = 0; i < _spawnerCount; i++)
@@ -410,7 +442,17 @@ void stSlipspace::update(float deltaFrame)
             emManager *enemyManager = emManager::getInstance();
             // Only spawn enemies from available spawners and if enemy assets are loaded
             int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
-            if (enemyToSpawn->loaded && _spawners[si].timer <= 0 && enemyToSpawn->size < availableMemory)
+            // Check if enemy is in whitelist
+            bool whitelisted = _spawners[si].whitelistSize <= 0;
+            for (int j = 0; j < _spawners[si].whitelistSize; j++)
+            {
+                if (_spawners[si].whitelistedEnemies[j] == enemyToSpawn->index)
+                {
+                    whitelisted = true;
+                    break;
+                }
+            }
+            if (enemyToSpawn->loaded && _spawners[si].timer <= 0 && enemyToSpawn->size < availableMemory && whitelisted)
             {
                 // Find enemy list entry
                 // Spawn enemy

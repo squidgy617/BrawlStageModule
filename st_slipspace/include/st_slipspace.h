@@ -30,6 +30,7 @@ const float UNK_FLOAT1 = 0.0f;
 class EnemyType
 {
     public:
+        int index;
         int enemyId;
         int difficulty;
         int startStatus;
