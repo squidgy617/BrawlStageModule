@@ -26,6 +26,7 @@
 #include <gf/gf_3d_scene.h>
 #include <if/if_mngr.h>
 #include <st/st_enemy_id_manager.h>
+#include "vector.h"
 
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
@@ -61,7 +62,7 @@ struct EnemySpawner
     grMotionPath* motionPath;
     grMotionPath* visNode;
     int listSize;
-    soArrayList<u32, 32> listedEnemies;
+    Vector<u32> listedEnemies;
     bool isWhitelist;
 };
 
@@ -75,9 +76,9 @@ struct RespawnPoint
     grMotionPath* visNode;
 };
 
-soArrayVector<SpawnerGroup*, 32> _spawnerGroups; // List of spawner groups in stage
+Vector<SpawnerGroup*> _spawnerGroups; // List of spawner groups in stage
 EnemySpawner _spawners[100]; // List of spawners in stage
-soArrayList<u32, 32> _spawnQueue; // Holds queued spawns
+Vector<u32> _spawnQueue; // Holds queued spawns
 EnemyType _enemyTypes[100]; // List of enemy types in stage
 SlipspaceEnemy _spawnedEnemyTypes[100]; // List of currently spawned enemies in the stage
 GameRule _gameMode; // Selected game mode
@@ -317,7 +318,7 @@ void stSlipspace::update(float deltaFrame)
         // Update group timers
         for (int i = 0; i < _spawnGroupCount; i++)
         {
-            SpawnerGroup* spawnGroup = _spawnerGroups.at(i);
+            SpawnerGroup* spawnGroup = _spawnerGroups[i];
             if (spawnGroup->timer > 0)
             {
                 spawnGroup->timer -= deltaFrame;
@@ -364,7 +365,7 @@ void stSlipspace::update(float deltaFrame)
         {
             if (_spawnQueue.size() > i)
             {
-                EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue.at(i)];
+                EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue[i]];
                 // If enemy assets are not yet loaded and there is enough space to load them, start loading them
                 emManager *enemyManager = emManager::getInstance();
                 int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)enemyToSpawn->enemyId);
@@ -443,7 +444,7 @@ void stSlipspace::update(float deltaFrame)
         // Iterate through spawners and spawn enemies
         for (int i = 0; i < availableSpawnerCount && _enemyCount < stageData->maxSpawns && _spawnQueue.size() > 0; i++)
         {
-            EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue.at(0)];
+            EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue[0]];
             int si = randomizedSpawnerIndexes[i];
             emManager *enemyManager = emManager::getInstance();
             // Only spawn enemies from available spawners and if enemy assets are loaded
@@ -452,7 +453,7 @@ void stSlipspace::update(float deltaFrame)
             bool whitelisted = !_spawners[si].isWhitelist;
             for (int j = 0; j < _spawners[si].listSize; j++)
             {
-                if (_spawners[si].listedEnemies.at(j) == enemyToSpawn->index)
+                if (_spawners[si].listedEnemies[j] == enemyToSpawn->index)
                 {
                     whitelisted = true;
                     break;
@@ -464,7 +465,7 @@ void stSlipspace::update(float deltaFrame)
             {
                 for (int j = 0; j < _spawners[si].listSize; j++)
                 {
-                    if (_spawners[si].listedEnemies.at(j) == enemyToSpawn->index)
+                    if (_spawners[si].listedEnemies[j] == enemyToSpawn->index)
                     {
                         blacklisted = true;
                         break;
@@ -477,6 +478,10 @@ void stSlipspace::update(float deltaFrame)
                 // Spawn enemy
                 this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si].pos, 0, _spawners[si].facingDirection, _spawners[si].groupIndex, _spawners[si].motionPath);
                 // Pop from queue
+                for (int j = 0; j < _spawnQueue.size() - 1; j++)
+                {
+                    _spawnQueue[j] = _spawnQueue[j + 1];
+                }
                 _spawnQueue.pop();
                 // Reset timer
                 if (_spawners[si].respawnTimerLength > stageData->spawnTimer)
@@ -488,7 +493,7 @@ void stSlipspace::update(float deltaFrame)
                     _spawners[si].timer = stageData->spawnTimer;
                 }
                 // Increment group spawn count if there's a limit
-                SpawnerGroup* spawnGroup = _spawnerGroups.at(_spawners[si].groupIndex);
+                SpawnerGroup* spawnGroup = _spawnerGroups[_spawners[si].groupIndex];
                 if (spawnGroup->maxTotalSpawns > 0)
                 {
                     spawnGroup->totalSpawns++;
@@ -530,7 +535,8 @@ void stSlipspace::update(float deltaFrame)
                 _spawnQueue.push(allowedEnemyTypes[randomIndex]); // Spawn random enemy from enemy list
             }
         }
-        // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue.at(0)].enemyId, _enemyTypes[_spawnQueue.at(1)].enemyId, _enemyTypes[_spawnQueue.at(2)].enemyId, _enemyTypes[_spawnQueue.at(3)].enemyId, _enemyTypes[_spawnQueue.at(4)].enemyId);
+        // OSReport("OverlayStage: %d \n", gfHeapManager::getMaxFreeSize(Heaps::OverlayStage));
+        // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue[0]].enemyId, _enemyTypes[_spawnQueue[1]].enemyId, _enemyTypes[_spawnQueue[2]].enemyId, _enemyTypes[_spawnQueue[3]].enemyId, _enemyTypes[_spawnQueue[4]].enemyId);
     }
 
     // Initialize respawns
@@ -1701,7 +1707,7 @@ int stSlipspace::getGroupEnemyCount(int groupIndex)
 
 bool stSlipspace::canSpawnEnemyInGroup(int groupIndex)
 {
-    SpawnerGroup* spawnGroup = reinterpret_cast<SpawnerGroup*>(_spawnerGroups.at(groupIndex));
+    SpawnerGroup* spawnGroup = reinterpret_cast<SpawnerGroup*>(_spawnerGroups[groupIndex]);
     return (spawnGroup->maxSimultaneousSpawns == 0 || getGroupEnemyCount(groupIndex) < spawnGroup->maxSimultaneousSpawns) &&
     (spawnGroup->timer <= 0);
 }
@@ -1804,7 +1810,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
         // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
         if (spawnedEnemy.enemyCreateId > -1 && spawnedEnemy.enemyType->enemyId > -1 
             && enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy.enemyType->enemyId) < 1
-            && (_spawnQueue.size() > 0 && _enemyTypes[_spawnQueue.at(0)].enemyId != spawnedEnemy.enemyType->enemyId))
+            && (_spawnQueue.size() > 0 && _enemyTypes[_spawnQueue[0]].enemyId != spawnedEnemy.enemyType->enemyId))
         {
             OSReport("Unloading resources for enemy %d. \n", spawnedEnemy.enemyType->enemyId);
             emManager *enemyManager = emManager::getInstance();
