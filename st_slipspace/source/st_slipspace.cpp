@@ -178,7 +178,7 @@ void stSlipspace::update(float deltaFrame)
                 ground->getNodeIndexWithFormat(&endIndex, 0, "SpawnGroupEnd%d", i);
                 // Get spawn group data
                 nw4r::g3d::ResNodeData* spawnGroupData = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(itemsIndex)).ptr();
-                SpawnerGroup* newSpawnGroup = new SpawnerGroup();
+                SpawnerGroup* newSpawnGroup = new (Heaps::StageInstance) SpawnerGroup();
                 newSpawnGroup->timerLength = spawnGroupData->m_rotation.m_x;
                 newSpawnGroup->maxTotalSpawns = spawnGroupData->m_rotation.m_y;
                 newSpawnGroup->maxSimultaneousSpawns = spawnGroupData->m_rotation.m_z;
@@ -219,7 +219,7 @@ void stSlipspace::update(float deltaFrame)
                     else
                     {
                         currentSpawner++;
-                        EnemySpawner* newSpawner = new EnemySpawner();
+                        EnemySpawner* newSpawner = new (Heaps::StageInstance) EnemySpawner();
                         newSpawner->startStatus = resNodeData->m_scale.m_z;
                         newSpawner->pos = *resNodeData->m_translation.xy();
                         newSpawner->nodeName = nodeName;
@@ -249,7 +249,7 @@ void stSlipspace::update(float deltaFrame)
                 nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
                 if (resNodeData->m_rotation.m_z > 0) // Only add enemies with frequency > 0
                 {
-                    EnemyType* newEnemyType = new EnemyType();
+                    EnemyType* newEnemyType = new (Heaps::StageInstance) EnemyType();
                     newEnemyType->index = maxEnemyIndex;
                     newEnemyType->enemyId = resNodeData->m_scale.m_x;
                     newEnemyType->difficulty = resNodeData->m_scale.m_y;
@@ -547,7 +547,7 @@ void stSlipspace::update(float deltaFrame)
         for (int i = respawnsIndex + 1; i < endIndex; i++) {
             nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
             nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
-            RespawnPoint* newRespawn = new RespawnPoint();
+            RespawnPoint* newRespawn = new (Heaps::StageInstance) RespawnPoint();
             newRespawn->position.m_x = resNodeData->m_translation.m_x;
             newRespawn->position.m_y = resNodeData->m_translation.m_y;
             newRespawn->nodeName = ground->getNodeName(resNode);
@@ -1486,7 +1486,7 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
     _enemyCount++;
 
     // Add to spawned enemies list
-    SlipspaceEnemy* newEnemy = new SlipspaceEnemy();
+    SlipspaceEnemy* newEnemy = new (Heaps::StageInstance) SlipspaceEnemy();
     newEnemy->enemyType = enemyToSpawn;
     newEnemy->enemyCreateId = id;
     newEnemy->groupIndex = groupIndex;
