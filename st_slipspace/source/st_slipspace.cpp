@@ -77,7 +77,7 @@ struct RespawnPoint
 };
 
 Vector<SpawnerGroup*> _spawnerGroups; // List of spawner groups in stage
-EnemySpawner _spawners[100]; // List of spawners in stage
+Vector<EnemySpawner*> _spawners; // List of spawners in stage
 Vector<u32> _spawnQueue; // Holds queued spawns
 EnemyType _enemyTypes[100]; // List of enemy types in stage
 SlipspaceEnemy _spawnedEnemyTypes[100]; // List of currently spawned enemies in the stage
@@ -196,13 +196,13 @@ void stSlipspace::update(float deltaFrame)
                     if (strcmp(nodeName, "Whitelist") == 0)
                     {
                         inList = true;
-                        _spawners[currentSpawner].isWhitelist = true;
+                        _spawners[currentSpawner]->isWhitelist = true;
                     }
                     // Start blacklist
                     else if (strcmp(nodeName, "Blacklist") == 0)
                     {
                         inList = true;
-                        _spawners[currentSpawner].isWhitelist = false;
+                        _spawners[currentSpawner]->isWhitelist = false;
                     }
                     // End list
                     else if (strcmp(nodeName, "WhitelistEnd") == 0 || strcmp(nodeName, "BlacklistEnd") == 0)
@@ -212,22 +212,29 @@ void stSlipspace::update(float deltaFrame)
                     // If in list, add enemies to it
                     else if (inList)
                     {
-                        _spawners[currentSpawner].listedEnemies.push(resNodeData->m_scale.m_z);
-                        _spawners[currentSpawner].listSize++;
+                        _spawners[currentSpawner]->listedEnemies.push(resNodeData->m_scale.m_z);
+                        _spawners[currentSpawner]->listSize++;
                     }
                     // Otherwise, add spawner
                     else
                     {
                         currentSpawner++;
-                        _spawners[currentSpawner].startStatus = resNodeData->m_scale.m_z;
-                        _spawners[currentSpawner].pos = *resNodeData->m_translation.xy();
-                        _spawners[currentSpawner].nodeName = nodeName;
-                        _spawners[currentSpawner].motionPathIndex = resNodeData->m_translation.m_z;
-                        _spawners[currentSpawner].visNodeIndex = resNodeData->m_rotation.m_y;
-                        _spawners[currentSpawner].facingDirection = resNodeData->m_rotation.m_z;
-                        _spawners[currentSpawner].groupIndex = i;
-                        _spawners[currentSpawner].respawnTimerLength = resNodeData->m_scale.m_x;
-                        _spawners[currentSpawner].listSize = 0;
+                        EnemySpawner* newSpawner = new EnemySpawner();
+                        newSpawner->startStatus = resNodeData->m_scale.m_z;
+                        newSpawner->pos = *resNodeData->m_translation.xy();
+                        newSpawner->nodeName = nodeName;
+                        newSpawner->motionPathIndex = resNodeData->m_translation.m_z;
+                        newSpawner->visNodeIndex = resNodeData->m_rotation.m_y;
+                        newSpawner->facingDirection = resNodeData->m_rotation.m_z;
+                        newSpawner->groupIndex = i;
+                        newSpawner->respawnTimerLength = resNodeData->m_scale.m_x;
+                        newSpawner->listSize = 0;
+                        newSpawner->listedEnemies = Vector<u32>();
+                        newSpawner->timer = 0;
+                        newSpawner->motionPath = NULL;
+                        newSpawner->visNode = NULL;
+                        newSpawner->isWhitelist = false;
+                        _spawners.push(newSpawner);
                         _spawnerCount++;
                     }
                 }
@@ -262,35 +269,35 @@ void stSlipspace::update(float deltaFrame)
             // Initialize spawner motion paths
             for (int i = 0; i < _spawnerCount; i++)
             {
-                if (_spawners[i].motionPathIndex != 0) 
+                if (_spawners[i]->motionPathIndex != 0) 
                 {
-                    grMotionPath* ground = grMotionPath::create(_spawners[i].motionPathIndex, _spawners[i].nodeName, "grMotionPath");
+                    grMotionPath* ground = grMotionPath::create(_spawners[i]->motionPathIndex, _spawners[i]->nodeName, "grMotionPath");
                     if (ground != NULL) {
                         addGround(ground);
                         ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
                     }
-                    _spawners[i].motionPath = ground;
+                    _spawners[i]->motionPath = ground;
                 }
                 else
                 {
-                    _spawners[i].motionPath = NULL;
+                    _spawners[i]->motionPath = NULL;
                 }
             }
             // Initialize spawner visibility nodes
             for (int i = 0; i < _spawnerCount; i++)
             {
-                if (_spawners[i].visNodeIndex != 0)
+                if (_spawners[i]->visNodeIndex != 0)
                 {
-                    grMotionPath* ground = grMotionPath::create(_spawners[i].visNodeIndex, _spawners[i].nodeName, "grMotionPath");
+                    grMotionPath* ground = grMotionPath::create(_spawners[i]->visNodeIndex, _spawners[i]->nodeName, "grMotionPath");
                     if (ground != NULL) {
                         addGround(ground);
                         ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
                     }
-                    _spawners[i].visNode = ground;
+                    _spawners[i]->visNode = ground;
                 }
                 else
                 {
-                    _spawners[i].visNode = NULL;
+                    _spawners[i]->visNode = NULL;
                 }
             }
             // Initialize spawned enemies
@@ -309,9 +316,9 @@ void stSlipspace::update(float deltaFrame)
         // Update spawner timers
         for (int i = 0; i < _spawnerCount; i++)
         {
-            if (_spawners[i].timer > 0)
+            if (_spawners[i]->timer > 0)
             {
-                _spawners[i].timer -= deltaFrame;
+                _spawners[i]->timer -= deltaFrame;
             }
         }
 
@@ -416,15 +423,15 @@ void stSlipspace::update(float deltaFrame)
         for (int i = 0; i < _spawnerCount; i++)
         {
             // Only add spawners that are within the camera range and aren't part of an already maxed out group
-            Vec2f pos = _spawners[i].pos;
+            Vec2f pos = _spawners[i]->pos;
             // If spawner has a motion path, use motion path position for spawning
-            if (_spawners[i].motionPath != NULL)
+            if (_spawners[i]->motionPath != NULL)
             {
-                Vec3f motionPathPos = _spawners[i].motionPath->getPos();
+                Vec3f motionPathPos = _spawners[i]->motionPath->getPos();
                 pos = Vec2f(motionPathPos.m_x, motionPathPos.m_y);
             }
-            if (inCameraRange(pos) && canSpawnEnemyInGroup(_spawners[i].groupIndex) 
-            && (_spawners[i].visNode == NULL || _spawners[i].visNode->isNodeVisible(0, _spawners[i].visNode->m_nodeIndex)))
+            if (inCameraRange(pos) && canSpawnEnemyInGroup(_spawners[i]->groupIndex) 
+            && (_spawners[i]->visNode == NULL || _spawners[i]->visNode->isNodeVisible(0, _spawners[i]->visNode->m_nodeIndex)))
             {
                 randomizedSpawnerIndexes[availableSpawnerCount] = i;
                 availableSpawnerCount++;
@@ -450,10 +457,10 @@ void stSlipspace::update(float deltaFrame)
             // Only spawn enemies from available spawners and if enemy assets are loaded
             int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
             // Check if enemy is in whitelist
-            bool whitelisted = !_spawners[si].isWhitelist;
-            for (int j = 0; j < _spawners[si].listSize; j++)
+            bool whitelisted = !_spawners[si]->isWhitelist;
+            for (int j = 0; j < _spawners[si]->listSize; j++)
             {
-                if (_spawners[si].listedEnemies[j] == enemyToSpawn->index)
+                if (_spawners[si]->listedEnemies[j] == enemyToSpawn->index)
                 {
                     whitelisted = true;
                     break;
@@ -461,22 +468,22 @@ void stSlipspace::update(float deltaFrame)
             }
             // Check if enemy is in blacklist
             bool blacklisted = false;
-            if (!_spawners[si].isWhitelist)
+            if (!_spawners[si]->isWhitelist)
             {
-                for (int j = 0; j < _spawners[si].listSize; j++)
+                for (int j = 0; j < _spawners[si]->listSize; j++)
                 {
-                    if (_spawners[si].listedEnemies[j] == enemyToSpawn->index)
+                    if (_spawners[si]->listedEnemies[j] == enemyToSpawn->index)
                     {
                         blacklisted = true;
                         break;
                     }
                 }
             }
-            if (enemyToSpawn->loaded && _spawners[si].timer <= 0 && enemyToSpawn->size < availableMemory && whitelisted && !blacklisted)
+            if (enemyToSpawn->loaded && _spawners[si]->timer <= 0 && enemyToSpawn->size < availableMemory && whitelisted && !blacklisted)
             {
                 // Find enemy list entry
                 // Spawn enemy
-                this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si].pos, 0, _spawners[si].facingDirection, _spawners[si].groupIndex, _spawners[si].motionPath);
+                this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->facingDirection, _spawners[si]->groupIndex, _spawners[si]->motionPath);
                 // Pop from queue
                 for (int j = 0; j < _spawnQueue.size() - 1; j++)
                 {
@@ -484,16 +491,16 @@ void stSlipspace::update(float deltaFrame)
                 }
                 _spawnQueue.pop();
                 // Reset timer
-                if (_spawners[si].respawnTimerLength > stageData->spawnTimer)
+                if (_spawners[si]->respawnTimerLength > stageData->spawnTimer)
                 {
-                    _spawners[si].timer = _spawners[si].respawnTimerLength;
+                    _spawners[si]->timer = _spawners[si]->respawnTimerLength;
                 }
                 else
                 {
-                    _spawners[si].timer = stageData->spawnTimer;
+                    _spawners[si]->timer = stageData->spawnTimer;
                 }
                 // Increment group spawn count if there's a limit
-                SpawnerGroup* spawnGroup = _spawnerGroups[_spawners[si].groupIndex];
+                SpawnerGroup* spawnGroup = _spawnerGroups[_spawners[si]->groupIndex];
                 if (spawnGroup->maxTotalSpawns > 0)
                 {
                     spawnGroup->totalSpawns++;
@@ -535,7 +542,7 @@ void stSlipspace::update(float deltaFrame)
                 _spawnQueue.push(allowedEnemyTypes[randomIndex]); // Spawn random enemy from enemy list
             }
         }
-        // OSReport("OverlayStage: %d \n", gfHeapManager::getMaxFreeSize(Heaps::OverlayStage));
+        OSReport("OverlayStage: %d \n", gfHeapManager::getMaxFreeSize(Heaps::OverlayStage));
         // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue[0]].enemyId, _enemyTypes[_spawnQueue[1]].enemyId, _enemyTypes[_spawnQueue[2]].enemyId, _enemyTypes[_spawnQueue[3]].enemyId, _enemyTypes[_spawnQueue[4]].enemyId);
     }
 
