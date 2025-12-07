@@ -75,7 +75,7 @@ struct RespawnPoint
     grMotionPath* visNode;
 };
 
-SpawnerGroup _spawnerGroups[100]; // List of spawner groups in stage
+soArrayVector<SpawnerGroup*, 32> _spawnerGroups; // List of spawner groups in stage
 EnemySpawner _spawners[100]; // List of spawners in stage
 soArrayList<u32, 32> _spawnQueue; // Holds queued spawns
 EnemyType _enemyTypes[100]; // List of enemy types in stage
@@ -177,9 +177,13 @@ void stSlipspace::update(float deltaFrame)
                 ground->getNodeIndexWithFormat(&endIndex, 0, "SpawnGroupEnd%d", i);
                 // Get spawn group data
                 nw4r::g3d::ResNodeData* spawnGroupData = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(itemsIndex)).ptr();
-                _spawnerGroups[_spawnGroupCount].timerLength = spawnGroupData->m_rotation.m_x;
-                _spawnerGroups[_spawnGroupCount].maxTotalSpawns = spawnGroupData->m_rotation.m_y;
-                _spawnerGroups[_spawnGroupCount].maxSimultaneousSpawns = spawnGroupData->m_rotation.m_z;
+                SpawnerGroup* newSpawnGroup = new SpawnerGroup();
+                newSpawnGroup->timerLength = spawnGroupData->m_rotation.m_x;
+                newSpawnGroup->maxTotalSpawns = spawnGroupData->m_rotation.m_y;
+                newSpawnGroup->maxSimultaneousSpawns = spawnGroupData->m_rotation.m_z;
+                newSpawnGroup->timer = 0;
+                newSpawnGroup->totalSpawns = 0;
+                _spawnerGroups.push(newSpawnGroup);
                 // Iterate through spawners in group
                 bool inList = false;
                 for (int j = itemsIndex + 1; j < endIndex; j++)
@@ -313,9 +317,10 @@ void stSlipspace::update(float deltaFrame)
         // Update group timers
         for (int i = 0; i < _spawnGroupCount; i++)
         {
-            if (_spawnerGroups[i].timer > 0)
+            SpawnerGroup* spawnGroup = _spawnerGroups.at(i);
+            if (spawnGroup->timer > 0)
             {
-                _spawnerGroups[i].timer -= deltaFrame;
+                spawnGroup->timer -= deltaFrame;
             }
         }
 
@@ -483,16 +488,17 @@ void stSlipspace::update(float deltaFrame)
                     _spawners[si].timer = stageData->spawnTimer;
                 }
                 // Increment group spawn count if there's a limit
-                if (_spawnerGroups[_spawners[si].groupIndex].maxTotalSpawns > 0)
+                SpawnerGroup* spawnGroup = _spawnerGroups.at(_spawners[si].groupIndex);
+                if (spawnGroup->maxTotalSpawns > 0)
                 {
-                    _spawnerGroups[_spawners[si].groupIndex].totalSpawns++;
+                    spawnGroup->totalSpawns++;
                 }
                 // If group spawn count limit is reached, set timer and reset count
-                if (_spawnerGroups[_spawners[si].groupIndex].maxTotalSpawns > 0 && 
-                    _spawnerGroups[_spawners[si].groupIndex].totalSpawns >= _spawnerGroups[_spawners[si].groupIndex].maxTotalSpawns)
+                if (spawnGroup->maxTotalSpawns > 0 && 
+                    spawnGroup->totalSpawns >= spawnGroup->maxTotalSpawns)
                 {
-                    _spawnerGroups[_spawners[si].groupIndex].timer = _spawnerGroups[_spawners[si].groupIndex].timerLength;
-                    _spawnerGroups[_spawners[si].groupIndex].totalSpawns = 0;
+                    spawnGroup->timer = spawnGroup->timerLength;
+                    spawnGroup->totalSpawns = 0;
                 }
             }
         }
@@ -524,7 +530,7 @@ void stSlipspace::update(float deltaFrame)
                 _spawnQueue.push(allowedEnemyTypes[randomIndex]); // Spawn random enemy from enemy list
             }
         }
-        // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue[0]].enemyId, _enemyTypes[_spawnQueue[1]].enemyId, _enemyTypes[_spawnQueue[2]].enemyId, _enemyTypes[_spawnQueue[3]].enemyId, _enemyTypes[_spawnQueue[4]].enemyId);
+        // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue.at(0)].enemyId, _enemyTypes[_spawnQueue.at(1)].enemyId, _enemyTypes[_spawnQueue.at(2)].enemyId, _enemyTypes[_spawnQueue.at(3)].enemyId, _enemyTypes[_spawnQueue.at(4)].enemyId);
     }
 
     // Initialize respawns
@@ -1695,8 +1701,9 @@ int stSlipspace::getGroupEnemyCount(int groupIndex)
 
 bool stSlipspace::canSpawnEnemyInGroup(int groupIndex)
 {
-    return (_spawnerGroups[groupIndex].maxSimultaneousSpawns == 0 || getGroupEnemyCount(groupIndex) < _spawnerGroups[groupIndex].maxSimultaneousSpawns) &&
-    (_spawnerGroups[groupIndex].timer <= 0);
+    SpawnerGroup* spawnGroup = reinterpret_cast<SpawnerGroup*>(_spawnerGroups.at(groupIndex));
+    return (spawnGroup->maxSimultaneousSpawns == 0 || getGroupEnemyCount(groupIndex) < spawnGroup->maxSimultaneousSpawns) &&
+    (spawnGroup->timer <= 0);
 }
 
 Vec3f* getRandomOffset(Vec3f* pos)
