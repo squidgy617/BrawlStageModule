@@ -79,7 +79,7 @@ struct RespawnPoint
 Vector<SpawnerGroup*> _spawnerGroups; // List of spawner groups in stage
 Vector<EnemySpawner*> _spawners; // List of spawners in stage
 Vector<u32> _spawnQueue; // Holds queued spawns
-EnemyType _enemyTypes[100]; // List of enemy types in stage
+Vector<EnemyType*> _enemyTypes; // List of enemy types in stage
 SlipspaceEnemy _spawnedEnemyTypes[100]; // List of currently spawned enemies in the stage
 GameRule _gameMode; // Selected game mode
 RespawnPoint _respawnPoints[100]; // List of respawn points in stage
@@ -249,19 +249,24 @@ void stSlipspace::update(float deltaFrame)
                 nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
                 if (resNodeData->m_rotation.m_z > 0) // Only add enemies with frequency > 0
                 {
-                    _enemyTypes[_enemyTypeCount].index = maxEnemyIndex;
-                    _enemyTypes[_enemyTypeCount].enemyId = resNodeData->m_scale.m_x;
-                    _enemyTypes[_enemyTypeCount].difficulty = resNodeData->m_scale.m_y;
-                    _enemyTypes[_enemyTypeCount].startStatus = resNodeData->m_scale.m_z;
-                    _enemyTypes[_enemyTypeCount].points = resNodeData->m_translation.m_x;
-                    _enemyTypes[_enemyTypeCount].size = resNodeData->m_translation.m_y;
-                    _enemyTypes[_enemyTypeCount].assetSize = resNodeData->m_translation.m_z;
-                    _enemyTypes[_enemyTypeCount].frequency = resNodeData->m_rotation.m_z;
+                    EnemyType* newEnemyType = new EnemyType();
+                    newEnemyType->index = maxEnemyIndex;
+                    newEnemyType->enemyId = resNodeData->m_scale.m_x;
+                    newEnemyType->difficulty = resNodeData->m_scale.m_y;
+                    newEnemyType->startStatus = resNodeData->m_scale.m_z;
+                    newEnemyType->points = resNodeData->m_translation.m_x;
+                    newEnemyType->size = resNodeData->m_translation.m_y;
+                    newEnemyType->assetSize = resNodeData->m_translation.m_z;
+                    newEnemyType->frequency = resNodeData->m_rotation.m_z;
+                    newEnemyType->resourceMemory = 0;
+                    newEnemyType->loading = false;
+                    newEnemyType->loaded = false;
                     // Update max frequency so it matches highest in stage
-                    if (_enemyTypes[_enemyTypeCount].frequency > _maxFrequency)
+                    if (newEnemyType->frequency > _maxFrequency)
                     {
-                        _maxFrequency = _enemyTypes[_enemyTypeCount].frequency;
+                        _maxFrequency = newEnemyType->frequency;
                     }
+                    _enemyTypes.push(newEnemyType);
                     _enemyTypeCount++;
                 }
                 maxEnemyIndex++;
@@ -372,7 +377,7 @@ void stSlipspace::update(float deltaFrame)
         {
             if (_spawnQueue.size() > i)
             {
-                EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue[i]];
+                EnemyType* enemyToSpawn = _enemyTypes[_spawnQueue[i]];
                 // If enemy assets are not yet loaded and there is enough space to load them, start loading them
                 emManager *enemyManager = emManager::getInstance();
                 int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)enemyToSpawn->enemyId);
@@ -451,7 +456,7 @@ void stSlipspace::update(float deltaFrame)
         // Iterate through spawners and spawn enemies
         for (int i = 0; i < availableSpawnerCount && _enemyCount < stageData->maxSpawns && _spawnQueue.size() > 0; i++)
         {
-            EnemyType* enemyToSpawn = &_enemyTypes[_spawnQueue[0]];
+            EnemyType* enemyToSpawn = _enemyTypes[_spawnQueue[0]];
             int si = randomizedSpawnerIndexes[i];
             emManager *enemyManager = emManager::getInstance();
             // Only spawn enemies from available spawners and if enemy assets are loaded
@@ -529,7 +534,7 @@ void stSlipspace::update(float deltaFrame)
             int numEnemyTypesAllowed = 0;
             for (int j = 0; j < _enemyTypeCount; j++)
             {
-                if (_enemyTypes[j].frequency >= selectedFrequency)
+                if (_enemyTypes[j]->frequency >= selectedFrequency)
                 {
                     allowedEnemyTypes[numEnemyTypesAllowed] = j;
                     numEnemyTypesAllowed++;
@@ -1817,7 +1822,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
         // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
         if (spawnedEnemy.enemyCreateId > -1 && spawnedEnemy.enemyType->enemyId > -1 
             && enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy.enemyType->enemyId) < 1
-            && (_spawnQueue.size() > 0 && _enemyTypes[_spawnQueue[0]].enemyId != spawnedEnemy.enemyType->enemyId))
+            && (_spawnQueue.size() > 0 && _enemyTypes[_spawnQueue[0]]->enemyId != spawnedEnemy.enemyType->enemyId))
         {
             OSReport("Unloading resources for enemy %d. \n", spawnedEnemy.enemyType->enemyId);
             emManager *enemyManager = emManager::getInstance();
