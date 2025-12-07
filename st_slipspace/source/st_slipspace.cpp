@@ -80,7 +80,7 @@ Vector<SpawnerGroup*> _spawnerGroups; // List of spawner groups in stage
 Vector<EnemySpawner*> _spawners; // List of spawners in stage
 Vector<u32> _spawnQueue; // Holds queued spawns
 Vector<EnemyType*> _enemyTypes; // List of enemy types in stage
-SlipspaceEnemy _spawnedEnemyTypes[100]; // List of currently spawned enemies in the stage
+Vector<SlipspaceEnemy*> _spawnedEnemyTypes; // List of currently spawned enemies in the stage
 GameRule _gameMode; // Selected game mode
 RespawnPoint _respawnPoints[100]; // List of respawn points in stage
 int _lastUsedSpawnerIndex = -1; // Last spawner index used
@@ -305,13 +305,6 @@ void stSlipspace::update(float deltaFrame)
                     _spawners[i]->visNode = NULL;
                 }
             }
-            // Initialize spawned enemies
-            for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
-            {
-                _spawnedEnemyTypes[i].enemyCreateId = -1;
-                _spawnedEnemyTypes[i].killTimer = 300;
-                _spawnedEnemyTypes[i].groupIndex = -1;
-            }
             this->isEnemiesInitialized = true;
         }
     }
@@ -339,11 +332,11 @@ void stSlipspace::update(float deltaFrame)
 
         // Remove enemies outside of blast zones
         emManager* enemyManager = emManager::getInstance();
-        for(int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
+        for(int i = 0; i < _spawnedEnemyTypes.size(); i++)
         {
-            if (_spawnedEnemyTypes[i].enemyCreateId > -1 && enemyManager->isEnemyExist(_spawnedEnemyTypes[i].enemyCreateId))
+            if (_spawnedEnemyTypes[i]->enemyCreateId > -1 && enemyManager->isEnemyExist(_spawnedEnemyTypes[i]->enemyCreateId))
             {
-                Enemy* enemy = enemyManager->getEnemyPtrFromId(_spawnedEnemyTypes[i].enemyCreateId);
+                Enemy* enemy = enemyManager->getEnemyPtrFromId(_spawnedEnemyTypes[i]->enemyCreateId);
                 Vec3f pos = soExternalValueAccesser::getPos(enemy);
                 Vec2f pos2;
                 pos2.m_x = pos.m_x;
@@ -353,22 +346,22 @@ void stSlipspace::update(float deltaFrame)
                 if (!result)
                 {
                     // If not in blast zone and timer is out, remove the enemy
-                    if (_spawnedEnemyTypes[i].killTimer <= 0)
+                    if (_spawnedEnemyTypes[i]->killTimer <= 0)
                     {
-                        OSReport("Removing enemy %d \n", _spawnedEnemyTypes[i].enemyType->enemyId);
-                        enemyManager->removeEnemy(_spawnedEnemyTypes[i].enemyCreateId);
-                        _spawnedEnemyTypes[i].killTimer = 300;
+                        OSReport("Removing enemy %d \n", _spawnedEnemyTypes[i]->enemyType->enemyId);
+                        enemyManager->removeEnemy(_spawnedEnemyTypes[i]->enemyCreateId);
+                        _spawnedEnemyTypes[i]->killTimer = 300;
                     }
                     // If timer is not out, decrement it
                     else
                     {
-                        _spawnedEnemyTypes[i].killTimer -= deltaFrame;
+                        _spawnedEnemyTypes[i]->killTimer -= deltaFrame;
                     }
                 }
                 // If enemy is in blast zone, reset timer
                 else
                 {
-                    _spawnedEnemyTypes[i].killTimer = 300;
+                    _spawnedEnemyTypes[i]->killTimer = 300;
                 }
             }
         }
@@ -1494,16 +1487,12 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
     _enemyCount++;
 
     // Add to spawned enemies list
-    for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
-    {
-        if (_spawnedEnemyTypes[i].enemyCreateId == -1)
-        {
-            _spawnedEnemyTypes[i].enemyType = enemyToSpawn;
-            _spawnedEnemyTypes[i].enemyCreateId = id;
-            _spawnedEnemyTypes[i].groupIndex = groupIndex;
-            break;
-        }
-    }
+    SlipspaceEnemy* newEnemy = new SlipspaceEnemy();
+    newEnemy->enemyType = enemyToSpawn;
+    newEnemy->enemyCreateId = id;
+    newEnemy->groupIndex = groupIndex;
+    newEnemy->killTimer = 300;
+    _spawnedEnemyTypes.push(newEnemy);
 
     // Add to CPU list
     if (g_stEnemyIdManager != NULL)
@@ -1671,13 +1660,12 @@ EnemyDrops stSlipspace::calcCoins(int coins)
     return drops;
 }
 
-SlipspaceEnemy stSlipspace::getSpawnedEnemy(int enemyCreateId)
+SlipspaceEnemy* stSlipspace::getSpawnedEnemy(int enemyCreateId)
 {
-    SlipspaceEnemy enemy = {};
-    enemy.enemyCreateId = -1;
-    for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
+    SlipspaceEnemy* enemy = nullptr;
+    for (int i = 0; i < _spawnedEnemyTypes.size(); i++)
     {
-        if (_spawnedEnemyTypes[i].enemyCreateId == enemyCreateId)
+        if (_spawnedEnemyTypes[i]->enemyCreateId == enemyCreateId)
         {
             enemy = _spawnedEnemyTypes[i];
             break;
@@ -1707,9 +1695,9 @@ bool stSlipspace::inCameraRange(Vec2f pos)
 int stSlipspace::getGroupEnemyCount(int groupIndex)
 {
     int groupCount = 0;
-    for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
+    for (int i = 0; i < _spawnedEnemyTypes.size(); i++)
     {
-        if (_spawnedEnemyTypes[i].groupIndex == groupIndex)
+        if (_spawnedEnemyTypes[i]->groupIndex == groupIndex)
         {
             groupCount++;
         }
@@ -1776,13 +1764,13 @@ void stSlipspace::dropCoins(Vec3f position, EnemyDrops coinDrops)
 
 stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int enemyCreateId, int enemyMessageKind)
 {   
-    SlipspaceEnemy spawnedEnemy = getSpawnedEnemy(enemyCreateId);
+    SlipspaceEnemy* spawnedEnemy = getSpawnedEnemy(enemyCreateId);
     if (enemyMessageKind == Enemy::Message_Damage)
     {
         // If coin mode, enemies drop coins 
         if (_gameMode == Game_Rule_Coin)
         {
-            EnemyDrops coinDrops = calcCoins(spawnedEnemy.enemyType->points / 10); // Total coins are points / 10
+            EnemyDrops coinDrops = calcCoins(spawnedEnemy->enemyType->points / 10); // Total coins are points / 10
         
             emManager* enemyManager = emManager::getInstance();
             Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
@@ -1807,7 +1795,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
                     ftOwner* playerOwner = playerEntry->m_owner;
                     if (playerOwner != NULL)
                     {
-                        int enemyBeats = ((spawnedEnemy.enemyType->points / 100) / 2);
+                        int enemyBeats = ((spawnedEnemy->enemyType->points / 100) / 2);
                         int currentBeatCount = playerOwner->getBeatCount(KO_PLAYERINDEX);
                         playerOwner->setBeatCount(KO_PLAYERINDEX, currentBeatCount + enemyBeats); // Increment KO count by 1
                     }
@@ -1820,41 +1808,38 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
     {
         emManager* enemyManager = emManager::getInstance();
         // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
-        if (spawnedEnemy.enemyCreateId > -1 && spawnedEnemy.enemyType->enemyId > -1 
-            && enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy.enemyType->enemyId) < 1
-            && (_spawnQueue.size() > 0 && _enemyTypes[_spawnQueue[0]]->enemyId != spawnedEnemy.enemyType->enemyId))
+        if (enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy->enemyType->enemyId) < 1
+            && (_spawnQueue.size() > 0 && _enemyTypes[_spawnQueue[0]]->enemyId != spawnedEnemy->enemyType->enemyId))
         {
-            OSReport("Unloading resources for enemy %d. \n", spawnedEnemy.enemyType->enemyId);
+            OSReport("Unloading resources for enemy %d. \n", spawnedEnemy->enemyType->enemyId);
             emManager *enemyManager = emManager::getInstance();
-            int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)spawnedEnemy.enemyType->enemyId);
+            int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)spawnedEnemy->enemyType->enemyId);
             enemyManager->removeArchive(enemyCreateId);
-            spawnedEnemy.enemyType->loaded = false;
-            spawnedEnemy.enemyType->loading = false;
+            spawnedEnemy->enemyType->loaded = false;
+            spawnedEnemy->enemyType->loading = false;
         }
 
         // Remove from CPU list
         if (g_stEnemyIdManager != NULL)
         {
-            g_stEnemyIdManager->removeEnemyId(spawnedEnemy.enemyCreateId);
+            g_stEnemyIdManager->removeEnemyId(spawnedEnemy->enemyCreateId);
         }
 
         // Remove from spawned enemy list and reduce enemy count
-        if (spawnedEnemy.enemyCreateId > -1 && !enemyManager->isEnemyExist(spawnedEnemy.enemyCreateId))
+        int foundIndex = -1;
+        for (int i = 0; i < _spawnedEnemyTypes.size(); i++)
         {
-            _enemyCount--;
-            spawnedEnemy.enemyCreateId = -1;
-            spawnedEnemy.groupIndex = -1;
-        }
-
-        // Update array of spawned enemies
-        // TODO: is there a way to do this properly with a pointer or something?
-        for (int i = 0; i < (sizeof(_spawnedEnemyTypes) / sizeof(_spawnedEnemyTypes[0])); i++)
-        {
-            if (_spawnedEnemyTypes[i].enemyCreateId == enemyCreateId)
+            if (_spawnedEnemyTypes[i]->enemyCreateId == spawnedEnemy->enemyCreateId)
             {
-                _spawnedEnemyTypes[i] = spawnedEnemy;
+                foundIndex = i;
                 break;
             }
+        }
+        if (foundIndex > -1 && !enemyManager->isEnemyExist(spawnedEnemy->enemyCreateId))
+        {
+            _enemyCount--;
+            _spawnedEnemyTypes.removeAt(foundIndex);
+            delete spawnedEnemy;
         }
     }
 

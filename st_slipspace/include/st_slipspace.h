@@ -178,7 +178,7 @@ public:
     bool inBlastZone(Vec2f position);
     int getGroupEnemyCount(int groupIndex);
     bool canSpawnEnemyInGroup(int groupIndex);
-    SlipspaceEnemy getSpawnedEnemy(int enemyCreateId);
+    SlipspaceEnemy* getSpawnedEnemy(int enemyCreateId);
     virtual stDestroyBossParamCommon getDestroyBossParamCommon(u32, int enemyCreateId = -1, int enemyMessageKind = -1);
 
     //STATIC_CHECK(sizeof(stSlipspace) == 916 + NUM_PLAYERS*4 + sizeof(enemyPacs))
