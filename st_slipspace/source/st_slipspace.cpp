@@ -410,12 +410,7 @@ void stSlipspace::update(float deltaFrame)
         }
 
         // Shuffle spawners
-        int randomizedSpawnerIndexes[100];
-        // Initialize random spawner index list
-        for (int i = 0; i < 100; i++)
-        {
-            randomizedSpawnerIndexes[i] = 0;
-        }
+        Vector<int> randomizedSpawnerIndexes;
         // Populate randomized queue in order
         int availableSpawnerCount = 0;
         for (int i = 0; i < _spawnerCount; i++)
@@ -431,7 +426,7 @@ void stSlipspace::update(float deltaFrame)
             if (inCameraRange(pos) && canSpawnEnemyInGroup(_spawners[i]->groupIndex) 
             && (_spawners[i]->visNode == NULL || _spawners[i]->visNode->isNodeVisible(0, _spawners[i]->visNode->m_nodeIndex)))
             {
-                randomizedSpawnerIndexes[availableSpawnerCount] = i;
+                randomizedSpawnerIndexes.push(i);
                 availableSpawnerCount++;
             }
             
@@ -523,13 +518,13 @@ void stSlipspace::update(float deltaFrame)
                 selectedFrequency = _maxFrequency;
             }
             // Only allow enemies >= frequency to be queued
-            int allowedEnemyTypes[100];
+            Vector<int> allowedEnemyTypes;
             int numEnemyTypesAllowed = 0;
             for (int j = 0; j < _enemyTypeCount; j++)
             {
                 if (_enemyTypes[j]->frequency >= selectedFrequency)
                 {
-                    allowedEnemyTypes[numEnemyTypesAllowed] = j;
+                    allowedEnemyTypes.push(j);
                     numEnemyTypesAllowed++;
                 }
             }
@@ -1861,7 +1856,7 @@ void stSlipspace::getFighterReStartPos(Vec3f* startPos, int fighterIndex)
 {
     // Get all valid respawn points
     int validRespawnerCount = 0;
-    RespawnerStruct validRespawners[100];
+    Vector<RespawnerStruct> validRespawners;
     for (int i = 0; i < _respawnPointCount; i++)
     {
         // Only add respawns that are within the camera range and are visible
@@ -1874,9 +1869,11 @@ void stSlipspace::getFighterReStartPos(Vec3f* startPos, int fighterIndex)
         }
         if (inCameraRange(respawnPos) && (_respawnPoints[i]->visNode == NULL || _respawnPoints[i]->visNode->isNodeVisible(0, _respawnPoints[i]->visNode->m_nodeIndex)))
         {
-            validRespawners[validRespawnerCount].respawn = _respawnPoints[i];
-            validRespawners[validRespawnerCount].currentPos = respawnPos;
-            validRespawners[validRespawnerCount].index = i;
+            RespawnerStruct newRespawnerStruct;
+            newRespawnerStruct.respawn = _respawnPoints[i];
+            newRespawnerStruct.currentPos = respawnPos;
+            newRespawnerStruct.index = i;
+            validRespawners.push(newRespawnerStruct);
             validRespawnerCount++;
         }
     }
