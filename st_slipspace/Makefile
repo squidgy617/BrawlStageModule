@@ -90,6 +90,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 			-I$(CURDIR)/../lib/BrawlHeaders/OpenRVL/include/RVLFaceLib \
 			-I$(CURDIR)/../lib/BrawlHeaders/OpenRVL/include/stl \
 			-I$(CURDIR)/../lib/BrawlHeaders/utils/include \
+			-I$(CURDIR)/../lib/BrawlHeaders/std/Include \
 
 #---------------------------------------------------------------------------------
 # build a list of library paths

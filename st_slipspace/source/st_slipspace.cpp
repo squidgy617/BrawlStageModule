@@ -26,7 +26,7 @@
 #include <gf/gf_3d_scene.h>
 #include <if/if_mngr.h>
 #include <st/st_enemy_id_manager.h>
-#include "vector.h"
+#include <vector.h>
 
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
