@@ -82,7 +82,7 @@ Vector<u32> _spawnQueue; // Holds queued spawns
 Vector<EnemyType*> _enemyTypes; // List of enemy types in stage
 Vector<SlipspaceEnemy*> _spawnedEnemyTypes; // List of currently spawned enemies in the stage
 GameRule _gameMode; // Selected game mode
-RespawnPoint _respawnPoints[100]; // List of respawn points in stage
+Vector<RespawnPoint*> _respawnPoints; // List of respawn points in stage
 int _lastUsedSpawnerIndex = -1; // Last spawner index used
 
 stSlipspace* stSlipspace::create()
@@ -540,7 +540,7 @@ void stSlipspace::update(float deltaFrame)
                 _spawnQueue.push(allowedEnemyTypes[randomIndex]); // Spawn random enemy from enemy list
             }
         }
-        OSReport("OverlayStage: %d \n", gfHeapManager::getMaxFreeSize(Heaps::OverlayStage));
+        // OSReport("OverlayStage: %d \n", gfHeapManager::getMaxFreeSize(Heaps::OverlayStage));
         // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue[0]].enemyId, _enemyTypes[_spawnQueue[1]].enemyId, _enemyTypes[_spawnQueue[2]].enemyId, _enemyTypes[_spawnQueue[3]].enemyId, _enemyTypes[_spawnQueue[4]].enemyId);
     }
 
@@ -552,39 +552,43 @@ void stSlipspace::update(float deltaFrame)
         for (int i = respawnsIndex + 1; i < endIndex; i++) {
             nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
             nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
-            _respawnPoints[_respawnPointCount].position.m_x = resNodeData->m_translation.m_x;
-            _respawnPoints[_respawnPointCount].position.m_y = resNodeData->m_translation.m_y;
-            _respawnPoints[_respawnPointCount].nodeName = ground->getNodeName(resNode);
-            _respawnPoints[_respawnPointCount].motionPathIndex = resNodeData->m_translation.m_z;
-            _respawnPoints[_respawnPointCount].visNodeIndex = resNodeData->m_rotation.m_z;
+            RespawnPoint* newRespawn = new RespawnPoint();
+            newRespawn->position.m_x = resNodeData->m_translation.m_x;
+            newRespawn->position.m_y = resNodeData->m_translation.m_y;
+            newRespawn->nodeName = ground->getNodeName(resNode);
+            newRespawn->motionPathIndex = resNodeData->m_translation.m_z;
+            newRespawn->visNodeIndex = resNodeData->m_rotation.m_z;
+            newRespawn->visNode = NULL;
+            newRespawn->motionPath = NULL;
             // Initialize motion path
-            if (_respawnPoints[_respawnPointCount].motionPathIndex != 0)
+            if (newRespawn->motionPathIndex != 0)
             {
-                grMotionPath* ground = grMotionPath::create(_respawnPoints[_respawnPointCount].motionPathIndex, _respawnPoints[_respawnPointCount].nodeName, "grMotionPath");
+                grMotionPath* ground = grMotionPath::create(newRespawn->motionPathIndex, newRespawn->nodeName, "grMotionPath");
                 if (ground != NULL) {
                     addGround(ground);
                     ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
                 }
-                _respawnPoints[_respawnPointCount].motionPath = ground;
+                newRespawn->motionPath = ground;
             }
             else
             {
-                _respawnPoints[_respawnPointCount].motionPath = NULL;
+                newRespawn->motionPath = NULL;
             }
             // Initialize vis node
-            if (_respawnPoints[_respawnPointCount].visNodeIndex != 0)
+            if (newRespawn->visNodeIndex != 0)
             {
-                grMotionPath* ground = grMotionPath::create(_respawnPoints[_respawnPointCount].visNodeIndex, _respawnPoints[_respawnPointCount].nodeName, "grMotionPath");
+                grMotionPath* ground = grMotionPath::create(newRespawn->visNodeIndex, newRespawn->nodeName, "grMotionPath");
                 if (ground != NULL) {
                     addGround(ground);
                     ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
                 }
-                _respawnPoints[_respawnPointCount].visNode = ground;
+                newRespawn->visNode = ground;
             }
             else
             {
-                _respawnPoints[_respawnPointCount].visNode = NULL;
+                newRespawn->visNode = NULL;
             }
+            _respawnPoints.push(newRespawn);
             _respawnPointCount++;
         }
         this->isRespawnsInitialized = true;
@@ -1861,16 +1865,16 @@ void stSlipspace::getFighterReStartPos(Vec3f* startPos, int fighterIndex)
     for (int i = 0; i < _respawnPointCount; i++)
     {
         // Only add respawns that are within the camera range and are visible
-        Vec2f respawnPos = Vec2f(_respawnPoints[i].position.m_x, _respawnPoints[i].position.m_y);
+        Vec2f respawnPos = Vec2f(_respawnPoints[i]->position.m_x, _respawnPoints[i]->position.m_y);
         // If respawn point has a motion path, use motion path position for camera range
-        if (_respawnPoints[i].motionPath != NULL)
+        if (_respawnPoints[i]->motionPath != NULL)
         {
-            Vec3f motionPathPos = _respawnPoints[i].motionPath->getPos();
+            Vec3f motionPathPos = _respawnPoints[i]->motionPath->getPos();
             respawnPos = Vec2f(motionPathPos.m_x, motionPathPos.m_y);
         }
-        if (inCameraRange(respawnPos) && (_respawnPoints[i].visNode == NULL || _respawnPoints[i].visNode->isNodeVisible(0, _respawnPoints[i].visNode->m_nodeIndex)))
+        if (inCameraRange(respawnPos) && (_respawnPoints[i]->visNode == NULL || _respawnPoints[i]->visNode->isNodeVisible(0, _respawnPoints[i]->visNode->m_nodeIndex)))
         {
-            validRespawners[validRespawnerCount].respawn = &_respawnPoints[i];
+            validRespawners[validRespawnerCount].respawn = _respawnPoints[i];
             validRespawners[validRespawnerCount].currentPos = respawnPos;
             validRespawners[validRespawnerCount].index = i;
             validRespawnerCount++;
