@@ -670,13 +670,15 @@ void stSlipspace::createObj()
     if (moduleHeader != NULL) {
         moduleManager->loadModuleRequestOnImage("sora_enemy.rel", Heaps::OverlayStage, moduleHeader, &size);
         // Set up overrides
-        // int nodeSize;
-        // EnemyOverride* enemyOverride = static_cast<EnemyOverride*>(this->m_fileData->getData(Data_Type_Misc, 30000, &nodeSize, 0xfffe));
-        // g_EnemyOverride = *enemyOverride;
-        // OSReport("Enemy Folder: %s \n", g_EnemyOverride.m_enmOverrideFolder);
-        // OSReport("Goomba Override Setting: %d \n", g_EnemyOverride.m_overrideGoomba);
-        // OSReport("Goomba Face: %d \n", g_EnemyOverride.m_faceIndexGoomba);
-        // OSReport("Goomba Module: %d \n", g_EnemyOverride.m_overrideModuleGoomba);
+        int nodeSize;
+        EnemyOverride* enemyOverride = static_cast<EnemyOverride*>(this->m_fileData->getData(Data_Type_Misc, 30000, &nodeSize, 0xfffe));
+        if (enemyOverride != NULL)
+        {
+            g_EnemyOverride = *enemyOverride;
+            // TODO: primid face index seems to get decremented by 1, so we are doing this since it's 0 in the file. Should remove after either changing it to -1 in the file or if sora_enemy behavior is changed
+            g_EnemyOverride.m_faceIndexPrimid = 1;
+            g_EnemyOverride.m_faceIndexPrimidSword = 1;
+        }
 
         emManager::create(0x1e,0x14,0);
         //gfHeapManager::dumpList();
