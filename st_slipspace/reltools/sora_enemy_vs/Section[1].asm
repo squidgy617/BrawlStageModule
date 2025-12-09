@@ -14889,7 +14889,7 @@ loc_D308:
     /* 0000D324: */    beq- loc_D350
     /* 0000D328: */    lis r3,0x0                               [R_PPC_ADDR16_HA(0, 11, "loc_805A01D0")]
     /* 0000D32C: */    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(0, 11, "loc_805A01D0")]
-    /* 0000D330: */    li r5,0xC
+    /* 0000D330: */    li r5,0x1 #li r5,0xC                     # load into FrameHeap 1 (stage/mode sounds) instead of a player one - Slipspace
     /* 0000D334: */    mr r6,r28
     /* 0000D338: */    bl __unresolved                          [R_PPC_REL24(0, 4, "loc_80073B68")]
     /* 0000D33C: */    mr r7,r3
@@ -15021,7 +15021,7 @@ emManager__removeArchive:
     /* 0000D4FC: */    lis r3,0x0                               [R_PPC_ADDR16_HA(0, 11, "loc_805A01D0")]
     /* 0000D500: */    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(0, 11, "loc_805A01D0")]
     /* 0000D504: */    li r5,0xC
-    /* 0000D508: */    bl __unresolved                          [R_PPC_REL24(0, 4, "sndSystem__freeGroup")]
+    /* 0000D508: */    nop # bl __unresolved                    [R_PPC_REL24(0, 4, "sndSystem__freeGroup")] # don't free FrameHeap on unload - Slipspace - TODO: this is to fix the fact that unloading a soundbank unloads them all, if we can address this, the instruction can be restored
 loc_D50C:
     /* 0000D50C: */    mr r3,r31
     /* 0000D510: */    bl emManager5EntryFv__clear
