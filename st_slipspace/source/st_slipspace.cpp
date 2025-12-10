@@ -1863,12 +1863,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
             if (weapon != NULL)
             {
                 // Remove weapon if it exists
-                OSReport("Weapon %d \n", weapon->m_taskId);
                 weapon->remove();
-            }
-            else
-            {
-                OSReport("No weapon \n");
             }
         }
         // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
