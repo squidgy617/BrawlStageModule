@@ -384,6 +384,9 @@ void stSlipspace::update(float deltaFrame)
                 }
                 if (!enemyLoaded && !enemyToSpawn->loading)
                 {
+                    // TODO: Need to somehow check if "base" files are already loaded for enemies like primids and adjust the memory calculation as needed... possibly a "base brres size" field on the enemy type bone?
+                    // - surprisingly, loading an enemy will only load the resources that aren't already loaded, and removing an archive seems to not unload the archives that are still in use by other enemies?
+                    // - fields from getPreloadArchivePtrFromKind() are useful to see if some of the enemies' assets are already loaded, isCompArchive will return false even if base resources are loaded
                     // Only load enemy if there is space to do so
                     if (enemyToSpawn->assetSize < availableStageMemory)
                     {
@@ -1765,6 +1768,7 @@ void stSlipspace::dropCoins(Vec3f position, EnemyDrops coinDrops)
 
 stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int enemyCreateId, int enemyMessageKind)
 {   
+    emManager *enemyManager = emManager::getInstance();
     SlipspaceEnemy* spawnedEnemy = getSpawnedEnemy(enemyCreateId);
     if (enemyMessageKind == Enemy::Message_Damage)
     {
@@ -1813,7 +1817,6 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
             && (_spawnQueue.size() > 0 && _enemyTypes[_spawnQueue[0]]->enemyId != spawnedEnemy->enemyType->enemyId))
         {
             OSReport("Unloading resources for enemy %d. \n", spawnedEnemy->enemyType->enemyId);
-            emManager *enemyManager = emManager::getInstance();
             int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)spawnedEnemy->enemyType->enemyId);
             enemyManager->removeArchive(enemyCreateId);
             spawnedEnemy->enemyType->loaded = false;
