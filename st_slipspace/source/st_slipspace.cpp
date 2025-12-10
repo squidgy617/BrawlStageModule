@@ -878,6 +878,46 @@ void stSlipspace::clearHeap() {
         }
     }
 
+    for (int i = 0; i < _spawnedEnemyTypes.size(); i++)
+    {
+        if (_spawnedEnemyTypes[i] != NULL)
+        {
+            delete _spawnedEnemyTypes[i];
+        }
+    }
+
+    for (int i = 0; i < _enemyTypes.size(); i++)
+    {
+        if (_enemyTypes[i] != NULL)
+        {
+            delete _enemyTypes[i];
+        }
+    }
+
+    for (int i = 0; i < _spawners.size(); i++)
+    {
+        if (_spawners[i] != NULL)
+        {
+            delete _spawners[i];
+        }
+    }
+
+    for (int i = 0; i < _spawnerGroups.size(); i++)
+    {
+        if (_spawnerGroups[i] != NULL)
+        {
+            delete _spawnerGroups[i];
+        }
+    }
+
+    for (int i = 0; i < _respawnPoints.size(); i++)
+    {
+        if (_respawnPoints[i] != NULL)
+        {
+            delete _respawnPoints[i];
+        }
+    }
+
     if (g_stEnemyIdManager != NULL)
     {
         stEnemyIdManager::remove();
