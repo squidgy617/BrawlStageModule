@@ -4,6 +4,8 @@
 41,1,00029E34:create__15emWeaponManagerFv
 41,1,00029E28:getInstance__15emWeaponManagerFv
 41,1,00029DD4:remove__15emWeaponManagerFv
+41,1,0002A5C4:GetManagedWeaponFromTaskID__15emWeaponManagerFUl
+41,1,0002A168:findWeapon__15emWeaponManagerFiUlUl
 
 // wnemSimple (Note: addresses are based on abridged sora_enemy_vs)
 41,1,0002B3E8:__ct__10wnemSimpleFv

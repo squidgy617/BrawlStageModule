@@ -1769,6 +1769,7 @@ void stSlipspace::dropCoins(Vec3f position, EnemyDrops coinDrops)
 stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int enemyCreateId, int enemyMessageKind)
 {   
     emManager *enemyManager = emManager::getInstance();
+    emWeaponManager *weaponManager = emWeaponManager::getInstance();
     SlipspaceEnemy* spawnedEnemy = getSpawnedEnemy(enemyCreateId);
     if (enemyMessageKind == Enemy::Message_Damage)
     {
@@ -1811,7 +1812,25 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
     }
     if (enemyMessageKind == Enemy::Message_Destruct || enemyMessageKind == Enemy::Message_Remove)
     {
-        emManager* enemyManager = emManager::getInstance();
+        // Check if enemy has weapon before unloading
+        // TODO: Check if ANY enemies who share a BRRES have weapons? Also, instead of immediately deleting enemy, queue them for deletion and check every frame that no enemies sharing the BRRES have weapons,
+        // - so weapons can finish up before being deleted
+        Enemy* enemy = enemyManager->getEnemyPtrFromId(spawnedEnemy->enemyCreateId);
+        int taskId = enemy->m_moduleAccesser->m_stageObject->m_taskId;
+        if (taskId != NULL && taskId > 0)
+        {
+            wnemSimple* weapon = weaponManager->findWeapon(taskId, 0xFFFF, 0);
+            if (weapon != NULL)
+            {
+                // Remove weapon if it exists
+                OSReport("Weapon %d \n", weapon->m_taskId);
+                weapon->remove();
+            }
+            else
+            {
+                OSReport("No weapon \n");
+            }
+        }
         // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
         if (enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy->enemyType->enemyId) < 1
             && (_spawnQueue.size() > 0 && _enemyTypes[_spawnQueue[0]]->enemyId != spawnedEnemy->enemyType->enemyId))
