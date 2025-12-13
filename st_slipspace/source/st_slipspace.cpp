@@ -865,45 +865,55 @@ void stSlipspace::clearHeap() {
         }
     }
 
+    for (int i = 0; i < _spawnerGroups.size(); i++)
+    {
+        if (_spawnerGroups[i] != NULL)
+        {
+            delete _spawnerGroups[i];
+            _spawnerGroups[i] = NULL;
+        }
+    }
+    _spawnerGroups.clear();
+
     for (int i = 0; i < _spawnedEnemyTypes.size(); i++)
     {
         if (_spawnedEnemyTypes[i] != NULL)
         {
             delete _spawnedEnemyTypes[i];
+            _spawnedEnemyTypes[i] = NULL;
         }
     }
+    _spawnedEnemyTypes.clear();
 
     for (int i = 0; i < _enemyTypes.size(); i++)
     {
         if (_enemyTypes[i] != NULL)
         {
             delete _enemyTypes[i];
+            _enemyTypes[i] = NULL;
         }
     }
+    _enemyTypes.clear();
 
     for (int i = 0; i < _spawners.size(); i++)
     {
         if (_spawners[i] != NULL)
         {
             delete _spawners[i];
+            _spawners[i] = NULL;
         }
     }
-
-    for (int i = 0; i < _spawnerGroups.size(); i++)
-    {
-        if (_spawnerGroups[i] != NULL)
-        {
-            delete _spawnerGroups[i];
-        }
-    }
+    _spawners.clear();
 
     for (int i = 0; i < _respawnPoints.size(); i++)
     {
         if (_respawnPoints[i] != NULL)
         {
             delete _respawnPoints[i];
+            _respawnPoints[i] = NULL;
         }
     }
+    _respawnPoints.clear();
 
     if (g_stEnemyIdManager != NULL)
     {
@@ -1709,7 +1719,7 @@ int stSlipspace::getGroupEnemyCount(int groupIndex)
 
 bool stSlipspace::canSpawnEnemyInGroup(int groupIndex)
 {
-    SpawnerGroup* spawnGroup = reinterpret_cast<SpawnerGroup*>(_spawnerGroups[groupIndex]);
+    SpawnerGroup* spawnGroup = _spawnerGroups[groupIndex];
     return (spawnGroup->maxSimultaneousSpawns == 0 || getGroupEnemyCount(groupIndex) < spawnGroup->maxSimultaneousSpawns) &&
     (spawnGroup->timer <= 0);
 }
