@@ -1560,6 +1560,27 @@ void stSlipspace::notifyEventOnDamage(int entryId, u32 hp, soDamage* damage)
         frames = static_cast<float>(stageData->stopFramesHit);
         this->addCameraFrames(static_cast<int>(frames*reaction));
     }
+    // End dynamic blast zones
+
+    // If coin mode, drop coins
+    if (_gameMode == Game_Rule_Coin)
+    {
+        ftEntry* hitPlayer = g_ftManager->m_entryManager->getEntity(entryId);
+        Fighter* fighter = g_ftManager->getFighter(entryId, hitPlayer->m_activeInstanceIndex);
+        itManager* itemManager = itManager::getInstance();
+        // TODO: properly calculate this vector
+        Vec2f vec = Vec2f(0,0);
+        u32 coins = hitPlayer->m_owner->getCoin();
+        if (coins > 0)
+        {
+            if (damage->m_damageAdd < coins)
+            {
+                coins = damage->m_damageAdd;
+            }
+            hitPlayer->m_owner->addCoin(-1 * (coins));
+            itemManager->createMoney((char*)fighter->m_taskId, &damage->m_collisionLog.m_pos, &vec, coins, 1, 0);
+        }
+    }
 }
 
 void stSlipspace::notifyEventBeat(int entryId1, int entryId2)
@@ -1641,56 +1662,6 @@ void stSlipspace::notifyEventSuicide(int entryId)
     }
 }
 
-// EnemyDrops stSlipspace::calcCoins(int points)
-// {
-//     EnemyDrops drops = {};
-
-//     drops.bills = points / 10;
-//     points %= 10;
-
-//     drops.gold = points / 6;
-//     points %= 6;
-    
-//     drops.silver = points / 3;
-//     points %= 3;
-    
-//     drops.bronze = points;
-
-//     return drops;
-// }
-
-EnemyDrops stSlipspace::calcCoins(int coins)
-{
-    EnemyDrops drops = {};
-
-    int remaining = coins;
-
-    int maxBills = remaining / 10;
-    if (maxBills > 0)
-    {
-        drops.bills = randi(maxBills);
-        remaining -= drops.bills * 10;
-    }
-
-    int maxGold = remaining / 6;
-    if (maxGold > 0)
-    {
-        drops.gold = randi(maxGold);
-        remaining -= drops.gold * 6;
-    }
-
-    int maxSilver = remaining / 3;
-    if (maxSilver > 0)
-    {
-        drops.silver = randi(maxSilver);
-        remaining -= drops.silver * 3;
-    }
-
-    drops.bronze = remaining;
-
-    return drops;
-}
-
 SlipspaceEnemy* stSlipspace::getSpawnedEnemy(int enemyCreateId)
 {
     SlipspaceEnemy* enemy = nullptr;
@@ -1763,73 +1734,24 @@ int stSlipspace::getRandomEnemy()
     return 0;
 }
 
-Vec3f* getRandomOffset(Vec3f* pos)
-{
-    int xoffset = 10;
-    int yoffset = 10;
-    Vec3f basePos = Vec3f(0,0,0);
-    Vec3f* newPos = &basePos;
-    newPos->m_y = pos->m_y + (randf() * yoffset) + 2; // Offset by 2 to help prevent coins from spawning under platforms
-    // Get whether we should use negative value for x or not
-    int multiplier = 1;
-    if (randi(2) == 1)
-    {
-        multiplier = -1;
-    }
-    newPos->m_x = pos->m_x + (randf() * (multiplier * xoffset));
-    newPos->m_z = pos->m_z;
-    return newPos;
-}
-
-void stSlipspace::dropCoins(Vec3f position, EnemyDrops coinDrops)
-{
-    itManager* itemManager = itManager::getInstance();
-    itGenSheetKind sheetKind = itemManager->getRandBasicItemSheet((itGenId)(Item_Gen_Basic));
-    itManager::ItemSwitch itemSwitch(true);
-    ItemKind itemKind = itemManager->getLotOneItemKind(&sheetKind, (itGenId)(Item_Gen_Basic), &itemSwitch, false);
-
-    for(int i = 0; i < coinDrops.bills; i++)
-    {
-        BaseItem* item = itemManager->createItem(Item_Bill, itemKind.m_variation);
-        item->warp(getRandomOffset(&position));
-    }
-
-    for(int i = 0; i < coinDrops.gold; i++)
-    {
-        BaseItem* item = itemManager->createItem(Item_Coin, 0);
-        item->warp(getRandomOffset(&position));
-    }
-
-    for(int i = 0; i < coinDrops.silver; i++)
-    {
-        BaseItem* item = itemManager->createItem(Item_Coin, 1);
-        item->warp(getRandomOffset(&position));
-    }
-
-    for(int i = 0; i < coinDrops.bronze; i++)
-    {
-        BaseItem* item = itemManager->createItem(Item_Coin, 2);
-        item->warp(getRandomOffset(&position));
-    }
-}
-
 stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int enemyCreateId, int enemyMessageKind)
 {   
     emManager *enemyManager = emManager::getInstance();
     emWeaponManager *weaponManager = emWeaponManager::getInstance();
+    itManager *itemManager = itManager::getInstance();
     SlipspaceEnemy* spawnedEnemy = getSpawnedEnemy(enemyCreateId);
     if (enemyMessageKind == Enemy::Message_Damage)
     {
         // If coin mode, enemies drop coins 
         if (_gameMode == Game_Rule_Coin)
         {
-            EnemyDrops coinDrops = calcCoins(spawnedEnemy->enemyType->points / 10); // Total coins are points / 10
-        
             emManager* enemyManager = emManager::getInstance();
             Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
             Vec3f pos = soExternalValueAccesser::getPos(enemy);
+            // TODO: properly calculate this vector
+            Vec2f vec = Vec2f(0,0);
 
-            dropCoins(pos, coinDrops);
+            itemManager->createMoney((char*)enemy->m_taskId, &pos, &vec, spawnedEnemy->enemyType->points / 10, 1, 0);
         }
         // If score mode, enemies give points
         else if (_gameMode == Game_Rule_Time)
