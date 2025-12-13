@@ -512,30 +512,17 @@ void stSlipspace::update(float deltaFrame)
         }
 
         // Queue spawns if there's room
-        for (int i = 0; i < stageData->maxSpawns; i++)
+        if (isEnemiesInitialized)
         {
-            // Select random frequency
-            int selectedFrequency = randi(100) + 1; // Add 1 so it's 1 - 100 instead of 0 - 99
-            if (selectedFrequency > _maxFrequency)
+            for (int i = 0; i < stageData->maxSpawns; i++)
             {
-                selectedFrequency = _maxFrequency;
-            }
-            // Only allow enemies >= frequency to be queued
-            Vector<int> allowedEnemyTypes;
-            int numEnemyTypesAllowed = 0;
-            for (int j = 0; j < _enemyTypeCount; j++)
-            {
-                if (_enemyTypes[j]->frequency >= selectedFrequency)
+                // TODO: Group enemies of the same type together in queue?
+                if (_spawnQueue.size() < stageData->maxSpawns)
                 {
-                    allowedEnemyTypes.push(j);
-                    numEnemyTypesAllowed++;
+                    // Select random enemy
+                    int randomIndex = getRandomEnemy();
+                    _spawnQueue.push(randomIndex); // Spawn random enemy from enemy list
                 }
-            }
-            // TODO: Group enemies of the same type together in queue?
-            if (_spawnQueue.size() < stageData->maxSpawns)
-            {
-                int randomIndex = randi(numEnemyTypesAllowed);
-                _spawnQueue.push(allowedEnemyTypes[randomIndex]); // Spawn random enemy from enemy list
             }
         }
         // OSReport("OverlayStage: %d \n", gfHeapManager::getMaxFreeSize(Heaps::OverlayStage));
@@ -1754,6 +1741,26 @@ bool stSlipspace::canSpawnEnemyInGroup(int groupIndex)
     SpawnerGroup* spawnGroup = reinterpret_cast<SpawnerGroup*>(_spawnerGroups[groupIndex]);
     return (spawnGroup->maxSimultaneousSpawns == 0 || getGroupEnemyCount(groupIndex) < spawnGroup->maxSimultaneousSpawns) &&
     (spawnGroup->timer <= 0);
+}
+
+int stSlipspace::getRandomEnemy()
+{
+    // Gets random index from _enemyTypes, weighted by frequency
+    int totalFrequencies = 0;
+    for (int j = 0; j < _enemyTypes.size(); j++)
+    {
+        totalFrequencies += _enemyTypes[j]->frequency;
+    }
+    int randomSelection = randi(totalFrequencies);
+    for (int j = 0; j < _enemyTypes.size(); j++)
+    {
+        if (randomSelection < _enemyTypes[j]->frequency)
+        {
+            return j;
+        }
+        randomSelection -= _enemyTypes[j]->frequency;
+    }
+    return 0;
 }
 
 Vec3f* getRandomOffset(Vec3f* pos)
