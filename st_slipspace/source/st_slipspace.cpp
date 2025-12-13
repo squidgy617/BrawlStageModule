@@ -27,6 +27,8 @@
 #include <if/if_mngr.h>
 #include <st/st_enemy_id_manager.h>
 #include <vector.h>
+#include <so/damage/so_damage_util_actor.h>
+#include <math.h>
 
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
@@ -1578,8 +1580,6 @@ void stSlipspace::notifyEventOnDamage(int entryId, u32 hp, soDamage* damage)
         ftEntry* hitPlayer = g_ftManager->m_entryManager->getEntity(entryId);
         Fighter* fighter = g_ftManager->getFighter(entryId, hitPlayer->m_activeInstanceIndex);
         itManager* itemManager = itManager::getInstance();
-        // TODO: properly calculate this vector
-        Vec2f vec = Vec2f(0,0);
         u32 coins = hitPlayer->m_owner->getCoin();
         if (coins > 0)
         {
@@ -1588,7 +1588,37 @@ void stSlipspace::notifyEventOnDamage(int entryId, u32 hp, soDamage* damage)
                 coins = damage->m_damageAdd;
             }
             hitPlayer->m_owner->addCoin(-1 * (coins));
-            itemManager->createMoney((char*)fighter->m_taskId, &damage->m_collisionLog.m_pos, &vec, coins, 1, 0);
+            // TODO: getConstantFloat is done for the if condition where there is no knockback - replicate that here?
+            // Reimplemented part from dropItemCheck
+            float unk = soValueAccesser::getConstantFloat(fighter->m_moduleAccesser, 0xd20, 0);
+            Vec2f directionalVelocity = Vec2f(0, 0);
+            Vec2f velocity = Vec2f(damage->m_140, damage->m_144);
+            double damageAngle = soDamageUtilActor::getDamageAngle(fighter->m_moduleAccesser, damage->m_reaction, damage->m_lr, damage->m_attackData.m_vector, &velocity);
+            SituationKind situation = fighter->m_moduleAccesser->getSituationModule().getKind();
+            // If grounded, prevent coins from firing directly sideways
+            if (situation == Situation_Ground)
+            {
+                if (damageAngle == 0.0)
+                {
+                    damageAngle = M_PI / 2;
+                }
+            }
+            // If in the air and facing right, mirror so coins always launch away from hit
+            else if (damage->m_lr > 0.0)
+            {
+                if (damageAngle <= M_PI)
+                {
+                    damageAngle = M_PI - damageAngle;
+                }
+                else
+                {
+                    damageAngle = (3 * M_PI) - damageAngle;
+                }
+            }
+            Vec2f magnitude = Vec2f(damage->m_reaction * 0.01, 0);
+            Vec2f::rot(damageAngle, &magnitude, &directionalVelocity);
+            Vec3f position = Vec3f(damage->m_collisionLog.m_pos.m_x, damage->m_collisionLog.m_pos.m_y, 0.0);
+            itemManager->createMoney((char*)fighter->m_taskId, &position, &directionalVelocity, coins, 1, 0);
         }
     }
 }
