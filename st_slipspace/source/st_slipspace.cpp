@@ -1668,22 +1668,20 @@ void stSlipspace::notifyEventDead(int entryId, int deadCount, int deadReason, in
             defeatedPlayer->m_owner->setDeadCount(0);
         }
     }
-    // TODO: Killing player steals your coins on KO?
     else if (_gameMode == Game_Rule_Coin)
     {
-        // Get KOed fighter
-        // Fighter* fighter = g_ftManager->getFighter(entryId, -1);
-        // Vec3f pos = soExternalValueAccesser::getPos(fighter);
-        // EnemyDrops coinDrops = calcCoins(10);
-        // dropCoins(pos, coinDrops);
-
-        // If a player is dead, erase their coins
+        // If a player is dead, erase some of their coins
         ftEntry* defeatedPlayer = g_ftManager->m_entryManager->getEntity(entryId);
         if (defeatedPlayer != NULL && defeatedPlayer->m_playerNo < 4 && defeatedPlayer->m_owner != NULL)
         {
             int coins = defeatedPlayer->m_owner->getCoin();
-            // Subtract all coins from player
-            defeatedPlayer->m_owner->addCoin(-1 * coins);
+            int removeCoins = coins / 10;
+            if (removeCoins > coins)
+            {
+                removeCoins = coins;
+            }
+            // Subtract 10% of coins from player
+            defeatedPlayer->m_owner->addCoin(-1 * removeCoins);
         }
     }
 }
