@@ -33,6 +33,8 @@
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
 int KO_PLAYERINDEX = 6; // We store KOs on player index 6 (player 7) which is a multi-man slot, not a real player
+int DEATH_COIN_PERCENT = 10; // Percentage of coins players lose on death in coin battles
+int DEATH_KO_PERCENT = 10; // Percentage of KOs players lose on death in timed battles
 
 int _enemyCount = 0; // Number of enemies currently spawned
 int _spawnerCount = 0; // Number of spawners in stage
@@ -1637,8 +1639,9 @@ void stSlipspace::notifyEventBeat(int entryId1, int entryId2)
             if (killerPlayer != NULL && killerPlayer->m_playerNo < 4 && killerPlayer->m_owner != NULL)
             {
                 int killerBeatCount = killerPlayer->m_owner->getBeatCount(KO_PLAYERINDEX);
+                int addKOs = percentOf(defeatedBeatCount, DEATH_KO_PERCENT);
                 // Give defeated player kills to killer
-                killerPlayer->m_owner->setBeatCount(KO_PLAYERINDEX, killerBeatCount + defeatedBeatCount);
+                killerPlayer->m_owner->setBeatCount(KO_PLAYERINDEX, killerBeatCount + addKOs);
                 // Neutralize the player beat counts so killing players doesn't give points
                 defeatedPlayer->m_owner->setBeatCount(killerPlayer->m_playerNo, 0);
                 killerPlayer->m_owner->setBeatCount(defeatedPlayer->m_playerNo, 0);
@@ -1658,12 +1661,14 @@ void stSlipspace::notifyEventDead(int entryId, int deadCount, int deadReason, in
     
     if (_gameMode == Game_Rule_Time)
     {
-        // If a player is dead, erase their KOs
+        // If a player is dead, erase some of their KOs
         ftEntry* defeatedPlayer = g_ftManager->m_entryManager->getEntity(entryId);
         if (defeatedPlayer != NULL && defeatedPlayer->m_playerNo < 4 && defeatedPlayer->m_owner != NULL)
         {
-            // Set beat count to 0
-            defeatedPlayer->m_owner->setBeatCount(KO_PLAYERINDEX, 0);
+            // Remove KOs
+            int defeatedBeatCount = defeatedPlayer->m_owner->getBeatCount(KO_PLAYERINDEX);
+            int removeKOs = percentOf(defeatedBeatCount, DEATH_KO_PERCENT);
+            defeatedPlayer->m_owner->setBeatCount(KO_PLAYERINDEX, defeatedBeatCount - removeKOs);
             // Set dead count to 0 so player doesn't lose an extra KO
             defeatedPlayer->m_owner->setDeadCount(0);
         }
@@ -1675,15 +1680,22 @@ void stSlipspace::notifyEventDead(int entryId, int deadCount, int deadReason, in
         if (defeatedPlayer != NULL && defeatedPlayer->m_playerNo < 4 && defeatedPlayer->m_owner != NULL)
         {
             int coins = defeatedPlayer->m_owner->getCoin();
-            int removeCoins = coins / 10;
-            if (removeCoins > coins)
-            {
-                removeCoins = coins;
-            }
+            int removeCoins = percentOf(coins, DEATH_COIN_PERCENT);
             // Subtract 10% of coins from player
             defeatedPlayer->m_owner->addCoin(-1 * removeCoins);
         }
     }
+}
+
+int stSlipspace::percentOf(int value, int percent)
+{
+    if (value <= 0 || percent <= 0)
+    {
+        return 0;
+    }
+
+    int result = (value * percent) / 100;
+    return result == 0 ? 1 : result;
 }
 
 void stSlipspace::notifyEventSuicide(int entryId)

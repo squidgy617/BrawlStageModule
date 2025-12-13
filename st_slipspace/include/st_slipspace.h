@@ -176,6 +176,7 @@ public:
     bool inBlastZone(Vec2f position);
     int getGroupEnemyCount(int groupIndex);
     bool canSpawnEnemyInGroup(int groupIndex);
+    int percentOf(int value, int percent);
     int getRandomEnemy();
     SlipspaceEnemy* getSpawnedEnemy(int enemyCreateId);
     virtual stDestroyBossParamCommon getDestroyBossParamCommon(u32, int enemyCreateId = -1, int enemyMessageKind = -1);
