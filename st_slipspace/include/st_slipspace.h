@@ -37,6 +37,7 @@ class EnemyType
         int points;
         int size;
         int assetSize;
+        int extraAssetSize;
         bool loading;
         bool loaded;
         int resourceMemory;

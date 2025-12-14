@@ -29,6 +29,7 @@
 #include <vector.h>
 #include <so/damage/so_damage_util_actor.h>
 #include <math.h>
+#include <em/em_info.h>
 
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
@@ -261,6 +262,7 @@ void stSlipspace::update(float deltaFrame)
                     newEnemyType->points = resNodeData->m_translation.m_x;
                     newEnemyType->size = resNodeData->m_translation.m_y;
                     newEnemyType->assetSize = resNodeData->m_translation.m_z;
+                    newEnemyType->extraAssetSize = resNodeData->m_rotation.m_y;
                     newEnemyType->frequency = resNodeData->m_rotation.m_z;
                     newEnemyType->resourceMemory = 0;
                     newEnemyType->loading = false;
@@ -378,7 +380,23 @@ void stSlipspace::update(float deltaFrame)
                 // If enemy assets are not yet loaded and there is enough space to load them, start loading them
                 emManager *enemyManager = emManager::getInstance();
                 int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)enemyToSpawn->enemyId);
+                // Check if enemy archive is already loaded
                 bool enemyLoaded = enemyManager->isCompArchive(enemyCreateId);
+                // If Primid, check if base archive is already loaded
+                // TODO: Is there a better way to do this that doesn't require a hardcoded primid check? We could always load Primid archives from the PAC too, but might be wasteful
+                emInfo* emInfo = emInfo::getInstance();
+                bool primidLoaded = false;
+                if (emInfo->isPrimKind((EnemyKind)enemyToSpawn->enemyId))
+                {
+                    for (int j = 0; j < _enemyTypes.size(); j++)
+                    {
+                        if (_enemyTypes[j]->loaded && !_enemyTypes[j]->loading && emInfo->isPrimKind((EnemyKind)_enemyTypes[j]->enemyId))
+                        {
+                            primidLoaded = true;
+                            break;
+                        }
+                    }
+                }
                 int availableStageMemory = gfHeapManager::getMaxFreeSize(Heaps::StageResource);
                 enemyToSpawn->loaded = enemyLoaded;
                 // If an enemy is still loading, break so we don't load multiple enemies at once
@@ -388,11 +406,8 @@ void stSlipspace::update(float deltaFrame)
                 }
                 if (!enemyLoaded && !enemyToSpawn->loading)
                 {
-                    // TODO: Need to somehow check if "base" files are already loaded for enemies like primids and adjust the memory calculation as needed... possibly a "base brres size" field on the enemy type bone?
-                    // - surprisingly, loading an enemy will only load the resources that aren't already loaded, and removing an archive seems to not unload the archives that are still in use by other enemies?
-                    // - fields from getPreloadArchivePtrFromKind() are useful to see if some of the enemies' assets are already loaded, isCompArchive will return false even if base resources are loaded
                     // Only load enemy if there is space to do so
-                    if (enemyToSpawn->assetSize < availableStageMemory)
+                    if ((primidLoaded && enemyToSpawn->extraAssetSize < availableStageMemory) || enemyToSpawn->assetSize < availableStageMemory)
                     {
                         // OSReport("Loading enemy %d. Available memory: %d \n", enemyToSpawn->enemyId, availableStageMemory);
                         gfArchive* brres;

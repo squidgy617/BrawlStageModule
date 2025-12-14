@@ -17,3 +17,7 @@
 
 // EnemyOverride
 41,4,00000ECC:g_EnemyOverride
+
+// emInfo
+41,1,0000DB8C:getInstance__6emInfoFv
+41,1,0000DC08:isPrimKind__6emInfoF6emKind
