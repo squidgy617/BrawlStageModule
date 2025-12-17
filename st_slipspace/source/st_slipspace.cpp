@@ -1850,14 +1850,17 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
         // TODO: Check if ANY enemies who share a BRRES have weapons? Also, instead of immediately deleting enemy, queue them for deletion and check every frame that no enemies sharing the BRRES have weapons,
         // - so weapons can finish up before being deleted
         Enemy* enemy = enemyManager->getEnemyPtrFromId(spawnedEnemy->enemyCreateId);
-        int taskId = enemy->m_moduleAccesser->m_stageObject->m_taskId;
-        if (taskId != NULL && taskId > 0)
+        if (enemy != NULL)
         {
-            wnemSimple* weapon = weaponManager->findWeapon(taskId, 0xFFFF, 0);
-            if (weapon != NULL)
+            int taskId = enemy->m_moduleAccesser->m_stageObject->m_taskId;
+            if (taskId != NULL && taskId > 0)
             {
-                // Remove weapon if it exists
-                weapon->remove();
+                wnemSimple* weapon = weaponManager->findWeapon(taskId, 0xFFFF, 0);
+                if (weapon != NULL)
+                {
+                    // Remove weapon if it exists
+                    weapon->remove();
+                }
             }
         }
         // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
