@@ -67,7 +67,7 @@ struct EnemySpawner
     grMotionPath* motionPath;
     grMotionPath* visNode;
     int listSize;
-    Vector<u32> listedEnemies;
+    Vector<u32>* listedEnemies;
     bool isWhitelist;
 };
 
@@ -217,7 +217,7 @@ void stSlipspace::update(float deltaFrame)
                     // If in list, add enemies to it
                     else if (inList)
                     {
-                        _spawners[currentSpawner]->listedEnemies.push(resNodeData->m_scale.m_z);
+                        _spawners[currentSpawner]->listedEnemies->push(resNodeData->m_scale.m_z);
                         _spawners[currentSpawner]->listSize++;
                     }
                     // Otherwise, add spawner
@@ -234,7 +234,7 @@ void stSlipspace::update(float deltaFrame)
                         newSpawner->groupIndex = i;
                         newSpawner->respawnTimerLength = resNodeData->m_scale.m_x;
                         newSpawner->listSize = 0;
-                        newSpawner->listedEnemies = Vector<u32>();
+                        newSpawner->listedEnemies = new Vector<u32>();
                         newSpawner->timer = 0;
                         newSpawner->motionPath = NULL;
                         newSpawner->visNode = NULL;
@@ -475,7 +475,7 @@ void stSlipspace::update(float deltaFrame)
             bool whitelisted = !_spawners[si]->isWhitelist;
             for (int j = 0; j < _spawners[si]->listSize; j++)
             {
-                if (_spawners[si]->listedEnemies[j] == enemyToSpawn->index)
+                if (_spawners[si]->listedEnemies->get(j) == enemyToSpawn->index)
                 {
                     whitelisted = true;
                     break;
@@ -487,7 +487,7 @@ void stSlipspace::update(float deltaFrame)
             {
                 for (int j = 0; j < _spawners[si]->listSize; j++)
                 {
-                    if (_spawners[si]->listedEnemies[j] == enemyToSpawn->index)
+                    if (_spawners[si]->listedEnemies->get(j) == enemyToSpawn->index)
                     {
                         blacklisted = true;
                         break;
@@ -916,6 +916,11 @@ void stSlipspace::clearHeap() {
 
     for (int i = 0; i < _spawners.size(); i++)
     {
+        if (_spawners[i]->listedEnemies != NULL)
+        {
+            delete _spawners[i]->listedEnemies;
+            _spawners[i]->listedEnemies = NULL;
+        }
         if (_spawners[i] != NULL)
         {
             delete _spawners[i];
@@ -1805,97 +1810,100 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
     emWeaponManager *weaponManager = emWeaponManager::getInstance();
     itManager *itemManager = itManager::getInstance();
     SlipspaceEnemy* spawnedEnemy = getSpawnedEnemy(enemyCreateId);
-    if (enemyMessageKind == Enemy::Message_Damage)
+    if (spawnedEnemy != NULL)
     {
-        // If coin mode, enemies drop coins 
-        if (_gameMode == Game_Rule_Coin)
+        if (enemyMessageKind == Enemy::Message_Damage)
         {
-            emManager* enemyManager = emManager::getInstance();
-            Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
-            Vec3f pos = soExternalValueAccesser::getPos(enemy);
-            // TODO: properly calculate this vector
-            Vec2f vec = Vec2f(0,0);
-
-            itemManager->createMoney((char*)enemy->m_taskId, &pos, &vec, spawnedEnemy->enemyType->points / 10, 1, 0);
-        }
-        // If score mode, enemies give points
-        else if (_gameMode == Game_Rule_Time)
-        {
-            emManager* enemyManager = emManager::getInstance();
-            Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
-            soDamageAttackerInfo* attackerInfo = enemy->m_moduleAccesser->getDamageModule().getAttackerInfo();
-            // TODO: Check if there is a proper direct attacker and use that if there is one, so Goomba stomps count?
-            int playerEntryId = g_ftManager->getEntryIdFromTaskId(attackerInfo->m_indirectTaskId, (int*)0x0);
-            if (playerEntryId != -1)
+            // If coin mode, enemies drop coins 
+            if (_gameMode == Game_Rule_Coin)
             {
-                ftEntry* playerEntry = g_ftManager->m_entryManager->getEntity(playerEntryId);
-                if (playerEntry != NULL)
+                emManager* enemyManager = emManager::getInstance();
+                Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
+                Vec3f pos = soExternalValueAccesser::getPos(enemy);
+                // TODO: properly calculate this vector
+                Vec2f vec = Vec2f(0,0);
+
+                itemManager->createMoney((char*)enemy->m_taskId, &pos, &vec, spawnedEnemy->enemyType->points / 10, 1, 0);
+            }
+            // If score mode, enemies give points
+            else if (_gameMode == Game_Rule_Time)
+            {
+                emManager* enemyManager = emManager::getInstance();
+                Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
+                soDamageAttackerInfo* attackerInfo = enemy->m_moduleAccesser->getDamageModule().getAttackerInfo();
+                // TODO: Check if there is a proper direct attacker and use that if there is one, so Goomba stomps count?
+                int playerEntryId = g_ftManager->getEntryIdFromTaskId(attackerInfo->m_indirectTaskId, (int*)0x0);
+                if (playerEntryId != -1)
                 {
-                    int playerIndex = playerEntry->m_playerNo;
-                    ftOwner* playerOwner = playerEntry->m_owner;
-                    if (playerOwner != NULL)
+                    ftEntry* playerEntry = g_ftManager->m_entryManager->getEntity(playerEntryId);
+                    if (playerEntry != NULL)
                     {
-                        int enemyBeats = ((spawnedEnemy->enemyType->points / 100) / 2);
-                        int currentBeatCount = playerOwner->getBeatCount(KO_PLAYERINDEX);
-                        playerOwner->setBeatCount(KO_PLAYERINDEX, currentBeatCount + enemyBeats); // Increment KO count by 1
+                        int playerIndex = playerEntry->m_playerNo;
+                        ftOwner* playerOwner = playerEntry->m_owner;
+                        if (playerOwner != NULL)
+                        {
+                            int enemyBeats = ((spawnedEnemy->enemyType->points / 100) / 2);
+                            int currentBeatCount = playerOwner->getBeatCount(KO_PLAYERINDEX);
+                            playerOwner->setBeatCount(KO_PLAYERINDEX, currentBeatCount + enemyBeats); // Increment KO count by 1
+                        }
                     }
                 }
             }
+            // TODO: If stock, at certain intervals, everyone but highest score loses stock, and scores reset?
         }
-        // TODO: If stock, at certain intervals, everyone but highest score loses stock, and scores reset?
-    }
-    if (enemyMessageKind == Enemy::Message_Destruct || enemyMessageKind == Enemy::Message_Remove)
-    {
-        // Check if enemy has weapon before unloading
-        // TODO: Check if ANY enemies who share a BRRES have weapons? Also, instead of immediately deleting enemy, queue them for deletion and check every frame that no enemies sharing the BRRES have weapons,
-        // - so weapons can finish up before being deleted
-        Enemy* enemy = enemyManager->getEnemyPtrFromId(spawnedEnemy->enemyCreateId);
-        if (enemy != NULL)
+        if (enemyMessageKind == Enemy::Message_Destruct || enemyMessageKind == Enemy::Message_Remove)
         {
-            int taskId = enemy->m_moduleAccesser->m_stageObject->m_taskId;
-            if (taskId != NULL && taskId > 0)
+            // Check if enemy has weapon before unloading
+            // TODO: Check if ANY enemies who share a BRRES have weapons? Also, instead of immediately deleting enemy, queue them for deletion and check every frame that no enemies sharing the BRRES have weapons,
+            // - so weapons can finish up before being deleted
+            Enemy* enemy = enemyManager->getEnemyPtrFromId(spawnedEnemy->enemyCreateId);
+            if (enemy != NULL)
             {
-                wnemSimple* weapon = weaponManager->findWeapon(taskId, 0xFFFF, 0);
-                if (weapon != NULL)
+                int taskId = enemy->m_moduleAccesser->m_stageObject->m_taskId;
+                if (taskId != NULL && taskId > 0)
                 {
-                    // Remove weapon if it exists
-                    weapon->remove();
+                    wnemSimple* weapon = weaponManager->findWeapon(taskId, 0xFFFF, 0);
+                    if (weapon != NULL)
+                    {
+                        // Remove weapon if it exists
+                        weapon->remove();
+                    }
                 }
             }
-        }
-        // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
-        if (enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy->enemyType->enemyId) < 1
-            && (_spawnQueue.size() > 0 && _enemyTypes[_spawnQueue[0]]->enemyId != spawnedEnemy->enemyType->enemyId))
-        {
-            OSReport("Unloading resources for enemy %d. \n", spawnedEnemy->enemyType->enemyId);
-            int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)spawnedEnemy->enemyType->enemyId);
-            enemyManager->removeArchive(enemyCreateId);
-            spawnedEnemy->enemyType->loaded = false;
-            spawnedEnemy->enemyType->loading = false;
-        }
-
-        // Remove from CPU list
-        if (g_stEnemyIdManager != NULL)
-        {
-            g_stEnemyIdManager->removeEnemyId(spawnedEnemy->enemyCreateId);
-        }
-
-        // Remove from spawned enemy list and reduce enemy count
-        int foundIndex = -1;
-        for (int i = 0; i < _spawnedEnemyTypes.size(); i++)
-        {
-            if (_spawnedEnemyTypes[i]->enemyCreateId == spawnedEnemy->enemyCreateId)
+            // Unload enemy resources on defeat if it is the last enemy of that type and the next enemy in queue is not the same type
+            if (enemyManager->getEnemyCountFromKind((EnemyKind) spawnedEnemy->enemyType->enemyId) < 1
+                && (_spawnQueue.size() > 0 && _enemyTypes[_spawnQueue[0]]->enemyId != spawnedEnemy->enemyType->enemyId))
             {
-                foundIndex = i;
-                break;
+                OSReport("Unloading resources for enemy %d. \n", spawnedEnemy->enemyType->enemyId);
+                int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)spawnedEnemy->enemyType->enemyId);
+                enemyManager->removeArchive(enemyCreateId);
+                spawnedEnemy->enemyType->loaded = false;
+                spawnedEnemy->enemyType->loading = false;
             }
-        }
-        if (foundIndex > -1 && !enemyManager->isEnemyExist(spawnedEnemy->enemyCreateId))
-        {
-            _enemyCount--;
-            _spawnedEnemyTypes.removeAt(foundIndex);
-            delete spawnedEnemy;
-        }
+
+            // Remove from CPU list
+            if (g_stEnemyIdManager != NULL)
+            {
+                g_stEnemyIdManager->removeEnemyId(spawnedEnemy->enemyCreateId);
+            }
+
+            // Remove from spawned enemy list and reduce enemy count
+            int foundIndex = -1;
+            for (int i = 0; i < _spawnedEnemyTypes.size(); i++)
+            {
+                if (_spawnedEnemyTypes[i]->enemyCreateId == spawnedEnemy->enemyCreateId)
+                {
+                    foundIndex = i;
+                    break;
+                }
+            }
+            if (foundIndex > -1 && !enemyManager->isEnemyExist(spawnedEnemy->enemyCreateId))
+            {
+                _enemyCount--;
+                _spawnedEnemyTypes.removeAt(foundIndex);
+                delete spawnedEnemy;
+            }
+        }        
     }
 
     return stDestroyBossParamCommon();
