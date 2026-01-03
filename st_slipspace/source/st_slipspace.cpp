@@ -675,7 +675,8 @@ void stSlipspace::update(float deltaFrame)
         if (_tour.currentFrame >= currentState->frames)
         {
             // Get new state
-            TourState* newState = _tourStates[currentState->destinations->get(0)];
+            int randIndex = randi(currentState->destinations->size());
+            TourState* newState = _tourStates[currentState->destinations->get(randIndex)];
             // Update objects in new state to use new animations
             for (int i = 0; i < newState->stateObjects->size(); i++)
             {
