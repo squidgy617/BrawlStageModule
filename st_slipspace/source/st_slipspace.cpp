@@ -81,6 +81,25 @@ struct RespawnPoint
     grMotionPath* visNode;
 };
 
+struct StateObject
+{
+    int objectIndex;
+    int animationIndex;
+};
+
+struct TourState
+{
+    Vector<StateObject*>* stateObjects;
+    Vector<int>* destinations;
+    int frames;
+};
+
+struct Tour
+{
+    int currentState;
+    int currentFrame;
+};
+
 Vector<SpawnerGroup*> _spawnerGroups; // List of spawner groups in stage
 Vector<EnemySpawner*> _spawners; // List of spawners in stage
 Vector<u32> _spawnQueue; // Holds queued spawns
@@ -89,6 +108,9 @@ Vector<SlipspaceEnemy*> _spawnedEnemyTypes; // List of currently spawned enemies
 GameRule _gameMode; // Selected game mode
 Vector<RespawnPoint*> _respawnPoints; // List of respawn points in stage
 int _lastUsedSpawnerIndex = -1; // Last spawner index used
+Vector<grTourObject*> _tourObjects; // List of tour objects
+Vector<TourState*> _tourStates; // list of tour states
+Tour _tour; // Tour
 
 stSlipspace* stSlipspace::create()
 {
@@ -552,7 +574,7 @@ void stSlipspace::update(float deltaFrame)
     if (!this->isRespawnsInitialized) {
         grArea* ground = static_cast<grArea*>(this->getGround(0));
         u32 respawnsIndex = ground->getNodeIndex(0, "Respawns");
-        u32 endIndex = ground->getNodeIndex(0, "End");
+        u32 endIndex = ground->getNodeIndex(0, "Tour");
         for (int i = respawnsIndex + 1; i < endIndex; i++) {
             nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
             nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
@@ -643,6 +665,32 @@ void stSlipspace::update(float deltaFrame)
             if (resNodeData->m_rotation.m_y > 0) {
                 this->playSeBasic((SndID)resNodeData->m_rotation.m_y, 0);
             }
+        }
+    }
+
+    // Do tour stuff
+    if (isTourInitialized)
+    {
+        TourState* currentState = _tourStates[_tour.currentState];
+        if (_tour.currentFrame >= currentState->frames)
+        {
+            // Get new state
+            TourState* newState = _tourStates[currentState->destinations->get(0)];
+            // Update objects in new state to use new animations
+            for (int i = 0; i < newState->stateObjects->size(); i++)
+            {
+                grTourObject* tourObject = _tourObjects[newState->stateObjects->get(i)->objectIndex];
+                if (tourObject != NULL)
+                {
+                    tourObject->setMotion(newState->stateObjects->get(i)->animationIndex);
+                    _tour.currentFrame = 0;
+                    _tour.currentState = currentState->destinations->get(0);
+                }
+            }
+        }
+        else
+        {
+            _tour.currentFrame += deltaFrame;
         }
     }
 }
@@ -939,6 +987,40 @@ void stSlipspace::clearHeap() {
     }
     _respawnPoints.clear();
 
+    for (int i = 0; i < _tourStates.size(); i++)
+    {
+        if (_tourStates[i]->stateObjects != NULL)
+        {
+            for (int j = 0; j < _tourStates[i]->stateObjects->size(); j++)
+            {
+                delete _tourStates[i]->stateObjects->get(j);
+            }
+            delete _tourStates[i]->stateObjects;
+            _tourStates[i]->stateObjects = NULL;
+        }
+        if (_tourStates[i]->destinations != NULL)
+        {
+            delete _tourStates[i]->destinations;
+            _tourStates[i]->destinations = NULL;
+        }
+        if (_tourStates[i] != NULL)
+        {
+            delete _tourStates[i];
+            _tourStates[i] = NULL;
+        }
+    }
+    _tourStates.clear();
+
+    for (int i = 0; i < _tourObjects.size(); i++)
+    {
+        if (_tourObjects[i] != NULL)
+        {
+            // delete _tourObjects[i];
+            _tourObjects[i] = NULL;
+        }
+    }
+    _tourObjects.clear();
+
     if (g_stEnemyIdManager != NULL)
     {
         stEnemyIdManager::remove();
@@ -1006,6 +1088,9 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
         u32 watersIndex = ground->getNodeIndex(0, "Waters");
         u32 windsIndex = ground->getNodeIndex(0, "Winds");
         u32 itemsIndex = ground->getNodeIndex(0, "Items");
+        u32 tourObjectIndex = ground->getNodeIndex(0, "TourObjects");
+        u32 tourStatesIndex = ground->getNodeIndex(0, "TourStates");
+        u32 endIndex = ground->getNodeIndex(0, "End");
 
         // TODO: Optional targets (can select max targets in STDT)
         for (int i = targetsIndex + 1; i < disksIndex; i++) {
@@ -1128,6 +1213,67 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
                                     resNodeDataNE->m_rotation.m_x, resNodeDataNE->m_rotation.m_z, &resNodeDataSW->m_scale,
                                     resNodeDataNE->m_translation.m_z, resNodeDataNE->m_rotation.m_y);
         }
+        for (int i = tourObjectIndex + 1; i < tourStatesIndex; i++)
+        {
+            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
+            int modelIndex = resNodeData->m_rotation.m_x;
+            createObjTourObject(modelIndex);
+        }
+
+        grArea* ground = static_cast<grArea*>(this->getGround(0));
+        bool inStateObjects = false;
+        bool inDestinations = false;
+        for (int i = tourStatesIndex + 1; i < endIndex; i++)
+        {
+            nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
+            char* nodeName = ground->getNodeName(resNode);
+            nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
+
+            // Check if we are looking at state objects
+            if (strcmp(nodeName, "StateObjects") == 0)
+            {
+                inStateObjects = true;
+            }
+            else if (strcmp(nodeName, "StateObjectsEnd") == 0)
+            {
+                inStateObjects = false;
+            }
+            // Check if we are looking at destinations
+            else if (strcmp(nodeName, "Destinations") == 0)
+            {
+                inDestinations = true;
+            }
+            else if (strcmp(nodeName, "DestinationsEnd") == 0)
+            {
+                inDestinations = false;
+            }
+            // If we aren't in state objects or destinations, it's a state
+            else if (!inStateObjects && !inDestinations)
+            {
+                TourState* tourState = new (Heaps::StageInstance) TourState();
+                tourState->frames = resNodeData->m_rotation.m_x;
+                tourState->stateObjects = new Vector<StateObject*>();
+                tourState->destinations = new Vector<int>();
+                _tourStates.push(tourState);
+            }
+            // Add state objects
+            else if (inStateObjects)
+            {
+                StateObject* stateObject = new (Heaps::StageInstance) StateObject();
+                stateObject->objectIndex = resNodeData->m_rotation.m_x;
+                stateObject->animationIndex = resNodeData->m_rotation.m_y;
+                _tourStates[_tourStates.size() - 1]->stateObjects->push(stateObject);
+            }
+            // Add destinations
+            else if (inDestinations)
+            {
+                int destIndex = resNodeData->m_rotation.m_x;
+                _tourStates[_tourStates.size() - 1]->destinations->push(destIndex);
+            }
+        }
+        _tour.currentFrame = 0;
+        _tour.currentState = 0;
+        isTourInitialized = true;
     }
 }
 
@@ -1188,6 +1334,21 @@ void stSlipspace::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, float s
             createCollision(m_fileData, collIndex, platform);
         }
     }
+}
+
+void stSlipspace::createObjTourObject(int mdlIndex)
+{
+    grTourObject* tourobject = grTourObject::create(mdlIndex, "", "grTourObject");
+    if (tourobject != NULL)
+    {
+        addGround(tourobject);
+        tourobject->setStageData(m_stageData);
+        tourobject->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
+        tourobject->initializeEntity();
+        tourobject->startEntity();
+        tourobject->setMotion(0);
+    }
+    _tourObjects.push(tourobject);
 }
 
 void stSlipspace::createObjBreak(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float maxDamage, float respawnTime) {

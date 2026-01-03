@@ -20,6 +20,7 @@
 #include "gr_catapult.h"
 #include "gr_item.h"
 #include "gr_area.h"
+#include "gr_tour_object.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -73,6 +74,7 @@ protected:
     bool isEnemiesInitialized;
     bool isAssistInitialized;
     bool isRespawnsInitialized;
+    bool isTourInitialized;
     bool isEndProcessed;
     gfArchive* enemyCommonPac;
     gfArchive* primFacePac;
@@ -110,6 +112,7 @@ public:
         isEnemiesInitialized = false;
         isAssistInitialized = true;
         isRespawnsInitialized = false;
+        isTourInitialized = false;
         isEndProcessed = false;
         targetsLeft = 0;
         targetsHit = 0;
@@ -161,6 +164,7 @@ public:
     void createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed, bool isRightDirection, int mdlIndex = 0, float rot = 0, Vec3f* scale = NULL, int motionPathIndex = 0, int collIndex = 0);
     void createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bool canDrown, int mdlIndex = 0, float rot = 0, Vec3f* scale = NULL, int motionPathIndex = 0, int collIndex = 0);
     void createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength, float angle, int mdlIndex = 0, float rot = 0, Vec3f* scale = NULL, int motionPathIndex = 0, int collIndex = 0);
+    void createObjTourObject(int mdlIndex);
     void createItemPac(u32 index);
     void createEnemyPac(u32 index);
     void putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos, int motionPathIndex);

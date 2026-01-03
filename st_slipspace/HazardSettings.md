@@ -392,3 +392,33 @@ Spawn points for players, for use with dynamic blast zones. The game will attemp
 **Translation X,Y** - Position
 
 **Translation Z** - Motion Path ModelData Index (name of node to follow must match this bone name)
+
+## Tour Objects
+
+Tour objects are models that might move in touring stages.
+
+**Rotation X** - Index of the model data used for the object
+
+## Tour States
+
+Tour states are different "states" that a touring stage can be in at any given time. They control tour objects to ensure the stage moves as expected.
+
+Each child bone of the TourStates bone represents a state.
+
+**Rotation X** - Number of frames that state lasts for before shifting to another state.
+
+## State Objects
+
+Each tour state has a child bone `StateObjects`, which defines all of the objects modified by the tour state. To create a list of state objects, add a `StateObjects` child bone under the tour state bone. Each child bone of the `StateObjects` bone represents a single state object. At the end of the list, there should always be a bone named `StateObjectsEnd`.
+
+**Rotation X** - Index of the tour object in the "TourObjects" bone, zero-indexed. Whatever index is specified here will determine what model is modified. For example, the first entry in your TourObjects list would have an index of 0.
+
+**Rotation Y** - Index of animation that should play in the model data of your tour object. For instance, if set to 0, the first CHR0 animation for your model will play when this state is active. If set to 1, the second animation will play.
+
+## Destinations
+
+Each tour state has a child bone `Destinations`, which defines all of the states that the tour might transition to when this state ends. To create a list of destinations, add a `Destinations` child bone under the tour state bone. Each child bone of the `Destinations` bone represents a single state. At the end of the list, there should always be a bone named `DestinationsEnd`.
+
+When a state ends (it's frame limit is surpassed), the tour will transition to one of the destinations in this list, selected randomly.
+
+**Rotation X** - Index of the state in the "TourStates" bone, zero-indexed. For instance, if this value is set to 0, then the destination represents the first state under `TourStates`.
