@@ -20,3 +20,8 @@ void grTourObject::startup(gfArchive* archive, u32 unk1, gfSceneRoot::LayerType 
     grMadein::startup(archive, unk1, layerType);
 }
 
+void grTourObject::update(int deltaFrame)
+{
+    this->setEnableCollisionStatus(true);
+}
+

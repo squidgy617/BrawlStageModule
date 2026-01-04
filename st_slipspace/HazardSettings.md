@@ -399,6 +399,8 @@ Tour objects are models that might move in touring stages.
 
 **Rotation X** - Index of the model data used for the object
 
+**Rotation Y** - Index of the collision data to use for the object. If set to 0, will not be used. You must create a corresponding collision node and bind it to a bone on the tour object for this to work.
+
 ## Tour States
 
 Tour states are different "states" that a touring stage can be in at any given time. They control tour objects to ensure the stage moves as expected.

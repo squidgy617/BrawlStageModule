@@ -11,6 +11,7 @@ public:
     };
     virtual ~grTourObject(){};
     virtual void startup(gfArchive* archive, u32 unk1, gfSceneRoot::LayerType layerType);
+    virtual void update(int deltaFrame);
 
     static grTourObject* create(int mdlIndex, const char* tgtNodeName, const char* taskName);
 

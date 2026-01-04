@@ -164,7 +164,7 @@ public:
     void createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed, bool isRightDirection, int mdlIndex = 0, float rot = 0, Vec3f* scale = NULL, int motionPathIndex = 0, int collIndex = 0);
     void createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bool canDrown, int mdlIndex = 0, float rot = 0, Vec3f* scale = NULL, int motionPathIndex = 0, int collIndex = 0);
     void createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength, float angle, int mdlIndex = 0, float rot = 0, Vec3f* scale = NULL, int motionPathIndex = 0, int collIndex = 0);
-    void createObjTourObject(int mdlIndex);
+    void createObjTourObject(int mdlIndex, int collIndex);
     void createItemPac(u32 index);
     void createEnemyPac(u32 index);
     void putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos, int motionPathIndex);

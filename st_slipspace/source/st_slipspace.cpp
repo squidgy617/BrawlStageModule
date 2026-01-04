@@ -1218,7 +1218,7 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
         {
             nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
             int modelIndex = resNodeData->m_rotation.m_x;
-            createObjTourObject(modelIndex);
+            createObjTourObject(modelIndex, resNodeData->m_rotation.m_y);
         }
 
         grArea* ground = static_cast<grArea*>(this->getGround(0));
@@ -1337,7 +1337,7 @@ void stSlipspace::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, float s
     }
 }
 
-void stSlipspace::createObjTourObject(int mdlIndex)
+void stSlipspace::createObjTourObject(int mdlIndex, int collIndex)
 {
     grTourObject* tourobject = grTourObject::create(mdlIndex, "", "grTourObject");
     if (tourobject != NULL)
@@ -1348,6 +1348,9 @@ void stSlipspace::createObjTourObject(int mdlIndex)
         tourobject->initializeEntity();
         tourobject->startEntity();
         tourobject->setMotion(0);
+        if (collIndex > 0) {
+            createCollision(m_fileData, collIndex, tourobject);
+        }
     }
     _tourObjects.push(tourobject);
 }
