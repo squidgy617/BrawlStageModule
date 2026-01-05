@@ -21,6 +21,7 @@
 #include "gr_item.h"
 #include "gr_area.h"
 #include "gr_tour_object.h"
+#include "gr_bound_object.h"
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -165,6 +166,7 @@ public:
     void createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bool canDrown, int mdlIndex = 0, float rot = 0, Vec3f* scale = NULL, int motionPathIndex = 0, int collIndex = 0);
     void createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength, float angle, int mdlIndex = 0, float rot = 0, Vec3f* scale = NULL, int motionPathIndex = 0, int collIndex = 0);
     void createObjTourObject(int mdlIndex, int collIndex);
+    void createObjBoundObject(int mdlIndex, int boneIndex, int targetNodeIndex, grTourObject* tourObject);
     void createItemPac(u32 index);
     void createEnemyPac(u32 index);
     void putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos, int motionPathIndex);

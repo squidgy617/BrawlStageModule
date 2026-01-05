@@ -1214,14 +1214,32 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
                                     resNodeDataNE->m_rotation.m_x, resNodeDataNE->m_rotation.m_z, &resNodeDataSW->m_scale,
                                     resNodeDataNE->m_translation.m_z, resNodeDataNE->m_rotation.m_y);
         }
-        for (int i = tourObjectIndex + 1; i < tourStatesIndex; i++)
-        {
-            nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(i).ptr();
-            int modelIndex = resNodeData->m_rotation.m_x;
-            createObjTourObject(modelIndex, resNodeData->m_rotation.m_y);
-        }
 
         grArea* ground = static_cast<grArea*>(this->getGround(0));
+        bool inBoundObjects = false;
+        for (int i = tourObjectIndex + 1; i < tourStatesIndex; i++)
+        {
+            nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
+            char* nodeName = ground->getNodeName(resNode);
+            nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
+            if (strcmp(nodeName, "BoundObjects") == 0)
+            {
+                inBoundObjects = true;
+            }
+            else if (strcmp(nodeName, "BoundObjectsEnd") == 0)
+            {
+                inBoundObjects = false;
+            }
+            else if (!inBoundObjects)
+            {
+                createObjTourObject(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y);
+            }
+            else if (inBoundObjects)
+            {
+                createObjBoundObject(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y, resNodeData->m_rotation.m_z, _tourObjects[_tourObjects.size() - 1]);
+            }
+        }
+        
         bool inStateObjects = false;
         bool inDestinations = false;
         for (int i = tourStatesIndex + 1; i < endIndex; i++)
@@ -1353,6 +1371,20 @@ void stSlipspace::createObjTourObject(int mdlIndex, int collIndex)
         }
     }
     _tourObjects.push(tourobject);
+}
+
+void stSlipspace::createObjBoundObject(int mdlIndex, int boneIndex, int targetNodeIndex, grTourObject* tourObject)
+{
+    grBoundObject* boundObject = grBoundObject::create(mdlIndex, boneIndex, targetNodeIndex, tourObject, "", "grBoundObject");
+    if (boundObject != NULL)
+    {
+        addGround(boundObject);
+        boundObject->setStageData(m_stageData);
+        boundObject->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
+        boundObject->initializeEntity();
+        boundObject->startEntity();
+        boundObject->setMotion(0);
+    }
 }
 
 void stSlipspace::createObjBreak(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float maxDamage, float respawnTime) {
