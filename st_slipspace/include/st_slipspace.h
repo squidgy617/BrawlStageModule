@@ -22,12 +22,29 @@
 #include "gr_area.h"
 #include "gr_tour_object.h"
 #include "gr_bound_object.h"
+#include <vector.h>
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
 const float SCROLL_DIR = 0.0f;
 const float POKETRAINER_Z = 0.0f;
 const float UNK_FLOAT1 = 0.0f;
+
+struct EnemySpawner
+{
+    int timer;
+    int startStatus;
+    int facingDirection;
+    Vec2f pos;
+    char* nodeName;
+    int motionPathIndex;
+    int groupIndex;
+    int respawnTimerLength;
+    grTourObject* motionPath;
+    int listSize;
+    Vector<u32>* listedEnemies;
+    bool isWhitelist;
+};
 
 class EnemyType
 {
@@ -61,6 +78,42 @@ class SlipspaceEnemy
         int enemyCreateId;
         int killTimer;
         int groupIndex;
+};
+
+struct SpawnerGroup
+{
+    int timerLength;
+    int maxTotalSpawns;
+    int maxSimultaneousSpawns;
+    int timer;
+    int totalSpawns;
+};
+
+struct RespawnPoint
+{
+    Vec2f position;
+    char* nodeName;
+    int motionPathIndex;
+    grTourObject* motionPath;
+};
+
+struct StateObject
+{
+    int objectIndex;
+    int animationIndex;
+};
+
+struct TourState
+{
+    Vector<StateObject*>* stateObjects;
+    Vector<int>* destinations;
+    int frames;
+};
+
+struct Tour
+{
+    int currentState;
+    int currentFrame;
 };
 
 class stSlipspace : public stMelee, public ftOutsideEventObserver {
@@ -165,12 +218,14 @@ public:
     void createTriggerConveyor(Vec2f* posSW, Vec2f* posNE, float speed, bool isRightDirection, int mdlIndex = 0, float rot = 0, Vec3f* scale = NULL, int motionPathIndex = 0, int collIndex = 0);
     void createTriggerWater(Vec2f* posSW, Vec2f* posNE, float speed, bool canDrown, int mdlIndex = 0, float rot = 0, Vec3f* scale = NULL, int motionPathIndex = 0, int collIndex = 0);
     void createTriggerWind(Vec2f* posSW, Vec2f* posNE, float strength, float angle, int mdlIndex = 0, float rot = 0, Vec3f* scale = NULL, int motionPathIndex = 0, int collIndex = 0);
-    void createObjTourObject(int mdlIndex, int collIndex);
+    grTourObject* createObjTourObject(int mdlIndex, int collIndex);
     void createObjBoundObject(int mdlIndex, int boneIndex, int targetNodeIndex, grTourObject* tourObject);
     void createItemPac(u32 index);
     void createEnemyPac(u32 index);
     void putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos, int motionPathIndex);
-    void putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr, int groupIndex, grMotionPath* spawnerMotionPath);
+    void putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr, int groupIndex, EnemySpawner* spawner);
+    grTourObject* getTourObject(int mdlIndex);
+    grTourObject* findOrCreateTourObject(int mdlIndex);
     void clearHeap();
     bool calcHighScore();
     void startGhost();

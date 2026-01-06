@@ -355,13 +355,11 @@ sora_enemy.rel file index = 301
 
 **Scale X** - Number of frames before spawner can be used again after spawning an enemy
 
-**Rotation Y** - Visibility ModelData Index (name of node to determine visibility must match this bone name). When visibility is toggled off by VIS0 animation, spawner will not spawn enemies.
-
 **Rotation Z** - Starting facing direction
 
 **Translation X,Y** - Position
 
-**Translation Z** - Motion Path ModelData Index (name of node to follow must match this bone name)
+**Translation Z** - Motion Path ModelData Index (name of node to follow must match this bone name). When Z position is set to something other than 0 by CHR0 animation, spawner will not spawn enemies. If the ModelData is a tour object, tour will control animations.
 
 ## Whitelist
 
@@ -387,11 +385,9 @@ The following values are used by each child of the blacklist bone:
 
 Spawn points for players, for use with dynamic blast zones. The game will attempt to respawn players at these positions if they are nearby.
 
-**Rotation Z** - Visibility ModelData Index (name of node to determine visibility must match this bone name). When visibility is toggled off by VIS0 animation, respawn point will not be used.
-
 **Translation X,Y** - Position
 
-**Translation Z** - Motion Path ModelData Index (name of node to follow must match this bone name)
+**Translation Z** - Motion Path ModelData Index (name of node to follow must match this bone name). When Z position is set to something other than 0 by CHR0 animation, respawn point will not be used. If the ModelData is a tour object, tour will control animations.
 
 ## Tour Objects
 

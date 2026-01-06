@@ -26,7 +26,6 @@
 #include <gf/gf_3d_scene.h>
 #include <if/if_mngr.h>
 #include <st/st_enemy_id_manager.h>
-#include <vector.h>
 #include <so/damage/so_damage_util_actor.h>
 #include <math.h>
 #include <em/em_info.h>
@@ -43,62 +42,6 @@ int _spawnGroupCount = 0; // Number of spawner groups in stage
 int _enemyTypeCount = 0; // Number of different types of enemies that can spawn
 int _maxFrequency = 0; // Highest enemy frequency in stage
 int _respawnPointCount = 0; // Number of respawn points in stage;
-
-struct SpawnerGroup
-{
-    int timerLength;
-    int maxTotalSpawns;
-    int maxSimultaneousSpawns;
-    int timer;
-    int totalSpawns;
-};
-
-struct EnemySpawner
-{
-    int timer;
-    int startStatus;
-    int facingDirection;
-    Vec2f pos;
-    char* nodeName;
-    int motionPathIndex;
-    int visNodeIndex;
-    int groupIndex;
-    int respawnTimerLength;
-    grMotionPath* motionPath;
-    grMotionPath* visNode;
-    int listSize;
-    Vector<u32>* listedEnemies;
-    bool isWhitelist;
-};
-
-struct RespawnPoint
-{
-    Vec2f position;
-    char* nodeName;
-    int motionPathIndex;
-    int visNodeIndex;
-    grMotionPath* motionPath;
-    grMotionPath* visNode;
-};
-
-struct StateObject
-{
-    int objectIndex;
-    int animationIndex;
-};
-
-struct TourState
-{
-    Vector<StateObject*>* stateObjects;
-    Vector<int>* destinations;
-    int frames;
-};
-
-struct Tour
-{
-    int currentState;
-    int currentFrame;
-};
 
 Vector<SpawnerGroup*> _spawnerGroups; // List of spawner groups in stage
 Vector<EnemySpawner*> _spawners; // List of spawners in stage
@@ -251,7 +194,6 @@ void stSlipspace::update(float deltaFrame)
                         newSpawner->pos = *resNodeData->m_translation.xy();
                         newSpawner->nodeName = nodeName;
                         newSpawner->motionPathIndex = resNodeData->m_translation.m_z;
-                        newSpawner->visNodeIndex = resNodeData->m_rotation.m_y;
                         newSpawner->facingDirection = resNodeData->m_rotation.m_z;
                         newSpawner->groupIndex = i;
                         newSpawner->respawnTimerLength = resNodeData->m_scale.m_x;
@@ -259,7 +201,6 @@ void stSlipspace::update(float deltaFrame)
                         newSpawner->listedEnemies = new Vector<u32>();
                         newSpawner->timer = 0;
                         newSpawner->motionPath = NULL;
-                        newSpawner->visNode = NULL;
                         newSpawner->isWhitelist = false;
                         _spawners.push(newSpawner);
                         _spawnerCount++;
@@ -304,33 +245,11 @@ void stSlipspace::update(float deltaFrame)
             {
                 if (_spawners[i]->motionPathIndex != 0) 
                 {
-                    grMotionPath* ground = grMotionPath::create(_spawners[i]->motionPathIndex, _spawners[i]->nodeName, "grMotionPath");
-                    if (ground != NULL) {
-                        addGround(ground);
-                        ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
-                    }
-                    _spawners[i]->motionPath = ground;
+                    _spawners[i]->motionPath = findOrCreateTourObject(_spawners[i]->motionPathIndex);
                 }
                 else
                 {
                     _spawners[i]->motionPath = NULL;
-                }
-            }
-            // Initialize spawner visibility nodes
-            for (int i = 0; i < _spawnerCount; i++)
-            {
-                if (_spawners[i]->visNodeIndex != 0)
-                {
-                    grMotionPath* ground = grMotionPath::create(_spawners[i]->visNodeIndex, _spawners[i]->nodeName, "grMotionPath");
-                    if (ground != NULL) {
-                        addGround(ground);
-                        ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
-                    }
-                    _spawners[i]->visNode = ground;
-                }
-                else
-                {
-                    _spawners[i]->visNode = NULL;
                 }
             }
             this->isEnemiesInitialized = true;
@@ -461,14 +380,17 @@ void stSlipspace::update(float deltaFrame)
         {
             // Only add spawners that are within the camera range and aren't part of an already maxed out group
             Vec2f pos = _spawners[i]->pos;
+            bool nodeVisible = true;
             // If spawner has a motion path, use motion path position for spawning
             if (_spawners[i]->motionPath != NULL)
             {
-                Vec3f motionPathPos = _spawners[i]->motionPath->getPos();
+                Vec3f motionPathPos;
+                _spawners[i]->motionPath->getNodePosition(&motionPathPos, 0, _spawners[i]->nodeName);
                 pos = Vec2f(motionPathPos.m_x, motionPathPos.m_y);
+                nodeVisible = motionPathPos.m_z == 0;
             }
             if (inCameraRange(pos) && canSpawnEnemyInGroup(_spawners[i]->groupIndex) 
-            && (_spawners[i]->visNode == NULL || _spawners[i]->visNode->isNodeVisible(0, _spawners[i]->visNode->m_nodeIndex)))
+            && nodeVisible)
             {
                 randomizedSpawnerIndexes.push(i);
                 availableSpawnerCount++;
@@ -520,7 +442,7 @@ void stSlipspace::update(float deltaFrame)
             {
                 // Find enemy list entry
                 // Spawn enemy
-                this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->facingDirection, _spawners[si]->groupIndex, _spawners[si]->motionPath);
+                this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->facingDirection, _spawners[si]->groupIndex, _spawners[si]);
                 // Pop from queue
                 for (int j = 0; j < _spawnQueue.size() - 1; j++)
                 {
@@ -574,7 +496,7 @@ void stSlipspace::update(float deltaFrame)
     if (!this->isRespawnsInitialized) {
         grArea* ground = static_cast<grArea*>(this->getGround(0));
         u32 respawnsIndex = ground->getNodeIndex(0, "Respawns");
-        u32 endIndex = ground->getNodeIndex(0, "Tour");
+        u32 endIndex = ground->getNodeIndex(0, "TourObjects");
         for (int i = respawnsIndex + 1; i < endIndex; i++) {
             nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
             nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
@@ -583,36 +505,15 @@ void stSlipspace::update(float deltaFrame)
             newRespawn->position.m_y = resNodeData->m_translation.m_y;
             newRespawn->nodeName = ground->getNodeName(resNode);
             newRespawn->motionPathIndex = resNodeData->m_translation.m_z;
-            newRespawn->visNodeIndex = resNodeData->m_rotation.m_z;
-            newRespawn->visNode = NULL;
             newRespawn->motionPath = NULL;
             // Initialize motion path
             if (newRespawn->motionPathIndex != 0)
             {
-                grMotionPath* ground = grMotionPath::create(newRespawn->motionPathIndex, newRespawn->nodeName, "grMotionPath");
-                if (ground != NULL) {
-                    addGround(ground);
-                    ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
-                }
-                newRespawn->motionPath = ground;
+                newRespawn->motionPath = findOrCreateTourObject(newRespawn->motionPathIndex);
             }
             else
             {
                 newRespawn->motionPath = NULL;
-            }
-            // Initialize vis node
-            if (newRespawn->visNodeIndex != 0)
-            {
-                grMotionPath* ground = grMotionPath::create(newRespawn->visNodeIndex, newRespawn->nodeName, "grMotionPath");
-                if (ground != NULL) {
-                    addGround(ground);
-                    ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
-                }
-                newRespawn->visNode = ground;
-            }
-            else
-            {
-                newRespawn->visNode = NULL;
             }
             _respawnPoints.push(newRespawn);
             _respawnPointCount++;
@@ -1232,7 +1133,8 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
             }
             else if (!inBoundObjects)
             {
-                createObjTourObject(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y);
+                grTourObject* tourObject = createObjTourObject(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y);
+                _tourObjects.push(tourObject);
             }
             else if (inBoundObjects)
             {
@@ -1355,7 +1257,7 @@ void stSlipspace::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, float s
     }
 }
 
-void stSlipspace::createObjTourObject(int mdlIndex, int collIndex)
+grTourObject* stSlipspace::createObjTourObject(int mdlIndex, int collIndex)
 {
     grTourObject* tourobject = grTourObject::create(mdlIndex, "", "grTourObject");
     if (tourobject != NULL)
@@ -1370,7 +1272,7 @@ void stSlipspace::createObjTourObject(int mdlIndex, int collIndex)
             createCollision(m_fileData, collIndex, tourobject);
         }
     }
-    _tourObjects.push(tourobject);
+    return tourobject;
 }
 
 void stSlipspace::createObjBoundObject(int mdlIndex, int boneIndex, int targetNodeIndex, grTourObject* tourObject)
@@ -1700,7 +1602,7 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
     }
 }
 
-void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr, int groupIndex, grMotionPath* spawnerMotionPath) {
+void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr, int groupIndex, EnemySpawner* spawner) {
     // TODO: MotionPath index investigate if can make every enemy follow it?
     int startingMem = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
     emManager* enemyManager = emManager::getInstance();
@@ -1730,10 +1632,12 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
         }
         create.m_motionPath = ground;
     }
+
     // Set starting position to spawner motion path
-    if (spawnerMotionPath != NULL)
+    if (spawner->motionPath != NULL)
     {
-        Vec3f groundPos = spawnerMotionPath->getPos();
+        Vec3f groundPos;
+        spawner->motionPath->getNodePosition(&groundPos, 0, spawner->nodeName);
         create.m_startPos = Vec3f(groundPos.m_x, groundPos.m_y, 0.0);
     }
     create.m_epbm = NULL;
@@ -1943,6 +1847,42 @@ SlipspaceEnemy* stSlipspace::getSpawnedEnemy(int enemyCreateId)
     return enemy;
 }
 
+grTourObject* stSlipspace::getTourObject(int mdlIndex)
+{
+    for (int i = 0; i < _tourObjects.size(); i++)
+    {
+        if (_tourObjects[i]->getMdlIndex() == mdlIndex)
+        {
+            return _tourObjects[i];
+        }
+    }
+    for (int i = 0; i < _spawners.size(); i++)
+    {
+        if (_spawners[i]->motionPath != NULL && _spawners[i]->motionPath->getMdlIndex() == mdlIndex)
+        {
+            return _spawners[i]->motionPath;
+        }
+    }
+    for (int i = 0; i < _respawnPoints.size(); i++)
+    {
+        if (_respawnPoints[i]->motionPath != NULL && _respawnPoints[i]->motionPath->getMdlIndex() == mdlIndex)
+        {
+            return _respawnPoints[i]->motionPath;
+        }
+    }
+    return NULL;
+}
+
+grTourObject* stSlipspace::findOrCreateTourObject(int mdlIndex)
+{
+    grTourObject* tourObject = getTourObject(mdlIndex);
+    if (tourObject == NULL)
+    {
+        tourObject = createObjTourObject(mdlIndex, 0);
+    }
+    return tourObject;
+}
+
 bool stSlipspace::inBlastZone(Vec2f pos)
 {
     Rect2D blastZone;
@@ -2122,13 +2062,16 @@ void stSlipspace::getFighterReStartPos(Vec3f* startPos, int fighterIndex)
     {
         // Only add respawns that are within the camera range and are visible
         Vec2f respawnPos = Vec2f(_respawnPoints[i]->position.m_x, _respawnPoints[i]->position.m_y);
+        bool nodeVisible = true;
         // If respawn point has a motion path, use motion path position for camera range
         if (_respawnPoints[i]->motionPath != NULL)
         {
-            Vec3f motionPathPos = _respawnPoints[i]->motionPath->getPos();
+            Vec3f motionPathPos;
+            _respawnPoints[i]->motionPath->getNodePosition(&motionPathPos, 0, _respawnPoints[i]->nodeName);
             respawnPos = Vec2f(motionPathPos.m_x, motionPathPos.m_y);
+            nodeVisible = motionPathPos.m_z == 0;
         }
-        if (inCameraRange(respawnPos) && (_respawnPoints[i]->visNode == NULL || _respawnPoints[i]->visNode->isNodeVisible(0, _respawnPoints[i]->visNode->m_nodeIndex)))
+        if (inCameraRange(respawnPos) && nodeVisible)
         {
             RespawnerStruct newRespawnerStruct;
             newRespawnerStruct.respawn = _respawnPoints[i];
