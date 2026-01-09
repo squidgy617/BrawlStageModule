@@ -323,6 +323,10 @@ sora_enemy.rel file index = 301
 
 **Scale Z** - Starting status/action
 
+**Rotation X** - Blacklisted flag - if set to 1, enemy will never spawn except at spawners where they are explicitly whitelisted
+
+**Rotation Y** - Exclusive resource memory. This is the memory used if the enemy is loaded while enemies that share assets with them are already loaded, like Primids for example
+
 **Rotation Z** - Frequency of enemy spawns, 1 - 100, 0 means enemy will never spawn
 
 **Translation X** - Points
@@ -330,8 +334,6 @@ sora_enemy.rel file index = 301
 **Translation Y** - Instance Memory
 
 **Translation Z** - Resource Memory
-
-**Translation Z** - Motion Path ModelData Index (node to follow must be called "MoveNode")
 
 ## Spawner Groups
 

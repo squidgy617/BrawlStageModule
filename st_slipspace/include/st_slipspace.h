@@ -30,6 +30,14 @@ const float SCROLL_DIR = 0.0f;
 const float POKETRAINER_Z = 0.0f;
 const float UNK_FLOAT1 = 0.0f;
 
+enum EnemyListType
+{
+    None = 0,
+    Whitelist = 1,
+    Blacklist = 2,
+    ExclusiveList = 3
+};
+
 struct EnemySpawner
 {
     int timer;
@@ -43,7 +51,7 @@ struct EnemySpawner
     grTourObject* motionPath;
     int listSize;
     Vector<u32>* listedEnemies;
-    bool isWhitelist;
+    EnemyListType listType;
 };
 
 class EnemyType
@@ -61,6 +69,7 @@ class EnemyType
         bool loaded;
         int resourceMemory;
         int frequency;
+        bool blacklisted;
 };
 
 struct EnemyDrops

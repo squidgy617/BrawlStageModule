@@ -166,16 +166,22 @@ void stSlipspace::update(float deltaFrame)
                     if (strcmp(nodeName, "Whitelist") == 0)
                     {
                         inList = true;
-                        _spawners[currentSpawner]->isWhitelist = true;
+                        _spawners[currentSpawner]->listType = Whitelist;
                     }
                     // Start blacklist
                     else if (strcmp(nodeName, "Blacklist") == 0)
                     {
                         inList = true;
-                        _spawners[currentSpawner]->isWhitelist = false;
+                        _spawners[currentSpawner]->listType = Blacklist;
+                    }
+                    // Start exclusive list
+                    else if (strcmp(nodeName, "ExclusiveList") == 0)
+                    {
+                        inList = true;
+                        _spawners[currentSpawner]->listType = ExclusiveList;
                     }
                     // End list
-                    else if (strcmp(nodeName, "WhitelistEnd") == 0 || strcmp(nodeName, "BlacklistEnd") == 0)
+                    else if (strcmp(nodeName, "WhitelistEnd") == 0 || strcmp(nodeName, "BlacklistEnd") == 0 || strcmp(nodeName, "ExclusiveListEnd") == 0)
                     {
                         inList = false;
                     }
@@ -201,7 +207,7 @@ void stSlipspace::update(float deltaFrame)
                         newSpawner->listedEnemies = new Vector<u32>();
                         newSpawner->timer = 0;
                         newSpawner->motionPath = NULL;
-                        newSpawner->isWhitelist = false;
+                        newSpawner->listType = None;
                         _spawners.push(newSpawner);
                         _spawnerCount++;
                     }
@@ -227,6 +233,7 @@ void stSlipspace::update(float deltaFrame)
                     newEnemyType->assetSize = resNodeData->m_translation.m_z;
                     newEnemyType->extraAssetSize = resNodeData->m_rotation.m_y;
                     newEnemyType->frequency = resNodeData->m_rotation.m_z;
+                    newEnemyType->blacklisted = resNodeData->m_rotation.m_x == 1;
                     newEnemyType->resourceMemory = 0;
                     newEnemyType->loading = false;
                     newEnemyType->loaded = false;
@@ -416,10 +423,10 @@ void stSlipspace::update(float deltaFrame)
             // Only spawn enemies from available spawners and if enemy assets are loaded
             int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
             // Check if enemy is in whitelist
-            bool whitelisted = !_spawners[si]->isWhitelist;
+            bool whitelisted = _spawners[si]->listType != ExclusiveList && !enemyToSpawn->blacklisted;
             for (int j = 0; j < _spawners[si]->listSize; j++)
             {
-                if (_spawners[si]->listedEnemies->get(j) == enemyToSpawn->index)
+                if (_spawners[si]->listedEnemies->get(j))
                 {
                     whitelisted = true;
                     break;
@@ -427,7 +434,7 @@ void stSlipspace::update(float deltaFrame)
             }
             // Check if enemy is in blacklist
             bool blacklisted = false;
-            if (!_spawners[si]->isWhitelist)
+            if (_spawners[si]->listType == Blacklist)
             {
                 for (int j = 0; j < _spawners[si]->listSize; j++)
                 {
