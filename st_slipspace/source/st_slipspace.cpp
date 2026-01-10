@@ -331,7 +331,10 @@ void stSlipspace::update(float deltaFrame)
                 // Check if enemy archive is already loaded
                 bool enemyLoaded = enemyManager->isCompArchive(enemyCreateId);
                 // If Primid, check if base archive is already loaded
-                // TODO: Is there a better way to do this that doesn't require a hardcoded primid check? We could always load Primid archives from the PAC too, but might be wasteful
+                // TODO: Is there a better way to do this that doesn't require a hardcoded primid check? We could always load Primid archives from the PAC too, but might be wasteful...
+                // ...maybe add a way to specify, in the enemy bones, what enemies share resources with each other? Perhaps child bones of an enemy? Could move exclusive resource memory to these child bones...
+                // ...e.g. Primid has child bones for all other primid types, for each one it has a field of the resource size is if that enemy is already loaded?
+                // ...alternatively, instead of child bones in the enemies section, a separate section for enemy groups
                 emInfo* emInfo = emInfo::getInstance();
                 bool primidLoaded = false;
                 if (emInfo->isPrimKind((EnemyKind)enemyToSpawn->enemyId))
