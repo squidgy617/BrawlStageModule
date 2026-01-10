@@ -644,6 +644,11 @@ void stSlipspace::createObj()
             // TODO: primid face index seems to get decremented by 1, so we are doing this since it's 0 in the file. Should remove after either changing it to -1 in the file or if sora_enemy behavior is changed
             g_EnemyOverride.m_faceIndexPrimid = 1;
             g_EnemyOverride.m_faceIndexPrimidSword = 1;
+            g_EnemyOverride.m_faceIndexPrimidBoom = 1;
+            g_EnemyOverride.m_faceIndexPrimidBig = 1;
+            g_EnemyOverride.m_faceIndexPrimidFire = 1;
+            g_EnemyOverride.m_faceIndexPrimidMetal = 1;
+            g_EnemyOverride.m_faceIndexPrimidScope = 1;
         }
 
         emManager::create(0x1e,0x14,0);
