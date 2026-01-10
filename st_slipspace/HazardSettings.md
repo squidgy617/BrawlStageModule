@@ -363,25 +363,41 @@ sora_enemy.rel file index = 301
 
 **Translation Z** - Motion Path ModelData Index (name of node to follow must match this bone name). When Z position is set to something other than 0 by CHR0 animation, spawner will not spawn enemies. If the ModelData is a tour object, tour will control animations.
 
-## Whitelist
+## Exclusive List
 
-Whitelists are child bones of spawners. They allow you to make it so that only enemies in the whitelist are allowed to appear at that spawner. To create a whitelist, add a child bone to your Spawner named "Whitelist". Your spawner may only have a blacklist or whitelist, not both.
+Exclusive lists are child bones of spawners. They allow you to make it so that only enemies in the list are allowed to appear at that spawner, including enemies with the blacklisted flag. Enemies not listed will never spawn. To create an exclusive list, add a child bone to your Spawner with a name starting with "ExclusiveList". Your spawner may only have a blacklist, whitelist, or exclusive list, no more than one.
 
-Each child bone of the whitelist represents a whitelisted enemy. The final bone in the whitelist should always be named "WhitelistEnd".
+Each child bone of the exclusive list represents an enemy that is allowed to spawn. The final bone in the list should always be named starting with "ExclusiveListEnd".
 
-The following values are used by each child of the whitelist bone:
+Note that bones shouldn't have identical names, so you should add a suffix after "ExclusiveList" or "ExclusiveListEnd", such as adding the parent bone name to the end.
+
+The following values are used by each child of the exclusive list bone:
 
 **Scale Z** - Index of enemy in "Enemy" bone, zero-indexed. Whatever index is specified here will be allowed to spawn at the spawner. For example, the first entry in your enemy list would have an index of 0.
 
 ## Blacklist
 
-Blacklists are child bones of spawners. They allow you to make it so certain enemies are not allowed to appear at that spawner. To create a blacklist, add a child bone to your Spawner named "Blacklist". Your spawner may only have a blacklist or whitelist, not both.
+Blacklists are child bones of spawners. They allow you to make it so certain enemies are not allowed to appear at that spawner. To create a blacklist, add a child bone to your Spawner with a name starting with "Blacklist". Your spawner may only have a blacklist, whitelist, or exclusive list, no more than one.
 
-Each child bone of the blacklist represents a blacklisted enemy. The final bone in the blacklist should always be named "BlacklistEnd".
+Each child bone of the blacklist represents a blacklisted enemy. The final bone in the blacklist should always be named starting with "BlacklistEnd".
+
+Note that bones shouldn't have identical names, so you should add a suffix after "Blacklist" or "BlacklistEnd", such as adding the parent bone name to the end.
 
 The following values are used by each child of the blacklist bone:
 
 **Scale Z** - Index of enemy in "Enemy" bone, zero-indexed. Whatever index is specified here will not be allowed to spawn at the spawner. For example, the first entry in your enemy list would have an index of 0.
+
+## Whitelist
+
+Whitelists are child bones of spawners. They allow you to make it so enemies with the blacklisted flag are allowed to appear at that spawner. Unlike exclusive lists, enemies not specified in the list can still spawn, as long as they don't have the blacklisted flag. To create a whitelist, add a child bone to your Spawner with a name starting with "Whitelist". Your spawner may only have a blacklist, whitelist, or exclusive list, no more than one.
+
+Each child bone of the whitelist represents a whitelisted enemy. The final bone in the whitelist should always be named starting with "WhitelistEnd".
+
+Note that bones shouldn't have identical names, so you should add a suffix after "Whitelist" or "WhitelistEnd", such as adding the parent bone name to the end.
+
+The following values are used by each child of the whitelist bone:
+
+**Scale Z** - Index of enemy in "Enemy" bone, zero-indexed. Whatever index is specified here will be allowed to spawn at the spawner. For example, the first entry in your enemy list would have an index of 0.
 
 ## Respawns
 
@@ -399,6 +415,20 @@ Tour objects are models that might move in touring stages.
 
 **Rotation Y** - Index of the collision data to use for the object. If set to 0, will not be used. You must create a corresponding collision node and bind it to a bone on the tour object for this to work.
 
+## Bound Objects
+
+You can bind other models to a tour bone so they will be moved to the position of the tour bone in-game. This allows you to have objects with their own, separate animations that are still part of the tour, like the rotating Shine Sprite in Delfino Plaza, which rotates on its own while moving with the stage.
+
+Bound objects are created by adding a child bone to your tour object with a name starting with `BoundObjects`. Each child bone of the `BoundObjects` bone represents a single bound object. At the end of the list, there should always be a bone named starting with `BoundObjectsEnd`.
+
+Note that bones shouldn't have identical names, so you should add a suffix after "BoundObjects" or "BoundObjectsEnd", such as adding the parent bone name to the end.
+
+**Rotation X** - Index of the model data used for the object
+
+**Rotation Y** - Index of the bound object bone to attach to the tour object.
+
+**Rotation Z** - Index of the tour object bone you would like to attach your bound object to.
+
 ## Tour States
 
 Tour states are different "states" that a touring stage can be in at any given time. They control tour objects to ensure the stage moves as expected.
@@ -409,7 +439,9 @@ Each child bone of the TourStates bone represents a state.
 
 ## State Objects
 
-Each tour state has a child bone `StateObjects`, which defines all of the objects modified by the tour state. To create a list of state objects, add a `StateObjects` child bone under the tour state bone. Each child bone of the `StateObjects` bone represents a single state object. At the end of the list, there should always be a bone named `StateObjectsEnd`.
+Each tour state has a child bone named starting with `StateObjects`, which defines all of the objects modified by the tour state. To create a list of state objects, add a child bone with a name starting with `StateObjects` under the tour state bone. Each child bone of the `StateObjects` bone represents a single state object. At the end of the list, there should always be a bone named starting with `StateObjectsEnd`.
+
+Note that bones shouldn't have identical names, so you should add a suffix after "StateObjects" or "StateObjectsEnd", such as adding the parent bone name to the end.
 
 **Rotation X** - Index of the tour object in the "TourObjects" bone, zero-indexed. Whatever index is specified here will determine what model is modified. For example, the first entry in your TourObjects list would have an index of 0.
 
@@ -417,7 +449,9 @@ Each tour state has a child bone `StateObjects`, which defines all of the object
 
 ## Destinations
 
-Each tour state has a child bone `Destinations`, which defines all of the states that the tour might transition to when this state ends. To create a list of destinations, add a `Destinations` child bone under the tour state bone. Each child bone of the `Destinations` bone represents a single state. At the end of the list, there should always be a bone named `DestinationsEnd`.
+Each tour state has a child bone named starting with `Destinations`, which defines all of the states that the tour might transition to when this state ends. To create a list of destinations, add a child bone with a name starting with `Destinations` under the tour state bone. Each child bone of the `Destinations` bone represents a single state. At the end of the list, there should always be a bone named starting with `DestinationsEnd`.
+
+Note that bones shouldn't have identical names, so you should add a suffix after "Destinations" or "DestinationsEnd", such as adding the parent bone name to the end.
 
 When a state ends (it's frame limit is surpassed), the tour will transition to one of the destinations in this list, selected randomly.
 

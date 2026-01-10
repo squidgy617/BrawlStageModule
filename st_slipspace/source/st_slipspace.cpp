@@ -162,28 +162,28 @@ void stSlipspace::update(float deltaFrame)
                     nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(j);
                     char* nodeName = ground->getNodeName(resNode);
                     nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
+                    // End list
+                    if (strncmp(nodeName, "WhitelistEnd", strlen("WhitelistEnd")) == 0 || strncmp(nodeName, "BlacklistEnd", strlen("BlacklistEnd")) == 0 || strncmp(nodeName, "ExclusiveListEnd", strlen("ExclusiveListEnd")) == 0)
+                    {
+                        inList = false;
+                    }
                     // Start whitelist
-                    if (strcmp(nodeName, "Whitelist") == 0)
+                    else if (strncmp(nodeName, "Whitelist", strlen("Whitelist")) == 0)
                     {
                         inList = true;
                         _spawners[currentSpawner]->listType = Whitelist;
                     }
                     // Start blacklist
-                    else if (strcmp(nodeName, "Blacklist") == 0)
+                    else if (strncmp(nodeName, "Blacklist", strlen("Blacklist")) == 0)
                     {
                         inList = true;
                         _spawners[currentSpawner]->listType = Blacklist;
                     }
                     // Start exclusive list
-                    else if (strcmp(nodeName, "ExclusiveList") == 0)
+                    else if (strncmp(nodeName, "ExclusiveList", strlen("ExclusiveList")) == 0)
                     {
                         inList = true;
                         _spawners[currentSpawner]->listType = ExclusiveList;
-                    }
-                    // End list
-                    else if (strcmp(nodeName, "WhitelistEnd") == 0 || strcmp(nodeName, "BlacklistEnd") == 0 || strcmp(nodeName, "ExclusiveListEnd") == 0)
-                    {
-                        inList = false;
                     }
                     // If in list, add enemies to it
                     else if (inList)
@@ -1130,13 +1130,13 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
             nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
             char* nodeName = ground->getNodeName(resNode);
             nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
-            if (strcmp(nodeName, "BoundObjects") == 0)
-            {
-                inBoundObjects = true;
-            }
-            else if (strcmp(nodeName, "BoundObjectsEnd") == 0)
+            if (strncmp(nodeName, "BoundObjectsEnd", strlen("BoundObjectsEnd")) == 0)
             {
                 inBoundObjects = false;
+            }
+            else if (strncmp(nodeName, "BoundObjects", strlen("BoundObjects")) == 0)
+            {
+                inBoundObjects = true;
             }
             else if (!inBoundObjects)
             {
@@ -1158,22 +1158,22 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
             nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
 
             // Check if we are looking at state objects
-            if (strcmp(nodeName, "StateObjects") == 0)
-            {
-                inStateObjects = true;
-            }
-            else if (strcmp(nodeName, "StateObjectsEnd") == 0)
+            if (strncmp(nodeName, "StateObjectsEnd", strlen("StateObjectsEnd")) == 0)
             {
                 inStateObjects = false;
             }
-            // Check if we are looking at destinations
-            else if (strcmp(nodeName, "Destinations") == 0)
+            else if (strncmp(nodeName, "StateObjects", strlen("StateObjects")) == 0)
             {
-                inDestinations = true;
+                inStateObjects = true;
             }
-            else if (strcmp(nodeName, "DestinationsEnd") == 0)
+            // Check if we are looking at destinations
+            else if (strncmp(nodeName, "DestinationsEnd", strlen("DestinationsEnd")) == 0)
             {
                 inDestinations = false;
+            }
+            else if (strncmp(nodeName, "Destinations", strlen("Destinations")) == 0)
+            {
+                inDestinations = true;
             }
             // If we aren't in state objects or destinations, it's a state
             else if (!inStateObjects && !inDestinations)
