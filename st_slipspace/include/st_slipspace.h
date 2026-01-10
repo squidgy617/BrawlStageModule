@@ -73,7 +73,7 @@ class EnemyType
 
 struct EnemyGroupItem
 {
-    int enemyIndex;
+    int enemyId;
     int sharedResourceSize;
 };
 
@@ -259,8 +259,10 @@ public:
     bool canSpawnEnemyInGroup(int groupIndex);
     int percentOf(int value, int percent);
     int getRandomEnemy();
-    EnemyGroup* getEnemyGroup(int enemyIndex);
+    EnemyGroup* getEnemyGroup(int enemyId);
     EnemyType* getEnemyTypeByIndex(int enemyIndex);
+    EnemyGroupItem* getEnemyGroupItem(EnemyGroup* enemyGroup, int enemyId);
+    bool isEnemyInGroup(EnemyGroup* enemyGroup, int enemyId);
     SlipspaceEnemy* getSpawnedEnemy(int enemyCreateId);
     virtual stDestroyBossParamCommon getDestroyBossParamCommon(u32, int enemyCreateId = -1, int enemyMessageKind = -1);
 

@@ -341,7 +341,7 @@ Child bones of the enemy group represent individual enemies that are grouped tog
 
 When enemies are grouped together, their memory footprint is reduced when any other enemy in the group is already loaded, allowing enemies to share resources and load in together when they otherwise might not be able to. For example, Primids share a main BRRES file, so you would create a group for them.
 
-**Scale X** - Index of enemy in "Enemy" bone, zero-indexed. Whatever index is specified here will be allowed to spawn at the spawner. For example, the first entry in your enemy list would have an index of 0.
+**Scale X** - Enemy ID
 
 **Translation Z** - Resource memory used by enemy when other enemies in the group are already loaded
 

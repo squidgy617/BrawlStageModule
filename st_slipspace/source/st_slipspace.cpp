@@ -262,7 +262,7 @@ void stSlipspace::update(float deltaFrame)
                 {
                     nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(j).ptr();
                     EnemyGroupItem* newEnemyGroupItem = new (Heaps::StageInstance) EnemyGroupItem();
-                    newEnemyGroupItem->enemyIndex = resNodeData->m_scale.m_x;
+                    newEnemyGroupItem->enemyId = resNodeData->m_scale.m_x;
                     newEnemyGroupItem->sharedResourceSize = resNodeData->m_translation.m_z;
                     _enemyGroups[i]->enemies->push(newEnemyGroupItem);
                 }
@@ -353,14 +353,13 @@ void stSlipspace::update(float deltaFrame)
                 // Check if shared enemies are already loaded
                 bool sharedEnemyLoaded = false;
                 int sharedResourceSize = 0;
-                EnemyGroup* enemyGroup = getEnemyGroup(enemyToSpawn->index);
+                EnemyGroup* enemyGroup = getEnemyGroup(enemyToSpawn->enemyId);
                 if (enemyGroup != NULL)
                 {
-                    for (int j = 0; j < enemyGroup->enemies->size(); j++)
+                    for (int j = 0; j < _enemyTypes.size(); j++)
                     {
-                        EnemyGroupItem* sharedEnemy = enemyGroup->enemies->get(j);
-                        EnemyType* enemyType = getEnemyTypeByIndex(sharedEnemy->enemyIndex);
-                        if (enemyType->loaded && !enemyType->loading)
+                        EnemyGroupItem* sharedEnemy = getEnemyGroupItem(enemyGroup, enemyToSpawn->enemyId);
+                        if (_enemyTypes[j]->loaded && !_enemyTypes[j]->loading && isEnemyInGroup(enemyGroup, _enemyTypes[j]->enemyId))
                         {
                             sharedEnemyLoaded = true;
                             sharedResourceSize = sharedEnemy->sharedResourceSize;
@@ -1900,13 +1899,13 @@ SlipspaceEnemy* stSlipspace::getSpawnedEnemy(int enemyCreateId)
     return enemy;
 }
 
-EnemyGroup* stSlipspace::getEnemyGroup(int enemyIndex)
+EnemyGroup* stSlipspace::getEnemyGroup(int enemyId)
 {
     for (int i = 0; i < _enemyGroups.size(); i++)
     {
         for (int j = 0; j < _enemyGroups[i]->enemies->size(); j++)
         {
-            if (_enemyGroups[i]->enemies->get(j)->enemyIndex == enemyIndex)
+            if (_enemyGroups[i]->enemies->get(j)->enemyId == enemyId)
             {
                 return _enemyGroups[i];
             }
@@ -1925,6 +1924,30 @@ EnemyType* stSlipspace::getEnemyTypeByIndex(int enemyIndex)
         }
     }
     return NULL;
+}
+
+EnemyGroupItem* stSlipspace::getEnemyGroupItem(EnemyGroup* enemyGroup, int enemyId)
+{
+    for (int i = 0; i < enemyGroup->enemies->size(); i++)
+    {
+        if (enemyGroup->enemies->get(i)->enemyId == enemyId)
+        {
+            return enemyGroup->enemies->get(i);
+        }
+    }
+    return NULL;
+}
+
+bool stSlipspace::isEnemyInGroup(EnemyGroup* enemyGroup, int enemyId)
+{
+    for (int i = 0; i < enemyGroup->enemies->size(); i++)
+    {
+        if (enemyGroup->enemies->get(i)->enemyId == enemyId)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 grTourObject* stSlipspace::getTourObject(int mdlIndex)
