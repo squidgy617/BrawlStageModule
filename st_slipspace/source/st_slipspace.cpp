@@ -47,6 +47,7 @@ Vector<SpawnerGroup*> _spawnerGroups; // List of spawner groups in stage
 Vector<EnemySpawner*> _spawners; // List of spawners in stage
 Vector<u32> _spawnQueue; // Holds queued spawns
 Vector<EnemyType*> _enemyTypes; // List of enemy types in stage
+Vector<EnemyGroup*> _enemyGroups; // List of enemy groups in stage
 Vector<SlipspaceEnemy*> _spawnedEnemyTypes; // List of currently spawned enemies in the stage
 GameRule _gameMode; // Selected game mode
 Vector<RespawnPoint*> _respawnPoints; // List of respawn points in stage
@@ -216,7 +217,7 @@ void stSlipspace::update(float deltaFrame)
             }
             // Initialize enemies
             int itemsIndex = ground->getNodeIndex(0, "Enemies");
-            int endIndex = ground->getNodeIndex(0, "Spawners");
+            int endIndex = ground->getNodeIndex(0, "EnemyGroups");
             int maxEnemyIndex = 0;
             for (int i = itemsIndex + 1; i < endIndex; i++)
             {
@@ -231,7 +232,6 @@ void stSlipspace::update(float deltaFrame)
                     newEnemyType->points = resNodeData->m_translation.m_x;
                     newEnemyType->size = resNodeData->m_translation.m_y;
                     newEnemyType->assetSize = resNodeData->m_translation.m_z;
-                    newEnemyType->extraAssetSize = resNodeData->m_rotation.m_y;
                     newEnemyType->frequency = resNodeData->m_rotation.m_z;
                     newEnemyType->blacklisted = resNodeData->m_rotation.m_x == 1;
                     newEnemyType->resourceMemory = 0;
@@ -246,6 +246,26 @@ void stSlipspace::update(float deltaFrame)
                     _enemyTypeCount++;
                 }
                 maxEnemyIndex++;
+            }
+            // Initialize enemy groups
+            int enemyGroups = ground->getNumNodesWithFormat("EnemyGroup%d");
+            for (int i = 0; i < enemyGroups; i++) {
+                u32 itemsIndex;
+                u32 endIndex;
+                ground->getNodeIndexWithFormat(&itemsIndex, 0, "EnemyGroup%d", i);
+                ground->getNodeIndexWithFormat(&endIndex, 0, "EnemyGroupEnd%d", i);
+                nw4r::g3d::ResNodeData* enemyGroupData = ground->m_sceneModels[0]->m_resMdl.GetResNode(int(itemsIndex)).ptr();
+                EnemyGroup* enemyGroup = new (Heaps::StageInstance) EnemyGroup();
+                enemyGroup->enemies = new (Heaps::StageInstance) Vector<EnemyGroupItem*>();
+                _enemyGroups.push(enemyGroup);
+                for (int j = itemsIndex + 1; j < endIndex; j++)
+                {
+                    nw4r::g3d::ResNodeData* resNodeData = ground->m_sceneModels[0]->m_resMdl.GetResNode(j).ptr();
+                    EnemyGroupItem* newEnemyGroupItem = new (Heaps::StageInstance) EnemyGroupItem();
+                    newEnemyGroupItem->enemyIndex = resNodeData->m_scale.m_x;
+                    newEnemyGroupItem->sharedResourceSize = resNodeData->m_translation.m_z;
+                    _enemyGroups[i]->enemies->push(newEnemyGroupItem);
+                }
             }
             // Initialize spawner motion paths
             for (int i = 0; i < _spawnerCount; i++)
@@ -330,20 +350,20 @@ void stSlipspace::update(float deltaFrame)
                 int enemyCreateId = enemyManager->getPreloadArchiveCreateIdFromKind((EnemyKind)enemyToSpawn->enemyId);
                 // Check if enemy archive is already loaded
                 bool enemyLoaded = enemyManager->isCompArchive(enemyCreateId);
-                // If Primid, check if base archive is already loaded
-                // TODO: Is there a better way to do this that doesn't require a hardcoded primid check? We could always load Primid archives from the PAC too, but might be wasteful...
-                // ...maybe add a way to specify, in the enemy bones, what enemies share resources with each other? Perhaps child bones of an enemy? Could move exclusive resource memory to these child bones...
-                // ...e.g. Primid has child bones for all other primid types, for each one it has a field of the resource size is if that enemy is already loaded?
-                // ...alternatively, instead of child bones in the enemies section, a separate section for enemy groups
-                emInfo* emInfo = emInfo::getInstance();
-                bool primidLoaded = false;
-                if (emInfo->isPrimKind((EnemyKind)enemyToSpawn->enemyId))
+                // Check if shared enemies are already loaded
+                bool sharedEnemyLoaded = false;
+                int sharedResourceSize = 0;
+                EnemyGroup* enemyGroup = getEnemyGroup(enemyToSpawn->index);
+                if (enemyGroup != NULL)
                 {
-                    for (int j = 0; j < _enemyTypes.size(); j++)
+                    for (int j = 0; j < enemyGroup->enemies->size(); j++)
                     {
-                        if (_enemyTypes[j]->loaded && !_enemyTypes[j]->loading && emInfo->isPrimKind((EnemyKind)_enemyTypes[j]->enemyId))
+                        EnemyGroupItem* sharedEnemy = enemyGroup->enemies->get(j);
+                        EnemyType* enemyType = getEnemyTypeByIndex(sharedEnemy->enemyIndex);
+                        if (enemyType->loaded && !enemyType->loading)
                         {
-                            primidLoaded = true;
+                            sharedEnemyLoaded = true;
+                            sharedResourceSize = sharedEnemy->sharedResourceSize;
                             break;
                         }
                     }
@@ -358,7 +378,7 @@ void stSlipspace::update(float deltaFrame)
                 if (!enemyLoaded && !enemyToSpawn->loading)
                 {
                     // Only load enemy if there is space to do so
-                    if ((primidLoaded && enemyToSpawn->extraAssetSize < availableStageMemory) || enemyToSpawn->assetSize < availableStageMemory)
+                    if ((sharedEnemyLoaded && sharedResourceSize < availableStageMemory) || enemyToSpawn->assetSize < availableStageMemory)
                     {
                         // OSReport("Loading enemy %d. Available memory: %d \n", enemyToSpawn->enemyId, availableStageMemory);
                         gfArchive* brres;
@@ -878,6 +898,24 @@ void stSlipspace::clearHeap() {
         }
     }
     _enemyTypes.clear();
+
+    for (int i = 0; i < _enemyGroups.size(); i++)
+    {
+        if (_enemyGroups[i] != NULL)
+        {
+            if (_enemyGroups[i]->enemies != NULL)
+            {
+                for (int j = 0; j < _enemyGroups[i]->enemies->size(); j++)
+                {
+                    delete _enemyGroups[i]->enemies->get(j);
+                }
+                delete _enemyGroups[i]->enemies;
+                _enemyGroups[i]->enemies = NULL;
+            }
+            delete _enemyGroups[i];
+            _enemyGroups[i] = NULL;
+        }
+    }
 
     for (int i = 0; i < _spawners.size(); i++)
     {
@@ -1860,6 +1898,33 @@ SlipspaceEnemy* stSlipspace::getSpawnedEnemy(int enemyCreateId)
         }
     }
     return enemy;
+}
+
+EnemyGroup* stSlipspace::getEnemyGroup(int enemyIndex)
+{
+    for (int i = 0; i < _enemyGroups.size(); i++)
+    {
+        for (int j = 0; j < _enemyGroups[i]->enemies->size(); j++)
+        {
+            if (_enemyGroups[i]->enemies->get(j)->enemyIndex == enemyIndex)
+            {
+                return _enemyGroups[i];
+            }
+        }
+    }
+    return NULL;
+}
+
+EnemyType* stSlipspace::getEnemyTypeByIndex(int enemyIndex)
+{
+    for (int i = 0; i < _enemyTypes.size(); i++)
+    {
+        if (_enemyTypes[i]->index == enemyIndex)
+        {
+            return _enemyTypes[i];
+        }
+    }
+    return NULL;
 }
 
 grTourObject* stSlipspace::getTourObject(int mdlIndex)

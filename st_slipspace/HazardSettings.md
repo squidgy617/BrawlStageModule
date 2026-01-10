@@ -325,8 +325,6 @@ sora_enemy.rel file index = 301
 
 **Rotation X** - Blacklisted flag - if set to 1, enemy will never spawn except at spawners where they are explicitly whitelisted
 
-**Rotation Y** - Exclusive resource memory. This is the memory used if the enemy is loaded while enemies that share assets with them are already loaded, like Primids for example
-
 **Rotation Z** - Frequency of enemy spawns, 1 - 100, 0 means enemy will never spawn
 
 **Translation X** - Points
@@ -334,6 +332,18 @@ sora_enemy.rel file index = 301
 **Translation Y** - Instance Memory
 
 **Translation Z** - Resource Memory
+
+## Enemy Groups
+
+For enemies that share resources/BRRES files, you will want to create enemy groups. These are children of the "EnemyGroups" bone and are always named "EnemyGroup#", where # starts with 0 and is incremented for each group you create.
+
+Child bones of the enemy group represent individual enemies that are grouped together. The last child should always be named "EnemyGroupEnd#", where # matches the # of the parent bone.
+
+When enemies are grouped together, their memory footprint is reduced when any other enemy in the group is already loaded, allowing enemies to share resources and load in together when they otherwise might not be able to. For example, Primids share a main BRRES file, so you would create a group for them.
+
+**Scale X** - Index of enemy in "Enemy" bone, zero-indexed. Whatever index is specified here will be allowed to spawn at the spawner. For example, the first entry in your enemy list would have an index of 0.
+
+**Translation Z** - Resource memory used by enemy when other enemies in the group are already loaded
 
 ## Spawner Groups
 

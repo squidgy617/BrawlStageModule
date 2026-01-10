@@ -64,12 +64,22 @@ class EnemyType
         int points;
         int size;
         int assetSize;
-        int extraAssetSize;
         bool loading;
         bool loaded;
         int resourceMemory;
         int frequency;
         bool blacklisted;
+};
+
+struct EnemyGroupItem
+{
+    int enemyIndex;
+    int sharedResourceSize;
+};
+
+struct EnemyGroup
+{
+    Vector<EnemyGroupItem*>* enemies;
 };
 
 struct EnemyDrops
@@ -249,6 +259,8 @@ public:
     bool canSpawnEnemyInGroup(int groupIndex);
     int percentOf(int value, int percent);
     int getRandomEnemy();
+    EnemyGroup* getEnemyGroup(int enemyIndex);
+    EnemyType* getEnemyTypeByIndex(int enemyIndex);
     SlipspaceEnemy* getSpawnedEnemy(int enemyCreateId);
     virtual stDestroyBossParamCommon getDestroyBossParamCommon(u32, int enemyCreateId = -1, int enemyMessageKind = -1);
 
