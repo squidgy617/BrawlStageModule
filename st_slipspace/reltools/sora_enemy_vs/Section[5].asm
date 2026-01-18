@@ -7003,7 +7003,7 @@ loc_6EE8:
 #include "./Enemies/data/emDekakuribo.asm"
 .include "./Enemies/data/emBucyulus.asm"
 #include "./Enemies/data/emBotron.asm"
-#include "./Enemies/data/emGyraan.asm"
+.include "./Enemies/data/emGyraan.asm"
 #include "./Enemies/data/emMite.asm"
 .include "./Enemies/data/emPrim.asm"
 #include "./Enemies/data/emCataguard.asm"

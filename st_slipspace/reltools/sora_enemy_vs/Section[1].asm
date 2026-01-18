@@ -47600,7 +47600,7 @@ wnemSimple_Data____ct1:
 #include "./Enemies/asm/emDekakuribo.asm"
 .include "./Enemies/asm/emBucyulus.asm"
 #include "./Enemies/asm/emBotron.asm"
-#include "./Enemies/asm/emGyraan.asm"
+.include "./Enemies/asm/emGyraan.asm"
 #include "./Enemies/asm/emMite.asm"
 .include "./Enemies/asm/emPrim.asm"
 #include "./Enemies/asm/emCataguard.asm"

@@ -1129,7 +1129,7 @@ loc_enemyOverrideSettings:
 #include "./Enemies/rodata/emDekakuribo.asm"
 .include "./Enemies/rodata/emBucyulus.asm"
 #include "./Enemies/rodata/emBotron.asm"
-#include "./Enemies/rodata/emGyraan.asm"
+.include "./Enemies/rodata/emGyraan.asm"
 #include "./Enemies/rodata/emMite.asm"
 .include "./Enemies/rodata/emPrim.asm"
 #include "./Enemies/rodata/emCataguard.asm"
