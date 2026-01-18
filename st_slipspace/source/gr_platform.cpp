@@ -20,7 +20,10 @@ void grPlatform::startup(gfArchive* archive, u32 unk1, gfSceneRoot::LayerType la
 
     grGimmickMotionPathInfo motionPathInfo(archive, &this->motionPathData, this->isRotateMotionPath, true);
     stTriggerData triggerData(0,true,stTriggerData::Keep_None);
-    this->createAttachMotionPath(&motionPathInfo, &triggerData, "MovePlatformNode");
+    if (tourObject == NULL)
+    {
+        this->createAttachMotionPath(&motionPathInfo, &triggerData, "MovePlatformNode");
+    }
 
     int endNodeIndex = this->getNodeIndex(0, "EndNode");
     if (endNodeIndex > 0) {
