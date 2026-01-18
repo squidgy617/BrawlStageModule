@@ -25,3 +25,30 @@ void grTourObject::update(float deltaFrame)
     this->setEnableCollisionStatus(true);
 }
 
+int grTourObject::getNodeIndexStartingWith(const char* nodePrefix) {
+    u32 numNodes = this->m_sceneModels[0]->m_resMdl.GetResNodeNumEntries();
+    for (int i = 0; i < numNodes; i++)
+    {
+        nw4r::g3d::ResNode resNode = this->m_sceneModels[0]->m_resMdl.GetResNode(i);
+        char* nodeName = this->getNodeName(resNode);
+        nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
+        if (strncmp(nodeName, nodePrefix, strlen(nodePrefix)) == 0)
+        {
+            return resNodeData->m_nodeIndex;
+        }
+    }
+    
+    return 0;
+}
+
+char* grTourObject::getNodeName(nw4r::g3d::ResNode resNode)
+{
+    nw4r::g3d::ResNodeData* data = resNode.ptr();
+
+    if (!data || data->m_nodeNameStrOffset == 0)
+    {
+        return nullptr;
+    }
+    char* base = reinterpret_cast<char*>(data);
+    return base + data->m_nodeNameStrOffset;
+}

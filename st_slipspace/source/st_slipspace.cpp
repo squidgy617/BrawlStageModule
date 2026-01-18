@@ -1046,6 +1046,67 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
         u32 tourStatesIndex = ground->getNodeIndex(0, "TourStates");
         u32 endIndex = ground->getNodeIndex(0, "End");
 
+        grArea* ground = static_cast<grArea*>(this->getGround(0));
+        for (int i = tourObjectIndex + 1; i < tourStatesIndex; i++)
+        {
+            nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
+            char* nodeName = ground->getNodeName(resNode);
+            nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
+            grTourObject* tourObject = createObjTourObject(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y);
+            _tourObjects.push(tourObject);
+        }
+        
+        bool inStateObjects = false;
+        bool inDestinations = false;
+        for (int i = tourStatesIndex + 1; i < endIndex; i++)
+        {
+            nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
+            char* nodeName = ground->getNodeName(resNode);
+            nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
+
+            // Check if we are looking at state objects
+            if (strncmp(nodeName, "StateObjectsEnd", strlen("StateObjectsEnd")) == 0)
+            {
+                inStateObjects = false;
+            }
+            else if (strncmp(nodeName, "StateObjects", strlen("StateObjects")) == 0)
+            {
+                inStateObjects = true;
+            }
+            // Check if we are looking at destinations
+            else if (strncmp(nodeName, "DestinationsEnd", strlen("DestinationsEnd")) == 0)
+            {
+                inDestinations = false;
+            }
+            else if (strncmp(nodeName, "Destinations", strlen("Destinations")) == 0)
+            {
+                inDestinations = true;
+            }
+            // If we aren't in state objects or destinations, it's a state
+            else if (!inStateObjects && !inDestinations)
+            {
+                TourState* tourState = new (Heaps::StageInstance) TourState();
+                tourState->frames = resNodeData->m_rotation.m_x;
+                tourState->stateObjects = new Vector<StateObject*>();
+                tourState->destinations = new Vector<int>();
+                _tourStates.push(tourState);
+            }
+            // Add state objects
+            else if (inStateObjects)
+            {
+                StateObject* stateObject = new (Heaps::StageInstance) StateObject();
+                stateObject->objectIndex = resNodeData->m_rotation.m_x;
+                stateObject->animationIndex = resNodeData->m_rotation.m_y;
+                _tourStates[_tourStates.size() - 1]->stateObjects->push(stateObject);
+            }
+            // Add destinations
+            else if (inDestinations)
+            {
+                int destIndex = resNodeData->m_rotation.m_x;
+                _tourStates[_tourStates.size() - 1]->destinations->push(destIndex);
+            }
+        }
+
         // TODO: Optional targets (can select max targets in STDT)
         for (int i = targetsIndex + 1; i < disksIndex; i++) {
             this->targetsLeft++;
@@ -1168,82 +1229,6 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
                                     resNodeDataNE->m_translation.m_z, resNodeDataNE->m_rotation.m_y);
         }
 
-        grArea* ground = static_cast<grArea*>(this->getGround(0));
-        bool inBoundObjects = false;
-        for (int i = tourObjectIndex + 1; i < tourStatesIndex; i++)
-        {
-            nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
-            char* nodeName = ground->getNodeName(resNode);
-            nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
-            if (strncmp(nodeName, "BoundObjectsEnd", strlen("BoundObjectsEnd")) == 0)
-            {
-                inBoundObjects = false;
-            }
-            else if (strncmp(nodeName, "BoundObjects", strlen("BoundObjects")) == 0)
-            {
-                inBoundObjects = true;
-            }
-            else if (!inBoundObjects)
-            {
-                grTourObject* tourObject = createObjTourObject(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y);
-                _tourObjects.push(tourObject);
-            }
-            else if (inBoundObjects)
-            {
-                createObjBoundObject(resNodeData->m_rotation.m_x, resNodeData->m_rotation.m_y, resNodeData->m_rotation.m_z, _tourObjects[_tourObjects.size() - 1]);
-            }
-        }
-        
-        bool inStateObjects = false;
-        bool inDestinations = false;
-        for (int i = tourStatesIndex + 1; i < endIndex; i++)
-        {
-            nw4r::g3d::ResNode resNode = ground->m_sceneModels[0]->m_resMdl.GetResNode(i);
-            char* nodeName = ground->getNodeName(resNode);
-            nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
-
-            // Check if we are looking at state objects
-            if (strncmp(nodeName, "StateObjectsEnd", strlen("StateObjectsEnd")) == 0)
-            {
-                inStateObjects = false;
-            }
-            else if (strncmp(nodeName, "StateObjects", strlen("StateObjects")) == 0)
-            {
-                inStateObjects = true;
-            }
-            // Check if we are looking at destinations
-            else if (strncmp(nodeName, "DestinationsEnd", strlen("DestinationsEnd")) == 0)
-            {
-                inDestinations = false;
-            }
-            else if (strncmp(nodeName, "Destinations", strlen("Destinations")) == 0)
-            {
-                inDestinations = true;
-            }
-            // If we aren't in state objects or destinations, it's a state
-            else if (!inStateObjects && !inDestinations)
-            {
-                TourState* tourState = new (Heaps::StageInstance) TourState();
-                tourState->frames = resNodeData->m_rotation.m_x;
-                tourState->stateObjects = new Vector<StateObject*>();
-                tourState->destinations = new Vector<int>();
-                _tourStates.push(tourState);
-            }
-            // Add state objects
-            else if (inStateObjects)
-            {
-                StateObject* stateObject = new (Heaps::StageInstance) StateObject();
-                stateObject->objectIndex = resNodeData->m_rotation.m_x;
-                stateObject->animationIndex = resNodeData->m_rotation.m_y;
-                _tourStates[_tourStates.size() - 1]->stateObjects->push(stateObject);
-            }
-            // Add destinations
-            else if (inDestinations)
-            {
-                int destIndex = resNodeData->m_rotation.m_x;
-                _tourStates[_tourStates.size() - 1]->destinations->push(destIndex);
-            }
-        }
         _tour.currentFrame = 0;
         _tour.currentState = 0;
         isTourInitialized = true;
@@ -1290,7 +1275,15 @@ void stSlipspace::createObjPlatform(int mdlIndex, Vec2f* pos, float rot, float s
     if(platform != NULL){
         addGround(platform);
         platform->setStageData(m_stageData);
-        platform->setMotionPathData(motionPathIndex, rot >= 360);
+        grTourObject* tourObject = getTourObject(motionPathIndex);
+        if (tourObject != NULL)
+        {
+            platform->setTourObject(tourObject);
+        }
+        else
+        {
+            platform->setMotionPathData(motionPathIndex, rot >= 360);
+        }
         platform->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
         platform->initializeEntity();
         platform->startEntity();
@@ -1325,20 +1318,6 @@ grTourObject* stSlipspace::createObjTourObject(int mdlIndex, int collIndex)
         }
     }
     return tourobject;
-}
-
-void stSlipspace::createObjBoundObject(int mdlIndex, int boneIndex, int targetNodeIndex, grTourObject* tourObject)
-{
-    grBoundObject* boundObject = grBoundObject::create(mdlIndex, boneIndex, targetNodeIndex, tourObject, "", "grBoundObject");
-    if (boundObject != NULL)
-    {
-        addGround(boundObject);
-        boundObject->setStageData(m_stageData);
-        boundObject->startup(this->m_fileData,0,gfSceneRoot::Layer_Ground);
-        boundObject->initializeEntity();
-        boundObject->startEntity();
-        boundObject->setMotion(0);
-    }
 }
 
 void stSlipspace::createObjBreak(int mdlIndex, Vec2f* pos, float rot, int motionPathIndex, int collIndex, float maxDamage, float respawnTime) {

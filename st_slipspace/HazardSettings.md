@@ -51,7 +51,7 @@ Nodes must be in the first mdl0 of Model Data 0 with the following order and nam
 
 **Rotation Z** - Rotation Z (set to 360 to have rotation be dictated by motion path)
 
-**Translation Z** - Motion Path ModelData Index (overrides position, needs to be >= 10) (node to follow must be called "MovePlatformNode", this cannot be the root node)
+**Translation Z** - Motion Path ModelData Index (overrides position, needs to be >= 10) (node to follow must be called "MovePlatformNode", this cannot be the root node). If this is a tour object, node should be named starting with "MoveNode" and the node to follow must have the same name.
 
 ### Break (requires two sets of anims: On, Off)
 
@@ -424,20 +424,6 @@ Tour objects are models that might move in touring stages.
 **Rotation X** - Index of the model data used for the object
 
 **Rotation Y** - Index of the collision data to use for the object. If set to 0, will not be used. You must create a corresponding collision node and bind it to a bone on the tour object for this to work.
-
-## Bound Objects
-
-You can bind other models to a tour bone so they will be moved to the position of the tour bone in-game. This allows you to have objects with their own, separate animations that are still part of the tour, like the rotating Shine Sprite in Delfino Plaza, which rotates on its own while moving with the stage.
-
-Bound objects are created by adding a child bone to your tour object with a name starting with `BoundObjects`. Each child bone of the `BoundObjects` bone represents a single bound object. At the end of the list, there should always be a bone named starting with `BoundObjectsEnd`.
-
-Note that bones shouldn't have identical names, so you should add a suffix after "BoundObjects" or "BoundObjectsEnd", such as adding the parent bone name to the end.
-
-**Rotation X** - Index of the model data used for the object
-
-**Rotation Y** - Index of the bound object bone to attach to the tour object.
-
-**Rotation Z** - Index of the tour object bone you would like to attach your bound object to.
 
 ## Tour States
 

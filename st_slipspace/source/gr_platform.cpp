@@ -54,6 +54,14 @@ void grPlatform::startup(gfArchive* archive, u32 unk1, gfSceneRoot::LayerType la
         }
     }
 
+    // Set up tour object
+    if (tourObject != NULL)
+    {
+        nw4r::g3d::ResNode resNode = getNodeStartingWith("MoveNode");
+        this->tourNodeIndex = tourObject->getNodeIndex(0, this->getNodeName(resNode));
+        this->m_calcWorldCallBack.m_nodeCallbackDatas[0].m_nodeIndex = resNode->m_nodeIndex;
+    }
+
     this->m_category = grMadein::Category_Enemy;
 }
 
@@ -113,6 +121,7 @@ void grPlatform::update(float deltaFrame)
     }
 
     this->updateEffect(deltaFrame);
+    this->updateCallback(deltaFrame);
 }
 
 void grPlatform::updateEffect(float deltaFrame) {
@@ -250,3 +259,66 @@ void grPlatform::initializeEntity() {
     }
 }
 
+void grPlatform::setTourObject(grTourObject* tourObject)
+{
+    // Update callback for tour objects
+    // TODO: Do we even need to do this? do the grMadein callback settings already enable everything we want?
+    if (&m_calcWorldCallBack != NULL)
+    {
+        // TODO: Figure out what flags we should be using
+        m_calcWorldCallBack.m_numNodeCallbackData = 1;
+        m_calcWorldCallBack.m_nodeCallbackDatas[0].m_flags = 0;
+        m_calcWorldCallBack.m_nodeCallbackDatas[0].m_flag4 = true;
+        this->setupMelee();
+    }
+    this->tourObject = tourObject;
+}
+
+void grPlatform::updateCallback(float deltaFrame)
+{
+    if (this->m_sceneModels[0] != NULL)
+    {
+        if (this->m_sceneModels[0]->m_calcWorldCallBack == NULL)
+        {
+            this->m_calcWorldCallBack.m_index = 0;
+            this->m_calcWorldCallBack.m_nodeCallbackDatas[0].m_nodeIndex = this->m_nodeIndex;
+            this->m_sceneModels[0]->m_calcWorldCallBack = &this->m_calcWorldCallBack;
+            this->m_sceneModels[0]->EnableScnMdlCallbackTiming(1);
+            this->m_sceneModels[0]->m_nodeIndex = this->m_calcWorldCallBack.m_nodeCallbackDatas[0].m_nodeIndex;
+        }
+    }
+    if (this->tourObject != NULL)
+    {
+        Vec3f pos;
+        this->tourObject->getNodePosition(&pos, 0, this->tourNodeIndex);
+        this->m_calcWorldCallBack.m_nodeCallbackDatas[0].m_offsetPos = pos;
+    }
+}
+
+nw4r::g3d::ResNode grPlatform::getNodeStartingWith(char* nodePrefix) {
+    u32 numNodes = this->m_sceneModels[0]->m_resMdl.GetResNodeNumEntries();
+    for (int i = 0; i < numNodes; i++)
+    {
+        nw4r::g3d::ResNode resNode = this->m_sceneModels[0]->m_resMdl.GetResNode(i);
+        char* nodeName = this->getNodeName(resNode);
+        nw4r::g3d::ResNodeData* resNodeData = resNode.ptr();
+        if (strncmp(nodeName, nodePrefix, strlen(nodePrefix)) == 0)
+        {
+            return resNode;
+        }
+    }
+    
+    return this->m_sceneModels[0]->m_resMdl.GetResNode(0);
+}
+
+char* grPlatform::getNodeName(nw4r::g3d::ResNode resNode)
+{
+    nw4r::g3d::ResNodeData* data = resNode.ptr();
+
+    if (!data || data->m_nodeNameStrOffset == 0)
+    {
+        return nullptr;
+    }
+    char* base = reinterpret_cast<char*>(data);
+    return base + data->m_nodeNameStrOffset;
+}
