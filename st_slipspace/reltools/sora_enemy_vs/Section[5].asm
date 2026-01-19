@@ -6990,7 +6990,7 @@ loc_6EE8:
 #         .4byte 0x00000000
 #         .4byte 0x00000000
 
-#include "./Enemies/data/emBoobas.asm"
+.include "./Enemies/data/emBoobas.asm"
 .include "./Enemies/data/emSiralamos.asm"
 #include "./Enemies/data/emRoada.asm"
 #include "./Enemies/data/emKiller.asm"

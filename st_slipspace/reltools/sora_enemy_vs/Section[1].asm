@@ -47587,7 +47587,7 @@ wnemSimple_Data____ct1:
 #     /* 00048384: */    addi r1,r1,0x70
 #     /* 00048388: */    blr
     
-#include "./Enemies/asm/emBoobas.asm"
+.include "./Enemies/asm/emBoobas.asm"
 .include "./Enemies/asm/emSiralamos.asm"
 #include "./Enemies/asm/emRoada.asm"
 #include "./Enemies/asm/emKiller.asm"
