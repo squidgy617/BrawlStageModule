@@ -47594,7 +47594,7 @@ wnemSimple_Data____ct1:
 .include "./Enemies/asm/emPopperam.asm"
 .include "./Enemies/asm/emPacci.asm"
 #include "./Enemies/asm/emJyakeel.asm"
-#include "./Enemies/asm/emAroaros.asm"
+.include "./Enemies/asm/emAroaros.asm"
 #include "./Enemies/asm/emCymal.asm"
 .include "./Enemies/asm/emDeathpod.asm"
 #include "./Enemies/asm/emDekakuribo.asm"

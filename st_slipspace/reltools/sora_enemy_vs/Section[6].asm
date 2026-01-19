@@ -278,7 +278,7 @@ loc_504:
 .include "./Enemies/bss/emPopperam.asm"
 .include "./Enemies/bss/emPacci.asm"
 #include "./Enemies/bss/emJyakeel.asm"
-#include "./Enemies/bss/emAroaros.asm"
+.include "./Enemies/bss/emAroaros.asm"
 #include "./Enemies/bss/emCymal.asm"
 .include "./Enemies/bss/emDeathpod.asm"
 #include "./Enemies/bss/emDekakuribo.asm"
