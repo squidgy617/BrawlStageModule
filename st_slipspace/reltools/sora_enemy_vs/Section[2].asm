@@ -34,7 +34,7 @@ loc_0:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emcataguardparamaccessercpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emkuriboparamaccessercpp____sinit_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emflowsparamaccessercpp____sinit_")]
-        #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emtautauparamaccessercpp____sinit_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emtautauparamaccessercpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emshellyparamaccessercpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emteckinparamaccessercpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emsparparamaccessercpp____sinit_")]

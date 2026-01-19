@@ -290,7 +290,7 @@ loc_504:
 .include "./Enemies/bss/emCataguard.asm"
 #include "./Enemies/bss/emKuribo.asm"
 .include "./Enemies/bss/emFlows.asm"
-#include "./Enemies/bss/emTautau.asm"
+.include "./Enemies/bss/emTautau.asm"
 #include "./Enemies/bss/emShelly.asm"
 #include "./Enemies/bss/emTeckin.asm"
 #include "./Enemies/bss/emSpar.asm"
