@@ -47603,7 +47603,7 @@ wnemSimple_Data____ct1:
 .include "./Enemies/asm/emGyraan.asm"
 #include "./Enemies/asm/emMite.asm"
 .include "./Enemies/asm/emPrim.asm"
-#include "./Enemies/asm/emCataguard.asm"
+.include "./Enemies/asm/emCataguard.asm"
 #include "./Enemies/asm/emKuribo.asm"
 .include "./Enemies/asm/emFlows.asm"
 #include "./Enemies/asm/emTautau.asm"

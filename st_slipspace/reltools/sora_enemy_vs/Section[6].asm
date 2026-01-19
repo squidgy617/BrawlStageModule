@@ -287,7 +287,7 @@ loc_504:
 .include "./Enemies/bss/emGyraan.asm"
 #include "./Enemies/bss/emMite.asm"
 .include "./Enemies/bss/emPrim.asm"
-#include "./Enemies/bss/emCataguard.asm"
+.include "./Enemies/bss/emCataguard.asm"
 #include "./Enemies/bss/emKuribo.asm"
 .include "./Enemies/bss/emFlows.asm"
 #include "./Enemies/bss/emTautau.asm"
