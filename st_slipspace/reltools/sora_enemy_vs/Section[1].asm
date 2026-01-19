@@ -47607,7 +47607,7 @@ wnemSimple_Data____ct1:
 #include "./Enemies/asm/emKuribo.asm"
 .include "./Enemies/asm/emFlows.asm"
 .include "./Enemies/asm/emTautau.asm"
-#include "./Enemies/asm/emShelly.asm"
+.include "./Enemies/asm/emShelly.asm"
 #include "./Enemies/asm/emTeckin.asm"
 #include "./Enemies/asm/emSpar.asm"
 #include "./Enemies/asm/emHammerbros.asm"

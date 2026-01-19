@@ -7010,7 +7010,7 @@ loc_6EE8:
 #include "./Enemies/data/emKuribo.asm"
 .include "./Enemies/data/emFlows.asm"
 .include "./Enemies/data/emTautau.asm"
-#include "./Enemies/data/emShelly.asm"
+.include "./Enemies/data/emShelly.asm"
 #include "./Enemies/data/emTeckin.asm"
 #include "./Enemies/data/emSpar.asm"
 #include "./Enemies/data/emHammerbros.asm"
