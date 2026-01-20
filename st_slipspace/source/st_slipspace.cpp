@@ -876,7 +876,7 @@ void stSlipspace::clearHeap() {
             _spawnerGroups[i] = NULL;
         }
     }
-    _spawnerGroups.clear();
+    _spawnerGroups.~Vector<SpawnerGroup*>();
 
     for (int i = 0; i < _spawnedEnemyTypes.size(); i++)
     {
@@ -886,7 +886,7 @@ void stSlipspace::clearHeap() {
             _spawnedEnemyTypes[i] = NULL;
         }
     }
-    _spawnedEnemyTypes.clear();
+    _spawnedEnemyTypes.~Vector<SlipspaceEnemy*>();
 
     for (int i = 0; i < _enemyTypes.size(); i++)
     {
@@ -896,7 +896,7 @@ void stSlipspace::clearHeap() {
             _enemyTypes[i] = NULL;
         }
     }
-    _enemyTypes.clear();
+    _enemyTypes.~Vector<EnemyType*>();
 
     for (int i = 0; i < _enemyGroups.size(); i++)
     {
@@ -915,6 +915,7 @@ void stSlipspace::clearHeap() {
             _enemyGroups[i] = NULL;
         }
     }
+    _enemyGroups.~Vector<EnemyGroup*>();
 
     for (int i = 0; i < _spawners.size(); i++)
     {
@@ -929,7 +930,7 @@ void stSlipspace::clearHeap() {
             _spawners[i] = NULL;
         }
     }
-    _spawners.clear();
+    _spawners.~Vector<EnemySpawner*>();
 
     for (int i = 0; i < _respawnPoints.size(); i++)
     {
@@ -939,7 +940,7 @@ void stSlipspace::clearHeap() {
             _respawnPoints[i] = NULL;
         }
     }
-    _respawnPoints.clear();
+    _respawnPoints.~Vector<RespawnPoint*>();
 
     for (int i = 0; i < _tourStates.size(); i++)
     {
@@ -963,7 +964,7 @@ void stSlipspace::clearHeap() {
             _tourStates[i] = NULL;
         }
     }
-    _tourStates.clear();
+    _tourStates.~Vector<TourState*>();
 
     for (int i = 0; i < _tourObjects.size(); i++)
     {
@@ -973,7 +974,9 @@ void stSlipspace::clearHeap() {
             _tourObjects[i] = NULL;
         }
     }
-    _tourObjects.clear();
+    _tourObjects.~Vector<grTourObject*>();
+
+    _spawnQueue.~Vector<u32>();
 
     if (g_stEnemyIdManager != NULL)
     {
