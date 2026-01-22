@@ -439,66 +439,72 @@ void stSlipspace::update(float deltaFrame)
         // Iterate through spawners and spawn enemies
         for (int i = 0; i < availableSpawnerCount && _enemyCount < stageData->maxSpawns && _spawnQueue.size() > 0; i++)
         {
-            EnemyType* enemyToSpawn = _enemyTypes[_spawnQueue[0]];
-            int si = randomizedSpawnerIndexes[i];
-            emManager *enemyManager = emManager::getInstance();
-            // Only spawn enemies from available spawners and if enemy assets are loaded
-            int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
-            // Check if enemy is in whitelist
-            bool whitelisted = _spawners[si]->listType != ExclusiveList && !enemyToSpawn->blacklisted;
-            for (int j = 0; j < _spawners[si]->listSize; j++)
+            // Iterate through spawn queue to attempt to spawn each enemy at this spawn point
+            for (int j = 0; j < _spawnQueue.size(); j++)
             {
-                if (_spawners[si]->listedEnemies->get(j))
+                EnemyType* enemyToSpawn = _enemyTypes[_spawnQueue[j]];
+                int si = randomizedSpawnerIndexes[i];
+                emManager *enemyManager = emManager::getInstance();
+                // Only spawn enemies from available spawners and if enemy assets are loaded
+                int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
+                // Check if enemy is in whitelist
+                bool whitelisted = _spawners[si]->listType != ExclusiveList && !enemyToSpawn->blacklisted;
+                for (int k = 0; k < _spawners[si]->listSize; k++)
                 {
-                    whitelisted = true;
-                    break;
-                }
-            }
-            // Check if enemy is in blacklist
-            bool blacklisted = false;
-            if (_spawners[si]->listType == Blacklist)
-            {
-                for (int j = 0; j < _spawners[si]->listSize; j++)
-                {
-                    if (_spawners[si]->listedEnemies->get(j) == enemyToSpawn->index)
+                    if (_spawners[si]->listedEnemies->get(k))
                     {
-                        blacklisted = true;
+                        whitelisted = true;
                         break;
                     }
                 }
-            }
-            if (enemyToSpawn->loaded && _spawners[si]->timer <= 0 && enemyToSpawn->size < availableMemory && whitelisted && !blacklisted)
-            {
-                // Find enemy list entry
-                // Spawn enemy
-                this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->facingDirection, _spawners[si]->groupIndex, _spawners[si]);
-                // Pop from queue
-                for (int j = 0; j < _spawnQueue.size() - 1; j++)
+                // Check if enemy is in blacklist
+                bool blacklisted = false;
+                if (_spawners[si]->listType == Blacklist)
                 {
-                    _spawnQueue[j] = _spawnQueue[j + 1];
+                    for (int k = 0; k < _spawners[si]->listSize; k++)
+                    {
+                        if (_spawners[si]->listedEnemies->get(k) == enemyToSpawn->index)
+                        {
+                            blacklisted = true;
+                            break;
+                        }
+                    }
                 }
-                _spawnQueue.pop();
-                // Reset timer
-                if (_spawners[si]->respawnTimerLength > stageData->spawnTimer)
+                if (enemyToSpawn->loaded && _spawners[si]->timer <= 0 && enemyToSpawn->size < availableMemory && whitelisted && !blacklisted)
                 {
-                    _spawners[si]->timer = _spawners[si]->respawnTimerLength;
-                }
-                else
-                {
-                    _spawners[si]->timer = stageData->spawnTimer;
-                }
-                // Increment group spawn count if there's a limit
-                SpawnerGroup* spawnGroup = _spawnerGroups[_spawners[si]->groupIndex];
-                if (spawnGroup->maxTotalSpawns > 0)
-                {
-                    spawnGroup->totalSpawns++;
-                }
-                // If group spawn count limit is reached, set timer and reset count
-                if (spawnGroup->maxTotalSpawns > 0 && 
-                    spawnGroup->totalSpawns >= spawnGroup->maxTotalSpawns)
-                {
-                    spawnGroup->timer = spawnGroup->timerLength;
-                    spawnGroup->totalSpawns = 0;
+                    // Find enemy list entry
+                    // Spawn enemy
+                    this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->facingDirection, _spawners[si]->groupIndex, _spawners[si]);
+                    // Pop from current position in queue
+                    for (int k = j; k < _spawnQueue.size() - 1; k++)
+                    {
+                        _spawnQueue[k] = _spawnQueue[k + 1];
+                    }
+                    _spawnQueue.pop();
+                    // Reset timer
+                    if (_spawners[si]->respawnTimerLength > stageData->spawnTimer)
+                    {
+                        _spawners[si]->timer = _spawners[si]->respawnTimerLength;
+                    }
+                    else
+                    {
+                        _spawners[si]->timer = stageData->spawnTimer;
+                    }
+                    // Increment group spawn count if there's a limit
+                    SpawnerGroup* spawnGroup = _spawnerGroups[_spawners[si]->groupIndex];
+                    if (spawnGroup->maxTotalSpawns > 0)
+                    {
+                        spawnGroup->totalSpawns++;
+                    }
+                    // If group spawn count limit is reached, set timer and reset count
+                    if (spawnGroup->maxTotalSpawns > 0 && 
+                        spawnGroup->totalSpawns >= spawnGroup->maxTotalSpawns)
+                    {
+                        spawnGroup->timer = spawnGroup->timerLength;
+                        spawnGroup->totalSpawns = 0;
+                    }
+                    // If enemy spawned, spawner was used successfully, so break to go to next spawner
+                    break;
                 }
             }
         }
