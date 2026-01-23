@@ -451,7 +451,7 @@ void stSlipspace::update(float deltaFrame)
                 bool whitelisted = _spawners[si]->listType != ExclusiveList && !enemyToSpawn->blacklisted;
                 for (int k = 0; k < _spawners[si]->listSize; k++)
                 {
-                    if (_spawners[si]->listedEnemies->get(k))
+                    if (_spawners[si]->listedEnemies->get(k) == enemyToSpawn->index)
                     {
                         whitelisted = true;
                         break;
@@ -524,7 +524,7 @@ void stSlipspace::update(float deltaFrame)
             }
         }
         // OSReport("OverlayStage: %d \n", gfHeapManager::getMaxFreeSize(Heaps::OverlayStage));
-        // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue[0]].enemyId, _enemyTypes[_spawnQueue[1]].enemyId, _enemyTypes[_spawnQueue[2]].enemyId, _enemyTypes[_spawnQueue[3]].enemyId, _enemyTypes[_spawnQueue[4]].enemyId);
+        // OSReport("Queued spawns: %d, %d, %d, %d, %d \n", _enemyTypes[_spawnQueue[0]]->enemyId, _enemyTypes[_spawnQueue[1]]->enemyId, _enemyTypes[_spawnQueue[2]]->enemyId, _enemyTypes[_spawnQueue[3]]->enemyId, _enemyTypes[_spawnQueue[4]]->enemyId);
     }
 
     // Initialize respawns
