@@ -21,3 +21,4 @@
 // emInfo
 41,1,0000DB8C:getInstance__6emInfoFv
 41,1,0000DC08:isPrimKind__6emInfoF6emKind
+41,1,0000E0F8:getSEId__6emInfoF6emKind

@@ -29,6 +29,7 @@
 #include <so/damage/so_damage_util_actor.h>
 #include <math.h>
 #include <em/em_info.h>
+#include <snd/snd_system.h>
 
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
@@ -242,6 +243,10 @@ void stSlipspace::update(float deltaFrame)
                     {
                         _maxFrequency = newEnemyType->frequency;
                     }
+                    // Test code for loading soundbanks in advance
+                    // emInfo* emInfo = emInfo::getInstance();
+                    // u32 groupId = emInfo->getSEId((EnemyKind)newEnemyType->enemyId);
+                    // g_sndSystem->loadSoundGroup((SndGroupID)groupId, 1, true);
                     _enemyTypes.push(newEnemyType);
                     _enemyTypeCount++;
                 }
@@ -630,6 +635,21 @@ void stSlipspace::update(float deltaFrame)
             _tour.currentFrame += deltaFrame;
         }
     }
+
+    // Test code to check if soundbanks are all loaded
+    // if (isEnemiesInitialized)
+    // {
+    //     for (int i = 0; i < _enemyTypes.size(); i++)
+    //     {
+    //         emInfo* emInfo = emInfo::getInstance();
+    //         u32 groupId = emInfo->getSEId((EnemyKind)_enemyTypes[i]->enemyId);
+    //         bool groupLoaded = g_sndSystem->isSoundGroupLoaded((SndGroupID)groupId);
+    //         if (!groupLoaded)
+    //         {
+    //             OSReport("Soundbank %d for enemy %d not loaded! \n", groupId, _enemyTypes[i]->enemyId);
+    //         }
+    //     }
+    // }
 }
 void stSlipspace::createObj()
 {
