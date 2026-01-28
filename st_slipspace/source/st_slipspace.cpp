@@ -2035,19 +2035,56 @@ bool stSlipspace::canSpawnEnemyInGroup(int groupIndex)
 int stSlipspace::getRandomEnemy()
 {
     // Gets random index from _enemyTypes, weighted by frequency
+    Vector<int> frequencyList;
     int totalFrequencies = 0;
-    for (int j = 0; j < _enemyTypes.size(); j++)
+    // Get list of frequencies
+    for (int i = 0; i < _enemyTypes.size(); i++)
     {
-        totalFrequencies += _enemyTypes[j]->frequency;
+        // Check if frequency already in list
+        bool frequencyFound = false;
+        for (int j = 0; j < frequencyList.size(); j++)
+        {
+            if (frequencyList[j] == _enemyTypes[i]->frequency)
+            {
+                frequencyFound = true;
+                break;
+            }
+        }
+        if (!frequencyFound)
+        {
+            frequencyList.push(_enemyTypes[i]->frequency);
+        }
+    }
+    // Pick random frequency from list
+    for (int i = 0; i < frequencyList.size(); i++)
+    {
+        totalFrequencies += frequencyList[i];
     }
     int randomSelection = randi(totalFrequencies);
-    for (int j = 0; j < _enemyTypes.size(); j++)
+    int frequencyIndex = 0;
+    for (int i = 0; i < frequencyList.size(); i++)
     {
-        if (randomSelection < _enemyTypes[j]->frequency)
+        if (randomSelection < frequencyList[i])
         {
-            return j;
+            frequencyIndex = i;
+            break;
         }
-        randomSelection -= _enemyTypes[j]->frequency;
+        randomSelection -= frequencyList[i];
+    }
+    // Get enemies in range
+    Vector<int> availableEnemies;
+    for (int i = 0; i < _enemyTypes.size(); i++)
+    {
+        if (_enemyTypes[i]->frequency == frequencyList[frequencyIndex])
+        {
+            availableEnemies.push(i);
+        }
+    }
+    // Get random enemy
+    if (availableEnemies.size() > 0)
+    {
+        int randomEnemyIndex = randi(availableEnemies.size());
+        return availableEnemies[randomEnemyIndex];
     }
     return 0;
 }
