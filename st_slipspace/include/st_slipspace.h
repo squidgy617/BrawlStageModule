@@ -148,6 +148,7 @@ protected:
     bool isRespawnsInitialized;
     bool isTourInitialized;
     bool isEndProcessed;
+    bool isVectorsCleared;
     gfArchive* enemyCommonPac;
     gfArchive* primFacePac;
     char _860[892 - 872];
@@ -186,6 +187,7 @@ public:
         isRespawnsInitialized = false;
         isTourInitialized = false;
         isEndProcessed = false;
+        isVectorsCleared = false;
         targetsLeft = 0;
         targetsHit = 0;
         totalDamage = 0.0;
