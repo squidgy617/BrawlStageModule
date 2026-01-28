@@ -2152,10 +2152,11 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
                     if (taskId != NULL && taskId > 0)
                     {
                         wnemSimple* weapon = weaponManager->findWeapon(taskId, 0xFFFF, 0);
-                        if (weapon != NULL)
+                        while (weapon != NULL)
                         {
                             // Remove weapon if it exists
                             weapon->remove();
+                            weapon = weaponManager->findWeapon(taskId, 0xFFFF, 0);
                         }
                     }
                 }
