@@ -30,6 +30,7 @@
 #include <math.h>
 #include <em/em_info.h>
 #include <snd/snd_system.h>
+#include <gf/gf_pad_system.h>
 
 static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<Stages::TBreak, stSlipspace>();
 
@@ -43,6 +44,7 @@ int _spawnGroupCount = 0; // Number of spawner groups in stage
 int _enemyTypeCount = 0; // Number of different types of enemies that can spawn
 int _maxFrequency = 0; // Highest enemy frequency in stage
 int _respawnPointCount = 0; // Number of respawn points in stage;
+int _difficulty = 5; // Difficulty
 
 Vector<SpawnerGroup*> _spawnerGroups; // List of spawner groups in stage
 Vector<EnemySpawner*> _spawners; // List of spawners in stage
@@ -653,6 +655,30 @@ void stSlipspace::update(float deltaFrame)
 }
 void stSlipspace::createObj()
 {
+    // Difficulty select
+    static gfPadStatus status;
+    g_gfPadSystem->getSysPadStatus(GF_PAD_SYSTEM_GET_ALL_PADS, &status);
+    int mask = GF_PAD_BUTTON_BIT_DPAD_DOWN | GF_PAD_BUTTON_BIT_DPAD_LEFT | GF_PAD_BUTTON_BIT_DPAD_RIGHT | GF_PAD_BUTTON_BIT_DPAD_UP;
+    switch (status.m_buttonsHeld.bits & mask)
+    {
+        case GF_PAD_BUTTON_BIT_DPAD_DOWN:
+            _difficulty = 2; // Easy
+            break;
+        case GF_PAD_BUTTON_BIT_DPAD_LEFT:
+            _difficulty = 8; // Hard
+            break;
+        case GF_PAD_BUTTON_BIT_DPAD_RIGHT:
+            _difficulty = 11; // Very Hard
+            break;
+        case GF_PAD_BUTTON_BIT_DPAD_UP:
+            _difficulty = 14; // Intense
+            break;
+        default:
+            _difficulty = 5; // Normal
+            break;
+    }
+    OSReport("Difficulty %d \n", _difficulty);
+
     if (g_GameGlobal->m_modeMelee->m_meleeInitData.m_gameMode == Game_Mode_Target) {
         this->patchInstructions();
     }
@@ -1671,7 +1697,7 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
 
     emCreate create;
     create.m_teamNo = 10000;
-    create.m_difficulty = difficulty % 15;
+    create.m_difficulty = _difficulty;
     create.m_enemyKind = (EnemyKind)enemyToSpawn->enemyId;
     create.m_startStatusKind = startStatus;
 
