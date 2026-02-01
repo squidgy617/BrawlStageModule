@@ -2100,6 +2100,7 @@ int stSlipspace::getRandomEnemy()
         }
         randomSelection -= frequencyList[i];
     }
+    // OSReport("Random frequency %d \n", frequencyList[frequencyIndex]);
     // Get enemies in range
     Vector<int> availableEnemies;
     for (int i = 0; i < _enemyTypes.size(); i++)
@@ -2113,6 +2114,7 @@ int stSlipspace::getRandomEnemy()
     if (availableEnemies.size() > 0)
     {
         int randomEnemyIndex = randi(availableEnemies.size());
+        // OSReport("Random enemy %d \n", _enemyTypes[availableEnemies[randomEnemyIndex]]->enemyId);
         return availableEnemies[randomEnemyIndex];
     }
     return 0;
