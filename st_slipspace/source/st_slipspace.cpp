@@ -2063,59 +2063,77 @@ bool stSlipspace::canSpawnEnemyInGroup(int groupIndex)
 
 int stSlipspace::getRandomEnemy()
 {
+    // Unused code to group enemies by frequency
+    // // Gets random index from _enemyTypes, weighted by frequency
+    // Vector<int> frequencyList;
+    // int totalFrequencies = 0;
+    // // Get list of frequencies
+    // for (int i = 0; i < _enemyTypes.size(); i++)
+    // {
+    //     // Check if frequency already in list
+    //     bool frequencyFound = false;
+    //     for (int j = 0; j < frequencyList.size(); j++)
+    //     {
+    //         if (frequencyList[j] == _enemyTypes[i]->frequency)
+    //         {
+    //             frequencyFound = true;
+    //             break;
+    //         }
+    //     }
+    //     if (!frequencyFound)
+    //     {
+    //         frequencyList.push(_enemyTypes[i]->frequency);
+    //     }
+    // }
+    // // Pick random frequency from list
+    // for (int i = 0; i < frequencyList.size(); i++)
+    // {
+    //     totalFrequencies += frequencyList[i];
+    // }
+    // int randomSelection = randi(totalFrequencies);
+    // int frequencyIndex = 0;
+    // for (int i = 0; i < frequencyList.size(); i++)
+    // {
+    //     if (randomSelection < frequencyList[i])
+    //     {
+    //         frequencyIndex = i;
+    //         break;
+    //     }
+    //     randomSelection -= frequencyList[i];
+    // }
+    // // OSReport("Random frequency %d \n", frequencyList[frequencyIndex]);
+    // // Get enemies in range
+    // Vector<int> availableEnemies;
+    // for (int i = 0; i < _enemyTypes.size(); i++)
+    // {
+    //     if (_enemyTypes[i]->frequency == frequencyList[frequencyIndex])
+    //     {
+    //         availableEnemies.push(i);
+    //     }
+    // }
+    // // Get random enemy
+    // if (availableEnemies.size() > 0)
+    // {
+    //     int randomEnemyIndex = randi(availableEnemies.size());
+    //     // OSReport("Random enemy %d \n", _enemyTypes[availableEnemies[randomEnemyIndex]]->enemyId);
+    //     return availableEnemies[randomEnemyIndex];
+    // }
+    // return 0;
+    
     // Gets random index from _enemyTypes, weighted by frequency
-    Vector<int> frequencyList;
     int totalFrequencies = 0;
-    // Get list of frequencies
-    for (int i = 0; i < _enemyTypes.size(); i++)
+    for (int j = 0; j < _enemyTypes.size(); j++)
     {
-        // Check if frequency already in list
-        bool frequencyFound = false;
-        for (int j = 0; j < frequencyList.size(); j++)
-        {
-            if (frequencyList[j] == _enemyTypes[i]->frequency)
-            {
-                frequencyFound = true;
-                break;
-            }
-        }
-        if (!frequencyFound)
-        {
-            frequencyList.push(_enemyTypes[i]->frequency);
-        }
-    }
-    // Pick random frequency from list
-    for (int i = 0; i < frequencyList.size(); i++)
-    {
-        totalFrequencies += frequencyList[i];
+        totalFrequencies += _enemyTypes[j]->frequency;
     }
     int randomSelection = randi(totalFrequencies);
-    int frequencyIndex = 0;
-    for (int i = 0; i < frequencyList.size(); i++)
+    for (int j = 0; j < _enemyTypes.size(); j++)
     {
-        if (randomSelection < frequencyList[i])
+        if (randomSelection < _enemyTypes[j]->frequency)
         {
-            frequencyIndex = i;
-            break;
+            return j;
         }
-        randomSelection -= frequencyList[i];
-    }
-    // OSReport("Random frequency %d \n", frequencyList[frequencyIndex]);
-    // Get enemies in range
-    Vector<int> availableEnemies;
-    for (int i = 0; i < _enemyTypes.size(); i++)
-    {
-        if (_enemyTypes[i]->frequency == frequencyList[frequencyIndex])
-        {
-            availableEnemies.push(i);
-        }
-    }
-    // Get random enemy
-    if (availableEnemies.size() > 0)
-    {
-        int randomEnemyIndex = randi(availableEnemies.size());
-        // OSReport("Random enemy %d \n", _enemyTypes[availableEnemies[randomEnemyIndex]]->enemyId);
-        return availableEnemies[randomEnemyIndex];
+        randomSelection -= _enemyTypes[j]->frequency;
     }
     return 0;
 }
