@@ -612,7 +612,7 @@ void stSlipspace::update(float deltaFrame)
     }
 
     // Do tour stuff
-    if (isTourInitialized)
+    if (isTourInitialized && _tourStates.size() > 0)
     {
         TourState* currentState = _tourStates[_tour.currentState];
         if (_tour.currentFrame >= currentState->frames)
