@@ -737,7 +737,7 @@ Default: 60
 	/EndDescription
 1
 
-dynamicBlastZones, _, _, _
-Default: true, false, false, false
+dynamicBlastZones, cameraRangeSpawns, _, _
+Default: false, false, false, false
 	/EndDescription
 6

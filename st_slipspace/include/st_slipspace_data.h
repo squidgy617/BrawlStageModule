@@ -39,6 +39,7 @@ struct stSlipspaceData {
     int maxSpawns;
     int spawnTimer;
     bool dynamicBlastZones;
+    bool cameraRangeSpawns;
 
     //STATIC_CHECK(sizeof(stSlipspaceData) == 500)
 };

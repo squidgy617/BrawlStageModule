@@ -425,7 +425,7 @@ void stSlipspace::update(float deltaFrame)
                 pos = Vec2f(motionPathPos.m_x, motionPathPos.m_y);
                 nodeVisible = motionPathPos.m_z == 0;
             }
-            if (inCameraRange(pos) && canSpawnEnemyInGroup(_spawners[i]->groupIndex) 
+            if ((!stageData->cameraRangeSpawns || inCameraRange(pos)) && canSpawnEnemyInGroup(_spawners[i]->groupIndex) 
             && nodeVisible)
             {
                 randomizedSpawnerIndexes.push(i);
