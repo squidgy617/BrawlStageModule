@@ -367,8 +367,6 @@ sora_enemy.rel file index = 301
 
 **Scale X** - Number of frames before spawner can be used again after spawning an enemy
 
-**Rotation Z** - Starting facing direction
-
 **Translation X,Y** - Position
 
 **Translation Z** - Motion Path ModelData Index (name of node to follow must match this bone name). When Z position is set to something other than 0 by CHR0 animation, spawner will not spawn enemies. If the ModelData is a tour object, tour will control animations.

@@ -204,7 +204,6 @@ void stSlipspace::update(float deltaFrame)
                         newSpawner->pos = *resNodeData->m_translation.xy();
                         newSpawner->nodeName = nodeName;
                         newSpawner->motionPathIndex = resNodeData->m_translation.m_z;
-                        newSpawner->facingDirection = resNodeData->m_rotation.m_z;
                         newSpawner->groupIndex = i;
                         newSpawner->respawnTimerLength = resNodeData->m_scale.m_x;
                         newSpawner->listSize = 0;
@@ -481,7 +480,7 @@ void stSlipspace::update(float deltaFrame)
                 {
                     // Find enemy list entry
                     // Spawn enemy
-                    this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->facingDirection, _spawners[si]->groupIndex, _spawners[si]);
+                    this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->groupIndex, _spawners[si]);
                     // Pop from current position in queue
                     for (int k = j; k < _spawnQueue.size() - 1; k++)
                     {
@@ -1691,7 +1690,7 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
     }
 }
 
-void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, float lr, int groupIndex, EnemySpawner* spawner) {
+void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, int groupIndex, EnemySpawner* spawner) {
     // TODO: MotionPath index investigate if can make every enemy follow it?
     int startingMem = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
     emManager* enemyManager = emManager::getInstance();
@@ -1704,7 +1703,6 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
 
     create.m_startPos = Vec3f(pos->m_x, pos->m_y, 0.0);
 
-    create.m_startLr = lr;
     create.m_level = 1 + difficulty / 15;
     create.m_36 = 0.0;
     create.m_territoryRange = (Rect2D){0.0, 0.0, 0.0, 0.0};
@@ -1733,6 +1731,49 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
     create.m_epsp = NULL;
     create.m_parentCreateId = 0xFFFF;
     //OSReport("Preload archive count result: %d \n", enemyManager->getPreloadArchiveCountFromKind(Enemy_Kuribo));
+
+    // Calculate facing direction based on nearest player
+    bool playersAlive = false;
+    float shortestDistance = 0.0;
+    Vec3f nearestPos = Vec3f(0,0,0);
+    for (int i = 0; i < g_ftManager->getEntryCount(); i++) 
+    {
+        int entryId = g_ftManager->getEntryIdFromIndex(i);
+        Fighter* fighter = g_ftManager->getFighter(entryId, -1);
+        int status = fighter->m_moduleAccesser->getStatusModule().getStatusKind();
+        // Skip dead players
+        if (status != Fighter::Status::Dead)
+        {
+            // Get shortest distance
+            Vec3f pos = soExternalValueAccesser::getPos(fighter);
+            float distance = create.m_startPos.distance(&pos);
+            if (!playersAlive || distance < shortestDistance)
+            {
+                shortestDistance = distance;
+                nearestPos = pos;
+            }
+            playersAlive = true;
+        }
+    }
+    // Face nearest player
+    if (playersAlive)
+    {
+        if (nearestPos.m_x > create.m_startPos.m_x)
+        {
+            create.m_startLr = 1;
+        }
+        else
+        {
+            create.m_startLr = -1;
+        }
+    }
+    // Otherwise, pick randomly
+    else
+    {
+        int directions[2] = {-1, 1};
+        int directionIndex = randi(2);
+        create.m_startLr = directions[directionIndex];
+    }
 
     int id = enemyManager->createEnemy(&create);
     Enemy* enemy = enemyManager->getEnemyPtrFromId(id);
