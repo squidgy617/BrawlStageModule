@@ -45037,7 +45037,7 @@ wnemheapmoduleimplcpp____sinit_:
     /* 00034AA8: */    lis r31,0x0                              [R_PPC_ADDR16_HA(41, 6, "loc_26C")]
     /* 00034AAC: */    addi r3,r31,0x0                          [R_PPC_ADDR16_LO(41, 6, "loc_26C")]
     /* 00034AB0: */    li r4,WEAPON_HEAP_TYPE  
-    /* 00034AB4: */    li r5,HEAP_TYPE     
+    /* 00034AB4: */    li r5,HEAP_TYPE                          # load weapon stuff into StageInstance instead of StageResource - Slipspace
     /* 00034AB8: */    bl wnemHeapModuleImpl____ct
     /* 00034ABC: */    addi r3,r31,0x0                          [R_PPC_ADDR16_LO(41, 6, "loc_26C")]
     /* 00034AC0: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemHeapModuleImpl____dt")]
