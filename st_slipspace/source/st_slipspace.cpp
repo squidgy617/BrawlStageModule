@@ -652,6 +652,8 @@ void stSlipspace::update(float deltaFrame)
         }
     }
 
+    // OSReport("Instance memory %d \n", gfHeapManager::getMaxFreeSize(Heaps::StageInstance));
+
     // Test code to check if soundbanks are all loaded
     // if (isEnemiesInitialized)
     // {
