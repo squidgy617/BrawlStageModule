@@ -67,6 +67,7 @@ class EnemyType
         int resourceMemory;
         int frequency;
         bool blacklisted;
+        int persistentSize;
 };
 
 struct EnemyGroupItem

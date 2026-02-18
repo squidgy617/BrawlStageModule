@@ -37,7 +37,6 @@ static stClassInfoImpl<Stages::TBreak, stSlipspace> classInfo = stClassInfoImpl<
 int KO_PLAYERINDEX = 6; // We store KOs on player index 6 (player 7) which is a multi-man slot, not a real player
 int DEATH_COIN_PERCENT = 10; // Percentage of coins players lose on death in coin battles
 int DEATH_KO_PERCENT = 10; // Percentage of KOs players lose on death in timed battles
-int MIN_STAGEINSTANCE = 512; // Minimum memory that can be in the StageInstance heap after spawning an enemy
 
 int _enemyCount = 0; // Number of enemies currently spawned
 int _spawnerCount = 0; // Number of spawners in stage
@@ -238,6 +237,7 @@ void stSlipspace::update(float deltaFrame)
                     newEnemyType->frequency = resNodeData->m_rotation.m_z;
                     newEnemyType->blacklisted = resNodeData->m_rotation.m_x == 1;
                     newEnemyType->resourceMemory = 0;
+                    newEnemyType->persistentSize = resNodeData->m_rotation.m_y;
                     newEnemyType->loading = false;
                     newEnemyType->loaded = false;
                     // Update max frequency so it matches highest in stage
@@ -275,12 +275,12 @@ void stSlipspace::update(float deltaFrame)
                 }
             }
             // Initialize spawn queue - for testing specific enemy combinations
-            // _spawnQueue.push(1);
-            // _spawnQueue.push(1);
-            // _spawnQueue.push(1);
-            // _spawnQueue.push(3);
-            // _spawnQueue.push(0);
-            // _spawnQueue.push(2);
+            // _spawnQueue.push(9);
+            // _spawnQueue.push(9);
+            // _spawnQueue.push(9);
+            // _spawnQueue.push(13);
+            // _spawnQueue.push(4);
+            // _spawnQueue.push(8);
             // Initialize spawner motion paths
             for (int i = 0; i < _spawnerCount; i++)
             {
@@ -484,7 +484,14 @@ void stSlipspace::update(float deltaFrame)
                         }
                     }
                 }
-                if (enemyToSpawn->loaded && _spawners[si]->timer <= 0 && (enemyToSpawn->size + MIN_STAGEINSTANCE) < availableMemory && whitelisted && !blacklisted)
+                // Get allocation needed for all current enemies
+                int minStageInstance = 0;
+                for (int i = 0; i < _spawnedEnemyTypes.size(); i++)
+                {
+                    minStageInstance += _spawnedEnemyTypes[i]->enemyType->persistentSize;
+                }
+                // Check if enemy can be spawned
+                if (enemyToSpawn->loaded && _spawners[si]->timer <= 0 && (enemyToSpawn->size + enemyToSpawn->persistentSize + minStageInstance) < availableMemory && whitelisted && !blacklisted)
                 {
                     // Find enemy list entry
                     // Spawn enemy

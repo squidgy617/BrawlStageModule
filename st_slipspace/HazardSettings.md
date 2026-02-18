@@ -325,6 +325,8 @@ sora_enemy.rel file index = 301
 
 **Rotation X** - Blacklisted flag - if set to 1, enemy will never spawn except at spawners where they are explicitly whitelisted
 
+**Rotation Y** - Persistent Memory - maximum amount of instance memory the enemy could use at any given time, in addition to the memory used to spawn them
+
 **Rotation Z** - Frequency of enemy spawns, 1 - 100, 0 means enemy will never spawn
 
 **Translation X** - Points
