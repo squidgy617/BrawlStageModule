@@ -1720,7 +1720,25 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
 
     create.m_startPos = Vec3f(pos->m_x, pos->m_y, 0.0);
 
-    create.m_level = 1 + difficulty / 15;
+    // Calculate level
+    int weights[] = {5, 4, 3, 2, 1};
+    int totalWeights = 0;
+    create.m_level = 1;
+    for (int i = 0; i < 5; i++)
+    {
+        totalWeights += weights[i];
+    }
+    int randomSelection = randi(totalWeights);
+    for (int i = 0; i < 5; i++)
+    {
+        if (randomSelection < weights[i])
+        {
+            create.m_level = i + 1;
+            break;
+        }
+        randomSelection -= weights[i];
+    }
+    // OSReport("Level is %d \n", create.m_level);
     create.m_36 = 0.0;
     create.m_territoryRange = (Rect2D){0.0, 0.0, 0.0, 0.0};
     create.m_connectedTriggerId = 0;
