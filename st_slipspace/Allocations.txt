@@ -1,0 +1,67 @@
+Calculated using this code:
+Test
+HOOK @ $800249e4
+{
+    lis    r6, 0x8049 # original instruction
+    cmpwi r3, 0xf
+    bne skipStuff
+    nop
+    skipStuff:
+}
+
+Breakpoint to the nop (in code it should be the first nop in the hook). When the enemy fires a projectile, you will hit the nop. r4 will contain the memory allocation. This is multiplied by 32/0x20(?). This gets you the total allocation for the projectile.
+
+I have no idea if this is actually accurate but it's my best guess on how this works based on my observations. It's possible multiplying by 32 makes no sense.
+
+Enemies listed are all enemies (aside from bosses) that I know spawn projectiles, might be missing some.
+
+R.O.B. Distance
+x
+
+Buckot
+x
+
+Spaak
+x
+
+Ghamyga
+x
+
+R.O.B. Laser
+x
+
+R.O.B. Launcher
+x
+
+Hammer Bro.
+x
+
+Armank
+x
+
+Boomerang Primid
+1920
+
+Scope Primid
+1536 * 3 = 4608
+
+Fire Primid
+384
+
+Poppant
+1920 * 2 = 3840
+
+Armight
+1920 * 2 = 3840
+
+Puppit
+1536 * 5 = 7680
+
+Bombed
+3072
+
+Autolance
+3072
+
+Roturret
+1536 * 6 = 9216
