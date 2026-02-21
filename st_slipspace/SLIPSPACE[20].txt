@@ -728,7 +728,7 @@ Default: 180
 1
 
 Maximum Enemies
-Default: 5
+Default: 10
 	/EndDescription
 1
 
