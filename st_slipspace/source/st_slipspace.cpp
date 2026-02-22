@@ -2226,8 +2226,25 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
         {
             if (enemyMessageKind == Enemy::Message_Damage)
             {
+                // TODO: make this optional for builds that don't use FS meter... somehow
+                // If FS meter, enemies give FS meter
+                if (g_GameGlobal->m_setRule->m_spMeleeSetting8)
+                {
+                    emManager* enemyManager = emManager::getInstance();
+                    Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
+                    soDamageAttackerInfo* attackerInfo = enemy->m_moduleAccesser->getDamageModule().getAttackerInfo();
+                    int playerEntryId = g_ftManager->getEntryIdFromTaskId(attackerInfo->m_indirectTaskId, (int*)0x0);
+                    if (playerEntryId != -1)
+                    {
+                        ftEntry* playerEntry = g_ftManager->m_entryManager->getEntity(playerEntryId);
+                        if (playerEntry != NULL)
+                        {
+                            playerEntry->m_fsAmount += 10;
+                        }
+                    }
+                }
                 // If coin mode, enemies drop coins 
-                if (_gameMode == Game_Rule_Coin)
+                else if (_gameMode == Game_Rule_Coin)
                 {
                     emManager* enemyManager = emManager::getInstance();
                     Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
