@@ -2239,7 +2239,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
                         ftEntry* playerEntry = g_ftManager->m_entryManager->getEntity(playerEntryId);
                         if (playerEntry != NULL)
                         {
-                            playerEntry->m_fsAmount += ((spawnedEnemy->enemyType->points / 100) / 2);
+                            playerEntry->m_finalSmashAmount += ((spawnedEnemy->enemyType->points / 100) / 2);
                         }
                     }
                 }
