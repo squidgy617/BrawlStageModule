@@ -2489,7 +2489,7 @@ void stSlipspace::moveCamera()
         return;
     }
 
-    if (!this->cameraStopped and !this->cameraStoppedOut) {
+    if (!this->cameraStopped && !this->cameraStoppedOut) {
         // Get average position of players
         float averageX = 0;
         float averageY = 0;
