@@ -2239,12 +2239,12 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
                         ftEntry* playerEntry = g_ftManager->m_entryManager->getEntity(playerEntryId);
                         if (playerEntry != NULL)
                         {
-                            playerEntry->m_fsAmount += 10;
+                            playerEntry->m_fsAmount += ((spawnedEnemy->enemyType->points / 100) / 2);
                         }
                     }
                 }
                 // If coin mode, enemies drop coins 
-                else if (_gameMode == Game_Rule_Coin)
+                if (_gameMode == Game_Rule_Coin)
                 {
                     emManager* enemyManager = emManager::getInstance();
                     Enemy* enemy = enemyManager->getEnemyPtrFromId(enemyCreateId);
