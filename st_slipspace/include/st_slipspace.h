@@ -211,7 +211,7 @@ public:
         this->releaseArchive();
     };
 
-    virtual void notifyEventDead(int entryId, int deadCount, int deadReason, int respawnFrames);
+    virtual void notifyEventDead(int entryId, int deadCount, Fighter::Dead::Reason deadReason, int respawnFrames);
     virtual void notifyEventBeat(int entryId1, int entryId2);
     virtual void notifyEventSuicide(int entryId);
     virtual void notifyEventOnDamage(int entryId, u32 hp, soDamage* damage);

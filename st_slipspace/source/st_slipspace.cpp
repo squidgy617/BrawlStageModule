@@ -1936,13 +1936,16 @@ void stSlipspace::notifyEventBeat(int entryId1, int entryId2)
     }
 }
 
-void stSlipspace::notifyEventDead(int entryId, int deadCount, int deadReason, int respawnFrames)
+void stSlipspace::notifyEventDead(int entryId, int deadCount, Fighter::Dead::Reason deadReason, int respawnFrames)
 {
     // Dynamic blast zones
-    this->cameraStopped = true;
     stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
-    if (stageData != NULL && stageData->dynamicBlastZones == true) {
-        this->addCameraFrames(stageData->stopFramesDeath);
+    if (stageData->dynamicBlastZones)
+    {
+        this->cameraStopped = true;
+        if (stageData != NULL) {
+            this->addCameraFrames(stageData->stopFramesDeath);
+        }
     }
     
     if (_gameMode == Game_Rule_Time)
