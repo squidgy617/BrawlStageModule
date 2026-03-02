@@ -33972,7 +33972,7 @@ emAreaModuleImpl__isTargetFighter:
     /* 0002379C: */    subc r0,r0,r4
     /* 000237A0: */    subfze r3,r3
     /* 000237A4: */    blr
-emAreaModuleImpl__getTargetFighterPtr: # TODO: This function needs to change in order to make enemies target all players - Slipspace
+emAreaModuleImpl__getTargetFighterPtr: # TODO: This function needs to change in order to make enemies target all players. For this one, we could expand the parameter to accept more values (currently expands 4), because it seems to always be called from loops that end at 4. So would need to expand every calling loop. - Slipspace
     /* 000237A8: */    stwu r1,-0x20(r1)
     /* 000237AC: */    mflr r0
     /* 000237B0: */    stw r0,0x24(r1)
