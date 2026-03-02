@@ -33864,7 +33864,7 @@ loc_23594:
     /* 0002361C: */    lwz r3,0x0(r23)                          [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
     /* 00023620: */    mr r4,r22
     /* 00023624: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getPlayerNo")]
-    /* 00023628: */    cmpwi r3,0x0
+    /* 00023628: */    cmpwi r3,0x0           #TODO: this instruction and following instruction can be nopped to allow more players to be detected? - Slipspace
     /* 0002362C: */    bne- loc_2376C
     /* 00023630: */    cmpwi r29,0x0
     /* 00023634: */    bne- loc_23648
@@ -33886,7 +33886,7 @@ loc_23660:
     /* 0002366C: */    lwz r3,0x0(r23)                          [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
     /* 00023670: */    mr r4,r22
     /* 00023674: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getPlayerNo")]
-    /* 00023678: */    cmpwi r3,0x1
+    /* 00023678: */    cmpwi r3,0x1             #TODO: this instruction and following instruction can be nopped to allow more players to be detected? - Slipspace
     /* 0002367C: */    bne- loc_2376C
     /* 00023680: */    cmpwi r29,0x2
     /* 00023684: */    bne- loc_23698
@@ -33972,7 +33972,7 @@ emAreaModuleImpl__isTargetFighter:
     /* 0002379C: */    subc r0,r0,r4
     /* 000237A0: */    subfze r3,r3
     /* 000237A4: */    blr
-emAreaModuleImpl__getTargetFighterPtr:
+emAreaModuleImpl__getTargetFighterPtr: # TODO: This function needs to change in order to make enemies target all players - Slipspace
     /* 000237A8: */    stwu r1,-0x20(r1)
     /* 000237AC: */    mflr r0
     /* 000237B0: */    stw r0,0x24(r1)
