@@ -477,6 +477,34 @@ loc_buc3C4B8:
     /* 0003C500: */    lwz r12,0x18(r12)
     /* 0003C504: */    mtctr r12
     /* 0003C508: */    bctrl
+# This code makes it so if the target is forced to face the same direction as Redead
+    /* XXXXXXXX: */    lwz r3, 0x60(r31)    # \ Enemy is in r31, moduleAccesser is 0x60
+    /* XXXXXXXX: */    lwz r3, 0xD8(r3)     # | get enumeration start
+    /* XXXXXXXX: */    lwz r3, 0xC(r3)      # | offset 0xC is the posture module
+    /* XXXXXXXX: */    lwz r12, 0x0(r3)     # |
+    /* XXXXXXXX: */    lwz r12, 0x2C(r12)   # | call getLR on enemy
+    /* XXXXXXXX: */    mtctr r12            # |
+    /* XXXXXXXX: */    bctrl                # /
+    /* XXXXXXXX: */    fmr f2, f1           # copy result to f2
+    /* XXXXXXXX: */    lwz r3, 0x60(r29)    # \ Target is in r29, moduleAccesser is 0x60
+    /* XXXXXXXX: */    lwz r3, 0xD8(r3)     # | get enumeration start
+    /* XXXXXXXX: */    lwz r3, 0xC(r3)      # | offset 0xC is the posture module
+    /* XXXXXXXX: */    lwz r12, 0x0 (r3)    # |
+    /* XXXXXXXX: */    lwz r12, 0x2C (r12)  # | call getLR on target
+    /* XXXXXXXX: */    mtctr r12            # |
+    /* XXXXXXXX: */    bctrl                # /
+    /* XXXXXXXX: */    fmuls f0, f1, f2     # \ Multiply the LR floats of both targets - if product is negative, they're different, if product is positive, they match
+    /* XXXXXXXX: */    fsubs f3, f1, f1     # | Load a value of 0 into f3
+    /* XXXXXXXX: */    fcmpo cr0, f0, f3    # | Compare the product to 0
+    /* XXXXXXXX: */    bgt sameDirection    # / If products are greater than 0, don't turn the target around
+    /* XXXXXXXX: */    lwz r3, 0x60(r29)    # \ Target is in r29, moduleAccesser is 0x60
+    /* XXXXXXXX: */    lwz r3, 0xD8(r3)     # | get enumeration start
+    /* XXXXXXXX: */    lwz r3, 0xC(r3)      # | offset 0xC is the posture module
+    /* XXXXXXXX: */    lwz r12, 0x0 (r3)    # |
+    /* XXXXXXXX: */    lwz r12, 0x34 (r12)  # | call reverseLR on target
+    /* XXXXXXXX: */    mtctr r12            # |
+    /* XXXXXXXX: */    bctrl                # /
+sameDirection:
 /* Comment: Pretty sure this "bit" controls who is attached to who. 1 is "Grabber on Thrown" model/bone (like Bucyulus is on Throwns Head). 0 is "Thrown on Grabber" model/bone 
     /* 0003C50C: */    li r0,0x1
     /* 0003C510: */    stb r0,0x4(r27)
