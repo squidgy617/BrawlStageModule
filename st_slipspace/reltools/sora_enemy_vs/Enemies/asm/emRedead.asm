@@ -505,6 +505,37 @@ loc_buc3C4B8:
     /* XXXXXXXX: */    mtctr r12            # |
     /* XXXXXXXX: */    bctrl                # /
 sameDirection:
+# This code lets us see if the target was stunned when grabbed
+    /* XXXXXXXX: */    lwz r3, 0x60(r29)    # \ Target is in r29, moduleAccesser is 0x60
+    /* XXXXXXXX: */    lwz r3, 0xD8(r3)     # | get enumeration start
+    /* XXXXXXXX: */    lwz r3, 0x70(r3)     # | offset 0x70 is the status module
+    /* XXXXXXXX: */    lwz r12, 0x0 (r3)    # |
+    /* XXXXXXXX: */    lwz r12, 0x48 (r12)  # | call getStatusKind on target
+    /* XXXXXXXX: */    mtctr r12            # |
+    /* XXXXXXXX: */    bctrl                # /
+    /* XXXXXXXX: */    cmpwi r3, 0x5F       # \ Check if target is in Status_Bind (stunned)
+    /* XXXXXXXX: */    bne notStunned       # |
+    /* XXXXXXXX: */    lwz r5, 0x60(r31)    # | Enemy is in r31, moduleAccesser is 0x60
+    /* XXXXXXXX: */    lwz r3,0xD8(r5)      # | get enumeration start
+    /* XXXXXXXX: */    lwz r3,0x64(r3)      # | offset 0x64 is the WorkManageModule
+    /* XXXXXXXX: */    lis r4,0x1200        # | Set LA-Bit (0x1200) 7
+    /* XXXXXXXX: */    addi r4,r4,0x7       # |
+    /* XXXXXXXX: */    lwz r12,0x0(r3)      # |
+    /* XXXXXXXX: */    lwz r12,0x50(r12)    # | call onFlag on enemy
+    /* XXXXXXXX: */    mtctr r12            # |
+    /* XXXXXXXX: */    bctrl                # /
+    /* XXXXXXXX: */    b grabCheck
+notStunned:
+    /* XXXXXXXX: */    lwz r5, 0x60(r31)    # \ Enemy is in r31, moduleAccesser is 0x60
+    /* XXXXXXXX: */    lwz r3,0xD8(r5)      # | get enumeration start
+    /* XXXXXXXX: */    lwz r3,0x64(r3)      # | offset 0x64 is the WorkManageModule
+    /* XXXXXXXX: */    lis r4,0x1200        # | Set LA-Bit (0x1200) 7
+    /* XXXXXXXX: */    addi r4,r4,0x7       # |
+    /* XXXXXXXX: */    lwz r12,0x0(r3)      # |
+    /* XXXXXXXX: */    lwz r12,0x54(r12)    # | call offFlag on enemy
+    /* XXXXXXXX: */    mtctr r12            # |
+    /* XXXXXXXX: */    bctrl                # /
+grabCheck:
 /* Comment: Pretty sure this "bit" controls who is attached to who. 1 is "Grabber on Thrown" model/bone (like Bucyulus is on Throwns Head). 0 is "Thrown on Grabber" model/bone 
     /* 0003C50C: */    li r0,0x1
     /* 0003C510: */    stb r0,0x4(r27)
@@ -648,11 +679,28 @@ emTautau__notifyEventChangeStatus:
     /* 0003C708: */    stfs f0,0x10(r1)
     /* 0003C70C: */    stfs f0,0x14(r1)
     /* 0003C710: */    stfs f0,0x18(r1)
+# this code changes mash rate if player was stunned
+    /* XXXXXXXX: */    mr r5, r31           # \ moduleAccesser is in r31
+    /* XXXXXXXX: */    lwz r3,0xD8(r5)      # | get enumeration start
+    /* XXXXXXXX: */    lwz r3,0x64(r3)      # | offset 0x64 is the WorkManageModule
+    /* XXXXXXXX: */    lis r4,0x1200        # | Get LA-Bit (0x1200) 7
+    /* XXXXXXXX: */    addi r4,r4,0x7       # |
+    /* XXXXXXXX: */    lwz r12,0x0(r3)      # |
+    /* XXXXXXXX: */    lwz r12,0x4C(r12)    # | call isFlag on enemy
+    /* XXXXXXXX: */    mtctr r12            # |
+    /* XXXXXXXX: */    bctrl                # /
+    /* XXXXXXXX: */    cmpwi r3, 1                  # \ check if grabbed player was stunned
+    /* XXXXXXXX: */    beq changeStatus_stunned     # /
+    /* XXXXXXXX: */    lis r4, 0x1100
+    /* XXXXXXXX: */    addi r4, r4, 0xD   # LA-Float 13
+    /* XXXXXXXX: */    b changeStatus_getFloat
+changeStatus_stunned:
+    /* XXXXXXXX: */    lis r4, 0x1100
+    /* XXXXXXXX: */    addi r4, r4, 0x10   # LA-Float 16
+changeStatus_getFloat:
     /* 0003C714: */    mr r3,r31
 /*Comment: Checks the float of 4006 parameter (I think its LA-Float 4006). Might differ between Towtow & Bucyulus */
-    /* XXXXXXXX: */    lis r4, 0x1100
-    /* XXXXXXXX: */    addi r4, r4, 0xD
-    /* 0003C718: */    # li r4,0xFA6      # originally this was IC-Basic 4006, changed to LA-Float 13
+    /* 0003C718: */    # li r4,0xFA6      # originally this was IC-Basic 4006, changed to LA-Floats
     /* 0003C71C: */    li r5,0x0
     /* 0003C720: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soValueAccesser__getValueFloat")]
     /* 0003C724: */    stfs f1,0x10(r1)
