@@ -57,9 +57,7 @@ class EnemyType
     public:
         int index;
         int enemyId;
-        int difficulty;
         int startStatus;
-        int points;
         int size;
         int assetSize;
         bool loading;
@@ -247,7 +245,7 @@ public:
     void createItemPac(u32 index);
     void createEnemyPac(u32 index);
     void putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos, int motionPathIndex);
-    void putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, int groupIndex, EnemySpawner* spawner);
+    void putEnemy(EnemyType* enemyToSpawn, int startStatus, Vec2f* pos, int motionPathIndex, int groupIndex, EnemySpawner* spawner);
     grTourObject* getTourObject(int mdlIndex);
     grTourObject* findOrCreateTourObject(int mdlIndex);
     void clearHeap();

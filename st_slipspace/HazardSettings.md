@@ -319,8 +319,6 @@ sora_enemy.rel file index = 301
 
 **Scale X** - Enemy Id. To load an enemy variant instead, write the enemy ID in hex like XXXXYY, where XXXX is the variant ID and YY is the enemy ID. Convert this value to decimal and place it in this field to load that variant. Enemy variant PAC files are named EnmEnemyNameXX.pac and EnmEnemyNameXXBrres.pac.
 
-**Scale Y** - Difficulty
-
 **Scale Z** - Starting status/action
 
 **Rotation X** - Blacklisted flag - if set to 1, enemy will never spawn except at spawners where they are explicitly whitelisted
@@ -328,8 +326,6 @@ sora_enemy.rel file index = 301
 **Rotation Y** - Persistent Memory - maximum amount of instance memory the enemy could use at any given time, in addition to the memory used to spawn them
 
 **Rotation Z** - Frequency of enemy spawns, 1 - 100, 0 means enemy will never spawn
-
-**Translation X** - Points
 
 **Translation Y** - Instance Memory
 

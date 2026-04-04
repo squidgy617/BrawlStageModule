@@ -229,9 +229,7 @@ void stSlipspace::update(float deltaFrame)
                     EnemyType* newEnemyType = new (Heaps::StageInstance) EnemyType();
                     newEnemyType->index = maxEnemyIndex;
                     newEnemyType->enemyId = resNodeData->m_scale.m_x;
-                    newEnemyType->difficulty = resNodeData->m_scale.m_y;
                     newEnemyType->startStatus = resNodeData->m_scale.m_z;
-                    newEnemyType->points = resNodeData->m_translation.m_x;
                     newEnemyType->size = resNodeData->m_translation.m_y;
                     newEnemyType->assetSize = resNodeData->m_translation.m_z;
                     newEnemyType->frequency = resNodeData->m_rotation.m_z;
@@ -495,7 +493,7 @@ void stSlipspace::update(float deltaFrame)
                 {
                     // Find enemy list entry
                     // Spawn enemy
-                    this->putEnemy(enemyToSpawn, enemyToSpawn->difficulty, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->groupIndex, _spawners[si]);
+                    this->putEnemy(enemyToSpawn, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->groupIndex, _spawners[si]);
                     // Pop from current position in queue
                     for (int k = j; k < _spawnQueue.size() - 1; k++)
                     {
@@ -1731,7 +1729,7 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
     }
 }
 
-void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startStatus, Vec2f* pos, int motionPathIndex, int groupIndex, EnemySpawner* spawner) {
+void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int startStatus, Vec2f* pos, int motionPathIndex, int groupIndex, EnemySpawner* spawner) {
     // TODO: MotionPath index investigate if can make every enemy follow it?
     int startingMem = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
     emManager* enemyManager = emManager::getInstance();
@@ -2271,7 +2269,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
                         ftEntry* playerEntry = g_ftManager->m_entryManager->getEntity(playerEntryId);
                         if (playerEntry != NULL)
                         {
-                            playerEntry->m_finalSmashAmount += ((spawnedEnemy->enemyType->points / 100) / 2);
+                            playerEntry->m_finalSmashAmount += ((enemy->getScore() / 100) / 2);
                         }
                     }
                 }
@@ -2284,7 +2282,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
                     // TODO: properly calculate this vector
                     Vec2f vec = Vec2f(0,0);
 
-                    itemManager->createMoney((char*)enemy->m_taskId, &pos, &vec, spawnedEnemy->enemyType->points / 10, 1, 0);
+                    itemManager->createMoney((char*)enemy->m_taskId, &pos, &vec, enemy->getScore() / 10, 1, 0);
                 }
                 // If score mode, enemies give points
                 else if (_gameMode == Game_Rule_Time)
@@ -2303,7 +2301,7 @@ stDestroyBossParamCommon stSlipspace::getDestroyBossParamCommon(u32 test, int en
                             ftOwner* playerOwner = playerEntry->m_owner;
                             if (playerOwner != NULL)
                             {
-                                int enemyBeats = ((spawnedEnemy->enemyType->points / 100) / 2);
+                                int enemyBeats = ((enemy->getScore() / 100) / 2);
                                 int currentBeatCount = playerOwner->getBeatCount(KO_PLAYERINDEX);
                                 playerOwner->setBeatCount(KO_PLAYERINDEX, currentBeatCount + enemyBeats); // Increment KO count by 1
                             }
