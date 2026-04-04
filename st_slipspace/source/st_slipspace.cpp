@@ -821,7 +821,10 @@ void stSlipspace::createEnemyPac(u32 index) {
     if (data != NULL) {
         gfArchive* archive = new(Heaps::StageInstance) gfArchive();
         archive->setFileImage(data, nodeSize, Heaps::StageResource);
-        this->enemyPacs[index] = archive;
+        EnemyPac* enemyPac = new (Heaps::StageInstance) EnemyPac();
+        enemyPac->enemyPacId = index;
+        enemyPac->enemyPac = archive;
+        this->enemyPacs.push(enemyPac);
     }
 }
 
@@ -858,20 +861,32 @@ void stSlipspace::getItemPac(gfArchive** brres, gfArchive** param, itKind itemID
     }
 }
 
+gfArchive* stSlipspace::getEnemyArchive(int index)
+{
+    for(int i = 0; i < this->enemyPacs.size(); i++)
+    {
+        if (enemyPacs[i]->enemyPacId == index)
+        {
+            return enemyPacs[i]->enemyPac;
+        }
+    }
+    return NULL;
+}
+
 void stSlipspace::getEnemyPac(gfArchive **brres, gfArchive **param, gfArchive **enmCommon, gfArchive **primFaceBrres, EnemyKind enemyID) {
     int fileIndex = enemyID * 2;
     int nodeSize;
     *primFaceBrres = NULL;
 
-    if (this->enemyPacs[fileIndex + 1] == NULL) {
+    if (this->getEnemyArchive(fileIndex + 1) == NULL) {
         this->createEnemyPac(fileIndex + 1);
     }
-    *brres = this->enemyPacs[fileIndex + 1];
+    *brres = this->getEnemyArchive(fileIndex + 1);
 
-    if (this->enemyPacs[fileIndex] == NULL) {
+    if (this->getEnemyArchive(fileIndex) == NULL) {
         this->createEnemyPac(fileIndex);
     }
-    *param = this->enemyPacs[fileIndex];
+    *param = getEnemyArchive(fileIndex);
 
     if (this->enemyCommonPac == NULL) {
         void* enmCommonData = this->m_secondaryFileData->getData(Data_Type_Misc, 300, &nodeSize, (u32)0xfffe);
@@ -1070,12 +1085,21 @@ void stSlipspace::clearHeap() {
        }
    }
 
-    for (int i = 0; i < NUM_ENEMY_TYPES*2; i++) {
-        if (this->enemyPacs[i] != NULL) {
+   for (int i = 0; i < enemyPacs.size(); i++)
+   {
+        if (this->enemyPacs[i] != NULL)
+        {
+            if (this->enemyPacs[i]->enemyPac != NULL)
+            {
+                delete this->enemyPacs[i]->enemyPac;
+                this->enemyPacs[i]->enemyPac = NULL;
+            }
             delete this->enemyPacs[i];
             this->enemyPacs[i] = NULL;
         }
-    }
+   }
+   enemyPacs.~Vector<EnemyPac*>();
+
     if (this->enemyCommonPac != NULL) {
         delete this->enemyCommonPac;
         this->enemyCommonPac = NULL;

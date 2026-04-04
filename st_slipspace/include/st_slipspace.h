@@ -134,6 +134,12 @@ struct Tour
     int currentFrame;
 };
 
+struct EnemyPac
+{
+    int enemyPacId;
+    gfArchive* enemyPac;
+};
+
 class stSlipspace : public stMelee, public ftOutsideEventObserver {
 protected:
     gfArchive* itemPacs[NUM_ITEM_PACS];
@@ -156,7 +162,7 @@ protected:
     grPokeTrainer* pokeTrainerGround;
     float totalDamage; // 912 (Required offset for stOperatorRuleTargetBreak!)
     u32 numTargetsHitPerPlayer[NUM_PLAYERS]; // 916 (Required offset for stOperatorRuleTargetBreak!)
-    gfArchive* enemyPacs[NUM_ENEMY_TYPES*2];
+    Vector<EnemyPac*> enemyPacs;
 
     bool cameraStopped;
     bool cameraStoppedOut;
@@ -178,7 +184,6 @@ public:
             setupObserver(g_ftManager->m_eventManageModule.getManageId());
         }
         __memfill(&itemPacs, 0, sizeof(itemPacs));
-        __memfill(&enemyPacs, 0, sizeof(enemyPacs));
         enemyCommonPac = NULL;
         primFacePac = NULL;
         isItemsInitialized = false;
@@ -265,6 +270,7 @@ public:
     bool isEnemyInGroup(EnemyGroup* enemyGroup, int enemyId);
     SlipspaceEnemy* getSpawnedEnemy(int enemyCreateId);
     virtual stDestroyBossParamCommon getDestroyBossParamCommon(u32, int enemyCreateId = -1, int enemyMessageKind = -1);
+    gfArchive* getEnemyArchive(int index);
 
     //STATIC_CHECK(sizeof(stSlipspace) == 916 + NUM_PLAYERS*4 + sizeof(enemyPacs))
 };
