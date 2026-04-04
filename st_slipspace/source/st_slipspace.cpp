@@ -1838,6 +1838,11 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int difficulty, int startSta
     Enemy* enemy = enemyManager->getEnemyPtrFromId(id);
     enemy->m_moduleAccesser->getCameraModule().setEnableCamera(0, -1);
 
+    // Play spawn GFX
+    // TODO: Allow this to be disabled for enemies with their own spawn animations (Puppit, Armight), also somehow make the position more accurate?
+    g_ecMgr->setDrawPrio(1);
+    g_ecMgr->setEffect(ef_ptc_adv_cmn_in_enem, &create.m_startPos);
+
     // Increase enemy count
     _enemyCount++;
 
