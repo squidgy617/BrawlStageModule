@@ -15916,7 +15916,8 @@ loc_F7EC:
     /* 0000F7EC: */    rlwinm r0,r31,2,0,29
     /* 0000F7F0: */    lis r3,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_9F0")]
     /* 0000F7F4: */    addi r3,r3,0x0                           [R_PPC_ADDR16_LO(41, 4, "loc_9F0")]
-    /* 0000F7F8: */    lwzx r3,r3,r0
+    # For Slipspace, use a hook to get the variant soundbank
+    /* 0000F7F8: */    b __unresolved                           [R_PPC_REL24(41, 7, "loc_emInfo_getSEId_getVariant")]
 loc_F7FC:
     /* 0000F7FC: */    lwz r31,0xC(r1)
     /* 0000F800: */    lwz r0,0x14(r1)
