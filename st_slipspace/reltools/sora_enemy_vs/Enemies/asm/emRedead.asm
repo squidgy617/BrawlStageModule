@@ -478,6 +478,7 @@ loc_buc3C4B8:
     /* 0003C504: */    mtctr r12
     /* 0003C508: */    bctrl
 # This code makes it so if the target is forced to face the same direction as Redead
+# TODO: If we can't figure out how to force a specific subaction, make it so this forces the opponent to face the OPPOSITE direction of the ReDead, and flip the ReDead's grab animation, so he always grabs from front - looks better on most characters
     /* XXXXXXXX: */    lwz r3, 0x60(r31)    # \ Enemy is in r31, moduleAccesser is 0x60
     /* XXXXXXXX: */    lwz r3, 0xD8(r3)     # | get enumeration start
     /* XXXXXXXX: */    lwz r3, 0xC(r3)      # | offset 0xC is the posture module
