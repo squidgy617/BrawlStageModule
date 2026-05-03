@@ -34093,7 +34093,7 @@ emAreaModuleImpl__isExistTarget:
     /* 0002393C: */    subfe r3,r0,r3
     /* 00023940: */    b loc_239F4
 loc_23944:
-    /* 00023944: */    subi r0,r4,0x4
+    /* 00023944: */    subi r0,r4,0x8       # updated from 0x4 to 0x8 to push other target types up
     /* 00023948: */    cmplwi r0,0x1
     /* 0002394C: */    bgt- loc_239D4
     /* 00023950: */    lwz r3,0x8(r3)
@@ -34106,12 +34106,12 @@ loc_23944:
     /* 0002396C: */    extsh r7,r0
     /* 00023970: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
     /* 00023974: */    lwz r31,0xB0(r3)
-    /* 00023978: */    cmpwi r30,0x4
+    /* 00023978: */    cmpwi r30,0x8        # updated from 0x4 to 0x8 to push other target types up
     /* 0002397C: */    bne- loc_23988
     /* 00023980: */    li r3,0x1
     /* 00023984: */    b loc_239F4
 loc_23988:
-    /* 00023988: */    cmpwi r30,0x5
+    /* 00023988: */    cmpwi r30,0x9        # updated from 0x5 to 0x9 to push other target types up
     /* 0002398C: */    bne- loc_239CC
     /* 00023990: */    bl emManager__getInstance
     /* 00023994: */    mr r4,r31
@@ -34133,12 +34133,12 @@ loc_239CC:
     /* 000239CC: */    li r3,0x1
     /* 000239D0: */    b loc_239F4
 loc_239D4:
-    /* 000239D4: */    cmpwi r4,0x6
+    /* 000239D4: */    cmpwi r4,0xA       # updated from 0x6 to 0xA to push other target types up
     /* 000239D8: */    bne- loc_239E4
     /* 000239DC: */    li r3,0x1
     /* 000239E0: */    b loc_239F4
 loc_239E4:
-    /* 000239E4: */    li r0,0x7
+    /* 000239E4: */    li r0,0xB         # updated from 0x7 to 0xB to push other target types up
     /* 000239E8: */    sub r0,r4,r0
     /* 000239EC: */    cntlzw r0,r0
     /* 000239F0: */    rlwinm r3,r0,27,5,31
@@ -34189,7 +34189,7 @@ loc_23A84:
     /* 00023A94: */    bl Vec3f____as
     /* 00023A98: */    b loc_23BBC
 loc_23A9C:
-    /* 00023A9C: */    subi r0,r29,0x4
+    /* 00023A9C: */    subi r0,r29,0x8      # updated from 0x4 to 0x8 to push other target types up
     /* 00023AA0: */    cmplwi r0,0x1
     /* 00023AA4: */    bgt- loc_23B8C
     /* 00023AA8: */    lwz r3,0x8(r31)
@@ -34203,7 +34203,7 @@ loc_23A9C:
     /* 00023AC8: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
     /* 00023ACC: */    mr r4,r3
     /* 00023AD0: */    lwz r31,0xB0(r3)
-    /* 00023AD4: */    cmpwi r29,0x4
+    /* 00023AD4: */    cmpwi r29,0x8        # updated from 0x4 to 0x8 to push other target types up
     /* 00023AD8: */    bne- loc_23B14
     /* 00023ADC: */    cmpwi r30,0x0
     /* 00023AE0: */    bne- loc_23AFC
@@ -34221,7 +34221,7 @@ loc_23AFC:
     /* 00023B0C: */    bl Vec3f____as
     /* 00023B10: */    b loc_23BBC
 loc_23B14:
-    /* 00023B14: */    cmpwi r29,0x5
+    /* 00023B14: */    cmpwi r29,0x9        # updated from 0x5 to 0x9 to push other target types up
     /* 00023B18: */    bne- loc_23BBC
     /* 00023B1C: */    bl emManager__getInstance
     /* 00023B20: */    mr r4,r31
@@ -34255,7 +34255,7 @@ loc_23B74:
     /* 00023B84: */    bl Vec3f____as
     /* 00023B88: */    b loc_23BBC
 loc_23B8C:
-    /* 00023B8C: */    cmpwi r29,0x6
+    /* 00023B8C: */    cmpwi r29,0xA        # updated from 0x6 to 0xA to push other target types up
     /* 00023B90: */    bne- loc_23BBC
     /* 00023B94: */    addi r3,r1,0x8
     /* 00023B98: */    lwz r4,0xD8(r31)
@@ -34294,7 +34294,7 @@ loc_23C10:
     /* 00023C10: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getStatusKind")]
     /* 00023C14: */    b loc_23CBC
 loc_23C18:
-    /* 00023C18: */    subi r0,r4,0x4
+    /* 00023C18: */    subi r0,r4,0x8       # updated from 0x4 to 0x8 to push other target types up
     /* 00023C1C: */    cmplwi r0,0x1
     /* 00023C20: */    bgt- loc_23CB4
     /* 00023C24: */    lwz r3,0x8(r3)
@@ -34307,13 +34307,13 @@ loc_23C18:
     /* 00023C40: */    extsh r7,r0
     /* 00023C44: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
     /* 00023C48: */    lwz r31,0xB0(r3)
-    /* 00023C4C: */    cmpwi r29,0x4
+    /* 00023C4C: */    cmpwi r29,0x8          # updated from 0x4 to 0x8 to push other target types up
     /* 00023C50: */    bne- loc_23C60
     /* 00023C54: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getStatusKind")]
     /* 00023C58: */    mr r30,r3
     /* 00023C5C: */    b loc_23CAC
 loc_23C60:
-    /* 00023C60: */    cmpwi r29,0x5
+    /* 00023C60: */    cmpwi r29,0x9        # updated from 0x5 to 0x9 to push other target types up
     /* 00023C64: */    bne- loc_23CAC
     /* 00023C68: */    bl emManager__getInstance
     /* 00023C6C: */    mr r4,r31
@@ -34370,7 +34370,7 @@ loc_23D1C:
     /* 00023D1C: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getLr")]
     /* 00023D20: */    b loc_23DEC
 loc_23D24:
-    /* 00023D24: */    subi r0,r4,0x4
+    /* 00023D24: */    subi r0,r4,0x8       # updated from 0x4 to 0x8 to push other target types up
     /* 00023D28: */    cmplwi r0,0x1
     /* 00023D2C: */    bgt- loc_23DC0
     /* 00023D30: */    lwz r3,0x8(r3)
@@ -34383,13 +34383,13 @@ loc_23D24:
     /* 00023D4C: */    extsh r7,r0
     /* 00023D50: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
     /* 00023D54: */    lwz r31,0xB0(r3)
-    /* 00023D58: */    cmpwi r30,0x4
+    /* 00023D58: */    cmpwi r30,0x8        # updated from 0x4 to 0x8 to push other target types up
     /* 00023D5C: */    bne- loc_23D6C
     /* 00023D60: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getLr")]
     /* 00023D64: */    fmr f31,f1
     /* 00023D68: */    b loc_23DB8
 loc_23D6C:
-    /* 00023D6C: */    cmpwi r30,0x5
+    /* 00023D6C: */    cmpwi r30,0x9        # updated from 0x5 to 0x9 to push other target types up
     /* 00023D70: */    bne- loc_23DB8
     /* 00023D74: */    bl emManager__getInstance
     /* 00023D78: */    mr r4,r31
@@ -34414,13 +34414,13 @@ loc_23DB8:
     /* 00023DB8: */    fmr f1,f31
     /* 00023DBC: */    b loc_23DEC
 loc_23DC0:
-    /* 00023DC0: */    cmpwi r4,0x6
+    /* 00023DC0: */    cmpwi r4,0xA     # updated from 0x6 to 0xA to push other target types up
     /* 00023DC4: */    bne- loc_23DD4
     /* 00023DC8: */    lis r3,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_D54")]
     /* 00023DCC: */    lfs f1,0x0(r3)                           [R_PPC_ADDR16_LO(41, 4, "loc_D54")]
     /* 00023DD0: */    b loc_23DEC
 loc_23DD4:
-    /* 00023DD4: */    cmpwi r4,0x7
+    /* 00023DD4: */    cmpwi r4,0xB     # updated from 0x7 to 0xB to push other target types up
     /* 00023DD8: */    bne- loc_23DE8
     /* 00023DDC: */    lis r3,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_D54")]
     /* 00023DE0: */    lfs f1,0x0(r3)                           [R_PPC_ADDR16_LO(41, 4, "loc_D54")]
@@ -34459,7 +34459,7 @@ loc_23E54:
     /* 00023E54: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getScl")]
     /* 00023E58: */    b loc_23F1C
 loc_23E5C:
-    /* 00023E5C: */    subi r0,r4,0x4
+    /* 00023E5C: */    subi r0,r4,0x8       # updated from 0x4 to 0x8 to push other target types up
     /* 00023E60: */    cmplwi r0,0x1
     /* 00023E64: */    bgt- loc_23EF8
     /* 00023E68: */    lwz r3,0x8(r3)
@@ -34472,13 +34472,13 @@ loc_23E5C:
     /* 00023E84: */    extsh r7,r0
     /* 00023E88: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
     /* 00023E8C: */    lwz r31,0xB0(r3)
-    /* 00023E90: */    cmpwi r30,0x4
+    /* 00023E90: */    cmpwi r30,0x8        # updated from 0x4 to 0x8 to push other target types up
     /* 00023E94: */    bne- loc_23EA4
     /* 00023E98: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getScl")]
     /* 00023E9C: */    fmr f31,f1
     /* 00023EA0: */    b loc_23EF0
 loc_23EA4:
-    /* 00023EA4: */    cmpwi r30,0x5
+    /* 00023EA4: */    cmpwi r30,0x9        # updated from 0x5 to 0x9 to push other target types up
     /* 00023EA8: */    bne- loc_23EF0
     /* 00023EAC: */    bl emManager__getInstance
     /* 00023EB0: */    mr r4,r31
@@ -44135,7 +44135,7 @@ loc_2C8DC:
 loc_2C8F4:
     /* 0002C8F4: */    addi r29,r29,0x1
 loc_2C8F8:
-    /* 0002C8F8: */    cmpwi r29,0x8            # changed from 0x4 to 0x8 to get all four ports, this is the loop head calling getTargetFighterPtr
+    /* 0002C8F8: */    cmpwi r29,0x8            # updated from 0x4 to 0x8 to get all four ports, this is the loop head calling getTargetFighterPtr
     /* 0002C8FC: */    blt+ loc_2C834
     /* 0002C900: */    mr r3,r30
     /* 0002C904: */    psq_l f31,0x88(r1),0,0
