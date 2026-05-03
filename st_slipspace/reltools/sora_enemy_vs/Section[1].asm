@@ -33865,8 +33865,8 @@ loc_23594:
     /* 0002361C: */    lwz r3,0x0(r23)                          [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
     /* 00023620: */    mr r4,r22
     /* 00023624: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getPlayerNo")]
-    /* 00023628: */    cmpwi r3,0x0           #TODO: this instruction and following instruction can be nopped to allow more players to be detected? - Slipspace
-    /* 0002362C: */    bne- loc_2376C
+    /* 00023628: */    nop           #TODO: this instruction and following instruction can be nopped to allow more players to be detected? - Slipspace
+    /* 0002362C: */    nop
     /* 00023630: */    cmpwi r29,0x0
     /* 00023634: */    bne- loc_23648
     /* 00023638: */    cmplw r24,r25
@@ -33887,8 +33887,8 @@ loc_23660:
     /* 0002366C: */    lwz r3,0x0(r23)                          [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
     /* 00023670: */    mr r4,r22
     /* 00023674: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getPlayerNo")]
-    /* 00023678: */    cmpwi r3,0x1             #TODO: this instruction and following instruction can be nopped to allow more players to be detected? - Slipspace
-    /* 0002367C: */    bne- loc_2376C
+    /* 00023678: */    nop             #TODO: this instruction and following instruction can be nopped to allow more players to be detected? - Slipspace
+    /* 0002367C: */    nop
     /* 00023680: */    cmpwi r29,0x2
     /* 00023684: */    bne- loc_23698
     /* 00023688: */    cmplw r24,r25
@@ -33986,14 +33986,15 @@ emAreaModuleImpl__getTargetFighterPtr: # TODO: This function needs to change in 
     /* 000237CC: */    fmr f2,f1
     /* 000237D0: */    fmr f3,f1
     /* 000237D4: */    bl Vec3f____ct
-    /* 000237D8: */    cmplwi r30,0x3
+# the below is all trying to get the entry ID
+    /* 000237D8: */    cmplwi r30,0x7           # increase parameter value to 7 (2 slots for each port)
     /* 000237DC: */    bgt- loc_238F4
     /* 000237E0: */    li r31,-0x1
-    /* 000237E4: */    cmplwi r30,0x1
-    /* 000237E8: */    bgt- loc_23810
+    /* 000237E4: */    nop #cmplwi r30, 0x1     # skip comparison, we always try to get the entry ID
+    /* 000237E8: */    nop #bgt- loc_23810
     /* 000237EC: */    lis r3,0x0                               [R_PPC_ADDR16_HA(27, 6, "loc_2E68")]
     /* 000237F0: */    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
-    /* 000237F4: */    li r4,0x0
+    /* 000237F4: */    b __unresolved                           [R_PPC_REL24(41, 7, "loc_emAreaModuleImpl_getPortValue")]
     /* 000237F8: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getEntryId")]
     /* 000237FC: */    mr r31,r3
     /* 00023800: */    cmpwi r3,-0x1
@@ -34013,11 +34014,12 @@ loc_23810:
     /* 00023834: */    bne- loc_23840
     /* 00023838: */    li r3,0x0
     /* 0002383C: */    b loc_238F8
+# here is where it tries to get fighter or subfighter position
 loc_23840:
-    /* 00023840: */    cmpwi r30,0x0
-    /* 00023844: */    beq- loc_23850
-    /* 00023848: */    cmpwi r30,0x2
-    /* 0002384C: */    bne- loc_23874
+    /* 00023840: */    andi. r0, r30, 1 # cmpwi r30,0x0 - original instruction, checks if param is 0, new instruction instead uses masking to check if fighter or subfighter
+    /* 00023844: */    beq- loc_23850   # this means it's a main fighter
+    /* 00023848: */    nop              # cmpwi r30,0x2 - original instruction, we don't need to do this so we just do an else
+    /* 0002384C: */    b loc_23874      # this means it's a subfighter, originally was bne-
 loc_23850:
     /* 00023850: */    lis r3,0x0                               [R_PPC_ADDR16_HA(27, 6, "loc_2E68")]
     /* 00023854: */    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
@@ -34042,12 +34044,13 @@ loc_23884:
     /* 00023898: */    bne- loc_238A4
     /* 0002389C: */    li r3,0x0
     /* 000238A0: */    b loc_238F8
+# here it tries to get fighter or subfighter
 loc_238A4:
     /* 000238A4: */    li r3,0x0
-    /* 000238A8: */    cmpwi r30,0x0
-    /* 000238AC: */    beq- loc_238B8
-    /* 000238B0: */    cmpwi r30,0x2
-    /* 000238B4: */    bne- loc_238D0
+    /* 000238A8: */    andi. r0, r30, 1        # cmpwi r30,0x0 - original instruction, checks if param is 0, new instruction instead uses masking to check if fighter or subfighter
+    /* 000238AC: */    beq- loc_238B8          # this means it's a main fighter
+    /* 000238B0: */    nop                     # cmpwi r30,0x2 - original instruction, we don't need to do this so we just do an else
+    /* 000238B4: */    b loc_238D0             # this means it's a subfighter, originally was bne-
 loc_238B8:
     /* 000238B8: */    lis r3,0x0                               [R_PPC_ADDR16_HA(27, 6, "loc_2E68")]
     /* 000238BC: */    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
@@ -34082,7 +34085,7 @@ emAreaModuleImpl__isExistTarget:
     /* 0002391C: */    stw r31,0xC(r1)
     /* 00023920: */    stw r30,0x8(r1)
     /* 00023924: */    mr r30,r4
-    /* 00023928: */    cmplwi r4,0x3
+    /* 00023928: */    cmplwi r4,0x7        # updated from 0x3 to 0x7 to get all 4 ports
     /* 0002392C: */    bgt- loc_23944
     /* 00023930: */    mr r3,r30
     /* 00023934: */    bl emAreaModuleImpl__getTargetFighterPtr
@@ -34161,7 +34164,7 @@ emAreaModuleImpl__getTargetPos:
     /* 00023A38: */    fmr f2,f1
     /* 00023A3C: */    fmr f3,f1
     /* 00023A40: */    bl Vec3f____ct
-    /* 00023A44: */    cmplwi r29,0x3
+    /* 00023A44: */    cmplwi r29,0x7       # updated from 0x3 to 0x7 to get all 4 ports
     /* 00023A48: */    bgt- loc_23A9C
     /* 00023A4C: */    mr r3,r29
     /* 00023A50: */    bl emAreaModuleImpl__getTargetFighterPtr
@@ -34279,7 +34282,7 @@ emAreaModuleImpl__getTargetStatusKind:
     /* 00023BE4: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_29")]
     /* 00023BE8: */    mr r29,r4
     /* 00023BEC: */    li r30,-0x1
-    /* 00023BF0: */    cmplwi r4,0x3
+    /* 00023BF0: */    cmplwi r4,0x7       # updated from 0x3 to 0x7 to get all 4 ports
     /* 00023BF4: */    bgt- loc_23C18
     /* 00023BF8: */    mr r3,r29
     /* 00023BFC: */    bl emAreaModuleImpl__getTargetFighterPtr
@@ -34355,7 +34358,7 @@ emAreaModuleImpl__getTargetPostureLr:
     /* 00023CF0: */    mr r30,r4
     /* 00023CF4: */    lis r5,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_D58")]
     /* 00023CF8: */    lfs f31,0x0(r5)                          [R_PPC_ADDR16_LO(41, 4, "loc_D58")]
-    /* 00023CFC: */    cmplwi r4,0x3
+    /* 00023CFC: */    cmplwi r4,0x7       # updated from 0x3 to 0x7 to get all 4 ports
     /* 00023D00: */    bgt- loc_23D24
     /* 00023D04: */    mr r3,r30
     /* 00023D08: */    bl emAreaModuleImpl__getTargetFighterPtr
@@ -34444,7 +34447,7 @@ emAreaModuleImpl__getTargetPostureScl:
     /* 00023E28: */    mr r30,r4
     /* 00023E2C: */    lis r5,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_D54")]
     /* 00023E30: */    lfs f31,0x0(r5)                          [R_PPC_ADDR16_LO(41, 4, "loc_D54")]
-    /* 00023E34: */    cmplwi r4,0x3
+    /* 00023E34: */    cmplwi r4,0x7       # updated from 0x3 to 0x7 to get all 4 ports
     /* 00023E38: */    bgt- loc_23E5C
     /* 00023E3C: */    mr r3,r30
     /* 00023E40: */    bl emAreaModuleImpl__getTargetFighterPtr
@@ -44132,7 +44135,7 @@ loc_2C8DC:
 loc_2C8F4:
     /* 0002C8F4: */    addi r29,r29,0x1
 loc_2C8F8:
-    /* 0002C8F8: */    cmpwi r29,0x4
+    /* 0002C8F8: */    cmpwi r29,0x8            # changed from 0x4 to 0x8 to get all four ports, this is the loop head calling getTargetFighterPtr
     /* 0002C8FC: */    blt+ loc_2C834
     /* 0002C900: */    mr r3,r30
     /* 0002C904: */    psq_l f31,0x88(r1),0,0
