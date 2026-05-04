@@ -2,6 +2,7 @@
 .set WEAPON_HEAP_TYPE, 0x23 #0x27 WeaponInstance -> AssistFigureResource - Slipspace
 .set RESOURCE_HEAP_TYPE, 0x11
 .set ENEMY_KIND_TERM, 0x3D
+# Search Slipspace to find changes for Slipspace, and search "P3" or "P4" to find changes to make enemies target more players
 
 globaldestructorchain____register_global_object:
     /* 00000000: */    lis r6,0x0                               [R_PPC_ADDR16_HA(41, 6, "loc_0")]
@@ -33808,6 +33809,8 @@ emAreaModuleImpl__activate:
     /* 00023544: */    mtlr r0
     /* 00023548: */    addi r1,r1,0x10
     /* 0002354C: */    blr
+# Modified to allow enemies to target P3 and P4
+# TODO: This could probably be handled better, we are just replacing the "subfighter" behavior (used by ICs?) with P3 and P4. Targeting for P3 and P4 seems slightly different than for P1 and P2.
 emAreaModuleImpl__checkArea:
     /* 00023550: */    stwu r1,-0x40(r1)
     /* 00023554: */    mflr r0
@@ -33860,16 +33863,18 @@ loc_23594:
     /* 00023608: */    li r5,-0x1
     /* 0002360C: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getFighter")]
     /* 00023610: */    mr r25,r3
-    /* 00023614: */    cmplwi r29,0x1
+# the below code gets the playerNo (port) and uses that determine which target type we should be checking to determine if this is a fighter or subfighter, which seems to affect some of the checks done here on whether it counts as a "hit"
+# we are altering it to treat all target types the same, rather than treating any as subfighters
+    /* 00023614: */    cmplwi r29,0x3             # updated from 0x1 to 0x3 so we always go down first branch for fighters
     /* 00023618: */    bgt- loc_23660
     /* 0002361C: */    lwz r3,0x0(r23)                          [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
     /* 00023620: */    mr r4,r22
     /* 00023624: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getPlayerNo")]
-    /* 00023628: */    nop           #TODO: this instruction and following instruction can be nopped to allow more players to be detected? - Slipspace
-    /* 0002362C: */    nop
-    /* 00023630: */    cmpwi r29,0x0
-    /* 00023634: */    bne- loc_23648
-    /* 00023638: */    cmplw r24,r25
+    /* 00023628: */    nop #cmpwi r3,0x0           # this checks the playerNo is 0 normally, skip it because we are treating all ports as valid
+    /* 0002362C: */    nop #bne- loc_2376C
+    /* 00023630: */    nop #cmpwi r29,0x0           # this checks the target type is 0 normally, which means it's a fighter, skip the check because all are considered fighters
+    /* 00023634: */    nop #bne- loc_23648
+    /* 00023638: */    cmplw r24,r25                # probably checks fighter is the same as a previous target? not sure, but this check is different between fighters (0) and subfighters (1)
     /* 0002363C: */    bne- loc_2376C
     /* 00023640: */    li r3,0x1
     /* 00023644: */    b loc_2377C
@@ -33887,8 +33892,8 @@ loc_23660:
     /* 0002366C: */    lwz r3,0x0(r23)                          [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
     /* 00023670: */    mr r4,r22
     /* 00023674: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getPlayerNo")]
-    /* 00023678: */    nop             #TODO: this instruction and following instruction can be nopped to allow more players to be detected? - Slipspace
-    /* 0002367C: */    nop
+    /* 00023678: */    cmpwi r3,0x1
+    /* 0002367C: */    bne- loc_2376C
     /* 00023680: */    cmpwi r29,0x2
     /* 00023684: */    bne- loc_23698
     /* 00023688: */    cmplw r24,r25
@@ -33973,7 +33978,9 @@ emAreaModuleImpl__isTargetFighter:
     /* 0002379C: */    subc r0,r0,r4
     /* 000237A0: */    subfze r3,r3
     /* 000237A4: */    blr
-emAreaModuleImpl__getTargetFighterPtr: # TODO: This function needs to change in order to make enemies target all players. For this one, we could expand the parameter to accept more values (currently expands 4), because it seems to always be called from loops that end at 4. So would need to expand every calling loop. - Slipspace
+# Modified to allow enemies to target P3 and P4
+# TODO: This could probably be handled better, we are just replacing the "subfighter" behavior (used by ICs?) with P3 and P4. Targeting for P3 and P4 seems slightly different than for P1 and P2.
+emAreaModuleImpl__getTargetFighterPtr:
     /* 000237A8: */    stwu r1,-0x20(r1)
     /* 000237AC: */    mflr r0
     /* 000237B0: */    stw r0,0x24(r1)
@@ -33987,14 +33994,16 @@ emAreaModuleImpl__getTargetFighterPtr: # TODO: This function needs to change in 
     /* 000237D0: */    fmr f3,f1
     /* 000237D4: */    bl Vec3f____ct
 # the below is all trying to get the entry ID
-    /* 000237D8: */    cmplwi r30,0x7           # increase parameter value to 7 (2 slots for each port)
+    /* 000237D8: */    cmplwi r30,0x3
     /* 000237DC: */    bgt- loc_238F4
     /* 000237E0: */    li r31,-0x1
-    /* 000237E4: */    nop #cmplwi r30, 0x1     # skip comparison, we always try to get the entry ID
+# normally, the below only gets entry ID if the target type is 0 - 3, and it's hardcoded that 0 or 1 uses port 0, and 2 or 3 uses port 1
+# We are changing this to make the 0 - 3 range tie directly to the port number
+    /* 000237E4: */    nop #cmplwi r30, 0x1     # skip comparison, we always try to get the entry ID, regardless of target type
     /* 000237E8: */    nop #bgt- loc_23810
     /* 000237EC: */    lis r3,0x0                               [R_PPC_ADDR16_HA(27, 6, "loc_2E68")]
     /* 000237F0: */    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
-    /* 000237F4: */    b __unresolved                           [R_PPC_REL24(41, 7, "loc_emAreaModuleImpl_getPortValue")]
+    /* 000237F4: */    mr r4, r30               # li r4,0x0 - original instruction, but now we are loading the target type (port ID) directly in
     /* 000237F8: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getEntryId")]
     /* 000237FC: */    mr r31,r3
     /* 00023800: */    cmpwi r3,-0x1
@@ -34014,12 +34023,13 @@ loc_23810:
     /* 00023834: */    bne- loc_23840
     /* 00023838: */    li r3,0x0
     /* 0002383C: */    b loc_238F8
-# here is where it tries to get fighter or subfighter position
+# here is where it tries to get fighter or subfighter position. Normally, this only gets fighter position if the type is 0 or 2, but gets subfighter (for ICs?) position otherwise
+# We are changing it so it always gets the fighter position, treating the target type as port number
 loc_23840:
-    /* 00023840: */    andi. r0, r30, 1 # cmpwi r30,0x0 - original instruction, checks if param is 0, new instruction instead uses masking to check if fighter or subfighter
-    /* 00023844: */    beq- loc_23850   # this means it's a main fighter
-    /* 00023848: */    nop              # cmpwi r30,0x2 - original instruction, we don't need to do this so we just do an else
-    /* 0002384C: */    b loc_23874      # this means it's a subfighter, originally was bne-
+    /* 00023840: */    cmpwi r30, 0x3 # cmpwi r30,0x0 - ignore usual target type checks and get it as long as it's a valid port number
+    /* 00023844: */    bgt- loc_23874 # beq- loc_23850
+    /* 00023848: */    nop # cmpwi r30,0x2
+    /* 0002384C: */    b loc_23850 # originally bne- loc_23874
 loc_23850:
     /* 00023850: */    lis r3,0x0                               [R_PPC_ADDR16_HA(27, 6, "loc_2E68")]
     /* 00023854: */    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
@@ -34044,13 +34054,12 @@ loc_23884:
     /* 00023898: */    bne- loc_238A4
     /* 0002389C: */    li r3,0x0
     /* 000238A0: */    b loc_238F8
-# here it tries to get fighter or subfighter
 loc_238A4:
     /* 000238A4: */    li r3,0x0
-    /* 000238A8: */    andi. r0, r30, 1        # cmpwi r30,0x0 - original instruction, checks if param is 0, new instruction instead uses masking to check if fighter or subfighter
-    /* 000238AC: */    beq- loc_238B8          # this means it's a main fighter
-    /* 000238B0: */    nop                     # cmpwi r30,0x2 - original instruction, we don't need to do this so we just do an else
-    /* 000238B4: */    b loc_238D0             # this means it's a subfighter, originally was bne-
+    /* 000238A8: */    cmpwi r30, 0x3 # cmpwi r30,0x0 - ignore usual target type checks and get it as long as it's a valid port number
+    /* 000238AC: */    bgt- loc_238D0 # beq- loc_238B8
+    /* 000238B0: */    nop # cmpwi r30,0x2
+    /* 000238B4: */    b loc_238B8 # bne- loc_238D0
 loc_238B8:
     /* 000238B8: */    lis r3,0x0                               [R_PPC_ADDR16_HA(27, 6, "loc_2E68")]
     /* 000238BC: */    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
@@ -34085,7 +34094,7 @@ emAreaModuleImpl__isExistTarget:
     /* 0002391C: */    stw r31,0xC(r1)
     /* 00023920: */    stw r30,0x8(r1)
     /* 00023924: */    mr r30,r4
-    /* 00023928: */    cmplwi r4,0x7        # updated from 0x3 to 0x7 to get all 4 ports
+    /* 00023928: */    cmplwi r4,0x3
     /* 0002392C: */    bgt- loc_23944
     /* 00023930: */    mr r3,r30
     /* 00023934: */    bl emAreaModuleImpl__getTargetFighterPtr
@@ -34093,7 +34102,7 @@ emAreaModuleImpl__isExistTarget:
     /* 0002393C: */    subfe r3,r0,r3
     /* 00023940: */    b loc_239F4
 loc_23944:
-    /* 00023944: */    subi r0,r4,0x8       # updated from 0x4 to 0x8 to push other target types up
+    /* 00023944: */    subi r0,r4,0x4
     /* 00023948: */    cmplwi r0,0x1
     /* 0002394C: */    bgt- loc_239D4
     /* 00023950: */    lwz r3,0x8(r3)
@@ -34106,12 +34115,12 @@ loc_23944:
     /* 0002396C: */    extsh r7,r0
     /* 00023970: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
     /* 00023974: */    lwz r31,0xB0(r3)
-    /* 00023978: */    cmpwi r30,0x8        # updated from 0x4 to 0x8 to push other target types up
+    /* 00023978: */    cmpwi r30,0x4
     /* 0002397C: */    bne- loc_23988
     /* 00023980: */    li r3,0x1
     /* 00023984: */    b loc_239F4
 loc_23988:
-    /* 00023988: */    cmpwi r30,0x9        # updated from 0x5 to 0x9 to push other target types up
+    /* 00023988: */    cmpwi r30,0x5
     /* 0002398C: */    bne- loc_239CC
     /* 00023990: */    bl emManager__getInstance
     /* 00023994: */    mr r4,r31
@@ -34133,12 +34142,12 @@ loc_239CC:
     /* 000239CC: */    li r3,0x1
     /* 000239D0: */    b loc_239F4
 loc_239D4:
-    /* 000239D4: */    cmpwi r4,0xA       # updated from 0x6 to 0xA to push other target types up
+    /* 000239D4: */    cmpwi r4,0x6
     /* 000239D8: */    bne- loc_239E4
     /* 000239DC: */    li r3,0x1
     /* 000239E0: */    b loc_239F4
 loc_239E4:
-    /* 000239E4: */    li r0,0xB         # updated from 0x7 to 0xB to push other target types up
+    /* 000239E4: */    li r0,0x7
     /* 000239E8: */    sub r0,r4,r0
     /* 000239EC: */    cntlzw r0,r0
     /* 000239F0: */    rlwinm r3,r0,27,5,31
@@ -34164,7 +34173,7 @@ emAreaModuleImpl__getTargetPos:
     /* 00023A38: */    fmr f2,f1
     /* 00023A3C: */    fmr f3,f1
     /* 00023A40: */    bl Vec3f____ct
-    /* 00023A44: */    cmplwi r29,0x7       # updated from 0x3 to 0x7 to get all 4 ports
+    /* 00023A44: */    cmplwi r29,0x3
     /* 00023A48: */    bgt- loc_23A9C
     /* 00023A4C: */    mr r3,r29
     /* 00023A50: */    bl emAreaModuleImpl__getTargetFighterPtr
@@ -34189,7 +34198,7 @@ loc_23A84:
     /* 00023A94: */    bl Vec3f____as
     /* 00023A98: */    b loc_23BBC
 loc_23A9C:
-    /* 00023A9C: */    subi r0,r29,0x8      # updated from 0x4 to 0x8 to push other target types up
+    /* 00023A9C: */    subi r0,r29,0x4
     /* 00023AA0: */    cmplwi r0,0x1
     /* 00023AA4: */    bgt- loc_23B8C
     /* 00023AA8: */    lwz r3,0x8(r31)
@@ -34203,7 +34212,7 @@ loc_23A9C:
     /* 00023AC8: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
     /* 00023ACC: */    mr r4,r3
     /* 00023AD0: */    lwz r31,0xB0(r3)
-    /* 00023AD4: */    cmpwi r29,0x8        # updated from 0x4 to 0x8 to push other target types up
+    /* 00023AD4: */    cmpwi r29,0x4
     /* 00023AD8: */    bne- loc_23B14
     /* 00023ADC: */    cmpwi r30,0x0
     /* 00023AE0: */    bne- loc_23AFC
@@ -34221,7 +34230,7 @@ loc_23AFC:
     /* 00023B0C: */    bl Vec3f____as
     /* 00023B10: */    b loc_23BBC
 loc_23B14:
-    /* 00023B14: */    cmpwi r29,0x9        # updated from 0x5 to 0x9 to push other target types up
+    /* 00023B14: */    cmpwi r29,0x5
     /* 00023B18: */    bne- loc_23BBC
     /* 00023B1C: */    bl emManager__getInstance
     /* 00023B20: */    mr r4,r31
@@ -34255,7 +34264,7 @@ loc_23B74:
     /* 00023B84: */    bl Vec3f____as
     /* 00023B88: */    b loc_23BBC
 loc_23B8C:
-    /* 00023B8C: */    cmpwi r29,0xA        # updated from 0x6 to 0xA to push other target types up
+    /* 00023B8C: */    cmpwi r29,0x6
     /* 00023B90: */    bne- loc_23BBC
     /* 00023B94: */    addi r3,r1,0x8
     /* 00023B98: */    lwz r4,0xD8(r31)
@@ -34282,7 +34291,7 @@ emAreaModuleImpl__getTargetStatusKind:
     /* 00023BE4: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_29")]
     /* 00023BE8: */    mr r29,r4
     /* 00023BEC: */    li r30,-0x1
-    /* 00023BF0: */    cmplwi r4,0x7       # updated from 0x3 to 0x7 to get all 4 ports
+    /* 00023BF0: */    cmplwi r4,0x3
     /* 00023BF4: */    bgt- loc_23C18
     /* 00023BF8: */    mr r3,r29
     /* 00023BFC: */    bl emAreaModuleImpl__getTargetFighterPtr
@@ -34294,7 +34303,7 @@ loc_23C10:
     /* 00023C10: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getStatusKind")]
     /* 00023C14: */    b loc_23CBC
 loc_23C18:
-    /* 00023C18: */    subi r0,r4,0x8       # updated from 0x4 to 0x8 to push other target types up
+    /* 00023C18: */    subi r0,r4,0x4
     /* 00023C1C: */    cmplwi r0,0x1
     /* 00023C20: */    bgt- loc_23CB4
     /* 00023C24: */    lwz r3,0x8(r3)
@@ -34307,13 +34316,13 @@ loc_23C18:
     /* 00023C40: */    extsh r7,r0
     /* 00023C44: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
     /* 00023C48: */    lwz r31,0xB0(r3)
-    /* 00023C4C: */    cmpwi r29,0x8          # updated from 0x4 to 0x8 to push other target types up
+    /* 00023C4C: */    cmpwi r29,0x4
     /* 00023C50: */    bne- loc_23C60
     /* 00023C54: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getStatusKind")]
     /* 00023C58: */    mr r30,r3
     /* 00023C5C: */    b loc_23CAC
 loc_23C60:
-    /* 00023C60: */    cmpwi r29,0x9        # updated from 0x5 to 0x9 to push other target types up
+    /* 00023C60: */    cmpwi r29,0x5
     /* 00023C64: */    bne- loc_23CAC
     /* 00023C68: */    bl emManager__getInstance
     /* 00023C6C: */    mr r4,r31
@@ -34358,7 +34367,7 @@ emAreaModuleImpl__getTargetPostureLr:
     /* 00023CF0: */    mr r30,r4
     /* 00023CF4: */    lis r5,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_D58")]
     /* 00023CF8: */    lfs f31,0x0(r5)                          [R_PPC_ADDR16_LO(41, 4, "loc_D58")]
-    /* 00023CFC: */    cmplwi r4,0x7       # updated from 0x3 to 0x7 to get all 4 ports
+    /* 00023CFC: */    cmplwi r4,0x3
     /* 00023D00: */    bgt- loc_23D24
     /* 00023D04: */    mr r3,r30
     /* 00023D08: */    bl emAreaModuleImpl__getTargetFighterPtr
@@ -34370,7 +34379,7 @@ loc_23D1C:
     /* 00023D1C: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getLr")]
     /* 00023D20: */    b loc_23DEC
 loc_23D24:
-    /* 00023D24: */    subi r0,r4,0x8       # updated from 0x4 to 0x8 to push other target types up
+    /* 00023D24: */    subi r0,r4,0x4
     /* 00023D28: */    cmplwi r0,0x1
     /* 00023D2C: */    bgt- loc_23DC0
     /* 00023D30: */    lwz r3,0x8(r3)
@@ -34383,13 +34392,13 @@ loc_23D24:
     /* 00023D4C: */    extsh r7,r0
     /* 00023D50: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
     /* 00023D54: */    lwz r31,0xB0(r3)
-    /* 00023D58: */    cmpwi r30,0x8        # updated from 0x4 to 0x8 to push other target types up
+    /* 00023D58: */    cmpwi r30,0x4
     /* 00023D5C: */    bne- loc_23D6C
     /* 00023D60: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getLr")]
     /* 00023D64: */    fmr f31,f1
     /* 00023D68: */    b loc_23DB8
 loc_23D6C:
-    /* 00023D6C: */    cmpwi r30,0x9        # updated from 0x5 to 0x9 to push other target types up
+    /* 00023D6C: */    cmpwi r30,0x5
     /* 00023D70: */    bne- loc_23DB8
     /* 00023D74: */    bl emManager__getInstance
     /* 00023D78: */    mr r4,r31
@@ -34414,13 +34423,13 @@ loc_23DB8:
     /* 00023DB8: */    fmr f1,f31
     /* 00023DBC: */    b loc_23DEC
 loc_23DC0:
-    /* 00023DC0: */    cmpwi r4,0xA     # updated from 0x6 to 0xA to push other target types up
+    /* 00023DC0: */    cmpwi r4,0x6
     /* 00023DC4: */    bne- loc_23DD4
     /* 00023DC8: */    lis r3,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_D54")]
     /* 00023DCC: */    lfs f1,0x0(r3)                           [R_PPC_ADDR16_LO(41, 4, "loc_D54")]
     /* 00023DD0: */    b loc_23DEC
 loc_23DD4:
-    /* 00023DD4: */    cmpwi r4,0xB     # updated from 0x7 to 0xB to push other target types up
+    /* 00023DD4: */    cmpwi r4,0x7
     /* 00023DD8: */    bne- loc_23DE8
     /* 00023DDC: */    lis r3,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_D54")]
     /* 00023DE0: */    lfs f1,0x0(r3)                           [R_PPC_ADDR16_LO(41, 4, "loc_D54")]
@@ -34447,7 +34456,7 @@ emAreaModuleImpl__getTargetPostureScl:
     /* 00023E28: */    mr r30,r4
     /* 00023E2C: */    lis r5,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_D54")]
     /* 00023E30: */    lfs f31,0x0(r5)                          [R_PPC_ADDR16_LO(41, 4, "loc_D54")]
-    /* 00023E34: */    cmplwi r4,0x7       # updated from 0x3 to 0x7 to get all 4 ports
+    /* 00023E34: */    cmplwi r4,0x3
     /* 00023E38: */    bgt- loc_23E5C
     /* 00023E3C: */    mr r3,r30
     /* 00023E40: */    bl emAreaModuleImpl__getTargetFighterPtr
@@ -34459,7 +34468,7 @@ loc_23E54:
     /* 00023E54: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getScl")]
     /* 00023E58: */    b loc_23F1C
 loc_23E5C:
-    /* 00023E5C: */    subi r0,r4,0x8       # updated from 0x4 to 0x8 to push other target types up
+    /* 00023E5C: */    subi r0,r4,0x4
     /* 00023E60: */    cmplwi r0,0x1
     /* 00023E64: */    bgt- loc_23EF8
     /* 00023E68: */    lwz r3,0x8(r3)
@@ -34472,13 +34481,13 @@ loc_23E5C:
     /* 00023E84: */    extsh r7,r0
     /* 00023E88: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
     /* 00023E8C: */    lwz r31,0xB0(r3)
-    /* 00023E90: */    cmpwi r30,0x8        # updated from 0x4 to 0x8 to push other target types up
+    /* 00023E90: */    cmpwi r30,0x4
     /* 00023E94: */    bne- loc_23EA4
     /* 00023E98: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soExternalValueAccesser__getScl")]
     /* 00023E9C: */    fmr f31,f1
     /* 00023EA0: */    b loc_23EF0
 loc_23EA4:
-    /* 00023EA4: */    cmpwi r30,0x9        # updated from 0x5 to 0x9 to push other target types up
+    /* 00023EA4: */    cmpwi r30,0x5
     /* 00023EA8: */    bne- loc_23EF0
     /* 00023EAC: */    bl emManager__getInstance
     /* 00023EB0: */    mr r4,r31
@@ -44135,7 +44144,7 @@ loc_2C8DC:
 loc_2C8F4:
     /* 0002C8F4: */    addi r29,r29,0x1
 loc_2C8F8:
-    /* 0002C8F8: */    cmpwi r29,0x8            # updated from 0x4 to 0x8 to get all four ports, this is the loop head calling getTargetFighterPtr
+    /* 0002C8F8: */    cmpwi r29,0x4
     /* 0002C8FC: */    blt+ loc_2C834
     /* 0002C900: */    mr r3,r30
     /* 0002C904: */    psq_l f31,0x88(r1),0,0
