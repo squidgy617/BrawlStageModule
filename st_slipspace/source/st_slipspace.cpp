@@ -325,13 +325,13 @@ void stSlipspace::update(float deltaFrame)
                 Enemy* enemy = enemyManager->getEnemyPtrFromId(_spawnedEnemyTypes[i]->enemyCreateId);
 
                 // Debug code to render enemy targeting areas
-                // emInfo* emInfo = emInfo::getInstance();
-                // int areaCount = emInfo->getAreaNum((EnemyKind)_spawnedEnemyTypes[i]->enemyType->enemyId);
-                // for(int i = 0; i < areaCount; i++)
-                // {
-                //     gfArea* area = enemy->m_moduleAccesser->getAreaModule().getAreaInstance(i);
-                //     area->debugDrawImp();
-                // }
+                emInfo* emInfo = emInfo::getInstance();
+                int areaCount = emInfo->getAreaNum((EnemyKind)_spawnedEnemyTypes[i]->enemyType->enemyId);
+                for(int i = 0; i < areaCount; i++)
+                {
+                    gfArea* area = enemy->m_moduleAccesser->getAreaModule().getAreaInstance(i);
+                    area->debugDrawImp();
+                }
 
                 Vec3f pos = soExternalValueAccesser::getPos(enemy);
                 Vec2f pos2;

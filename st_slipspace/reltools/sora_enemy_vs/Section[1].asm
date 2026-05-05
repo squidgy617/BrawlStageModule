@@ -2,6 +2,7 @@
 .set WEAPON_HEAP_TYPE, 0x23 #0x27 WeaponInstance -> AssistFigureResource - Slipspace
 .set RESOURCE_HEAP_TYPE, 0x11
 .set ENEMY_KIND_TERM, 0x3D
+# Search Slipspace to find changes for Slipspace, and search "P3" or "P4" to find changes to make enemies target more players
 
 globaldestructorchain____register_global_object:
     /* 00000000: */    lis r6,0x0                               [R_PPC_ADDR16_HA(41, 6, "loc_0")]
@@ -33808,6 +33809,8 @@ emAreaModuleImpl__activate:
     /* 00023544: */    mtlr r0
     /* 00023548: */    addi r1,r1,0x10
     /* 0002354C: */    blr
+# Modified to allow enemies to target P3 and P4
+# TODO: This could probably be handled better, we are just replacing the "subfighter" behavior (used by ICs?) with P3 and P4. Targeting for P3 and P4 seems slightly different than for P1 and P2.
 emAreaModuleImpl__checkArea:
     /* 00023550: */    stwu r1,-0x40(r1)
     /* 00023554: */    mflr r0
@@ -33860,16 +33863,18 @@ loc_23594:
     /* 00023608: */    li r5,-0x1
     /* 0002360C: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getFighter")]
     /* 00023610: */    mr r25,r3
-    /* 00023614: */    cmplwi r29,0x1
+# the below code gets the playerNo (port) and uses that determine which target type we should be checking to determine if this is a fighter or subfighter, which seems to affect some of the checks done here on whether it counts as a "hit"
+# we are altering it to treat all target types the same, rather than treating any as subfighters
+    /* 00023614: */    cmplwi r29,0x3             # updated from 0x1 to 0x3 so we always go down first branch for fighters
     /* 00023618: */    bgt- loc_23660
     /* 0002361C: */    lwz r3,0x0(r23)                          [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
     /* 00023620: */    mr r4,r22
     /* 00023624: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getPlayerNo")]
-    /* 00023628: */    cmpwi r3,0x0           #TODO: this instruction and following instruction can be nopped to allow more players to be detected? - Slipspace
-    /* 0002362C: */    bne- loc_2376C
-    /* 00023630: */    cmpwi r29,0x0
-    /* 00023634: */    bne- loc_23648
-    /* 00023638: */    cmplw r24,r25
+    /* 00023628: */    nop #cmpwi r3,0x0           # this checks the playerNo is 0 normally, skip it because we are treating all ports as valid
+    /* 0002362C: */    nop #bne- loc_2376C
+    /* 00023630: */    nop #cmpwi r29,0x0           # this checks the target type is 0 normally, which means it's a fighter, skip the check because all are considered fighters
+    /* 00023634: */    nop #bne- loc_23648
+    /* 00023638: */    cmplw r24,r25                # probably checks fighter is the same as a previous target? not sure, but this check is different between fighters (0) and subfighters (1)
     /* 0002363C: */    bne- loc_2376C
     /* 00023640: */    li r3,0x1
     /* 00023644: */    b loc_2377C
@@ -33887,7 +33892,7 @@ loc_23660:
     /* 0002366C: */    lwz r3,0x0(r23)                          [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
     /* 00023670: */    mr r4,r22
     /* 00023674: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getPlayerNo")]
-    /* 00023678: */    cmpwi r3,0x1             #TODO: this instruction and following instruction can be nopped to allow more players to be detected? - Slipspace
+    /* 00023678: */    cmpwi r3,0x1
     /* 0002367C: */    bne- loc_2376C
     /* 00023680: */    cmpwi r29,0x2
     /* 00023684: */    bne- loc_23698
@@ -33973,7 +33978,9 @@ emAreaModuleImpl__isTargetFighter:
     /* 0002379C: */    subc r0,r0,r4
     /* 000237A0: */    subfze r3,r3
     /* 000237A4: */    blr
-emAreaModuleImpl__getTargetFighterPtr: # TODO: This function needs to change in order to make enemies target all players. For this one, we could expand the parameter to accept more values (currently expands 4), because it seems to always be called from loops that end at 4. So would need to expand every calling loop. - Slipspace
+# Modified to allow enemies to target P3 and P4
+# TODO: This could probably be handled better, we are just replacing the "subfighter" behavior (used by ICs?) with P3 and P4. Targeting for P3 and P4 seems slightly different than for P1 and P2.
+emAreaModuleImpl__getTargetFighterPtr:
     /* 000237A8: */    stwu r1,-0x20(r1)
     /* 000237AC: */    mflr r0
     /* 000237B0: */    stw r0,0x24(r1)
@@ -33986,14 +33993,17 @@ emAreaModuleImpl__getTargetFighterPtr: # TODO: This function needs to change in 
     /* 000237CC: */    fmr f2,f1
     /* 000237D0: */    fmr f3,f1
     /* 000237D4: */    bl Vec3f____ct
+# the below is all trying to get the entry ID
     /* 000237D8: */    cmplwi r30,0x3
     /* 000237DC: */    bgt- loc_238F4
     /* 000237E0: */    li r31,-0x1
-    /* 000237E4: */    cmplwi r30,0x1
-    /* 000237E8: */    bgt- loc_23810
+# normally, the below only gets entry ID if the target type is 0 - 3, and it's hardcoded that 0 or 1 uses port 0, and 2 or 3 uses port 1
+# We are changing this to make the 0 - 3 range tie directly to the port number
+    /* 000237E4: */    nop #cmplwi r30, 0x1     # skip comparison, we always try to get the entry ID, regardless of target type
+    /* 000237E8: */    nop #bgt- loc_23810
     /* 000237EC: */    lis r3,0x0                               [R_PPC_ADDR16_HA(27, 6, "loc_2E68")]
     /* 000237F0: */    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
-    /* 000237F4: */    li r4,0x0
+    /* 000237F4: */    mr r4, r30               # li r4,0x0 - original instruction, but now we are loading the target type (port ID) directly in
     /* 000237F8: */    bl __unresolved                          [R_PPC_REL24(27, 1, "ftManager__getEntryId")]
     /* 000237FC: */    mr r31,r3
     /* 00023800: */    cmpwi r3,-0x1
@@ -34013,11 +34023,13 @@ loc_23810:
     /* 00023834: */    bne- loc_23840
     /* 00023838: */    li r3,0x0
     /* 0002383C: */    b loc_238F8
+# here is where it tries to get fighter or subfighter position. Normally, this only gets fighter position if the type is 0 or 2, but gets subfighter (for ICs?) position otherwise
+# We are changing it so it always gets the fighter position, treating the target type as port number
 loc_23840:
-    /* 00023840: */    cmpwi r30,0x0
-    /* 00023844: */    beq- loc_23850
-    /* 00023848: */    cmpwi r30,0x2
-    /* 0002384C: */    bne- loc_23874
+    /* 00023840: */    cmpwi r30, 0x3 # cmpwi r30,0x0 - ignore usual target type checks and get it as long as it's a valid port number
+    /* 00023844: */    bgt- loc_23874 # beq- loc_23850
+    /* 00023848: */    nop # cmpwi r30,0x2
+    /* 0002384C: */    b loc_23850 # originally bne- loc_23874
 loc_23850:
     /* 00023850: */    lis r3,0x0                               [R_PPC_ADDR16_HA(27, 6, "loc_2E68")]
     /* 00023854: */    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
@@ -34044,10 +34056,10 @@ loc_23884:
     /* 000238A0: */    b loc_238F8
 loc_238A4:
     /* 000238A4: */    li r3,0x0
-    /* 000238A8: */    cmpwi r30,0x0
-    /* 000238AC: */    beq- loc_238B8
-    /* 000238B0: */    cmpwi r30,0x2
-    /* 000238B4: */    bne- loc_238D0
+    /* 000238A8: */    cmpwi r30, 0x3 # cmpwi r30,0x0 - ignore usual target type checks and get it as long as it's a valid port number
+    /* 000238AC: */    bgt- loc_238D0 # beq- loc_238B8
+    /* 000238B0: */    nop # cmpwi r30,0x2
+    /* 000238B4: */    b loc_238B8 # bne- loc_238D0
 loc_238B8:
     /* 000238B8: */    lis r3,0x0                               [R_PPC_ADDR16_HA(27, 6, "loc_2E68")]
     /* 000238BC: */    lwz r3,0x0(r3)                           [R_PPC_ADDR16_LO(27, 6, "loc_2E68")]
