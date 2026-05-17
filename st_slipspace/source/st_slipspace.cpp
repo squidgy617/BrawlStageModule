@@ -650,7 +650,7 @@ void stSlipspace::update(float deltaFrame)
                 {
                     tourObject->setMotion(newState->stateObjects->get(i)->animationIndex);
                     _tour.currentFrame = 0;
-                    _tour.currentState = currentState->destinations->get(0);
+                    _tour.currentState = currentState->destinations->get(randIndex);
                 }
             }
         }
