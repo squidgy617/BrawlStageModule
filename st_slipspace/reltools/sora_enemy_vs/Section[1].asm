@@ -1,4 +1,4 @@
-.set HEAP_TYPE, 0xf #0x25 EnemyInstance -> StageInstance
+.set HEAP_TYPE, 0xf #0x25 EnemyInstance -> StageInstance TODO: possibly chnage this to PokemonResource in the future? - Slipspace
 .set WEAPON_HEAP_TYPE, 0x23 #0x27 WeaponInstance -> AssistFigureResource - Slipspace
 .set RESOURCE_HEAP_TYPE, 0x11
 .set ENEMY_KIND_TERM, 0x3D
