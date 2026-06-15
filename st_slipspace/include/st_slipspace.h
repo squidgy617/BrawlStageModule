@@ -160,7 +160,6 @@ protected:
     grPokeTrainer* pokeTrainerGround;
     float totalDamage; // 912 (Required offset for stOperatorRuleTargetBreak!)
     u32 numTargetsHitPerPlayer[NUM_PLAYERS]; // 916 (Required offset for stOperatorRuleTargetBreak!)
-    Vector<EnemyPac*> enemyPacs;
 
     bool cameraStopped;
     bool cameraStoppedOut;

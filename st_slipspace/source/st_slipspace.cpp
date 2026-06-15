@@ -46,17 +46,19 @@ int _maxFrequency = 0; // Highest enemy frequency in stage
 int _respawnPointCount = 0; // Number of respawn points in stage;
 int _difficulty = 5; // Difficulty
 
-Vector<SpawnerGroup*> _spawnerGroups; // List of spawner groups in stage
-Vector<EnemySpawner*> _spawners; // List of spawners in stage
-Vector<u32> _spawnQueue; // Holds queued spawns
-Vector<EnemyType*> _enemyTypes; // List of enemy types in stage
-Vector<EnemyGroup*> _enemyGroups; // List of enemy groups in stage
-Vector<SlipspaceEnemy*> _spawnedEnemyTypes; // List of currently spawned enemies in the stage
+// TODO: Possibly change these vectors to use a different heap. ItemExtraResource might work? Only used for trophies spawned by Celebi(?), and we don't allow Pokemon
+Vector<SpawnerGroup*> _spawnerGroups(Heaps::StageInstance); // List of spawner groups in stage
+Vector<EnemySpawner*> _spawners(Heaps::StageInstance); // List of spawners in stage
+Vector<u32> _spawnQueue(Heaps::StageInstance); // Holds queued spawns
+Vector<EnemyType*> _enemyTypes(Heaps::StageInstance); // List of enemy types in stage
+Vector<EnemyGroup*> _enemyGroups(Heaps::StageInstance); // List of enemy groups in stage
+Vector<SlipspaceEnemy*> _spawnedEnemyTypes(Heaps::StageInstance); // List of currently spawned enemies in the stage
 GameRule _gameMode; // Selected game mode
-Vector<RespawnPoint*> _respawnPoints; // List of respawn points in stage
+Vector<RespawnPoint*> _respawnPoints(Heaps::StageInstance); // List of respawn points in stage
 int _lastUsedSpawnerIndex = -1; // Last spawner index used
-Vector<grTourObject*> _tourObjects; // List of tour objects
-Vector<TourState*> _tourStates; // list of tour states
+Vector<grTourObject*> _tourObjects(Heaps::StageInstance); // List of tour objects
+Vector<TourState*> _tourStates(Heaps::StageInstance); // list of tour states
+Vector<EnemyPac*> _enemyPacs(Heaps::StageInstance);
 Tour _tour; // Tour
 
 stSlipspace* stSlipspace::create()
@@ -207,7 +209,7 @@ void stSlipspace::update(float deltaFrame)
                         newSpawner->groupIndex = i;
                         newSpawner->respawnTimerLength = resNodeData->m_scale.m_x;
                         newSpawner->listSize = 0;
-                        newSpawner->listedEnemies = new Vector<u32>();
+                        newSpawner->listedEnemies = new Vector<u32>(Heaps::StageInstance);
                         newSpawner->timer = 0;
                         newSpawner->motionPath = NULL;
                         newSpawner->listType = None;
@@ -832,7 +834,7 @@ void stSlipspace::createEnemyPac(u32 index) {
         EnemyPac* enemyPac = new (Heaps::StageInstance) EnemyPac();
         enemyPac->enemyPacId = index;
         enemyPac->enemyPac = archive;
-        this->enemyPacs.push(enemyPac);
+        _enemyPacs.push(enemyPac);
     }
 }
 
@@ -871,11 +873,11 @@ void stSlipspace::getItemPac(gfArchive** brres, gfArchive** param, itKind itemID
 
 gfArchive* stSlipspace::getEnemyArchive(int index)
 {
-    for(int i = 0; i < this->enemyPacs.size(); i++)
+    for(int i = 0; i < _enemyPacs.size(); i++)
     {
-        if (enemyPacs[i]->enemyPacId == index)
+        if (_enemyPacs[i]->enemyPacId == index)
         {
-            return enemyPacs[i]->enemyPac;
+            return _enemyPacs[i]->enemyPac;
         }
     }
     return NULL;
@@ -1093,20 +1095,20 @@ void stSlipspace::clearHeap() {
        }
    }
 
-   for (int i = 0; i < enemyPacs.size(); i++)
+   for (int i = 0; i < _enemyPacs.size(); i++)
    {
-        if (this->enemyPacs[i] != NULL)
+        if (_enemyPacs[i] != NULL)
         {
-            if (this->enemyPacs[i]->enemyPac != NULL)
+            if (_enemyPacs[i]->enemyPac != NULL)
             {
-                delete this->enemyPacs[i]->enemyPac;
-                this->enemyPacs[i]->enemyPac = NULL;
+                delete _enemyPacs[i]->enemyPac;
+                _enemyPacs[i]->enemyPac = NULL;
             }
-            delete this->enemyPacs[i];
-            this->enemyPacs[i] = NULL;
+            delete _enemyPacs[i];
+            _enemyPacs[i] = NULL;
         }
    }
-   enemyPacs.~Vector<EnemyPac*>();
+   _enemyPacs.~Vector<EnemyPac*>();
 
     if (this->enemyCommonPac != NULL) {
         delete this->enemyCommonPac;
@@ -1193,8 +1195,8 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
             {
                 TourState* tourState = new (Heaps::StageInstance) TourState();
                 tourState->frames = resNodeData->m_rotation.m_x;
-                tourState->stateObjects = new Vector<StateObject*>();
-                tourState->destinations = new Vector<int>();
+                tourState->stateObjects = new Vector<StateObject*>(Heaps::StageInstance);
+                tourState->destinations = new Vector<int>(Heaps::StageInstance);
                 _tourStates.push(tourState);
             }
             // Add state objects
