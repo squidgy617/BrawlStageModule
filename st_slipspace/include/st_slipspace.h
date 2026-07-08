@@ -124,6 +124,10 @@ struct TourState
     Vector<StateObject*>* stateObjects;
     Vector<int>* destinations;
     int frames;
+    int targetState;
+    bool isCheckpoint;
+    bool hasBeenHit;
+    int index;
 };
 
 struct Tour

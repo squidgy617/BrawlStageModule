@@ -45,6 +45,8 @@ int _enemyTypeCount = 0; // Number of different types of enemies that can spawn
 int _maxFrequency = 0; // Highest enemy frequency in stage
 int _respawnPointCount = 0; // Number of respawn points in stage;
 int _difficulty = 5; // Difficulty
+int _checkpointCount = 0; // Number of checkpoints in the stage tour
+TourState* _lastCheckpoint = NULL; // The last checkpoint tour state that was hit
 
 // TODO: Possibly change these vectors to use a different heap. ItemExtraResource might work? Only used for trophies spawned by Celebi(?), and we don't allow Pokemon
 Vector<SpawnerGroup*> _spawnerGroups(Heaps::StageInstance); // List of spawner groups in stage
@@ -641,9 +643,65 @@ void stSlipspace::update(float deltaFrame)
         TourState* currentState = _tourStates[_tour.currentState];
         if (_tour.currentFrame >= currentState->frames)
         {
+            // Get next state, avoiding repeats
+            Vector<int> validStates;
+            TourState* targetState;
+            // Get checkpoint options
+            for(int i = 0; i < currentState->destinations->size(); i++)
+            {
+                TourState* selectedState = _tourStates[currentState->destinations->get(i)];
+                // If the tour state IS a checkpoint, compare directly to it
+                if (selectedState->isCheckpoint)
+                {
+                    targetState = selectedState;
+                }
+                // If the tour is a transition to a target state, compare against the target state
+                else
+                {
+                    targetState = _tourStates[selectedState->targetState];
+                }
+                // If the target state has not already been hit, it's a valid option
+                if (targetState != NULL && !targetState->hasBeenHit)
+                {
+                    OSReport("State %d is a valid state, adding \n", i);
+                    validStates.push(i);
+                }
+            }
+            // If no checkpoint options were found, get a state that wasn't previously used instead
+            if (validStates.size() < 1)
+            {
+                for(int i = 0; i < currentState->destinations->size(); i++)
+                {
+                    TourState* selectedState = _tourStates[currentState->destinations->get(i)];
+                    // If the tour state IS a checkpoint, compare directly to it
+                    if (selectedState->isCheckpoint)
+                    {
+                        targetState = selectedState;
+                    }
+                    // If the tour is a transition to a target state, compare against the target state
+                    else
+                    {
+                        targetState = _tourStates[selectedState->targetState];
+                    }
+                    // If the target state is not the last one we came from, it's a valid option
+                    if (targetState != NULL && targetState->index != _lastCheckpoint->index)
+                    {
+                        validStates.push(i);
+                    }
+                }
+            }
+            // If no valid states were found (all have been hit or only one option), just add them all
+            if (validStates.size() < 1)
+            {
+                for(int i = 0; i < currentState->destinations->size(); i++)
+                {
+                    validStates.push(i);
+                }
+            }
             // Get new state
-            int randIndex = randi(currentState->destinations->size());
-            TourState* newState = _tourStates[currentState->destinations->get(randIndex)];
+            int randIndex = randi(validStates.size()); // Randomly select from the valid indexes
+            int destIndex = validStates[randIndex]; // Get the actual destination index
+            TourState* newState = _tourStates[currentState->destinations->get(destIndex)]; // Get the state
             // Update objects in new state to use new animations
             for (int i = 0; i < newState->stateObjects->size(); i++)
             {
@@ -652,7 +710,41 @@ void stSlipspace::update(float deltaFrame)
                 {
                     tourObject->setMotion(newState->stateObjects->get(i)->animationIndex);
                     _tour.currentFrame = 0;
-                    _tour.currentState = currentState->destinations->get(randIndex);
+                    _tour.currentState = currentState->destinations->get(destIndex);
+                }
+            }
+            // Mark new state as hit
+            if (newState->isCheckpoint)
+            {
+                _lastCheckpoint = newState;
+                newState->hasBeenHit = true;
+            }
+            // If all states have been hit, reset the tour so we can hit any of them again (except new current)
+            int hitStates = 0;
+            for (int i = 0; i < _tourStates.size(); i++)
+            {
+                if (_tourStates[i]->hasBeenHit)
+                {
+                    hitStates++;
+                }
+            }
+            if (hitStates >= _checkpointCount)
+            {
+                for (int i = 0; i < _tourStates.size(); i++)
+                {
+                    if (_tourStates[i] != newState)
+                    {
+                        _tourStates[i]->hasBeenHit = false;
+                    }
+                }
+            }
+            // Print state usage
+            OSReport("Tour states\n");
+            for (int i = 0; i < _tourStates.size(); i++)
+            {
+                if (_tourStates[i]->isCheckpoint)
+                {
+                    OSReport(" %d \n", _tourStates[i]->hasBeenHit);
                 }
             }
         }
@@ -1197,6 +1289,14 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
                 tourState->frames = resNodeData->m_rotation.m_x;
                 tourState->stateObjects = new Vector<StateObject*>(Heaps::StageInstance);
                 tourState->destinations = new Vector<int>(Heaps::StageInstance);
+                tourState->targetState = resNodeData->m_rotation.m_y;
+                tourState->isCheckpoint = resNodeData->m_rotation.m_z;
+                tourState->hasBeenHit = false;
+                tourState->index = _checkpointCount;
+                if (tourState->isCheckpoint)
+                {
+                    _checkpointCount++;
+                }
                 _tourStates.push(tourState);
             }
             // Add state objects
@@ -1337,8 +1437,15 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
                                     resNodeDataNE->m_translation.m_z, resNodeDataNE->m_rotation.m_y);
         }
 
+        // Initialize tour state
         _tour.currentFrame = 0;
         _tour.currentState = 0;
+        TourState* currentState = _tourStates[_tour.currentState];
+        if (currentState->isCheckpoint)
+        {
+            _lastCheckpoint = currentState;
+            currentState->hasBeenHit = true;
+        }
         isTourInitialized = true;
     }
 }
