@@ -663,7 +663,6 @@ void stSlipspace::update(float deltaFrame)
                 // If the target state has not already been hit, it's a valid option
                 if (targetState != NULL && !targetState->hasBeenHit)
                 {
-                    OSReport("State %d is a valid state, adding \n", i);
                     validStates.push(i);
                 }
             }
@@ -736,15 +735,6 @@ void stSlipspace::update(float deltaFrame)
                     {
                         _tourStates[i]->hasBeenHit = false;
                     }
-                }
-            }
-            // Print state usage
-            OSReport("Tour states\n");
-            for (int i = 0; i < _tourStates.size(); i++)
-            {
-                if (_tourStates[i]->isCheckpoint)
-                {
-                    OSReport(" %d \n", _tourStates[i]->hasBeenHit);
                 }
             }
         }
