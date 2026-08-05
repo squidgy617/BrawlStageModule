@@ -1430,13 +1430,16 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
         // Initialize tour state
         _tour.currentFrame = 0;
         _tour.currentState = 0;
-        TourState* currentState = _tourStates[_tour.currentState];
-        if (currentState->isCheckpoint)
+        if (_tourStates.size() > 0)
         {
-            _lastCheckpoint = currentState;
-            currentState->hasBeenHit = true;
+            TourState* currentState = _tourStates[_tour.currentState];
+            if (currentState->isCheckpoint)
+            {
+                _lastCheckpoint = currentState;
+                currentState->hasBeenHit = true;
+            }
+            isTourInitialized = true;
         }
-        isTourInitialized = true;
     }
 }
 
