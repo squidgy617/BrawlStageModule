@@ -417,6 +417,8 @@ Spawn points for players, for use with dynamic blast zones. The game will attemp
 
 Tour objects are models that might move in touring stages.
 
+If the tour object is bound to model data 95, StgPosition will automatically be bound to the first child of the root bone of the first model in the tour object.
+
 **Rotation X** - Index of the model data used for the object
 
 **Rotation Y** - Index of the collision data to use for the object. If set to 0, will not be used. You must create a corresponding collision node and bind it to a bone on the tour object for this to work.

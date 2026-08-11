@@ -47,6 +47,7 @@ int _respawnPointCount = 0; // Number of respawn points in stage;
 int _difficulty = 5; // Difficulty
 int _checkpointCount = 0; // Number of checkpoints in the stage tour
 TourState* _lastCheckpoint = NULL; // The last checkpoint tour state that was hit
+grTourObject* _stagePositionTourObject = NULL; // Stage position tour object
 
 // TODO: Possibly change these vectors to use a different heap. ItemExtraResource might work? Only used for trophies spawned by Celebi(?), and we don't allow Pokemon
 Vector<SpawnerGroup*> _spawnerGroups(Heaps::StageInstance); // List of spawner groups in stage
@@ -1524,6 +1525,10 @@ grTourObject* stSlipspace::createObjTourObject(int mdlIndex, int collIndex)
         if (collIndex > 0) {
             createCollision(m_fileData, collIndex, tourobject);
         }
+        if (mdlIndex == 95)
+        {
+            _stagePositionTourObject = tourobject;
+        }
     }
     return tourobject;
 }
@@ -2561,22 +2566,40 @@ void stSlipspace::getFighterReStartPos(Vec3f* startPos, int fighterIndex)
 
 void stSlipspace::processFixCamera()
 {
-  stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
-  if (stageData->dynamicBlastZones == false)
-  {
+    stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
+    if (_stagePositionTourObject != NULL)
+    {
+        Vec3f stagePos;
+        // Handle moving stage position for touring
+        bool hasPos = _stagePositionTourObject->getNodePosition(&stagePos, (u32)0, (u32)1);
+        if (hasPos)
+        {
+            // TODO: offsets seem not quite right
+            Vec2f offsets = getStgPositionOffset();
+            this->m_stagePositions->m_centerPos.m_x = stagePos.m_x + offsets.m_x;
+            this->m_stagePositions->m_centerPos.m_y = stagePos.m_y + offsets.m_y;
+        }
+        Stage::processFixCamera();
+        this->updateStagePositions();
+        return;
+    }
+
+    // Handle dynamic blast zones
+    if (stageData->dynamicBlastZones == false)
+    {
+        Stage::processFixCamera();
+        return;
+    }
+  
+    stPositions* psVar4;
+    
+    if (this->m_stagePositions != (stPositions *)0x0)
+    {
+        this->moveCamera();
+    }
     Stage::processFixCamera();
+    this->updateStagePositions();
     return;
-  }
-  
-  stPositions* psVar4;
-  
-  if (this->m_stagePositions != (stPositions *)0x0)
-  {
-    this->moveCamera();
-  }
-  Stage::processFixCamera();
-  this->updateStagePositions();
-  return;
 }
 
 Vec2f stSlipspace::getStgPositionOffset()
