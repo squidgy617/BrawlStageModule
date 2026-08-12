@@ -125,7 +125,7 @@ struct TourState
     Vector<int>* destinations;
     int frames;
     int targetState;
-    bool isCheckpoint;
+    int checkpointFlag;
     bool hasBeenHit;
     int index;
 };

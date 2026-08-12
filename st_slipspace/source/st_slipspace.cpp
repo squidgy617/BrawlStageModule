@@ -652,17 +652,17 @@ void stSlipspace::update(float deltaFrame)
             {
                 TourState* selectedState = _tourStates[currentState->destinations->get(i)];
                 // If the tour state IS a checkpoint, compare directly to it
-                if (selectedState->isCheckpoint)
+                if (selectedState->checkpointFlag == 1)
                 {
                     targetState = selectedState;
                 }
                 // If the tour is a transition to a target state, compare against the target state
-                else
+                else if (selectedState->checkpointFlag == 0)
                 {
                     targetState = _tourStates[selectedState->targetState];
                 }
                 // If the target state has not already been hit, it's a valid option
-                if (targetState != NULL && !targetState->hasBeenHit)
+                if (targetState->checkpointFlag != 2 && targetState != NULL && !targetState->hasBeenHit)
                 {
                     validStates.push(i);
                 }
@@ -674,17 +674,17 @@ void stSlipspace::update(float deltaFrame)
                 {
                     TourState* selectedState = _tourStates[currentState->destinations->get(i)];
                     // If the tour state IS a checkpoint, compare directly to it
-                    if (selectedState->isCheckpoint)
+                    if (selectedState->checkpointFlag == 1)
                     {
                         targetState = selectedState;
                     }
                     // If the tour is a transition to a target state, compare against the target state
-                    else
+                    else if (selectedState->checkpointFlag == 0)
                     {
                         targetState = _tourStates[selectedState->targetState];
                     }
                     // If the target state is not the last one we came from, it's a valid option
-                    if (targetState != NULL && targetState->index != _lastCheckpoint->index)
+                    if (selectedState->checkpointFlag != 2 && targetState != NULL && targetState->index != _lastCheckpoint->index)
                     {
                         validStates.push(i);
                     }
@@ -714,7 +714,7 @@ void stSlipspace::update(float deltaFrame)
                 }
             }
             // Mark new state as hit
-            if (newState->isCheckpoint)
+            if (newState->checkpointFlag == 1)
             {
                 _lastCheckpoint = newState;
                 newState->hasBeenHit = true;
@@ -1281,10 +1281,10 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
                 tourState->stateObjects = new Vector<StateObject*>(Heaps::StageInstance);
                 tourState->destinations = new Vector<int>(Heaps::StageInstance);
                 tourState->targetState = resNodeData->m_rotation.m_y;
-                tourState->isCheckpoint = resNodeData->m_rotation.m_z;
+                tourState->checkpointFlag = resNodeData->m_rotation.m_z;
                 tourState->hasBeenHit = false;
                 tourState->index = _checkpointCount;
-                if (tourState->isCheckpoint)
+                if (tourState->checkpointFlag == 1)
                 {
                     _checkpointCount++;
                 }
@@ -1434,7 +1434,7 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
         if (_tourStates.size() > 0)
         {
             TourState* currentState = _tourStates[_tour.currentState];
-            if (currentState->isCheckpoint)
+            if (currentState->checkpointFlag == 1)
             {
                 _lastCheckpoint = currentState;
                 currentState->hasBeenHit = true;
@@ -2580,7 +2580,7 @@ void stSlipspace::processFixCamera()
             // TODO, Find a way to change Pause Camera's Center
             this->m_stageParam->m_pauseCamCenterPos.m_x = this->m_stagePositions->m_centerPos.m_x;
             cameraController->m_stageCameraParamPaused.m_centerPos.m_x = this->m_stagePositions->m_centerPos.m_x;
-            
+
             Vec2f offsets = getStgPositionOffset();
             this->m_stagePositions->m_centerPos.m_x = stagePos.m_x + offsets.m_x;
             this->m_stagePositions->m_centerPos.m_y = stagePos.m_y + offsets.m_y;
