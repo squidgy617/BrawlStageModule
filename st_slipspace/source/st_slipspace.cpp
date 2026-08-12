@@ -2580,7 +2580,7 @@ void stSlipspace::processFixCamera()
             // TODO, Find a way to change Pause Camera's Center
             this->m_stageParam->m_pauseCamCenterPos.m_x = this->m_stagePositions->m_centerPos.m_x;
             cameraController->m_stageCameraParamPaused.m_centerPos.m_x = this->m_stagePositions->m_centerPos.m_x;
-            // TODO: offsets seem not quite right
+            
             Vec2f offsets = getStgPositionOffset();
             this->m_stagePositions->m_centerPos.m_x = stagePos.m_x + offsets.m_x;
             this->m_stagePositions->m_centerPos.m_y = stagePos.m_y + offsets.m_y;
