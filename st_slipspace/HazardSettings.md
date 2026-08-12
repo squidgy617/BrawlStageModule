@@ -431,7 +431,7 @@ Each child bone of the TourStates bone represents a state.
 
 **Rotation X** - Number of frames that state lasts for before shifting to another state.
 
-**Rotation Y** - Target checkpoint. The index of the tour state in the "TourObjects" parent-bone, zero-indexed, that the tour state eventually switches to. When the tour state changes, it tries to avoid switching to a state that targets a checkpoint that has already been traveled to. If all target checkpoints have been hit at least once, this logic resets.
+**Rotation Y** - Target checkpoint. The index of the tour state in the "TourStates" parent-bone, zero-indexed, that the tour state eventually switches to. When the tour state changes, it tries to avoid switching to a state that targets a checkpoint that has already been traveled to. If all target checkpoints have been hit at least once, this logic resets.
 
 **Rotation Z** - Checkpoint flag. If set to 1, this indicates the tour state is considered a checkpoint. The target checkpoint field is ignored for tour states that are considered checkpoints. If set to 0, the tour state is considered a "transition", and target checkpoint will not be ignored. If set to 2, the tour state is not considered a transition OR a checkpoint, so it will not be considered a valid option unless there are no valid checkpoint options.
 
