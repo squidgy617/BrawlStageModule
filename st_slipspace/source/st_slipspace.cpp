@@ -2574,6 +2574,12 @@ void stSlipspace::processFixCamera()
         bool hasPos = _stagePositionTourObject->getNodePosition(&stagePos, (u32)0, (u32)1);
         if (hasPos)
         {
+            CameraController* cameraController = CameraController::getInstance();
+
+            this->m_stageParam->m_iceClimbersFinalPos.m_x = this->m_stagePositions->m_centerPos.m_x;
+            // TODO, Find a way to change Pause Camera's Center
+            this->m_stageParam->m_pauseCamCenterPos.m_x = this->m_stagePositions->m_centerPos.m_x;
+            cameraController->m_stageCameraParamPaused.m_centerPos.m_x = this->m_stagePositions->m_centerPos.m_x;
             // TODO: offsets seem not quite right
             Vec2f offsets = getStgPositionOffset();
             this->m_stagePositions->m_centerPos.m_x = stagePos.m_x + offsets.m_x;
