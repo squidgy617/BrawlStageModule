@@ -684,7 +684,7 @@ void stSlipspace::update(float deltaFrame)
                         targetState = _tourStates[selectedState->targetState];
                     }
                     // If the target state is not the last one we came from, it's a valid option
-                    if (selectedState->checkpointFlag != 2 && targetState != NULL && (_lastCheckpoint == NULL || targetState->index != _lastCheckpoint->index))
+                    if (targetState != NULL && targetState->checkpointFlag != 2 && (_lastCheckpoint == NULL || targetState->index != _lastCheckpoint->index))
                     {
                         validStates.push(i);
                     }
@@ -713,10 +713,14 @@ void stSlipspace::update(float deltaFrame)
                     _tour.currentState = currentState->destinations->get(destIndex);
                 }
             }
+            // Mark previous state as last checkpoint if it was a checkpoint
+            if (currentState->checkpointFlag == 1)
+            {
+                _lastCheckpoint = currentState;
+            }
             // Mark new state as hit
             if (newState->checkpointFlag == 1)
             {
-                _lastCheckpoint = newState;
                 newState->hasBeenHit = true;
             }
             // If all states have been hit, reset the tour so we can hit any of them again (except new current)
@@ -1283,10 +1287,14 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
                 tourState->targetState = resNodeData->m_rotation.m_y;
                 tourState->checkpointFlag = resNodeData->m_rotation.m_z;
                 tourState->hasBeenHit = false;
-                tourState->index = _checkpointCount;
                 if (tourState->checkpointFlag == 1)
                 {
+                    tourState->index = _checkpointCount;
                     _checkpointCount++;
+                }
+                else
+                {
+                    tourState->index = -1;
                 }
                 _tourStates.push(tourState);
             }
