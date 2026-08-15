@@ -662,7 +662,7 @@ void stSlipspace::update(float deltaFrame)
                     targetState = _tourStates[selectedState->targetState];
                 }
                 // If the target state has not already been hit, it's a valid option
-                if (targetState->checkpointFlag != 2 && targetState != NULL && !targetState->hasBeenHit)
+                if (targetState != NULL && !targetState->hasBeenHit && targetState->checkpointFlag != 2 && (_lastCheckpoint == NULL || targetState->index != _lastCheckpoint->index))
                 {
                     validStates.push(i);
                 }
@@ -684,7 +684,7 @@ void stSlipspace::update(float deltaFrame)
                         targetState = _tourStates[selectedState->targetState];
                     }
                     // If the target state is not the last one we came from, it's a valid option
-                    if (selectedState->checkpointFlag != 2 && targetState != NULL && targetState->index != _lastCheckpoint->index)
+                    if (selectedState->checkpointFlag != 2 && targetState != NULL && (_lastCheckpoint == NULL || targetState->index != _lastCheckpoint->index))
                     {
                         validStates.push(i);
                     }
