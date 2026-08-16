@@ -741,3 +741,23 @@ dynamicBlastZones, cameraRangeSpawns, _, _
 Default: false, false, false, false
 	/EndDescription
 6
+
+Enemy Delete OffsetRight
+Default: 0.0
+	/EndDescription
+0
+
+Enemy Delete OffsetLeft
+Default: 0.0
+	/EndDescription
+0
+
+Enemy Delete OffsetUp
+Default: 0.0
+	/EndDescription
+0
+
+Enemy Delete OffsetDown
+Default: 0.0
+	/EndDescription
+0

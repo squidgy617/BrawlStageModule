@@ -260,6 +260,7 @@ public:
     void applyNameCheats();
     void applySeed();
     bool inCameraRange(Vec2f position);
+    bool inEnemyDeleteRange(Vec2f position);
     Vec2f getStgPositionOffset();
     bool inBlastZone(Vec2f position);
     int getGroupEnemyCount(int groupIndex);

@@ -342,11 +342,11 @@ void stSlipspace::update(float deltaFrame)
                 Vec2f pos2;
                 pos2.m_x = pos.m_x;
                 pos2.m_y = pos.m_y;
-                // Check if in blast zone
-                bool result = inBlastZone(pos2);
+                // Check if in enemy delete range
+                bool result = inEnemyDeleteRange(pos2);
                 if (!result)
                 {
-                    // If not in blast zone and timer is out, remove the enemy
+                    // If not in enemy delete range and timer is out, remove the enemy
                     if (_spawnedEnemyTypes[i]->killTimer <= 0)
                     {
                         OSReport("Removing enemy %d \n", _spawnedEnemyTypes[i]->enemyType->enemyId);
@@ -359,7 +359,7 @@ void stSlipspace::update(float deltaFrame)
                         _spawnedEnemyTypes[i]->killTimer -= deltaFrame;
                     }
                 }
-                // If enemy is in blast zone, reset timer
+                // If enemy is in enemy delete range, reset timer
                 else
                 {
                     _spawnedEnemyTypes[i]->killTimer = 300;
@@ -2271,6 +2271,16 @@ bool stSlipspace::inCameraRange(Vec2f pos)
     Vec3f center = this->m_stagePositions->m_centerPos;
     Vec2f offsets = getStgPositionOffset();
     return (pos.m_x < center.m_x - offsets.m_x + cameraRange.m_right && pos.m_x > center.m_x - offsets.m_x + cameraRange.m_left && pos.m_y < center.m_y - offsets.m_y + cameraRange.m_up && pos.m_y > center.m_y - offsets.m_y + cameraRange.m_down);
+}
+
+bool stSlipspace::inEnemyDeleteRange(Vec2f pos)
+{
+    Rect2D blastZone;
+    this->m_stagePositions->getDeadRange(&blastZone);
+    Vec3f center = this->m_stagePositions->m_centerPos;
+    Vec2f offsets = getStgPositionOffset();
+    stSlipspaceData* stageData = static_cast<stSlipspaceData*>(m_stageData);
+    return (pos.m_x < center.m_x - offsets.m_x + blastZone.m_right - stageData->enemyDeleteOffsetRight && pos.m_x > center.m_x - offsets.m_x + blastZone.m_left + stageData->enemyDeleteOffsetLeft && pos.m_y < center.m_y - offsets.m_y + blastZone.m_up && pos.m_y > center.m_y - offsets.m_y + blastZone.m_down);
 }
 
 int stSlipspace::getGroupEnemyCount(int groupIndex)

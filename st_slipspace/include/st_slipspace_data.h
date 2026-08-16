@@ -40,6 +40,11 @@ struct stSlipspaceData {
     int spawnTimer;
     bool dynamicBlastZones;
     bool cameraRangeSpawns;
+    float enemyDeleteOffsetRight;
+    float enemyDeleteOffsetLeft;
+    float enemyDeleteOffsetUp;
+    float enemyDeleteOffsetDown;
+
 
     //STATIC_CHECK(sizeof(stSlipspaceData) == 500)
 };
