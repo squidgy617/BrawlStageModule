@@ -128,7 +128,7 @@ struct TourState
     int checkpointFlag;
     bool hasBeenHit;
     int index;
-    bool enemySpawnBlock;
+    bool enemyTransitionBlock;
 };
 
 struct Tour

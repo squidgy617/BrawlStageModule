@@ -642,7 +642,7 @@ void stSlipspace::update(float deltaFrame)
     if (isTourInitialized && _tourStates.size() > 0)
     {
         TourState* currentState = _tourStates[_tour.currentState];
-        if (_tour.currentFrame >= currentState->frames && (currentState->enemySpawnBlock == false || _spawnedEnemyTypes.size() <= 0))
+        if (_tour.currentFrame >= currentState->frames && (currentState->enemyTransitionBlock == false || _spawnedEnemyTypes.size() <= 0))
         {
             // Get next state, avoiding repeats
             Vector<int> validStates;
@@ -1287,7 +1287,7 @@ void stSlipspace::createObjAshiba(int mdlIndex, int collIndex) {
                 tourState->targetState = resNodeData->m_rotation.m_y;
                 tourState->checkpointFlag = resNodeData->m_rotation.m_z;
                 tourState->hasBeenHit = false;
-                tourState->enemySpawnBlock = resNodeData->m_translation.m_x;
+                tourState->enemyTransitionBlock = resNodeData->m_translation.m_x;
                 if (tourState->checkpointFlag == 1)
                 {
                     tourState->index = _checkpointCount;
