@@ -435,6 +435,8 @@ Each child bone of the TourStates bone represents a state.
 
 **Rotation Z** - Checkpoint flag. If set to 1, this indicates the tour state is considered a checkpoint. The target checkpoint field is ignored for tour states that are considered checkpoints. If set to 0, the tour state is considered a "transition", and target checkpoint will not be ignored. If set to 2, the tour state is not considered a transition OR a checkpoint, so it will not be considered a valid option unless there are no valid checkpoint options.
 
+**Translation X** - State change blocker flag. If set to 0, tour state can change as long as timer conditions are met. If set to 1, state change cannot occur until there are no enemies present.
+
 ## State Objects
 
 Each tour state has a child bone named starting with `StateObjects`, which defines all of the objects modified by the tour state. To create a list of state objects, add a child bone with a name starting with `StateObjects` under the tour state bone. Each child bone of the `StateObjects` bone represents a single state object. At the end of the list, there should always be a bone named starting with `StateObjectsEnd`.
