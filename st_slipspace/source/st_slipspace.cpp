@@ -412,7 +412,9 @@ void stSlipspace::update(float deltaFrame)
                         gfArchive* enmCommon;
                         gfArchive* primFaceBrres;
                         this->getEnemyPac(&brres, &param, &enmCommon, &primFaceBrres, (EnemyKind)enemyToSpawn->enemyId);
-                        int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, (EnemyKind)enemyToSpawn->enemyId, true);
+                        OSReport("Loading archive \n");
+                        int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, (EnemyKind)enemyToSpawn->enemyId, true, Heaps::StageResource);
+                        OSReport("Done \n");
                         enemyToSpawn->loading = true;
                         enemyToSpawn->resourceMemory = availableStageMemory;
                     }
@@ -508,6 +510,7 @@ void stSlipspace::update(float deltaFrame)
                 {
                     // Find enemy list entry
                     // Spawn enemy
+                    OSReport("Spawn \n");
                     this->putEnemy(enemyToSpawn, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->groupIndex, _spawners[si]);
                     // Pop from current position in queue
                     for (int k = j; k < _spawnQueue.size() - 1; k++)
@@ -865,7 +868,7 @@ void stSlipspace::createObj()
             gfArchive* primFaceBrres;
             this->getEnemyPac(&brres, &param, &enmCommon, &primFaceBrres, (EnemyKind)i);
             if (brres != NULL) {
-                int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, (EnemyKind) i, true);
+                int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, (EnemyKind) i, true, Heaps::StageResource);
             }
         }
 

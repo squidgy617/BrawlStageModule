@@ -292,7 +292,7 @@ loc_504:
 .include "./Enemies/bss/emFlows.asm"
 #include "./Enemies/bss/emTautau.asm"
 .include "./Enemies/bss/emRedead.asm"
-.include "./Enemies/bss/emShelly.asm"
+#include "./Enemies/bss/emShelly.asm"
 #include "./Enemies/bss/emTeckin.asm"
 #include "./Enemies/bss/emSpar.asm"
 #include "./Enemies/bss/emHammerbros.asm"

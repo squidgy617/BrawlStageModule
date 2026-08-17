@@ -12919,17 +12919,13 @@ emArchive__reqLoad:
 emArchive__reqEnemyLoad:
     # TODO: Handle Ghamghabase
 
-    # stwu r1,-0xA0(r1)
-    # mflr r0
-    # stw r0,0xA4(r1)
-    # stw r31, 0xBC(r1)
-    # mr r31, r5
-    nop 
-    nop 
-    nop 
-    nop 
-    b loc_emArchive__reqEnemyLoad_params
-loc_emArchive__reqEnemyLoad_params_return:
+    stwu r1,-0xB0(r1)
+    mflr r0
+    stw r0,0xB4(r1)
+    stw r30, 0xA8(r1)
+    stw r31, 0xAC(r1)
+    mr r31, r5
+    mr r30, r9
 
     rlwinm r11,r4,24,16,31  # \ 0x00XXXXYY (XXXX = variant id, YY = enemy id)
     andi. r0, r4, 0xff      # /
@@ -13002,29 +12998,23 @@ loc_override:
     li r3,0x1   
     bl __unresolved                          [R_PPC_REL24(27, 1, "soArchiveDb__getManager")]
     addi r4, r1, 0x10
-    mr r5, r30  # use heaptype parameter
+    mr r5, r30
     mulli r6, r31, 0x2   # if it's a brres then share with existing (stage module would manage whether it is safe to unload)
     bl emArchive__reqLoad
     
-    # lwz r31, 0xBC(r1)
-    # lwz r0,0xA4(r1)
-    # mtlr r0
-    # addi r1,r1,0xA0
-    nop 
-    nop 
-    nop 
-    b loc_override_params
-loc_override_params_return:
+    lwz r30, 0xA8(r1)
+    lwz r31, 0xAC(r1)
+    lwz r0,0xB4(r1)
+    mtlr r0
+    addi r1,r1,0xB0
     blr 
     #75
 emArchive__reqCommonLoad:
-    # stwu r1,-0xA0(r1)
-    # mflr r0
-    # stw r0,0xA4(r1)
-    nop 
-    nop 
-    b loc_emArchive__reqCommonLoad_params
-loc_emArchive__reqCommonLoad_params_return:
+    stwu r1,-0xB0(r1)
+    mflr r0
+    stw r0,0xB4(r1)
+    stw r30, 0xA8(r1)
+    mr r30, r9
 
     lis r7,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_enmString")]
     addi r7,r7,0x0                           [R_PPC_ADDR16_LO(41, 1, "loc_enmString")]
@@ -13060,28 +13050,23 @@ loc_notOverrideCommon:
     li r3,0x1
     bl __unresolved                          [R_PPC_REL24(27, 1, "soArchiveDb__getManager")]
     addi r4, r1, 0x10
-    mr r5, r30  # use heaptype param
+    mr r5, r30
     li r6, 0x2
     bl emArchive__reqLoad
 
-    # lwz r0,0xA4(r1)
-    # mtlr r0
-    # addi r1,r1,0xA0
-    nop 
-    nop 
-    b loc_notOverrideCommon_params
-loc_notOverrideCommon_params_return:
+    lwz r30, 0xA8(r1)
+    lwz r0,0xB4(r1)
+    mtlr r0
+    addi r1,r1,0xB0
     blr
     #30
 emArchive__reqPrimFaceLoad:
-    # stwu r1,-0xA0(r1)
-    # mflr r0
-    # stw r0,0xA4(r1)
-    nop 
-    nop 
-    b loc_emArchive__reqPrimFaceLoad_params
-loc_emArchive__reqPrimFaceLoad_params_return:
-    
+    stwu r1,-0xA0(r1)
+    mflr r0
+    stw r0,0xA4(r1)
+    stw r30,0x98(r1)
+    mr r30, r9
+
     rlwinm r11,r4,24,16,31  # \ 0x00XXXXYY (XXXX = variant id, YY = enemy id)
     andi. r0, r4, 0xff      # /
 
@@ -13140,13 +13125,12 @@ loc_overrideFace:
     li r3,0x1   
     bl __unresolved                          [R_PPC_REL24(27, 1, "soArchiveDb__getManager")]
     addi r4, r1, 0x14
-    mr r5, r30 # use heaptype param
+    mr r5, r30
     li r6, 0x0   
     bl emArchive__reqLoad
     
-    # lwz r0, 0xA4(r1)
-    b loc_overrideFace_params
-loc_overrideFace_params_return:
+    lwz r30,0x98(r1)
+    lwz r0,0xA4(r1)
     mtlr r0
     addi r1,r1,0xA0
     blr 
@@ -13207,22 +13191,17 @@ emArchive____ct1:
     /* 0000D8D8: */    mflr r0
     /* 0000D8DC: */    stw r0,0x34(r1)
     /* 0000D8E0: */    addi r11,r1,0x30
-    /* 0000D8E4: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_25")]
-    # /* 0000D8E8: */    mr r26,r3
-    # /* 0000D8EC: */    mr r27,r4
-    # /* 0000D8F0: */    mr r28,r5
-    # /* 0000D8F4: */    mr r29,r6
-    # /* 0000D8F8: */    mr r30,r7
-    # /* 0000D8FC: */    mr r31,r8
-    # /* 0000D900: */    lis r4,0x1
-    nop 
-    nop 
-    nop 
-    nop 
-    nop 
-    nop 
-    b loc_emArchive____ct1_params
-loc_emArchive____ct1_params_return:
+    /* 0000D8E4: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_26")]
+    /* 0000D8E8: */    stw r25,0x18(r1)
+    /* 0000D8EC: */    mr r26,r3
+    /* 0000D8F0: */    mr r27,r4
+    /* 0000D8F4: */    mr r28,r5
+    /* 0000D8F8: */    mr r29,r6
+    /* 0000D8FC: */    mr r30,r7
+    /* 0000D900: */    mr r31,r8
+    /* 0000D904: */    mr r25,r9
+    /* 0000D908: */    stw r25,0x1C(r1)
+    /* 0000D90C: */    lis r4,0x1
     /* 0000D904: */    subi r0,r4,0x1
     /* 0000D908: */    stw r0,0x0(r3)
     /* 0000D90C: */    stw r0,0x4(r3)
@@ -13236,9 +13215,8 @@ loc_emArchive____ct1_params_return:
     mr r4,r31
     bl emInfo__isPrimKind
     mr r4, r31
-    # li r5, 0x1
-    b loc_emArchive____ct1_params_restore
-loc_emArchive____ct1_params_restore_return:
+    li r5, 0x1
+    mr r9, r25
     bl emArchive__reqEnemyLoad
     b loc_setParam
 loc_paramNotNull:
@@ -13254,9 +13232,8 @@ loc_setParam:
     mr r4,r31
     bl emInfo__isPrimKind
     mr r4, r31
-    # li r5, 0x0
-    b loc_setParam_params
-loc_setParam_params_return:
+    li r5, 0x0
+    mr r9, r25
     bl emArchive__reqEnemyLoad
     b loc_setBrres
 loc_brresNotNull:
@@ -13265,11 +13242,10 @@ loc_brresNotNull:
     /* 0000D93C: */    mr r4,r28
     /* 0000D940: */    bl __unresolved                          [R_PPC_REL24(0, 4, "utArchiveManager__addNoManageArchive")]
 loc_setBrres:
-    # /* 0000D944: */    stw r3,0x4(r26)
-    b loc_setBrres_params
-loc_setBrres_params_return:
+    /* 0000D944: */    stw r3,0x4(r26)
     cmpwi r29, 0x0
     bne+ loc_commonNotNull
+    mr r9, r25
     bl emArchive__reqCommonLoad
     b loc_setCommon
 loc_commonNotNull:
@@ -13289,9 +13265,8 @@ loc_setCommon:
     /* 0000D978: */    bne- loc__D990
     cmpwi r30, 0x0
     bne+ loc_primFaceNotNull
-    # mr r4, r31
-    b loc_setCommon_params
-loc_setCommon_params_return:
+    mr r4, r31
+    mr r9, r25
     bl emArchive__reqPrimFaceLoad
     b loc_setPrimFace
 loc_primFaceNotNull:
@@ -13303,11 +13278,11 @@ loc_setPrimFace:
     /* 0000D98C: */    stw r3,0x14(r26)
 loc__D990:
     /* 0000D990: */    mr r3,r26
-    /* 0000D994: */    addi r11,r1,0x30
-    /* 0000D998: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___restgpr_25")]
-    /* 0000D99C: */    lwz r0,0x34(r1)
+    /* 0000D994: */    addi r11,r1,0x20
+    /* 0000D998: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___restgpr_26")]
+    /* 0000D99C: */    lwz r0,0x24(r1)
     /* 0000D9A0: */    mtlr r0
-    /* 0000D9A4: */    addi r1,r1,0x30
+    /* 0000D9A4: */    addi r1,r1,0x20
     /* 0000D9A8: */    blr
     # 0x51
 emInfo__getNamePtr:
@@ -14856,23 +14831,17 @@ emManager__preloadArchive:
     /* 0000D210: */    mflr r0
     /* 0000D214: */    stw r0,0x44(r1)
     /* 0000D218: */    addi r11,r1,0x40
-    /* 0000D21C: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_22")]
-    # /* 0000D220: */    mr r30,r3
-    # /* 0000D224: */    mr r23,r4
-    # /* 0000D228: */    mr r24,r5
-    # /* 0000D22C: */    mr r25,r6
-    # /* 0000D230: */    mr r26,r7
-    # /* 0000D234: */    mr r27,r8
-    # /* 0000D238: */    mr r28,r9
-    nop 
-    nop 
-    nop 
-    nop 
-    nop 
-    nop 
-    b loc_emManager__preloadArchive_params
-loc_emManager__preloadArchive_params_return:
-    /* 0000D23C: */    bl emInfo__getInstance
+    /* 0000D21C: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___savegpr_23")]
+    /* 0000D220: */    stw r22,0x28(r1)
+    /* 0000D224: */    mr r30,r3
+    /* 0000D228: */    mr r23,r4
+    /* 0000D22C: */    mr r24,r5
+    /* 0000D230: */    mr r25,r6
+    /* 0000D234: */    mr r26,r7
+    /* 0000D238: */    mr r27,r8
+    /* 0000D23C: */    mr r28,r9
+    /* 0000D240: */    mr r22,r10
+    /* 0000D240: */    bl emInfo__getInstance
     /* 0000D240: */    mr r4,r27
     /* 0000D244: */    lwz r12,0x0(r3)
     /* 0000D248: */    lwz r12,0xC(r12)
@@ -14920,11 +14889,10 @@ loc_D2B8:
     /* 0000D2E0: */    mr r5,r24
     /* 0000D2E4: */    mr r6,r25
     /* 0000D2E8: */    mr r7,r26
-    #/* 0000D2EC: */    mr r8,r27
-    b loc_D2B8_params
-loc_D2B8_params_return:
-    /* 0000D2F0: */    bl emArchive____ct1
-    /* 0000D2F4: */    mr r30,r3
+    /* 0000D2EC: */    mr r8,r27
+    /* 0000D2F0: */    mr r9,r22
+    /* 0000D2F4: */    bl emArchive____ct1
+    /* 0000D2F8: */    mr r30,r3
 loc_D2F8:
     /* 0000D2F8: */    cmpwi r30,0x0
     /* 0000D2FC: */    bne- loc_D308
@@ -14957,14 +14925,13 @@ loc_D350:
     /* 0000D360: */    bl emManager5EntryFP9emArchive6e__entryPreloadArchive
     /* 0000D364: */    mr r3,r31
 loc_D368:
-    # /* 0000D368: */    addi r11,r1,0x30
-    b loc_D368_params
-loc_D368_params_return:
-    /* 0000D36C: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___restgpr_22")]
-    /* 0000D370: */    lwz r0,0x44(r1)
-    /* 0000D374: */    mtlr r0
-    /* 0000D378: */    addi r1,r1,0x40
-    /* 0000D37C: */    blr
+    /* 0000D368: */    lwz r22,0x28(r1)
+    /* 0000D36C: */    addi r11,r1,0x40
+    /* 0000D370: */    bl __unresolved                          [R_PPC_REL24(0, 4, "runtime___restgpr_23")]
+    /* 0000D374: */    lwz r0,0x44(r1)
+    /* 0000D378: */    mtlr r0
+    /* 0000D37C: */    addi r1,r1,0x40
+    /* 0000D380: */    blr
 emManager__isCompArchive:
     /* 0000D380: */    stwu r1,-0x10(r1)
     /* 0000D384: */    mflr r0
@@ -47767,101 +47734,3 @@ emManager__preloadModule:
     mtlr r0
     addi r1,r1,0x40
     blr
-
-loc_emArchive__reqEnemyLoad_params:
-    stwu r1,-0xB0(r1)
-    mflr r0
-    stw r0,0xB4(r1)
-    stw r30, 0xA8(r1)
-    stw r31, 0xAC(r1)
-    mr r31, r5
-    mr r30, r9
-    b loc_emArchive__reqEnemyLoad_params_return
-
-loc_override_params:
-    lwz r30, 0xA8(r1)
-    lwz r31, 0xAC(r1)
-    lwz r0,0xB4(r1)
-    mtlr r0
-    addi r1,r1,0xB0
-    b loc_override_params_return
-
-loc_emArchive__reqCommonLoad_params:
-    stwu r1,-0xB0(r1)
-    mflr r0
-    stw r0,0xB4(r1)
-    stw r30, 0xA8(r1)
-    mr r30, r9
-    b loc_emArchive__reqCommonLoad_params_return
-
-loc_notOverrideCommon_params:
-    lwz r30, 0xA8(r1)
-    lwz r0,0xB4(r1)
-    mtlr r0
-    addi r1,r1,0xB0
-    b loc_notOverrideCommon_params_return
-
-loc_emArchive__reqPrimFaceLoad_params:
-    stwu r1,-0xA0(r1)
-    mflr r0
-    stw r0,0xA4(r1)
-    stw r30,0x98(r1)
-    mr r30, r9
-    b loc_emArchive__reqPrimFaceLoad_params_return
-
-loc_overrideFace_params:
-    lwz r30,0x98(r1)
-    lwz r0,0xA4(r1)
-    b loc_overrideFace_params_return
-
-loc_emArchive____ct1_params:
-    /* 0000D8EC: */    mr r26,r3
-    /* 0000D8F0: */    mr r27,r4
-    /* 0000D8F4: */    mr r28,r5
-    /* 0000D8F8: */    mr r29,r6
-    /* 0000D8FC: */    mr r30,r7
-    /* 0000D900: */    mr r31,r8
-    /* 0000D904: */    mr r25,r9
-    /* 0000D90C: */    lis r4,0x1
-    b loc_emArchive____ct1_params_return
-
-loc_emArchive____ct1_params_restore:
-    li r5, 0x1
-    mr r9, r25
-    b loc_emArchive____ct1_params_restore_return
-
-loc_setParam_params:
-    li r5, 0x0
-    mr r9, r25
-    b loc_setParam_params_return
-
-loc_setBrres_params:
-    /* 0000D944: */    stw r3,0x4(r26)
-    mr r9, r25
-    b loc_setBrres_params_return
-
-loc_setCommon_params:
-    mr r4, r31
-    mr r9, r25
-    b loc_setCommon_params_return
-
-loc_emManager__preloadArchive_params:
-    /* 0000D224: */    mr r30,r3
-    /* 0000D228: */    mr r23,r4
-    /* 0000D22C: */    mr r24,r5
-    /* 0000D230: */    mr r25,r6
-    /* 0000D234: */    mr r26,r7
-    /* 0000D238: */    mr r27,r8
-    /* 0000D23C: */    mr r28,r9
-    /* 0000D240: */    mr r22,r10
-    b loc_emManager__preloadArchive_params_return
-
-loc_D2B8_params:
-    mr r8, r27
-    mr r9, r22
-    b loc_D2B8_params_return
-
-loc_D368_params:
-    lwz r22, 0x28(r1)
-    addi r11, r1, 0x40
-    b loc_D368_params_return
