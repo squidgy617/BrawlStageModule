@@ -380,6 +380,7 @@ void stSlipspace::update(float deltaFrame)
                 // Check if shared enemies are already loaded
                 bool sharedEnemyLoaded = false;
                 int sharedResourceSize = 0;
+                HeapType sharedEnemyHeap = Heaps::StageResource;
                 EnemyGroup* enemyGroup = getEnemyGroup(enemyToSpawn->enemyId);
                 if (enemyGroup != NULL)
                 {
@@ -390,11 +391,14 @@ void stSlipspace::update(float deltaFrame)
                         {
                             sharedEnemyLoaded = true;
                             sharedResourceSize = sharedEnemy->sharedResourceSize;
+                            sharedEnemyHeap = _enemyTypes[j]->heapType;
                             break;
                         }
                     }
                 }
                 int availableStageMemory = gfHeapManager::getMaxFreeSize(Heaps::StageResource);
+                int myAvailableMemory = availableStageMemory;
+                int availablePokemonMemory = gfHeapManager::getMaxFreeSize(Heaps::PokemonResource);
                 enemyToSpawn->loaded = enemyLoaded;
                 // If an enemy is still loading, break so we don't load multiple enemies at once
                 if (!enemyLoaded && enemyToSpawn->loading)
@@ -404,27 +408,48 @@ void stSlipspace::update(float deltaFrame)
                 if (!enemyLoaded && !enemyToSpawn->loading)
                 {
                     // Only load enemy if there is space to do so
-                    if ((sharedEnemyLoaded && sharedResourceSize < availableStageMemory) || enemyToSpawn->assetSize < availableStageMemory)
+                    bool loadEnemy = false;
+                    HeapType heap = Heaps::StageResource;
+                    if ((sharedEnemyLoaded && sharedEnemyHeap == Heaps::StageResource && sharedResourceSize < availableStageMemory) 
+                    || enemyToSpawn->assetSize < availableStageMemory)
                     {
-                        // OSReport("Loading enemy %d. Available memory: %d \n", enemyToSpawn->enemyId, availableStageMemory);
+                        // OSReport("Loading enemy %d into StageResource. Available memory: %d \n", enemyToSpawn->enemyId, availableStageMemory);
+                        loadEnemy = true;
+
+                    }
+                    // Check PokemonResource if StageResource is full
+                    else if ((sharedEnemyLoaded && sharedEnemyHeap == Heaps::PokemonResource && sharedResourceSize < availablePokemonMemory) 
+                    || enemyToSpawn->assetSize < availablePokemonMemory)
+                    {
+                        // OSReport("Loading enemy %d into PokemonResource. Available memory: %d \n", enemyToSpawn->enemyId, availablePokemonMemory);
+                        loadEnemy = true;
+                        heap = Heaps::PokemonResource;
+                        int myAvailableMemory = availablePokemonMemory;
+                    }
+                    if (loadEnemy == true)
+                    {
                         gfArchive* brres;
                         gfArchive* param;
                         gfArchive* enmCommon;
                         gfArchive* primFaceBrres;
                         this->getEnemyPac(&brres, &param, &enmCommon, &primFaceBrres, (EnemyKind)enemyToSpawn->enemyId);
-                        OSReport("Loading archive \n");
-                        int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, (EnemyKind)enemyToSpawn->enemyId, true, Heaps::StageResource);
-                        OSReport("Done \n");
+                        int result = enemyManager->preloadArchive(param, brres, enmCommon, primFaceBrres, (EnemyKind)enemyToSpawn->enemyId, true, heap);
                         enemyToSpawn->loading = true;
-                        enemyToSpawn->resourceMemory = availableStageMemory;
+                        enemyToSpawn->resourceMemory = myAvailableMemory;
+                        enemyToSpawn->heapType = heap;
                     }
                     // Break even if enemy can't load, to prevent enemies further back in the queue from loading
                     break;
                 }
                 else if (enemyLoaded && enemyToSpawn->loading)
                 {
+                    int availableMemory = availableStageMemory;
+                    if (enemyToSpawn->heapType == Heaps::PokemonResource)
+                    {
+                        availableMemory = availablePokemonMemory;
+                    }
                     enemyToSpawn->loading = false;
-                    enemyToSpawn->resourceMemory = enemyToSpawn->resourceMemory - availableStageMemory;
+                    enemyToSpawn->resourceMemory = enemyToSpawn->resourceMemory - availableMemory;
                     OSReport("Loaded resources for enemy %d. Uses %d resource memory. \n", enemyToSpawn->enemyId, enemyToSpawn->resourceMemory);
                 }
             }
@@ -510,7 +535,6 @@ void stSlipspace::update(float deltaFrame)
                 {
                     // Find enemy list entry
                     // Spawn enemy
-                    OSReport("Spawn \n");
                     this->putEnemy(enemyToSpawn, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->groupIndex, _spawners[si]);
                     // Pop from current position in queue
                     for (int k = j; k < _spawnQueue.size() - 1; k++)

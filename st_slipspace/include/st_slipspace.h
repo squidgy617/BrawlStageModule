@@ -66,6 +66,7 @@ class EnemyType
         int frequency;
         bool blacklisted;
         int persistentSize;
+        HeapType heapType;
 };
 
 struct EnemyGroupItem
