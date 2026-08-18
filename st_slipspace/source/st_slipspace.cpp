@@ -777,6 +777,7 @@ void stSlipspace::update(float deltaFrame)
     }
 
     // OSReport("Instance memory %d \n", gfHeapManager::getMaxFreeSize(Heaps::StageInstance));
+    // OSReport("ItemExtra memory %d \n", gfHeapManager::getMaxFreeSize(Heaps::ItemExtraResource));
 
     // Test code to check if soundbanks are all loaded
     // if (isEnemiesInitialized)
@@ -1916,7 +1917,7 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int startStatus, Vec2f* pos,
     // OSReport("Level is %d \n", create.m_level);
     create.m_36 = 0.0;
     create.m_territoryRange = (Rect2D){0.0, 0.0, 0.0, 0.0};
-    create.m_connectedTriggerId = 0;
+    create.m_connectedTriggerId = Heaps::StageInstance;
 
     create.m_motionPath = NULL;
     // Set enemy motion path

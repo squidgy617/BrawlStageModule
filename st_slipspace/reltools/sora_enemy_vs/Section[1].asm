@@ -267,8 +267,8 @@ Enemy____ct:
     /* 000003D8: */    lwz r0,0x4(r16)
     /* 000003DC: */    stw r0,0xAC(r15)
     /* 000003E0: */    stw r30,0xB0(r15)
-    /* 000003E4: */    lwz r0,0x38(r16)
-    /* 000003E8: */    stw r0,0xB4(r15)
+    /* 000003E4: */    li r0, 0             # lwz r0,0x38(r16) - For Slipspace, we use connectedTriggerId (0x38 offset of r16) to instead store the heap to spawn the enemy in
+    /* 000003E8: */    stw r0,0xB4(r15)    
     /* 000003EC: */    lbz r0,0x0(r16)
     /* 000003F0: */    stw r0,0xB8(r15)
     /* 000003F4: */    lbz r0,0x20(r16)
@@ -546,9 +546,10 @@ Enemy____ct:
     /* 00000834: */    extsh r5,r0
     /* 00000838: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soEventUnitWithWorkArea_29soCollisionCatchEventObserver_1_____ct")]
     /* 0000083C: */    addi r3,r15,0x904
-    /* 00000840: */    li r4,HEAP_TYPE
-    /* 00000844: */    li r5,HEAP_TYPE    
-    /* 00000848: */    li r6,HEAP_TYPE
+    # In Slipspace, load heap type from connectedTriggerId
+    /* 00000840: */    lwz r4,0x38(r16) # li r4,HEAP_TYPE
+    /* 00000844: */    mr r5, r4        # li r5,HEAP_TYPE    
+    /* 00000848: */    mr r6, r4        # li r6,HEAP_TYPE
     /* 0000084C: */    li r7,0x0
     /* 00000850: */    bl __unresolved                          [R_PPC_REL24(27, 1, "soHeapModuleImpl____ct")]
     /* 00000854: */    bl emManager__getInstance
