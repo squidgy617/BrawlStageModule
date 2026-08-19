@@ -7,7 +7,7 @@ Enemy__createInstance_8emTautau_:
     /* 0000E190: */    mr r30,r3
     /* 0000E194: */    mr r31,r4
     /* 0000E198: */    li r3,0x5E1C
-    /* 0000E19C: */    li r4,HEAP_TYPE
+    /* 0000E19C: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E1A0: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E1A4: */    cmpwi r3,0x0
     /* 0000E1A8: */    beq- loc_E1B8

@@ -7,7 +7,7 @@ Enemy__createInstance_12emMasterhand_:
     /* 0000EB78: */    mr r30,r3
     /* 0000EB7C: */    mr r31,r4
     /* 0000EB80: */    li r3,0x5E7C
-    /* 0000EB84: */    li r4,HEAP_TYPE
+    /* 0000EB84: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000EB88: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000EB8C: */    cmpwi r3,0x0
     /* 0000EB90: */    beq- loc_EBA0

@@ -8,7 +8,7 @@ Enemy__createInstance_8emGyraan_:
     /* 0000DF40: */    mr r31,r4
     /* 0000DF44: */    lis r3,0x1
     /* 0000DF48: */    subi r3,r3,0x5DB4
-    /* 0000DF4C: */    li r4,HEAP_TYPE
+    /* 0000DF4C: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DF50: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DF54: */    cmpwi r3,0x0
     /* 0000DF58: */    beq- loc_DF68

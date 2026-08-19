@@ -500,7 +500,8 @@ void stSlipspace::update(float deltaFrame)
                 int si = randomizedSpawnerIndexes[i];
                 emManager *enemyManager = emManager::getInstance();
                 // Only spawn enemies from available spawners and if enemy assets are loaded
-                int availableMemory = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
+                int availableStageInstance = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
+                int availableItemExtraResource = gfHeapManager::getMaxFreeSize(Heaps::ItemExtraResource);
                 // Check if enemy is in whitelist
                 bool whitelisted = _spawners[si]->listType != ExclusiveList && !enemyToSpawn->blacklisted;
                 for (int k = 0; k < _spawners[si]->listSize; k++)
@@ -526,16 +527,37 @@ void stSlipspace::update(float deltaFrame)
                 }
                 // Get allocation needed for all current enemies
                 int minStageInstance = 0;
+                int minItemExtraResource = 0;
                 for (int i = 0; i < _spawnedEnemyTypes.size(); i++)
                 {
-                    minStageInstance += _spawnedEnemyTypes[i]->enemyType->persistentSize;
+                    if (_spawnedEnemyTypes[i]->heapType == Heaps::StageInstance)
+                    {
+                        minStageInstance += _spawnedEnemyTypes[i]->enemyType->persistentSize;
+                    }
+                    else if (_spawnedEnemyTypes[i]->heapType == Heaps::ItemExtraResource)
+                    {
+                        minItemExtraResource += _spawnedEnemyTypes[i]->enemyType->persistentSize;
+                    }
                 }
                 // Check if enemy can be spawned
-                if (enemyToSpawn->loaded && _spawners[si]->timer <= 0 && (enemyToSpawn->size + enemyToSpawn->persistentSize + minStageInstance) < availableMemory && whitelisted && !blacklisted)
+                if (enemyToSpawn->loaded && _spawners[si]->timer <= 0 
+                    && ((enemyToSpawn->size + enemyToSpawn->persistentSize + minStageInstance) < availableStageInstance
+                    || (enemyToSpawn->size + enemyToSpawn->persistentSize + minItemExtraResource) < availableItemExtraResource)
+                    && whitelisted && !blacklisted)
                 {
-                    // Find enemy list entry
+                    // Select heap to use
+                    HeapType heap = Heaps::StageInstance;
+                    if ((enemyToSpawn->size + enemyToSpawn->persistentSize + minStageInstance) < availableStageInstance)
+                    {
+                        heap = Heaps::StageInstance;
+                    }
+                    else if ((enemyToSpawn->size + enemyToSpawn->persistentSize + minItemExtraResource) < availableItemExtraResource)
+                    {
+                        heap = Heaps::ItemExtraResource;
+                    }
                     // Spawn enemy
-                    this->putEnemy(enemyToSpawn, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->groupIndex, _spawners[si]);
+                    OSReport("Spawning %d in heap %d \n", enemyToSpawn->enemyId, heap);
+                    this->putEnemy(enemyToSpawn, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->groupIndex, _spawners[si], heap);
                     // Pop from current position in queue
                     for (int k = j; k < _spawnQueue.size() - 1; k++)
                     {
@@ -1883,9 +1905,9 @@ void stSlipspace::putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos
     }
 }
 
-void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int startStatus, Vec2f* pos, int motionPathIndex, int groupIndex, EnemySpawner* spawner) {
+void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int startStatus, Vec2f* pos, int motionPathIndex, int groupIndex, EnemySpawner* spawner, HeapType heapType) {
     // TODO: MotionPath index investigate if can make every enemy follow it?
-    int startingMem = gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
+    int startingMem = gfHeapManager::getMaxFreeSize(heapType);
     emManager* enemyManager = emManager::getInstance();
 
     emCreate create;
@@ -1917,7 +1939,7 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int startStatus, Vec2f* pos,
     // OSReport("Level is %d \n", create.m_level);
     create.m_36 = 0.0;
     create.m_territoryRange = (Rect2D){0.0, 0.0, 0.0, 0.0};
-    create.m_connectedTriggerId = Heaps::StageInstance;
+    create.m_connectedTriggerId = heapType;
 
     create.m_motionPath = NULL;
     // Set enemy motion path
@@ -1999,11 +2021,12 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int startStatus, Vec2f* pos,
     _enemyCount++;
 
     // Add to spawned enemies list
-    SlipspaceEnemy* newEnemy = new (Heaps::StageInstance) SlipspaceEnemy();
+    SlipspaceEnemy* newEnemy = new (heapType) SlipspaceEnemy();
     newEnemy->enemyType = enemyToSpawn;
     newEnemy->enemyCreateId = id;
     newEnemy->groupIndex = groupIndex;
     newEnemy->killTimer = 300;
+    newEnemy->heapType = heapType;
     _spawnedEnemyTypes.push(newEnemy);
 
     // Add to CPU list
@@ -2012,7 +2035,7 @@ void stSlipspace::putEnemy(EnemyType* enemyToSpawn, int startStatus, Vec2f* pos,
         g_stEnemyIdManager->addEnemyId(id);
     }
 
-    int enemyMem = startingMem - gfHeapManager::getMaxFreeSize(Heaps::StageInstance);
+    int enemyMem = startingMem - gfHeapManager::getMaxFreeSize(heapType);
 
     OSReport("Spawned enemy ID %d. Uses %d instance memory. \n", enemyToSpawn->enemyId, enemyMem);
 

@@ -7,7 +7,7 @@ Enemy__createInstance_10emRayquaza_:
     /* 0000E980: */    mr r30,r3
     /* 0000E984: */    mr r31,r4
     /* 0000E988: */    li r3,0x6540
-    /* 0000E98C: */    li r4,HEAP_TYPE
+    /* 0000E98C: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E990: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E994: */    cmpwi r3,0x0
     /* 0000E998: */    beq- loc_E9A8

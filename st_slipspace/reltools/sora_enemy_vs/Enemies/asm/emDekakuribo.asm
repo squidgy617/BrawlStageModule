@@ -7,7 +7,7 @@ Enemy__createInstance_12emDekakuribo_:
     /* 0000DE40: */    mr r30,r3
     /* 0000DE44: */    mr r31,r4
     /* 0000DE48: */    li r3,0x5CB8
-    /* 0000DE4C: */    li r4,HEAP_TYPE
+    /* 0000DE4C: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DE50: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DE54: */    cmpwi r3,0x0
     /* 0000DE58: */    beq- loc_DE68

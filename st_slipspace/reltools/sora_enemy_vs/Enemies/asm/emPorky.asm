@@ -7,7 +7,7 @@ Enemy__createInstance_7emPorky_:
     /* 0000EA28: */    mr r30,r3
     /* 0000EA2C: */    mr r31,r4
     /* 0000EA30: */    li r3,0x6400
-    /* 0000EA34: */    li r4,HEAP_TYPE
+    /* 0000EA34: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000EA38: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000EA3C: */    cmpwi r3,0x0
     /* 0000EA40: */    beq- loc_EA50

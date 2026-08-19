@@ -7,7 +7,7 @@ Enemy__createInstance_7emPacci_:
     /* 0000DC48: */    mr r30,r3
     /* 0000DC4C: */    mr r31,r4
     /* 0000DC50: */    li r3,0x60B8
-    /* 0000DC54: */    li r4,HEAP_TYPE
+    /* 0000DC54: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DC58: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DC5C: */    cmpwi r3,0x0
     /* 0000DC60: */    beq- loc_DC70

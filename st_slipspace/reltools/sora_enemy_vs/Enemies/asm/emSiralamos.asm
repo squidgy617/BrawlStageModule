@@ -8,7 +8,7 @@ Enemy__createInstance_11emSiralamos_:
     /* 0000DF98: */    mr r31,r4
     /* 0000DF9C: */    lis r3,0x1
     /* 0000DFA0: */    subi r3,r3,0x598C
-    /* 0000DFA4: */    li r4,HEAP_TYPE
+    /* 0000DFA4: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DFA8: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DFAC: */    cmpwi r3,0x0
     /* 0000DFB0: */    beq- loc_DFC0

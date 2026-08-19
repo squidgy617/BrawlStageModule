@@ -7,7 +7,7 @@ Enemy__createInstance_10emPopperam_:
     /* 0000DBF4: */    mr r30,r3
     /* 0000DBF8: */    mr r31,r4
     /* 0000DBFC: */    li r3,0x5C48
-    /* 0000DC00: */    li r4,HEAP_TYPE
+    /* 0000DC00: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DC04: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DC08: */    cmpwi r3,0x0
     /* 0000DC0C: */    beq- loc_DC1C

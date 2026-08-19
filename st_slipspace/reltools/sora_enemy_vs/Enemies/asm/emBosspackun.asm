@@ -8,7 +8,7 @@ Enemy__createInstance_12emBosspackun_:
     /* 0000E830: */    mr r31,r4
     /* 0000E834: */    lis r3,0x1
     /* 0000E838: */    subi r3,r3,0x5CC0
-    /* 0000E83C: */    li r4,HEAP_TYPE
+    /* 0000E83C: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E840: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E844: */    cmpwi r3,0x0
     /* 0000E848: */    beq- loc_E858

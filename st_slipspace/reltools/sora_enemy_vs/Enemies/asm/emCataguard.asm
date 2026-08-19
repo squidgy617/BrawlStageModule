@@ -7,7 +7,7 @@ Enemy__createInstance_11emCataguard_:
     /* 0000E72C: */    mr r30,r3
     /* 0000E730: */    mr r31,r4
     /* 0000E734: */    li r3,0x5D7C
-    /* 0000E738: */    li r4,HEAP_TYPE
+    /* 0000E738: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E73C: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E740: */    cmpwi r3,0x0
     /* 0000E744: */    beq- loc_E754

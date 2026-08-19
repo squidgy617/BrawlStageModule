@@ -7,7 +7,7 @@ Enemy__createInstance_8emShelly_:
     /* 0000E38C: */    mr r30,r3
     /* 0000E390: */    mr r31,r4
     /* 0000E394: */    li r3,0x62A0
-    /* 0000E398: */    li r4,HEAP_TYPE
+    /* 0000E398: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E39C: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E3A0: */    cmpwi r3,0x0
     /* 0000E3A4: */    beq- loc_E3B4

@@ -8,7 +8,7 @@ Enemy__createInstance_7emArman_:
     /* 0000E784: */    mr r31,r4
     /* 0000E788: */    lis r3,0x1
     /* 0000E78C: */    subi r3,r3,0x7958
-    /* 0000E790: */    li r4,HEAP_TYPE
+    /* 0000E790: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E794: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E798: */    cmpwi r3,0x0
     /* 0000E79C: */    beq- loc_E7AC

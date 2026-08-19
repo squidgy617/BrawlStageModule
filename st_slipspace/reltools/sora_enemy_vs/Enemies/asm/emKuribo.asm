@@ -7,7 +7,7 @@ Enemy__createInstance_8emKuribo_:
     /* 0000DBA0: */    mr r30,r3
     /* 0000DBA4: */    mr r31,r4
     /* 0000DBA8: */    li r3,0x5D24
-    /* 0000DBAC: */    li r4,HEAP_TYPE
+    /* 0000DBAC: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DBB0: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DBB4: */    cmpwi r3,0x0
     /* 0000DBB8: */    beq- loc_DBC8

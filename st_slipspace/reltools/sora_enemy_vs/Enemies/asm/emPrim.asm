@@ -8,7 +8,7 @@ Enemy__createInstance_6emPrim_:
     /* 0000E338: */    mr r31,r4
     /* 0000E33C: */    lis r3,0x1
     /* 0000E340: */    subi r3,r3,0x5394
-    /* 0000E344: */    li r4,HEAP_TYPE
+    /* 0000E344: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E348: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E34C: */    cmpwi r3,0x0
     /* 0000E350: */    beq- loc_E360

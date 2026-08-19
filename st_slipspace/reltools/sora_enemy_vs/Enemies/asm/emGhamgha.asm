@@ -7,7 +7,7 @@ Enemy__createInstance_9emGhamgha_:
     /* 0000E588: */    mr r30,r3
     /* 0000E58C: */    mr r31,r4
     /* 0000E590: */    li r3,0x5B68
-    /* 0000E594: */    li r4,HEAP_TYPE
+    /* 0000E594: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E598: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E59C: */    cmpwi r3,0x0
     /* 0000E5A0: */    beq- loc_E5B0

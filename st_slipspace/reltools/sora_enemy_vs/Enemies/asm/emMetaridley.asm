@@ -7,7 +7,7 @@ Enemy__createInstance_12emMetaridley_:
     /* 0000EA7C: */    mr r30,r3
     /* 0000EA80: */    mr r31,r4
     /* 0000EA84: */    li r3,0x6E2C
-    /* 0000EA88: */    li r4,HEAP_TYPE
+    /* 0000EA88: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000EA8C: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000EA90: */    cmpwi r3,0x0
     /* 0000EA94: */    beq- loc_EAA4

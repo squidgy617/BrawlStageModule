@@ -7,7 +7,7 @@ Enemy__createInstance_6emSpar_:
     /* 0000E094: */    mr r30,r3
     /* 0000E098: */    mr r31,r4
     /* 0000E09C: */    li r3,0x5F1C
-    /* 0000E0A0: */    li r4,HEAP_TYPE
+    /* 0000E0A0: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E0A4: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E0A8: */    cmpwi r3,0x0
     /* 0000E0AC: */    beq- loc_E0BC

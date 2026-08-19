@@ -7,7 +7,7 @@ Enemy__createInstance_12emRobohoming_:
     /* 0000E684: */    mr r30,r3
     /* 0000E688: */    mr r31,r4
     /* 0000E68C: */    li r3,0x6164
-    /* 0000E690: */    li r4,HEAP_TYPE
+    /* 0000E690: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E694: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E698: */    cmpwi r3,0x0
     /* 0000E69C: */    beq- loc_E6AC

@@ -95,6 +95,7 @@ class SlipspaceEnemy
         int enemyCreateId;
         int killTimer;
         int groupIndex;
+        HeapType heapType;
 };
 
 struct SpawnerGroup
@@ -250,7 +251,7 @@ public:
     void createItemPac(u32 index);
     void createEnemyPac(u32 index);
     void putItem(int itemID, u32 variantID, int startStatus, Vec2f* pos, int motionPathIndex);
-    void putEnemy(EnemyType* enemyToSpawn, int startStatus, Vec2f* pos, int motionPathIndex, int groupIndex, EnemySpawner* spawner);
+    void putEnemy(EnemyType* enemyToSpawn, int startStatus, Vec2f* pos, int motionPathIndex, int groupIndex, EnemySpawner* spawner, HeapType heapType);
     grTourObject* getTourObject(int mdlIndex);
     grTourObject* findOrCreateTourObject(int mdlIndex);
     void clearHeap();

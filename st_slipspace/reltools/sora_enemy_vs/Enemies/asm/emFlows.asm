@@ -7,7 +7,7 @@ Enemy__createInstance_7emFlows_:
     /* 0000E28C: */    mr r30,r3
     /* 0000E290: */    mr r31,r4
     /* 0000E294: */    li r3,0x5D84
-    /* 0000E298: */    li r4,HEAP_TYPE
+    /* 0000E298: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E29C: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E2A0: */    cmpwi r3,0x0
     /* 0000E2A4: */    beq- loc_E2B4

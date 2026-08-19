@@ -7,7 +7,7 @@ Enemy__createInstance_8emBotron_:
     /* 0000DE94: */    mr r30,r3
     /* 0000DE98: */    mr r31,r4
     /* 0000DE9C: */    li r3,0x5C28
-    /* 0000DEA0: */    li r4,HEAP_TYPE
+    /* 0000DEA0: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DEA4: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DEA8: */    cmpwi r3,0x0
     /* 0000DEAC: */    beq- loc_DEBC

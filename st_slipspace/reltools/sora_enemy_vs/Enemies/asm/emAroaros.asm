@@ -7,7 +7,7 @@ Enemy__createInstance_9emAroaros_:
     /* 0000DCF0: */    mr r30,r3
     /* 0000DCF4: */    mr r31,r4
     /* 0000DCF8: */    li r3,0x5D7C
-    /* 0000DCFC: */    li r4,HEAP_TYPE
+    /* 0000DCFC: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DD00: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DD04: */    cmpwi r3,0x0
     /* 0000DD08: */    beq- loc_DD18

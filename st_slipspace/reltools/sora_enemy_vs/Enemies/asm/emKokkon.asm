@@ -7,7 +7,7 @@ Enemy__createInstance_8emKokkon_:
     /* 0000E2E0: */    mr r30,r3
     /* 0000E2E4: */    mr r31,r4
     /* 0000E2E8: */    li r3,0x5CE0
-    /* 0000E2EC: */    li r4,HEAP_TYPE
+    /* 0000E2EC: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E2F0: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E2F4: */    cmpwi r3,0x0
     /* 0000E2F8: */    beq- loc_E308

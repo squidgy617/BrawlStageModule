@@ -7,7 +7,7 @@ Enemy__createInstance_6emDuon_:
     /* 0000E9D4: */    mr r30,r3
     /* 0000E9D8: */    mr r31,r4
     /* 0000E9DC: */    li r3,0x660C
-    /* 0000E9E0: */    li r4,HEAP_TYPE
+    /* 0000E9E0: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E9E4: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E9E8: */    cmpwi r3,0x0
     /* 0000E9EC: */    beq- loc_E9FC

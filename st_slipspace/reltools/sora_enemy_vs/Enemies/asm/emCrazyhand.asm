@@ -7,7 +7,7 @@ Enemy__createInstance_11emCrazyhand_:
     /* 0000EBCC: */    mr r30,r3
     /* 0000EBD0: */    mr r31,r4
     /* 0000EBD4: */    li r3,0x6120
-    /* 0000EBD8: */    li r4,HEAP_TYPE
+    /* 0000EBD8: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000EBDC: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000EBE0: */    cmpwi r3,0x0
     /* 0000EBE4: */    beq- loc_EBF4

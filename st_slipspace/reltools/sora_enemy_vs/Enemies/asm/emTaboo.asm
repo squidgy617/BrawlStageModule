@@ -7,7 +7,7 @@ Enemy__createInstance_7emTaboo_:
     /* 0000EB24: */    mr r30,r3
     /* 0000EB28: */    mr r31,r4
     /* 0000EB2C: */    li r3,0x7558
-    /* 0000EB30: */    li r4,HEAP_TYPE
+    /* 0000EB30: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000EB34: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000EB38: */    cmpwi r3,0x0
     /* 0000EB3C: */    beq- loc_EB4C

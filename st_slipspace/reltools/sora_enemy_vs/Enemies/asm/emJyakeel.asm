@@ -7,7 +7,7 @@ Enemy__createInstance_9emJyakeel_:
     /* 0000DC9C: */    mr r30,r3
     /* 0000DCA0: */    mr r31,r4
     /* 0000DCA4: */    li r3,0x5734
-    /* 0000DCA8: */    li r4,HEAP_TYPE
+    /* 0000DCA8: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DCAC: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DCB0: */    cmpwi r3,0x0
     /* 0000DCB4: */    beq- loc_DCC4

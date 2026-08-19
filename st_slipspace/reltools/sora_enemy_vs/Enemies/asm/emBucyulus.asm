@@ -7,7 +7,7 @@ Enemy__createInstance_10emBucyulus_:
     /* 0000DEE8: */    mr r30,r3
     /* 0000DEEC: */    mr r31,r4
     /* 0000DEF0: */    li r3,0x5A7C
-    /* 0000DEF4: */    li r4,HEAP_TYPE
+    /* 0000DEF4: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DEF8: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DEFC: */    cmpwi r3,0x0
     /* 0000DF00: */    beq- loc_DF10

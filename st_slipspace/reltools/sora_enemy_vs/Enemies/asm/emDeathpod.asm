@@ -7,7 +7,7 @@ Enemy__createInstance_10emDeathpod_:
     /* 0000DD98: */    mr r30,r3
     /* 0000DD9C: */    mr r31,r4
     /* 0000DDA0: */    li r3,0x5AFC
-    /* 0000DDA4: */    li r4,HEAP_TYPE
+    /* 0000DDA4: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DDA8: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DDAC: */    cmpwi r3,0x0
     /* 0000DDB0: */    beq- loc_DDC0

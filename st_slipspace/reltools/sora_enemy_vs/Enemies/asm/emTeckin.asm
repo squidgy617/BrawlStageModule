@@ -7,7 +7,7 @@ Enemy__createInstance_8emTeckin_:
     /* 0000E13C: */    mr r30,r3
     /* 0000E140: */    mr r31,r4
     /* 0000E144: */    li r3,0x5D34
-    /* 0000E148: */    li r4,HEAP_TYPE
+    /* 0000E148: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E14C: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E150: */    cmpwi r3,0x0
     /* 0000E154: */    beq- loc_E164

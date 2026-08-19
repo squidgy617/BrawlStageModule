@@ -7,7 +7,7 @@ Enemy__createInstance_8emBoobas_:
     /* 0000DDEC: */    mr r30,r3
     /* 0000DDF0: */    mr r31,r4
     /* 0000DDF4: */    li r3,0x5D24
-    /* 0000DDF8: */    li r4,HEAP_TYPE
+    /* 0000DDF8: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DDFC: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DE00: */    cmpwi r3,0x0
     /* 0000DE04: */    beq- loc_DE14

@@ -7,7 +7,7 @@ Enemy__createInstance_13emFalconflyer_:
     /* 0000EAD0: */    mr r30,r3
     /* 0000EAD4: */    mr r31,r4
     /* 0000EAD8: */    li r3,0x5A44
-    /* 0000EADC: */    li r4,HEAP_TYPE
+    /* 0000EADC: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000EAE0: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000EAE4: */    cmpwi r3,0x0
     /* 0000EAE8: */    beq- loc_EAF8

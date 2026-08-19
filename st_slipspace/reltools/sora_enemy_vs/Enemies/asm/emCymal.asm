@@ -7,7 +7,7 @@ Enemy__createInstance_7emCymal_:
     /* 0000DD44: */    mr r30,r3
     /* 0000DD48: */    mr r31,r4
     /* 0000DD4C: */    li r3,0x58B8
-    /* 0000DD50: */    li r4,HEAP_TYPE
+    /* 0000DD50: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000DD54: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000DD58: */    cmpwi r3,0x0
     /* 0000DD5C: */    beq- loc_DD6C

@@ -7,7 +7,7 @@ Enemy__createInstance_6emJdus_:
     /* 0000E434: */    mr r30,r3
     /* 0000E438: */    mr r31,r4
     /* 0000E43C: */    li r3,0x5E24
-    /* 0000E440: */    li r4,HEAP_TYPE
+    /* 0000E440: */    lwz r4,0x38(r31) # li r4,HEAP_TYPE
     /* 0000E444: */    bl __unresolved                          [R_PPC_REL24(0, 4, "srHeapType____nw")]
     /* 0000E448: */    cmpwi r3,0x0
     /* 0000E44C: */    beq- loc_E45C
