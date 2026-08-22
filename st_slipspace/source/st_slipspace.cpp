@@ -556,7 +556,6 @@ void stSlipspace::update(float deltaFrame)
                         heap = Heaps::ItemExtraResource;
                     }
                     // Spawn enemy
-                    OSReport("Spawning %d in heap %d \n", enemyToSpawn->enemyId, heap);
                     this->putEnemy(enemyToSpawn, enemyToSpawn->startStatus, &_spawners[si]->pos, 0, _spawners[si]->groupIndex, _spawners[si], heap);
                     // Pop from current position in queue
                     for (int k = j; k < _spawnQueue.size() - 1; k++)
@@ -920,6 +919,12 @@ void stSlipspace::createObj()
         }
 
     }
+    int enemyHeaderSize;
+    gfModuleHeader* enemyHeader = static_cast<gfModuleHeader*>(m_secondaryFileData->getData(Data_Type_Misc, 302, &enemyHeaderSize, 0xfffe));
+    if (enemyHeader != NULL)
+    {
+        moduleManager->loadModuleRequestOnImage("module0x3E8.rel", Heaps::OverlayStage, enemyHeader, &enemyHeaderSize);
+    }
 
     this->createObjAshiba(0, 2);
 
@@ -1256,6 +1261,7 @@ void stSlipspace::clearHeap() {
         this->primFacePac = NULL;
     }
 
+    gfModuleManager::getInstance()->destroy("module0x3E8.rel");
     gfModuleManager::getInstance()->destroy("sora_enemy.rel");
 
     g_gfSceneRoot->m_transformFlag.m_reverseLr = false;

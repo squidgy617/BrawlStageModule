@@ -271,14 +271,14 @@ loc_504:
         .4byte 0x00000000
         .4byte 0x00000000
 
-.include "./Enemies/bss/emBoobas.asm"
+#include "./Enemies/bss/emBoobas.asm"
 .include "./Enemies/bss/emSiralamos.asm"
 #include "./Enemies/bss/emRoada.asm"
 #include "./Enemies/bss/emKiller.asm"
 .include "./Enemies/bss/emPopperam.asm"
 .include "./Enemies/bss/emPacci.asm"
 #include "./Enemies/bss/emJyakeel.asm"
-.include "./Enemies/bss/emAroaros.asm"
+#include "./Enemies/bss/emAroaros.asm"
 #include "./Enemies/bss/emCymal.asm"
 .include "./Enemies/bss/emDeathpod.asm"
 #include "./Enemies/bss/emDekakuribo.asm"
@@ -291,7 +291,7 @@ loc_504:
 #include "./Enemies/bss/emKuribo.asm"
 .include "./Enemies/bss/emFlows.asm"
 #include "./Enemies/bss/emTautau.asm"
-.include "./Enemies/bss/emRedead.asm"
+#include "./Enemies/bss/emRedead.asm"
 #include "./Enemies/bss/emShelly.asm"
 #include "./Enemies/bss/emTeckin.asm"
 #include "./Enemies/bss/emSpar.asm"

@@ -1361,7 +1361,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_6emSpar_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_6emMite_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emTeckin_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emTautau_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1000, 1, "Enemy__createInstance_8emTautau_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_12emHammerbros_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_7emBitan_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_7emFlows_")]
@@ -1423,7 +1423,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_11emSparParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_11emMiteParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emTeckinParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emTautauParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1000, 1, "emResourceModuleImpl__ModifyExParam_13emTautauParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_17emHammerbrosParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_12emBitanParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_12emFlowsParam_")]
@@ -1485,7 +1485,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_11emSparParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_11emMiteParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emTeckinParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emTautauParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_17emHammerbrosParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_12emBitanParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_12emFlowsParam_")]
@@ -6990,14 +6990,14 @@ loc_6EE8:
 #         .4byte 0x00000000
 #         .4byte 0x00000000
 
-.include "./Enemies/data/emBoobas.asm"
+#include "./Enemies/data/emBoobas.asm"
 .include "./Enemies/data/emSiralamos.asm"
 #include "./Enemies/data/emRoada.asm"
 #include "./Enemies/data/emKiller.asm"
 .include "./Enemies/data/emPopperam.asm"
 .include "./Enemies/data/emPacci.asm"
 #include "./Enemies/data/emJyakeel.asm"
-.include "./Enemies/data/emAroaros.asm"
+#include "./Enemies/data/emAroaros.asm"
 #include "./Enemies/data/emCymal.asm"
 .include "./Enemies/data/emDeathpod.asm"
 #include "./Enemies/data/emDekakuribo.asm"
@@ -7010,7 +7010,7 @@ loc_6EE8:
 #include "./Enemies/data/emKuribo.asm"
 .include "./Enemies/data/emFlows.asm"
 #include "./Enemies/data/emTautau.asm"
-.include "./Enemies/data/emRedead.asm"
+#include "./Enemies/data/emRedead.asm"
 #include "./Enemies/data/emShelly.asm"
 #include "./Enemies/data/emTeckin.asm"
 #include "./Enemies/data/emSpar.asm"

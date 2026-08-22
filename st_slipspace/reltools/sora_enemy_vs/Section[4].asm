@@ -1116,14 +1116,14 @@ loc_enemyOverrideSettings:
         .byte 0x00      # pad
         .byte 0x00      # pad
 
-.include "./Enemies/rodata/emBoobas.asm"
+#include "./Enemies/rodata/emBoobas.asm"
 .include "./Enemies/rodata/emSiralamos.asm"
 #include "./Enemies/rodata/emRoada.asm"
 #include "./Enemies/rodata/emKiller.asm"
 .include "./Enemies/rodata/emPopperam.asm"
 .include "./Enemies/rodata/emPacci.asm"
 #include "./Enemies/rodata/emJyakeel.asm"
-.include "./Enemies/rodata/emAroaros.asm"
+#include "./Enemies/rodata/emAroaros.asm"
 #include "./Enemies/rodata/emCymal.asm"
 .include "./Enemies/rodata/emDeathpod.asm"
 #include "./Enemies/rodata/emDekakuribo.asm"
@@ -1136,7 +1136,7 @@ loc_enemyOverrideSettings:
 #include "./Enemies/rodata/emKuribo.asm"
 .include "./Enemies/rodata/emFlows.asm"
 #include "./Enemies/rodata/emTautau.asm"
-.include "./Enemies/rodata/emRedead.asm"
+#include "./Enemies/rodata/emRedead.asm"
 #include "./Enemies/rodata/emShelly.asm"
 #include "./Enemies/rodata/emTeckin.asm"
 #include "./Enemies/rodata/emSpar.asm"

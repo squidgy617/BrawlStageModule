@@ -2172,7 +2172,7 @@ loc_enemyNames:
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_FC88")] # 0xF - emSpar
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_BF40")] # 0x10 - emMite
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F9D8")] # 0x11 - emTeckin
-    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F458")] # 0x12 - emTautau
+    .4byte 0x00000000         [R_PPC_ADDR32(1000, 5, "loc_F458")] # 0x12 - emTautau
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_105D8")] # 0x13 - enHammerBros
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_12FC0")] # 0x14 - emBitan
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F188")] # 0x15 - emFlows
@@ -47654,14 +47654,14 @@ wnemSimple_Data____ct1:
 #     /* 00048384: */    addi r1,r1,0x70
 #     /* 00048388: */    blr
     
-.include "./Enemies/asm/emBoobas.asm"
+#include "./Enemies/asm/emBoobas.asm"
 .include "./Enemies/asm/emSiralamos.asm"
 #include "./Enemies/asm/emRoada.asm"
 #include "./Enemies/asm/emKiller.asm"
 .include "./Enemies/asm/emPopperam.asm"
 .include "./Enemies/asm/emPacci.asm"
 #include "./Enemies/asm/emJyakeel.asm"
-.include "./Enemies/asm/emAroaros.asm"
+#include "./Enemies/asm/emAroaros.asm"
 #include "./Enemies/asm/emCymal.asm"
 .include "./Enemies/asm/emDeathpod.asm"
 #include "./Enemies/asm/emDekakuribo.asm"
@@ -47674,7 +47674,7 @@ wnemSimple_Data____ct1:
 #include "./Enemies/asm/emKuribo.asm"
 .include "./Enemies/asm/emFlows.asm"
 #include "./Enemies/asm/emTautau.asm"
-.include "./Enemies/asm/emRedead.asm"
+#include "./Enemies/asm/emRedead.asm"
 #include "./Enemies/asm/emShelly.asm"
 #include "./Enemies/asm/emTeckin.asm"
 #include "./Enemies/asm/emSpar.asm"
@@ -47866,3 +47866,6 @@ loc_D368_params:
     lwz r22, 0x28(r1)
     addi r11, r1, 0x40
     b loc_D368_params_return
+
+loc_return:
+    blr
