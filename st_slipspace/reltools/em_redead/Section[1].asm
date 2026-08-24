@@ -784,8 +784,8 @@ loc_6B7D0:
     /* 0006B7E8: */    addi r1,r1,0x10
     /* 0006B7EC: */    blr
 __unresolved:
-    /* 0006B7F0: */    lis r3,0x0                               [R_PPC_ADDR16_HA(1000, 5, "loc_1FE78")]
-    /* 0006B7F4: */    addi r3,r3,0x0                           [R_PPC_ADDR16_LO(1000, 5, "loc_1FE78")]
+    /* 0006B7F0: */    lis r3,0x0                               [R_PPC_ADDR16_HA(41, 5, "loc_1FE78")]
+    /* 0006B7F4: */    addi r3,r3,0x0                           [R_PPC_ADDR16_LO(41, 5, "loc_1FE78")]
     /* 0006B7F8: */    b __unresolved                           [R_PPC_REL24(0, 4, "module__moUnResolvedMessage")]
 
 globaldestructorchain____register_global_object:

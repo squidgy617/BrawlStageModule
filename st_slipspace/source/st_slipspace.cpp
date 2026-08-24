@@ -925,6 +925,12 @@ void stSlipspace::createObj()
     {
         moduleManager->loadModuleRequestOnImage("module0x3E8.rel", Heaps::OverlayStage, enemyHeader, &enemyHeaderSize);
     }
+    int bombheadHeaderSize;
+    gfModuleHeader* bombheadHeader = static_cast<gfModuleHeader*>(m_secondaryFileData->getData(Data_Type_Misc, 303, &bombheadHeaderSize, 0xfffe));
+    if (bombheadHeader != NULL)
+    {
+        moduleManager->loadModuleRequestOnImage("module0x3E9.rel", Heaps::OverlayStage, bombheadHeader, &bombheadHeaderSize);
+    }
 
     this->createObjAshiba(0, 2);
 
@@ -1262,6 +1268,7 @@ void stSlipspace::clearHeap() {
     }
 
     gfModuleManager::getInstance()->destroy("module0x3E8.rel");
+    gfModuleManager::getInstance()->destroy("module0x3E9.rel");
     gfModuleManager::getInstance()->destroy("sora_enemy.rel");
 
     g_gfSceneRoot->m_transformFlag.m_reverseLr = false;

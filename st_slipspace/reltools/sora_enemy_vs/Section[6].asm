@@ -297,7 +297,7 @@ loc_504:
 #include "./Enemies/bss/emSpar.asm"
 #include "./Enemies/bss/emHammerbros.asm"
 .include "./Enemies/bss/emKokkon.asm"
-.include "./Enemies/bss/emBombhead.asm"
+#include "./Enemies/bss/emBombhead.asm"
 #include "./Enemies/bss/emNgagog.asm"
 #include "./Enemies/bss/emFaulong.asm"
 #include "./Enemies/bss/emBitan.asm"

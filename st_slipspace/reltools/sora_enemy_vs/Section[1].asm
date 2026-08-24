@@ -2181,7 +2181,7 @@ loc_enemyNames:
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F728")] # 0x18 - emShelly
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_132A0")] # 0x19 - emPatapata
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_13570")] # 0x1A - emJdus
-    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_11D98")] # 0x1B - emBombhead
+    .4byte 0x00000000         [R_PPC_ADDR32(1001, 5, "loc_11D98")] # 0x1B - emBombhead
     .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_emPrimMetal")] # 0x1C - emPrimMetal
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_12A18")] # 0x1D - emNgagog
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_12D10")] # 0x1E - emFaulong
@@ -44484,16 +44484,16 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CD38: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPorkyProc__SparkErase")]
     /* 0002CD3C: */    li r5,0x2E
     /* 0002CD40: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CD44: */    bl emWeaponManager__getInstance
-    /* 0002CD48: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBombheadProc__HeadFly")]
-    /* 0002CD4C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBombheadProc__HeadFly")]
-    /* 0002CD50: */    li r5,0x2F
-    /* 0002CD54: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CD58: */    bl emWeaponManager__getInstance
-    /* 0002CD5C: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBombheadProc__HeadExplosion")]
-    /* 0002CD60: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBombheadProc__HeadExplosion")]
-    /* 0002CD64: */    li r5,0x30
-    /* 0002CD68: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CD44: */    nop #bl emWeaponManager__getInstance
+    /* 0002CD48: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(1001, 1, "wnemBombheadProc__HeadFly")]
+    /* 0002CD4C: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(1001, 1, "wnemBombheadProc__HeadFly")]
+    /* 0002CD50: */    nop #li r5,0x2F
+    /* 0002CD54: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CD58: */    nop #bl emWeaponManager__getInstance
+    /* 0002CD5C: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(1001, 1, "wnemBombheadProc__HeadExplosion")]
+    /* 0002CD60: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(1001, 1, "wnemBombheadProc__HeadExplosion")]
+    /* 0002CD64: */    nop #li r5,0x30
+    /* 0002CD68: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CD6C: */    bl emWeaponManager__getInstance
     /* 0002CD70: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCommonProc__ShellFly")]
     /* 0002CD74: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCommonProc__ShellFly")]
@@ -47680,7 +47680,7 @@ wnemSimple_Data____ct1:
 #include "./Enemies/asm/emSpar.asm"
 #include "./Enemies/asm/emHammerbros.asm"
 .include "./Enemies/asm/emKokkon.asm"
-.include "./Enemies/asm/emBombhead.asm"
+#include "./Enemies/asm/emBombhead.asm"
 #include "./Enemies/asm/emNgagog.asm"
 #include "./Enemies/asm/emFaulong.asm"
 #include "./Enemies/asm/emBitan.asm"
