@@ -2166,7 +2166,7 @@ loc_enemyNames:
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_ACA8")] # 0x9 - emBotron
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_A9D8")] # 0xA - emBucyulus
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_B688")] # 0xB - emGyraan
-    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_7370")] # 0xC - emSirAlamos
+    .4byte 0x00000000         [R_PPC_ADDR32(1002, 5, "loc_7370")] # 0xC - emSirAlamos
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_8408")] # 0xD - emKiller
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_8138")] # 0xE - emRoada
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_FC88")] # 0xF - emSpar
@@ -47655,7 +47655,7 @@ wnemSimple_Data____ct1:
 #     /* 00048388: */    blr
     
 #include "./Enemies/asm/emBoobas.asm"
-.include "./Enemies/asm/emSiralamos.asm"
+#include "./Enemies/asm/emSiralamos.asm"
 #include "./Enemies/asm/emRoada.asm"
 #include "./Enemies/asm/emKiller.asm"
 .include "./Enemies/asm/emPopperam.asm"

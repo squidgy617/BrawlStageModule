@@ -272,7 +272,7 @@ loc_504:
         .4byte 0x00000000
 
 #include "./Enemies/bss/emBoobas.asm"
-.include "./Enemies/bss/emSiralamos.asm"
+#include "./Enemies/bss/emSiralamos.asm"
 #include "./Enemies/bss/emRoada.asm"
 #include "./Enemies/bss/emKiller.asm"
 .include "./Enemies/bss/emPopperam.asm"

@@ -1938,8 +1938,6 @@ loc_registerWeapons:
     /* XXXXXXXX: */    mflr r0
     /* XXXXXXXX: */    stw r0,0x14(r1)
     /* XXXXXXXX: */    stw r31,0xC(r1)
-    /* XXXXXXXX: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 6, "loc_1C8")]
-    /* XXXXXXXX: */    stw r3,0x0(r4)                           [R_PPC_ADDR16_LO(41, 6, "loc_1C8")]
     /* XXXXXXXX: */    cmpwi r3,0x0
     /* XXXXXXXX: */    beq- loc_registerWeapons_end
     /* XXXXXXXX: */    bl __unresolved                          [R_PPC_REL24(41, 1, "emWeaponManager__getInstance")]

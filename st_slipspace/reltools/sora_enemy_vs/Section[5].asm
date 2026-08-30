@@ -1355,7 +1355,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emBotron_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_10emBucyulus_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emGyraan_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_11emSiralamos_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1002, 1, "Enemy__createInstance_11emSiralamos_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emKiller_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_7emRoada_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_6emSpar_")]
@@ -1417,7 +1417,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emBotronParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_15emBucyulusParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emGyraanParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_16emSiralamosParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1002, 1, "emResourceModuleImpl__ModifyExParam_16emSiralamosParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emKillerParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_12emRoadaParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_11emSparParam_")]
@@ -1479,7 +1479,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emBotronParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_15emBucyulusParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emGyraanParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_16emSiralamosParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Siralamos
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emKillerParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_12emRoadaParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_11emSparParam_")]
@@ -6991,7 +6991,7 @@ loc_6EE8:
 #         .4byte 0x00000000
 
 #include "./Enemies/data/emBoobas.asm"
-.include "./Enemies/data/emSiralamos.asm"
+#include "./Enemies/data/emSiralamos.asm"
 #include "./Enemies/data/emRoada.asm"
 #include "./Enemies/data/emKiller.asm"
 .include "./Enemies/data/emPopperam.asm"

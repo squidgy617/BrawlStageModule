@@ -13,7 +13,7 @@ loc_0:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "wnemproccommoncpp____sinit_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emweaponutilcpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emboobasparamaccessercpp____sinit_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emsiralamosparamaccessercpp____sinit_")]
+        #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emsiralamosparamaccessercpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emroadaparamaccessercpp____sinit_")]
         #4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emkillerparamaccessercpp____sinit_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "empopperamcpp____sinit_")]
