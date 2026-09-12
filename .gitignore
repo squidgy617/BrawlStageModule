@@ -1,5 +1,4 @@
 *.rel
-*.map
 *.elf
 
 build/

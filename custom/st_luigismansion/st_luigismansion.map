@@ -1,0 +1,480 @@
+Link map of _prolog
+>>> SYMBOL NOT FOUND: __nw__FUlQ25Heaps8HeapType
+>>> SYMBOL NOT FOUND: __ct__10grYakumonoFPCc
+>>> SYMBOL NOT FOUND: processDefault__6gfTaskFv
+>>> SYMBOL NOT FOUND: processBegin__6gfTaskFv
+>>> SYMBOL NOT FOUND: processAnim__6GroundFv
+>>> SYMBOL NOT FOUND: processUpdate__10grYakumonoFv
+>>> SYMBOL NOT FOUND: processPreMapCorrection__6gfTaskFv
+>>> SYMBOL NOT FOUND: processMapCorrection__6gfTaskFv
+>>> SYMBOL NOT FOUND: processFixPosition__6gfTaskFv
+>>> SYMBOL NOT FOUND: processPreCollision__6gfTaskFv
+>>> SYMBOL NOT FOUND: processCollision__6gfTaskFv
+>>> SYMBOL NOT FOUND: processCatch__6gfTaskFv
+>>> SYMBOL NOT FOUND: processHit__6gfTaskFv
+>>> SYMBOL NOT FOUND: processCamera__6gfTaskFv
+>>> SYMBOL NOT FOUND: processFixCamera__6gfTaskFv
+>>> SYMBOL NOT FOUND: processEffect__6gfTaskFv
+>>> SYMBOL NOT FOUND: processGameProc__6GroundFv
+>>> SYMBOL NOT FOUND: processEnd__6gfTaskFv
+>>> SYMBOL NOT FOUND: renderPre__6GroundFv
+>>> SYMBOL NOT FOUND: renderOpa__6gfTaskFv
+>>> SYMBOL NOT FOUND: renderXlu__6gfTaskFv
+>>> SYMBOL NOT FOUND: processDebug__6gfTaskFv
+>>> SYMBOL NOT FOUND: renderDebug__9grGimmickFv
+>>> SYMBOL NOT FOUND: init__6gfTaskFv
+>>> SYMBOL NOT FOUND: __dt__10grYakumonoFv
+>>> SYMBOL NOT FOUND: __dl__FPv
+>>> SYMBOL NOT FOUND: loadGroundData__6GroundFUlUlUl
+>>> SYMBOL NOT FOUND: bindData__9grGimmickFP9gfArchive
+>>> SYMBOL NOT FOUND: setupMelee__6GroundFv
+>>> SYMBOL NOT FOUND: setVisibility__6GroundFUl
+>>> SYMBOL NOT FOUND: setVisibilityByClipping__6GroundFUl
+>>> SYMBOL NOT FOUND: setVisibilityAttachedEffect__9grGimmickFUl
+>>> SYMBOL NOT FOUND: receiveCollMsg__6GroundFiP12grCollStatusP16grCollisionJoint
+>>> SYMBOL NOT FOUND: receiveCollMsg_Landing__6GroundFP12grCollStatusP16grCollisionJointb
+>>> SYMBOL NOT FOUND: receiveCollMsg_Heading__6GroundFP12grCollStatusP16grCollisionJointb
+>>> SYMBOL NOT FOUND: receiveCollMsg_Wall__6GroundFP12grCollStatusP16grCollisionJoint
+>>> SYMBOL NOT FOUND: receiveCollMsg_Attack__6GroundFP12grCollStatusP16grCollisionJoint
+>>> SYMBOL NOT FOUND: unloadData__6GroundFv
+>>> SYMBOL NOT FOUND: GetResMdlNumEntries__Q34nw4r3g3d7ResFileCFv
+>>> SYMBOL NOT FOUND: startup__10grYakumonoFP9gfArchiveUlUl
+>>> SYMBOL NOT FOUND: setNode__9grGimmickFv
+>>> SYMBOL NOT FOUND: getNodeIndex__6GroundFUlPCc
+>>> SYMBOL NOT FOUND: getNodePosition__6GroundFP5Vec3fUlUl
+>>> SYMBOL NOT FOUND: getNodePosition__6GroundFP5Vec3fUlPCc
+>>> SYMBOL NOT FOUND: getNodeMatrix__6GroundFP6MatrixUlUl
+>>> SYMBOL NOT FOUND: getNodeMatrix__6GroundFP6MatrixUlPCc
+>>> SYMBOL NOT FOUND: setNodeVisibility__6GroundFbUlUlbb
+>>> SYMBOL NOT FOUND: setNodeVisibility__6GroundFbUlPCcbb
+>>> SYMBOL NOT FOUND: setNodeVisibilityAll__6GroundFbUl
+>>> SYMBOL NOT FOUND: isNodeVisible__6GroundFUlUl
+>>> SYMBOL NOT FOUND: setNodeCollision__6GroundFbUlUlb
+>>> SYMBOL NOT FOUND: setNodeCollision__6GroundFbUlPCcb
+>>> SYMBOL NOT FOUND: getNodeScale__6GroundFP5Vec3fUlUl
+>>> SYMBOL NOT FOUND: getNodeScale__6GroundFP5Vec3fUlPCc
+>>> SYMBOL NOT FOUND: setValid__10grYakumonoFUl
+>>> SYMBOL NOT FOUND: setValidAttachedEffect__10grYakumonoFUl
+>>> SYMBOL NOT FOUND: setMotionRatio__9grGimmickFf
+>>> SYMBOL NOT FOUND: setMotionFrame__6GroundFfUl
+>>> SYMBOL NOT FOUND: getMotionFrame__6GroundFUl
+>>> SYMBOL NOT FOUND: setMotionLoop__6GroundFbUl
+>>> SYMBOL NOT FOUND: setMatAlphaMul__6GroundFUlUl
+>>> SYMBOL NOT FOUND: setMatAlpha__6GroundFUlUl
+>>> SYMBOL NOT FOUND: updateG3dProcCalcWorld__6GroundFv
+>>> SYMBOL NOT FOUND: preExit__10grYakumonoFv
+>>> SYMBOL NOT FOUND: invalidatedByCameraClipping__9grGimmickFv
+>>> SYMBOL NOT FOUND: setTransparencyFlag__9grGimmickFc
+>>> SYMBOL NOT FOUND: updateCallback__9grGimmickFUl
+>>> SYMBOL NOT FOUND: fixedPosition__9grGimmickFf
+>>> SYMBOL NOT FOUND: setTgtNode__9grGimmickFPCc
+>>> SYMBOL NOT FOUND: getTgtNode__9grGimmickFv
+>>> SYMBOL NOT FOUND: changeNodeAnim__9grGimmickFUlUl
+>>> SYMBOL NOT FOUND: createFadeVisibleProduction__9grGimmickFf
+>>> SYMBOL NOT FOUND: createSoundEffectVisibleProductionForExcel__9grGimmickFUlUlUl
+>>> SYMBOL NOT FOUND: createEffectVisibleProductionForExcel__9grGimmickFPQ29grGimmick16SimpleEffectDataPUlPP19grVisibleProduction
+>>> SYMBOL NOT FOUND: setSimpleEffectVisibleProduction__9grGimmickFv
+>>> SYMBOL NOT FOUND: dbDispInvalidatedByCameraClippingSphere__9grGimmickFv
+>>> SYMBOL NOT FOUND: setTransparency__10grYakumonoFUlUl
+>>> SYMBOL NOT FOUND: onDamage__10grYakumonoFiP8soDamageP20soDamageAttackerInfo
+>>> SYMBOL NOT FOUND: onInflict__10grYakumonoFP14soCollisionLogUlf
+>>> SYMBOL NOT FOUND: onInflictEach__10grYakumonoFP14soCollisionLogf
+>>> SYMBOL NOT FOUND: onGimmickEvent__10grYakumonoFP18soGimmickEventInfoPi
+>>> SYMBOL NOT FOUND: enableYakumono__10grYakumonoFUl
+>>> SYMBOL NOT FOUND: disableYakumono__10grYakumonoFUlUl
+>>> SYMBOL NOT FOUND: enableHit__10grYakumonoFUlUl
+>>> SYMBOL NOT FOUND: disableHit__10grYakumonoFUlUl
+>>> SYMBOL NOT FOUND: disableAttack__10grYakumonoFUl
+>>> SYMBOL NOT FOUND: enableArea__10grYakumonoFv
+>>> SYMBOL NOT FOUND: disableArea__10grYakumonoFv
+>>> SYMBOL NOT FOUND: setSleepArea__10grYakumonoFb
+>>> SYMBOL NOT FOUND: setTeamYakumonoOwnerId__10grYakumonoFUl
+>>> SYMBOL NOT FOUND: setTeamYakumono__10grYakumonoFUlUl
+>>> SYMBOL NOT FOUND: getTeamYakumono__10grYakumonoFUl
+>>> SYMBOL NOT FOUND: setOffsetAttack__10grYakumonoFP5Vec3fi
+>>> SYMBOL NOT FOUND: setAreaGimmick__10grYakumonoFP10soAreaDataP19soSet<10soAreaData>P10ykAreaDatab
+>>> SYMBOL NOT FOUND: setAttackGimmick__10grYakumonoFiiUlPQ29grGimmick10AttackDataPQ29grGimmick13AttackDetails
+>>> SYMBOL NOT FOUND: setSoCollisionAttackData__10grYakumonoFP21soCollisionAttackDataPQ29grGimmick10AttackDataPQ29grGimmick13AttackDetails
+>>> SYMBOL NOT FOUND: setAttackGimmickDetails__10grYakumonoFP21soCollisionAttackDataffffiP5Vec3fiiiiUlUlUlbUlQ221soCollisionAttackData9AttributeQ221soCollisionAttackData10SoundLevelQ221soCollisionAttackData14SoundAttributebbbbbbUlUlbbbQ221soCollisionAttackData7LrCheckbbbbbQ221soCollisionAttackData6Regionb
+>>> SYMBOL NOT FOUND: isEnableAttackPersonAttacked__10grYakumonoFUlUlUl
+>>> SYMBOL NOT FOUND: isEnableAttackAttribute__10grYakumonoFUlUl
+>>> SYMBOL NOT FOUND: _savegpr_27
+>>> SYMBOL NOT FOUND: g_GameGlobal
+>>> SYMBOL NOT FOUND: getInstance__14gfSceneManagerFv
+>>> SYMBOL NOT FOUND: __dt__8grMadeinFv
+>>> SYMBOL NOT FOUND: update__8grMadeinFf
+>>> SYMBOL NOT FOUND: receiveCollMsg_Landing__8grMadeinFP12grCollStatusP16grCollisionJointb
+>>> SYMBOL NOT FOUND: startup__8grMadeinFP9gfArchiveUlUl
+>>> SYMBOL NOT FOUND: setTgtNode__8grMadeinFPCc
+>>> SYMBOL NOT FOUND: getTgtNode__8grMadeinFv
+>>> SYMBOL NOT FOUND: onDamage__8grMadeinFiP8soDamageP20soDamageAttackerInfo
+>>> SYMBOL NOT FOUND: onInflictEach__8grMadeinFP14soCollisionLogf
+>>> SYMBOL NOT FOUND: searchScene__14gfSceneManagerFPCc
+>>> SYMBOL NOT FOUND: g_ftManager
+>>> SYMBOL NOT FOUND: getEntryIdFromIndex__9ftManagerFi
+>>> SYMBOL NOT FOUND: isFighterActivate__9ftManagerFii
+>>> SYMBOL NOT FOUND: getOwner__9ftManagerFi
+>>> SYMBOL NOT FOUND: getStockCount__7ftOwnerFv
+>>> SYMBOL NOT FOUND: getHitPointMax__7ftOwnerFv
+>>> SYMBOL NOT FOUND: getEntryCount__9ftManagerFv
+>>> SYMBOL NOT FOUND: _restgpr_27
+>>> SYMBOL NOT FOUND: __ct__8grMadeinFPCc
+>>> SYMBOL NOT FOUND: setMotion__8grMadeinFUl
+>>> SYMBOL NOT FOUND: processBegin__7stMeleeFv
+>>> SYMBOL NOT FOUND: processAnim__5StageFv
+>>> SYMBOL NOT FOUND: processUpdate__7stMeleeFv
+>>> SYMBOL NOT FOUND: processMapCorrection__5StageFv
+>>> SYMBOL NOT FOUND: processFixCamera__5StageFv
+>>> SYMBOL NOT FOUND: processGameProc__6gfTaskFv
+>>> SYMBOL NOT FOUND: processEnd__5StageFv
+>>> SYMBOL NOT FOUND: renderPre__5StageFv
+>>> SYMBOL NOT FOUND: renderDebug__5StageFv
+>>> SYMBOL NOT FOUND: releaseArchive__15stCommonGimmickFv
+>>> SYMBOL NOT FOUND: __dt__7stMeleeFv
+>>> SYMBOL NOT FOUND: testStageParamInit__5StageFP9gfArchivei
+>>> SYMBOL NOT FOUND: testStageDataInit__5StageFP9gfArchiveii
+>>> SYMBOL NOT FOUND: createCollision__5StageFP9gfArchiveiP6Ground
+>>> SYMBOL NOT FOUND: getData__9gfArchiveF11ARCNodeTypeiUs
+>>> SYMBOL NOT FOUND: createStagePositions__5StageFv
+>>> SYMBOL NOT FOUND: createStagePositions__5StageFPQ34nw4r3g3d7ResFile
+>>> SYMBOL NOT FOUND: loadStageAttrParam__5StageFP9gfArchivei
+>>> SYMBOL NOT FOUND: registScnAnim__5StageFPQ34nw4r3g3d11ResFileDataUl
+>>> SYMBOL NOT FOUND: initPosPokeTrainer__5StageFii
+>>> SYMBOL NOT FOUND: createObjPokeTrainer__5StageFP9gfArchiveiPCcP5Vec3fi
+>>> SYMBOL NOT FOUND: getItemPac__5StageFPP9gfArchivePP9gfArchive6itKindiPP9gfArchivePP21itCustomizerInterface
+>>> SYMBOL NOT FOUND: getItemGenPac__7stMeleeFPP9gfArchive
+>>> SYMBOL NOT FOUND: getItemPacEnemyFigure__5StageFPP9gfArchive
+>>> SYMBOL NOT FOUND: getEnemyPac__5StageFPP9gfArchivePP9gfArchivePP9gfArchivePP9gfArchive6emKind
+>>> SYMBOL NOT FOUND: getAdvRadarData__5StageFPP9gfArchivePP9gfArchive
+>>> SYMBOL NOT FOUND: initializeStage__5StageFv
+>>> SYMBOL NOT FOUND: closeStage__5StageFv
+>>> SYMBOL NOT FOUND: renderDebugPositions__5StageFv
+>>> SYMBOL NOT FOUND: process__5StageFv
+>>> SYMBOL NOT FOUND: updateStagePositions__5StageFv
+>>> SYMBOL NOT FOUND: debugCollision__5StageFv
+>>> SYMBOL NOT FOUND: getZoneLightSetIndex__5StageFv
+>>> SYMBOL NOT FOUND: clearCameraParam__5StageFv
+>>> SYMBOL NOT FOUND: initCameraParam__5StageFv
+>>> SYMBOL NOT FOUND: startLoadLocalData__5StageFv
+>>> SYMBOL NOT FOUND: isLoadLocalData__5StageFv
+>>> SYMBOL NOT FOUND: entryLocalData__5StageFv
+>>> SYMBOL NOT FOUND: removeLocalData__5StageFv
+>>> SYMBOL NOT FOUND: getFighterStartPos__7stMeleeFP5Vec3fi
+>>> SYMBOL NOT FOUND: getFighterReStartPos__7stMeleeFP5Vec3fi
+>>> SYMBOL NOT FOUND: getPokeTrainerStartPos__5StageFP5Vec3fUl
+>>> SYMBOL NOT FOUND: getItemPosCount__5StageFv
+>>> SYMBOL NOT FOUND: getItemPos__5StageFP5Vec3fP5Vec3fUl
+>>> SYMBOL NOT FOUND: getRandItemPos__5StageFP5Vec3f
+>>> SYMBOL NOT FOUND: getKirifudaPos__5StageFP5Vec3fUl
+>>> SYMBOL NOT FOUND: getKirifudaAngle__5StageFUl
+>>> SYMBOL NOT FOUND: getKirifudaScale__5StageFP5Vec3fUl
+>>> SYMBOL NOT FOUND: getKirifudaModelType__5StageFUl
+>>> SYMBOL NOT FOUND: getPokeTrainerPosCount__5StageFv
+>>> SYMBOL NOT FOUND: getPokeTrainerPos__5StageFP5Vec3fP5Vec3fUl
+>>> SYMBOL NOT FOUND: getFighterDeadEffectSizeRate__5StageFv
+>>> SYMBOL NOT FOUND: getEnemyDeadEffectSizeRate__5StageFv
+>>> SYMBOL NOT FOUND: getEnableZ__5StageFv
+>>> SYMBOL NOT FOUND: isEnd__5StageFv
+>>> SYMBOL NOT FOUND: isEventEnd__5StageFv
+>>> SYMBOL NOT FOUND: enableDevil__5StageFv
+>>> SYMBOL NOT FOUND: disableDevil__5StageFv
+>>> SYMBOL NOT FOUND: isDevil__5StageFv
+>>> SYMBOL NOT FOUND: setDevilScrool__5StageFff
+>>> SYMBOL NOT FOUND: getLucarioFinalTechniquePosition__5StageFP5Vec3f
+>>> SYMBOL NOT FOUND: startAppear__5StageFv
+>>> SYMBOL NOT FOUND: setAppearKind__5StageFUc
+>>> SYMBOL NOT FOUND: endAppear__5StageFv
+>>> SYMBOL NOT FOUND: getAppearTask__5StageFv
+>>> SYMBOL NOT FOUND: forceStopAppear__5StageFv
+>>> SYMBOL NOT FOUND: setMotionRatio__5StageFff
+>>> SYMBOL NOT FOUND: saveMotionRatio__5StageFi
+>>> SYMBOL NOT FOUND: restoreMotionRatio__5StageFi
+>>> SYMBOL NOT FOUND: setMotionSubRatio__5StageFff
+>>> SYMBOL NOT FOUND: saveMotionSubRatio__5StageFi
+>>> SYMBOL NOT FOUND: restoreMotionSubRatio__5StageFi
+>>> SYMBOL NOT FOUND: isAppear__5StageFv
+>>> SYMBOL NOT FOUND: isStartAppearTimming__5StageFv
+>>> SYMBOL NOT FOUND: getMadeinAiData__5StageFv
+>>> SYMBOL NOT FOUND: getBamperVector__5StageFP5Vec3f
+>>> SYMBOL NOT FOUND: notifyEventInfoReady__5StageFv
+>>> SYMBOL NOT FOUND: notifyEventInfoGo__5StageFv
+>>> SYMBOL NOT FOUND: getDestroyBossParamCommon__5StageFUlii
+>>> SYMBOL NOT FOUND: stAdventureEventGetItem__5StageFi6itKindiii
+>>> SYMBOL NOT FOUND: setStageOutEffectInit__5StageFv
+>>> SYMBOL NOT FOUND: setStageInEffectInit__5StageFv
+>>> SYMBOL NOT FOUND: getZoneState__5StageFv
+>>> SYMBOL NOT FOUND: getZonePos__5StageFP5Vec3f
+>>> SYMBOL NOT FOUND: getMagmaHeight__5StageFv
+>>> SYMBOL NOT FOUND: getAcidHeight__5StageFv
+>>> SYMBOL NOT FOUND: getIteamDropStatus__5StageFv
+>>> SYMBOL NOT FOUND: createWind2ndOnly__7stMeleeFv
+>>> SYMBOL NOT FOUND: updateWind2ndOnly__7stMeleeFv
+>>> SYMBOL NOT FOUND: setVision__5StageFUc
+>>> SYMBOL NOT FOUND: setCameraLimitRange__7stMeleeFffff
+>>> SYMBOL NOT FOUND: resetCameraLimitRange__7stMeleeFv
+>>> SYMBOL NOT FOUND: checkChangeScene__7stMeleeFv
+>>> SYMBOL NOT FOUND: resetChangeScene__7stMeleeFv
+>>> SYMBOL NOT FOUND: setChangeSceneNumber__7stMeleeFl
+>>> SYMBOL NOT FOUND: addGround__5StageFP6Ground
+>>> SYMBOL NOT FOUND: setDontMoveGround__6GroundFv
+>>> SYMBOL NOT FOUND: setClassInfo__11stClassInfoFQ26Stages11srStageKindP11stClassInfo
+>>> SYMBOL NOT FOUND: __dt__11stClassInfoFv
+>>> SYMBOL NOT FOUND: __ct__7stMeleeFPCcQ26Stages11srStageKind
+>>> SYMBOL NOT FOUND: __ct__11stClassInfoFv
+
+
+.init section layout
+  Starting        Virtual  File
+  address  Size   address  offset
+  ---------------------------------
+
+
+.text section layout
+  Starting        Virtual  File
+  address  Size   address  offset
+  ---------------------------------
+  00000000 0001cc 00000000 00000040  1 .text 	gr_final.o 
+  00000000 000018 00000000 00000040  4 GXFastCallDisplayList 	gr_final.o 
+  00000018 0000bc 00000018 00000058  4 create__7grFinalFiPCcPCc 	gr_final.o 
+  000000d4 000008 000000d4 00000114  4 setMdlIndex__6GroundFi 	gr_final.o 
+  000000dc 000004 000000dc 0000011c  4 update__7grFinalFf 	gr_final.o 
+  000000e0 000058 000000e0 00000120  4 __dt__7grFinalFv 	gr_final.o 
+  00000138 000008 00000138 00000178  4 setGimmickData__9grGimmickFPv 	gr_final.o 
+  00000140 000008 00000140 00000180  4 getGimmickData__9grGimmickFv 	gr_final.o 
+  00000148 000008 00000148 00000188  4 getTransparencyFlag__9grGimmickFv 	gr_final.o 
+  00000150 00001c 00000150 00000190  4 getModelCount__6GroundFv 	gr_final.o 
+  0000016c 000008 0000016c 000001ac  4 setStageData__6GroundFPv 	gr_final.o 
+  00000174 000008 00000174 000001b4  4 getStageData__6GroundFv 	gr_final.o 
+  0000017c 000004 0000017c 000001bc  4 initStageData__6GroundFv 	gr_final.o 
+  00000180 000008 00000180 000001c0  4 getMdlIndex__6GroundFv 	gr_final.o 
+  00000188 00000c 00000188 000001c8  4 isEnableCalcCollision__6GroundFv 	gr_final.o 
+  00000194 000010 00000194 000001d4  4 enableCalcCollision__6GroundFv 	gr_final.o 
+  000001a4 000010 000001a4 000001e4  4 disableCalcCollision__6GroundFv 	gr_final.o 
+  000001b4 000004 000001b4 000001f4  4 setInitializeFlag__6GroundFv 	gr_final.o 
+  000001b8 000004 000001b8 000001f8  4 setInitializeInfo__6GroundFi 	gr_final.o 
+  000001bc 000008 000001bc 000001fc  4 getInitializeInfo__6GroundFi 	gr_final.o 
+  000001c4 000008 000001c4 00000204  4 adventureEventGetItem__6GroundFiP13stTriggerData 	gr_final.o 
+  000001cc 000248 000001cc 0000020c  1 .text 	gr_luigismansion.o 
+  000001cc 000018 000001cc 0000020c  4 GXFastCallDisplayList 	gr_luigismansion.o 
+  000001e4 0001d8 000001e4 00000224  4 checkForPinch__15grLuigisMansionFv 	gr_luigismansion.o 
+  000003bc 000058 000003bc 000003fc  4 __dt__15grLuigisMansionFv 	gr_luigismansion.o 
+  00000414 000178 00000414 00000454  1 .text 	gr_luigismansion_lightning.o 
+  00000414 000018 00000414 00000454  4 GXFastCallDisplayList 	gr_luigismansion_lightning.o 
+  0000042c 0000a0 0000042c 0000046c  4 create__24grLuigisMansionLightningFiPCcPCc 	gr_luigismansion_lightning.o 
+  000004cc 000004 000004cc 0000050c  4 startup__24grLuigisMansionLightningFP9gfArchiveUlUl 	gr_luigismansion_lightning.o 
+  000004d0 000060 000004d0 00000510  4 update__24grLuigisMansionLightningFf 	gr_luigismansion_lightning.o 
+  00000530 00005c 00000530 00000570  4 __dt__24grLuigisMansionLightningFv 	gr_luigismansion_lightning.o 
+  0000058c 000094 0000058c 000005cc  1 .text 	rel.o 
+  0000058c 000048 0000058c 000005cc  4 _prolog 	rel.o 
+  000005d4 000048 000005d4 00000614  4 _epilog 	rel.o 
+  0000061c 000004 0000061c 0000065c  4 _unresolved 	rel.o 
+  00000620 000608 00000620 00000660  1 .text 	st_luigismansion.o 
+  00000620 000018 00000620 00000660  4 GXFastCallDisplayList 	st_luigismansion.o 
+  00000638 00005c 00000638 00000678  4 create__15stLuigisMansionFv 	st_luigismansion.o 
+  00000694 000008 00000694 000006d4  4 loading__15stLuigisMansionFv 	st_luigismansion.o 
+  0000069c 000004 0000069c 000006dc  4 update__15stLuigisMansionFf 	st_luigismansion.o 
+  000006a0 000184 000006a0 000006e0  4 createObj__15stLuigisMansionFv 	st_luigismansion.o 
+  00000824 0000a0 00000824 00000864  4 createObjGround__15stLuigisMansionFi 	st_luigismansion.o 
+  000008c4 000098 000008c4 00000904  4 createObjLightning__15stLuigisMansionFi 	st_luigismansion.o 
+  0000095c 000008 0000095c 0000099c  4 isBamperVector__15stLuigisMansionFv 	st_luigismansion.o 
+  00000964 00000c 00000964 000009a4  4 getFinalTechniqColor__15stLuigisMansionFv 	st_luigismansion.o 
+  00000970 00006c 00000970 000009b0  4 __dt__15stLuigisMansionFv 	st_luigismansion.o 
+  000009dc 000008 000009dc 00000a1c  4 getWind2ndOnlyData__7stMeleeFv 	st_luigismansion.o 
+  000009e4 000008 000009e4 00000a24  4 isReStartSamePoint__7stMeleeFv 	st_luigismansion.o 
+  000009ec 000008 000009ec 00000a2c  4 getPokeTrainerPointNum__5StageFv 	st_luigismansion.o 
+  000009f4 000004 000009f4 00000a34  4 getPokeTrainerPointData__5StageFPii 	st_luigismansion.o 
+  000009f8 00000c 000009f8 00000a38  4 getPokeTrainerPositionZ__5StageFv 	st_luigismansion.o 
+  00000a04 000008 00000a04 00000a44  4 getPokeTrainerDrawLayer__5StageFv 	st_luigismansion.o 
+  00000a0c 000008 00000a0c 00000a4c  4 isAdventureStage__5StageFv 	st_luigismansion.o 
+  00000a14 000008 00000a14 00000a54  4 getAIRange__5StageFv 	st_luigismansion.o 
+  00000a1c 000008 00000a1c 00000a5c  4 getDefaultLightSetIndex__5StageFv 	st_luigismansion.o 
+  00000a24 00001c 00000a24 00000a64  4 getScrollDir__5StageFP5Vec3f 	st_luigismansion.o 
+  00000a40 000004 00000a40 00000a80  4 appearanceFighterLocal__5StageFv 	st_luigismansion.o 
+  00000a44 000008 00000a44 00000a84  4 getBgmID__5StageCFv 	st_luigismansion.o 
+  00000a4c 000008 00000a4c 00000a8c  4 getBgmID__5StageFv 	st_luigismansion.o 
+  00000a54 000008 00000a54 00000a94  4 getNowStepBgmID__5StageFv 	st_luigismansion.o 
+  00000a5c 000008 00000a5c 00000a9c  4 getBgmOptionID__5StageFv 	st_luigismansion.o 
+  00000a64 000008 00000a64 00000aa4  4 isBgmChange__5StageFv 	st_luigismansion.o 
+  00000a6c 000014 00000a6c 00000aac  4 getBgmChangeID__5StageFPUlPf 	st_luigismansion.o 
+  00000a80 000010 00000a80 00000ac0  4 setBgmChange__5StageFfbUl 	st_luigismansion.o 
+  00000a90 00000c 00000a90 00000ad0  4 getBgmVolume__5StageFv 	st_luigismansion.o 
+  00000a9c 00000c 00000a9c 00000adc  4 getBgmPlayOffsetFrame__5StageFv 	st_luigismansion.o 
+  00000aa8 000008 00000aa8 00000ae8  4 isNextStepBgmEqualNowStepBgmFromFlag__5StageFv 	st_luigismansion.o 
+  00000ab0 000008 00000ab0 00000af0  4 setFrameRuleTime__5StageFf 	st_luigismansion.o 
+  00000ab8 000008 00000ab8 00000af8  4 getFrameRuleTime__5StageFv 	st_luigismansion.o 
+  00000ac0 000004 00000ac0 00000b00  4 notifyTimmingGameStart__5StageFv 	st_luigismansion.o 
+  00000ac4 000008 00000ac4 00000b04  4 isCameraLocked__5StageFv 	st_luigismansion.o 
+  00000acc 000008 00000acc 00000b0c  4 isBossBattleMode__5StageFv 	st_luigismansion.o 
+  00000ad4 000008 00000ad4 00000b14  4 isSimpleBossBattleMode__5StageFv 	st_luigismansion.o 
+  00000adc 000008 00000adc 00000b1c  4 helperStarWarp__5StageFv 	st_luigismansion.o 
+  00000ae4 000008 00000ae4 00000b24  4 initializeFighterAttackRatio__5StageFv 	st_luigismansion.o 
+  00000aec 000004 00000aec 00000b2c  4 startFighterEvent__5StageFv 	st_luigismansion.o 
+  00000af0 000064 00000af0 00000b30  4 __sinit_\st_luigismansion_cpp 	st_luigismansion.o 
+  00000b54 000074 00000b54 00000b94  4 __dt__36stClassInfoImpl<2,15stLuigisMansion>Fv 	st_luigismansion.o 
+  00000bc8 00005c 00000bc8 00000c08  4 create__36stClassInfoImpl<2,15stLuigisMansion>Fv 	st_luigismansion.o 
+  00000c24 000004 00000c24 00000c64  4 preload__36stClassInfoImpl<2,15stLuigisMansion>Fv 	st_luigismansion.o 
+  00000c28 000070 00000c28 00000c68  1 .text 	global_destructor_chain.o 
+  00000c28 00001c 00000c28 00000c68  4 __register_global_object 	global_destructor_chain.o 
+  00000c44 000054 00000c44 00000c84  4 __destroy_global_chain 	global_destructor_chain.o 
+
+
+.ctors section layout
+  Starting        Virtual  File
+  address  Size   address  offset
+  ---------------------------------
+  00000000 000000 00000000 00000cd8  1 .ctors$00 	Linker Generated Symbol File 
+  00000000 000000 00000000 00000cd8  4 _ctors 	Linker Generated Symbol File 
+  00000000 000004 00000000 00000cd8  1 .ctors 	st_luigismansion.o 
+  00000004 000004 00000004 00000cdc  1 .ctors$99 	Linker Generated Symbol File 
+  00000004 000004 00000004 00000cdc  4 _ctors$99 	Linker Generated Symbol File 
+
+
+.dtors section layout
+  Starting        Virtual  File
+  address  Size   address  offset
+  ---------------------------------
+  00000000 000000 00000000 00000ce0  1 .dtors$00 	Linker Generated Symbol File 
+  00000000 000000 00000000 00000ce0  4 _dtors 	Linker Generated Symbol File 
+  00000000 000004 00000000 00000ce0  1 .dtors$10 	global_destructor_chain.o 
+  00000000 000004 00000000 00000ce0  4 __destroy_global_chain_reference 	global_destructor_chain.o 
+  00000004 000004 00000004 00000ce4  1 .dtors$10 	Linker Generated Symbol File 
+  00000004 000004 00000004 00000ce4  4 __destroy_global_chain_reference 	Linker Generated Symbol File 
+  00000008 000004 00000008 00000ce8  1 .dtors$99 	Linker Generated Symbol File 
+  00000008 000004 00000008 00000ce8  4 _dtors$99 	Linker Generated Symbol File 
+
+
+.rodata section layout
+  Starting        Virtual  File
+  address  Size   address  offset
+  ---------------------------------
+  00000000 000001 00000000 00000cf0  1 .rodata 	gr_final.o 
+  00000000 000001 00000000 00000cf0  4 nullptr 	gr_final.o 
+  00000001 000007 00000008 00000cf8  8 *fill*
+  00000008 00000c 00000008 00000cf8  1 .rodata 	gr_luigismansion.o 
+  00000008 000001 00000008 00000cf8  4 nullptr 	gr_luigismansion.o 
+  0000000c 000004 0000000c 00000cfc  4 @7716 	gr_luigismansion.o 
+  00000010 000004 00000010 00000d00  4 @7717 	gr_luigismansion.o 
+  00000014 000004 00000018 00000d08  8 *fill*
+  00000018 000001 00000018 00000d08  1 .rodata 	gr_luigismansion_lightning.o 
+  00000018 000001 00000018 00000d08  4 nullptr 	gr_luigismansion_lightning.o 
+  00000019 000007 00000020 00000d10  8 *fill*
+  00000020 000001 00000020 00000d10  1 .rodata 	rel.o 
+  00000020 000001 00000020 00000d10  4 nullptr 	rel.o 
+  00000021 000007 00000028 00000d18  8 *fill*
+  00000028 000010 00000028 00000d18  1 .rodata 	st_luigismansion.o 
+  00000028 000001 00000028 00000d18  4 nullptr 	st_luigismansion.o 
+  0000002c 000004 0000002c 00000d1c  4 @8079 	st_luigismansion.o 
+  00000030 000004 00000030 00000d20  4 @8101 	st_luigismansion.o 
+  00000034 000004 00000034 00000d24  4 @8123 	st_luigismansion.o 
+
+
+.data section layout
+  Starting        Virtual  File
+  address  Size   address  offset
+  ---------------------------------
+  00000000 000288 00000000 00000d28  1 .data 	gr_final.o 
+  00000000 0001c8 00000000 00000d28  8 __vt__7grFinal 	gr_final.o 
+  000001c8 000008 000001c8 00000ef0  8 @7100 	gr_final.o 
+  000001d0 000024 000001d0 00000ef8  4 @7101 	gr_final.o 
+  000001f8 000008 000001f8 00000f20  8 __RTTI__7grFinal 	gr_final.o 
+  00000200 00000b 00000200 00000f28  4 @7102 	gr_final.o 
+  0000020c 00001c 0000020c 00000f34  4 @7103 	gr_final.o 
+  00000228 000008 00000228 00000f50  8 __RTTI__10grYakumono 	gr_final.o 
+  00000230 00000a 00000230 00000f58  4 @7104 	gr_final.o 
+  0000023c 000014 0000023c 00000f64  4 @7105 	gr_final.o 
+  00000250 000008 00000250 00000f78  8 __RTTI__9grGimmick 	gr_final.o 
+  00000258 000007 00000258 00000f80  4 @7106 	gr_final.o 
+  00000260 00000c 00000260 00000f88  4 @7107 	gr_final.o 
+  00000270 000008 00000270 00000f98  8 __RTTI__6Ground 	gr_final.o 
+  00000278 000007 00000278 00000fa0  4 @7108 	gr_final.o 
+  00000280 000008 00000280 00000fa8  8 __RTTI__6gfTask 	gr_final.o 
+  00000288 00030b 00000288 00000fb0  1 .data 	gr_luigismansion.o 
+  00000288 000008 00000288 00000fb0  8 @7715 	gr_luigismansion.o 
+  00000290 0001cc 00000290 00000fb8  4 __vt__15grLuigisMansion 	gr_luigismansion.o 
+  00000460 000010 00000460 00001188  8 @7718 	gr_luigismansion.o 
+  00000470 000034 00000470 00001198  4 @7719 	gr_luigismansion.o 
+  000004a8 000008 000004a8 000011d0  8 __RTTI__15grLuigisMansion 	gr_luigismansion.o 
+  000004b0 000009 000004b0 000011d8  4 @7720 	gr_luigismansion.o 
+  000004bc 00002c 000004bc 000011e4  4 @7721 	gr_luigismansion.o 
+  000004e8 000008 000004e8 00001210  8 __RTTI__8grMadein 	gr_luigismansion.o 
+  000004f0 00000e 000004f0 00001218  4 @7722 	gr_luigismansion.o 
+  00000500 000024 00000500 00001228  4 @7723 	gr_luigismansion.o 
+  00000528 000008 00000528 00001250  8 __RTTI__13grSeqYakumono 	gr_luigismansion.o 
+  00000530 00000b 00000530 00001258  4 @7724 	gr_luigismansion.o 
+  0000053c 00001c 0000053c 00001264  4 @7725 	gr_luigismansion.o 
+  00000558 00000a 00000558 00001280  4 @7726 	gr_luigismansion.o 
+  00000564 000014 00000564 0000128c  4 @7727 	gr_luigismansion.o 
+  00000578 000007 00000578 000012a0  4 @7728 	gr_luigismansion.o 
+  00000580 00000c 00000580 000012a8  4 @7729 	gr_luigismansion.o 
+  0000058c 000007 0000058c 000012b4  4 @7730 	gr_luigismansion.o 
+  00000593 000005 00000598 000012c0  8 *fill*
+  00000598 000343 00000598 000012c0  1 .data 	gr_luigismansion_lightning.o 
+  00000598 0001cc 00000598 000012c0  4 __vt__24grLuigisMansionLightning 	gr_luigismansion_lightning.o 
+  00000764 000019 00000764 0000148c  4 @7742 	gr_luigismansion_lightning.o 
+  00000780 00003c 00000780 000014a8  4 @7743 	gr_luigismansion_lightning.o 
+  000007c0 000008 000007c0 000014e8  8 __RTTI__24grLuigisMansionLightning 	gr_luigismansion_lightning.o 
+  000007c8 000010 000007c8 000014f0  8 @7744 	gr_luigismansion_lightning.o 
+  000007d8 000034 000007d8 00001500  4 @7745 	gr_luigismansion_lightning.o 
+  0000080c 000009 0000080c 00001534  4 @7746 	gr_luigismansion_lightning.o 
+  00000818 00002c 00000818 00001540  4 @7747 	gr_luigismansion_lightning.o 
+  00000844 00000e 00000844 0000156c  4 @7748 	gr_luigismansion_lightning.o 
+  00000854 000024 00000854 0000157c  4 @7749 	gr_luigismansion_lightning.o 
+  00000878 00000b 00000878 000015a0  4 @7750 	gr_luigismansion_lightning.o 
+  00000884 00001c 00000884 000015ac  4 @7751 	gr_luigismansion_lightning.o 
+  000008a0 00000a 000008a0 000015c8  4 @7752 	gr_luigismansion_lightning.o 
+  000008ac 000014 000008ac 000015d4  4 @7753 	gr_luigismansion_lightning.o 
+  000008c0 000007 000008c0 000015e8  4 @7754 	gr_luigismansion_lightning.o 
+  000008c8 00000c 000008c8 000015f0  4 @7755 	gr_luigismansion_lightning.o 
+  000008d4 000007 000008d4 000015fc  4 @7756 	gr_luigismansion_lightning.o 
+  000008db 000005 000008e0 00001608  8 *fill*
+  000008e0 0003a0 000008e0 00001608  1 .data 	st_luigismansion.o 
+  000008e0 00000e 000008e0 00001608  4 @8040 	st_luigismansion.o 
+  000008f0 000001 000008f0 00001618  4 @8051 	st_luigismansion.o 
+  000008f8 000008 000008f8 00001620  8 @8052 	st_luigismansion.o 
+  00000900 000019 00000900 00001628  4 @8066 	st_luigismansion.o 
+  0000091c 000224 0000091c 00001644  4 __vt__15stLuigisMansion 	st_luigismansion.o 
+  00000b40 000010 00000b40 00001868  8 @8083 	st_luigismansion.o 
+  00000b50 000024 00000b50 00001878  4 @8084 	st_luigismansion.o 
+  00000b78 000008 00000b78 000018a0  8 __RTTI__15stLuigisMansion 	st_luigismansion.o 
+  00000b80 000008 00000b80 000018a8  8 @8085 	st_luigismansion.o 
+  00000b88 00001c 00000b88 000018b0  4 @8086 	st_luigismansion.o 
+  00000ba8 000008 00000ba8 000018d0  8 __RTTI__7stMelee 	st_luigismansion.o 
+  00000bb0 000010 00000bb0 000018d8  8 @8087 	st_luigismansion.o 
+  00000bc0 000014 00000bc0 000018e8  4 @8088 	st_luigismansion.o 
+  00000bd8 000008 00000bd8 00001900  8 __RTTI__15stCommonGimmick 	st_luigismansion.o 
+  00000be0 000006 00000be0 00001908  4 @8089 	st_luigismansion.o 
+  00000be8 00000c 00000be8 00001910  4 @8090 	st_luigismansion.o 
+  00000bf8 000008 00000bf8 00001920  8 __RTTI__5Stage 	st_luigismansion.o 
+  00000c00 000007 00000c00 00001928  4 @8091 	st_luigismansion.o 
+  00000c08 000014 00000c08 00001930  4 __vt__36stClassInfoImpl<2,15stLuigisMansion> 	st_luigismansion.o 
+  00000c1c 000024 00000c1c 00001944  4 @8146 	st_luigismansion.o 
+  00000c40 00000c 00000c40 00001968  4 @8147 	st_luigismansion.o 
+  00000c50 000008 00000c50 00001978  8 __RTTI__36stClassInfoImpl<2,15stLuigisMansion> 	st_luigismansion.o 
+  00000c58 00000c 00000c58 00001980  4 @8148 	st_luigismansion.o 
+  00000c68 000008 00000c68 00001990  8 __RTTI__11stClassInfo 	st_luigismansion.o 
+  00000c70 000010 00000c70 00001998  8 @STRING@__ct__15stLuigisMansionFQ26Stages11srStageKind 	st_luigismansion.o 
+
+
+.bss section layout
+  Starting        Virtual  File
+  address  Size   address  offset
+  ---------------------------------
+  00000000 000010 00000000 000019a8  1 .bss 	st_luigismansion.o 
+  00000000 00000c 00000000 000019a8  4 @8002 	st_luigismansion.o 
+  0000000c 000004 0000000c 000019b4  4 classInfo 	st_luigismansion.o 
+  00000010 000004 00000010 000019b8  1 .bss 	global_destructor_chain.o 
+  00000010 000004 00000010 000019b8  4 __global_destructor_chain 	global_destructor_chain.o 
+
+
+Memory map:
+                       Starting Size     File
+                       address           Offset
+                 .init 00000000 00000000 00000040
+                 .text 00000000 00000c98 00000040
+                .ctors 00000000 00000008 00000cd8
+                .dtors 00000000 0000000c 00000ce0
+               .rodata 00000000 00000038 00000cf0
+                 .data 00000000 00000c80 00000d28
+                  .bss 00000000 00000014 000019a8
+      .PPC.EMB.apuinfo 00000000 00000000 00009590
+                 .line          00000000 000019a8
