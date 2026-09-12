@@ -302,7 +302,7 @@ loc_504:
 #include "./Enemies/bss/emFaulong.asm"
 #include "./Enemies/bss/emBitan.asm"
 #include "./Enemies/bss/emPatapata.asm"
-.include "./Enemies/bss/emJdus.asm"
+#include "./Enemies/bss/emJdus.asm"
 #include "./Enemies/bss/emGhamgha.asm"
 #include "./Enemies/bss/emRobobeam.asm"
 #include "./Enemies/bss/emRobodistance.asm"

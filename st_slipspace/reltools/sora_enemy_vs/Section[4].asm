@@ -1147,7 +1147,7 @@ loc_enemyOverrideSettings:
 #include "./Enemies/rodata/emFaulong.asm"
 #include "./Enemies/rodata/emBitan.asm"
 #include "./Enemies/rodata/emPatapata.asm"
-.include "./Enemies/rodata/emJdus.asm"
+#include "./Enemies/rodata/emJdus.asm"
 #include "./Enemies/rodata/emGhamgha.asm"
 #include "./Enemies/rodata/emRobobeam.asm"
 #include "./Enemies/rodata/emRobodistance.asm"

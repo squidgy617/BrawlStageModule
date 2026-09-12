@@ -1369,7 +1369,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_6emPrim_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emShelly_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_10emPatapata_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_6emJdus_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1003, 1, "Enemy__createInstance_6emJdus_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1001, 1, "Enemy__createInstance_10emBombhead_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_6emPrim_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emNgagog_")]
@@ -1431,7 +1431,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_11emPrimParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emShellyParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_15emPatapataParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_11emJdusParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1003, 1, "emResourceModuleImpl__ModifyExParam_11emJdusParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1001, 1, "emResourceModuleImpl__ModifyExParam_15emBombheadParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_11emPrimParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emNgagogParam_")]
@@ -1493,7 +1493,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_11emPrimParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emShellyParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_15emPatapataParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_11emJdusParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Jdus
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Bombhead
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_11emPrimParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emNgagogParam_")]
@@ -7021,7 +7021,7 @@ loc_6EE8:
 #include "./Enemies/data/emFaulong.asm"
 #include "./Enemies/data/emBitan.asm"
 #include "./Enemies/data/emPatapata.asm"
-.include "./Enemies/data/emJdus.asm"
+#include "./Enemies/data/emJdus.asm"
 #include "./Enemies/data/emGhamgha.asm"
 #include "./Enemies/data/emRobobeam.asm"
 #include "./Enemies/data/emRobodistance.asm"

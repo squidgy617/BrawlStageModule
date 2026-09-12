@@ -2180,7 +2180,7 @@ loc_enemyNames:
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_C228")] # 0x17 - emPrim
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F728")] # 0x18 - emShelly
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_132A0")] # 0x19 - emPatapata
-    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_13570")] # 0x1A - emJdus
+    .4byte 0x00000000         [R_PPC_ADDR32(1003, 5, "loc_13570")] # 0x1A - emJdus
     .4byte 0x00000000         [R_PPC_ADDR32(1001, 5, "loc_11D98")] # 0x1B - emBombhead
     .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_emPrimMetal")] # 0x1C - emPrimMetal
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_12A18")] # 0x1D - emNgagog
@@ -47685,7 +47685,7 @@ wnemSimple_Data____ct1:
 #include "./Enemies/asm/emFaulong.asm"
 #include "./Enemies/asm/emBitan.asm"
 #include "./Enemies/asm/emPatapata.asm"
-.include "./Enemies/asm/emJdus.asm"
+#include "./Enemies/asm/emJdus.asm"
 #include "./Enemies/asm/emGhamgha.asm"
 #include "./Enemies/asm/emRobobeam.asm"
 #include "./Enemies/asm/emRobodistance.asm"

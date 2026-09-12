@@ -937,6 +937,12 @@ void stSlipspace::createObj()
     {
         moduleManager->loadModuleRequestOnImage("module0x3EA.rel", Heaps::OverlayStage, siralamosHeader, &siralamosHeaderSize);
     }
+    int jdusHeaderSize;
+    gfModuleHeader* jdusHeader = static_cast<gfModuleHeader*>(m_secondaryFileData->getData(Data_Type_Misc, 305, &jdusHeaderSize, 0xfffe));
+    if (jdusHeader != NULL)
+    {
+        moduleManager->loadModuleRequestOnImage("module0x3EB.rel", Heaps::OverlayStage, jdusHeader, &jdusHeaderSize);
+    }
 
     this->createObjAshiba(0, 2);
 
@@ -1276,6 +1282,7 @@ void stSlipspace::clearHeap() {
     gfModuleManager::getInstance()->destroy("module0x3E8.rel");
     gfModuleManager::getInstance()->destroy("module0x3E9.rel");
     gfModuleManager::getInstance()->destroy("module0x3EA.rel");
+    gfModuleManager::getInstance()->destroy("module0x3EB.rel");
     gfModuleManager::getInstance()->destroy("sora_enemy.rel");
 
     g_gfSceneRoot->m_transformFlag.m_reverseLr = false;
