@@ -1,10 +1,10 @@
 {
-  "Name": "sora_enemy_vs",
+  "Name": "em_pacci",
   "Type": "rel",
-  "ModuleID": 41,
+  "ModuleID": 1004,
   "ModuleAlign": 32,
   "BSSAlign": 8,
-  "FixSize": 320204,
+  "FixSize": 4316,
   "Sections": [
     null,
     {
@@ -55,14 +55,7 @@
       "Expand": false,
       "ExpandSize": 0
     },
-    {
-      "Path": "Hooks.asm",
-      "SectionID": 7,
-      "HasCode": true,
-      "IsBSS": false,
-      "Expand": false,
-      "ExpandSize": 0
-    },
+    null,
     null,
     null,
     null,

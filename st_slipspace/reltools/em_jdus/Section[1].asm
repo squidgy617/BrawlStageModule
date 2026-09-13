@@ -198,8 +198,8 @@ emJdusParamAccesser__getParamFloat:
     /* 00051534: */    li r0,0x1
     /* 00051538: */    extsh r7,r0
     /* 0005153C: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
-    /* 00051540: */    lis r3,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_10C8")]
-    /* 00051544: */    lfs f1,0x0(r3)                           [R_PPC_ADDR16_LO(41, 4, "loc_10C8")]
+    /* 00051540: */    lis r3,0x0                               [R_PPC_ADDR16_HA(1003, 4, "loc_10C8")]
+    /* 00051544: */    lfs f1,0x0(r3)                           [R_PPC_ADDR16_LO(1003, 4, "loc_10C8")]
     /* 00051548: */    lwz r0,0x14(r1)
     /* 0005154C: */    mtlr r0
     /* 00051550: */    addi r1,r1,0x10

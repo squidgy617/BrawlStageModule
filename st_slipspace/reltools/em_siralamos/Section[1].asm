@@ -1569,8 +1569,8 @@ emSiralamosParamAccesser__getParamFloat:
     /* 00036BB0: */    li r0,0x1
     /* 00036BB4: */    extsh r7,r0
     /* 00036BB8: */    bl __unresolved                          [R_PPC_REL24(0, 4, "MWRTTI____dynamic_cast")]
-    /* 00036BBC: */    lis r3,0x0                               [R_PPC_ADDR16_HA(41, 4, "loc_E90")]
-    /* 00036BC0: */    lfs f1,0x0(r3)                           [R_PPC_ADDR16_LO(41, 4, "loc_E90")]
+    /* 00036BBC: */    lis r3,0x0                               [R_PPC_ADDR16_HA(1002, 4, "loc_E90")]
+    /* 00036BC0: */    lfs f1,0x0(r3)                           [R_PPC_ADDR16_LO(1002, 4, "loc_E90")]
     /* 00036BC4: */    lwz r0,0x14(r1)
     /* 00036BC8: */    mtlr r0
     /* 00036BCC: */    addi r1,r1,0x10

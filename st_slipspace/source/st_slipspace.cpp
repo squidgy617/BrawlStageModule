@@ -2,6 +2,7 @@
 #include <st/st_class_info.h>
 #include <it/it_manager.h>
 #include <OS/OSError.h>
+#include <OS/OSLink.h>
 #include <gm/gm_global.h>
 #include <gf/gf_module.h>
 #include <gf/gf_heap_manager.h>
@@ -63,6 +64,7 @@ Vector<grTourObject*> _tourObjects(Heaps::StageInstance); // List of tour object
 Vector<TourState*> _tourStates(Heaps::StageInstance); // list of tour states
 Vector<EnemyPac*> _enemyPacs(Heaps::StageInstance);
 Tour _tour; // Tour
+Vector<gfModule*> _loadedEnemyModules(Heaps::StageInstance); // List of loaded enemy modules
 
 stSlipspace* stSlipspace::create()
 {
@@ -919,30 +921,13 @@ void stSlipspace::createObj()
         }
 
     }
-    int enemyHeaderSize;
-    gfModuleHeader* enemyHeader = static_cast<gfModuleHeader*>(m_secondaryFileData->getData(Data_Type_Misc, 302, &enemyHeaderSize, 0xfffe));
-    if (enemyHeader != NULL)
-    {
-        moduleManager->loadModuleRequestOnImage("module0x3E8.rel", Heaps::OverlayStage, enemyHeader, &enemyHeaderSize);
-    }
-    int bombheadHeaderSize;
-    gfModuleHeader* bombheadHeader = static_cast<gfModuleHeader*>(m_secondaryFileData->getData(Data_Type_Misc, 303, &bombheadHeaderSize, 0xfffe));
-    if (bombheadHeader != NULL)
-    {
-        moduleManager->loadModuleRequestOnImage("module0x3E9.rel", Heaps::OverlayStage, bombheadHeader, &bombheadHeaderSize);
-    }
-    int siralamosHeaderSize;
-    gfModuleHeader* siralamosHeader = static_cast<gfModuleHeader*>(m_secondaryFileData->getData(Data_Type_Misc, 304, &siralamosHeaderSize, 0xfffe));
-    if (siralamosHeader != NULL)
-    {
-        moduleManager->loadModuleRequestOnImage("module0x3EA.rel", Heaps::OverlayStage, siralamosHeader, &siralamosHeaderSize);
-    }
-    int jdusHeaderSize;
-    gfModuleHeader* jdusHeader = static_cast<gfModuleHeader*>(m_secondaryFileData->getData(Data_Type_Misc, 305, &jdusHeaderSize, 0xfffe));
-    if (jdusHeader != NULL)
-    {
-        moduleManager->loadModuleRequestOnImage("module0x3EB.rel", Heaps::OverlayStage, jdusHeader, &jdusHeaderSize);
-    }
+
+    _loadedEnemyModules.push(loadEnemyModule("Enemy/Tautau/em_redead.rel", Heaps::OverlayStage));
+    _loadedEnemyModules.push(loadEnemyModule("Enemy/Bombhead/em_bombhead.rel", Heaps::OverlayStage));
+    _loadedEnemyModules.push(loadEnemyModule("Enemy/Siralamos/em_siralamos.rel", Heaps::OverlayStage));
+    _loadedEnemyModules.push(loadEnemyModule("Enemy/Jdus/em_jdus.rel", Heaps::OverlayStage));
+    _loadedEnemyModules.push(loadEnemyModule("Enemy/Pacci/em_pacci.rel", Heaps::OverlayStage));
+
 
     this->createObjAshiba(0, 2);
 
@@ -1279,10 +1264,12 @@ void stSlipspace::clearHeap() {
         this->primFacePac = NULL;
     }
 
-    gfModuleManager::getInstance()->destroy("module0x3E8.rel");
-    gfModuleManager::getInstance()->destroy("module0x3E9.rel");
-    gfModuleManager::getInstance()->destroy("module0x3EA.rel");
-    gfModuleManager::getInstance()->destroy("module0x3EB.rel");
+    for (int i = 0; i < _loadedEnemyModules.size(); i++)
+    {
+        unloadEnemyModule(_loadedEnemyModules[i]);
+    }
+    _loadedEnemyModules.~Vector<gfModule*>();
+
     gfModuleManager::getInstance()->destroy("sora_enemy.rel");
 
     g_gfSceneRoot->m_transformFlag.m_reverseLr = false;
@@ -2852,5 +2839,59 @@ void stSlipspace::getKirifudaPos(Vec3f* posData,int type)
 }
 
 // End dynamic blast zone stuff
+
+gfModule* stSlipspace::loadEnemyModule(char* moduleName, HeapType heapType)
+{
+    gfFileIOHandle handle;
+    handle.read(moduleName, Heaps::StageResource, 0);
+
+    void* buffer = handle.getBuffer();
+
+    void* heap = gfHeapManager::getHeap(heapType);
+
+    if (!buffer)
+    {
+        return NULL;
+    }
+
+    // Create module
+    gfModule* module = gfModule::create(
+        heap,
+        buffer,
+        handle.getSize()
+    );
+
+    // Release file handle
+    handle.release();
+
+    // Free the buffer allocated by the handle
+    gfHeapManager::free(buffer);
+
+    // Run module prolog
+    reinterpret_cast<void (*)(void)>(module->header->prologOffset)();
+
+    return module;
+}
+
+bool stSlipspace::unloadEnemyModule(gfModule* module)
+{
+    if (!module)
+    {
+        return false;
+    }
+
+    // Run module epilog
+    reinterpret_cast<void (*)(void)>(module->header->epilogOffset)();
+
+    // Unlink the module before deleting it
+    OSUnlink(reinterpret_cast<OSModuleHeader*>(module->header));
+
+    // Delete module
+    delete module;
+
+    module = NULL;
+
+    return true;
+}
 
 ST_CLASS_INFO;

@@ -22,6 +22,7 @@
 #include "gr_area.h"
 #include "gr_tour_object.h"
 #include <vector.h>
+#include <gf/gf_module.h>
 
 const float BGM_PLAY_OFFSET_FRAME = 0.0f;
 const float BGM_VOLUME = 1.0f;
@@ -276,6 +277,8 @@ public:
     SlipspaceEnemy* getSpawnedEnemy(int enemyCreateId);
     virtual stDestroyBossParamCommon getDestroyBossParamCommon(u32, int enemyCreateId = -1, int enemyMessageKind = -1);
     gfArchive* getEnemyArchive(int index);
+    gfModule* loadEnemyModule(char* moduleName, HeapType heapType);
+    bool unloadEnemyModule(gfModule* module); 
 
     //STATIC_CHECK(sizeof(stSlipspace) == 916 + NUM_PLAYERS*4 + sizeof(enemyPacs))
 };
