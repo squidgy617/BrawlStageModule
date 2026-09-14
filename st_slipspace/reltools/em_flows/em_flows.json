@@ -1,10 +1,10 @@
 {
-  "Name": "em_siralamos",
+  "Name": "em_flows",
   "Type": "rel",
-  "ModuleID": 1002,
+  "ModuleID": 1005,
   "ModuleAlign": 32,
   "BSSAlign": 8,
-  "FixSize": 10192,
+  "FixSize": 3760,
   "Sections": [
     null,
     {

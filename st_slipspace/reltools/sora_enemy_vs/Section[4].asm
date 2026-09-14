@@ -1134,7 +1134,7 @@ loc_enemyOverrideSettings:
 .include "./Enemies/rodata/emPrim.asm"
 .include "./Enemies/rodata/emCataguard.asm"
 #include "./Enemies/rodata/emKuribo.asm"
-.include "./Enemies/rodata/emFlows.asm"
+#include "./Enemies/rodata/emFlows.asm"
 #include "./Enemies/rodata/emTautau.asm"
 #include "./Enemies/rodata/emRedead.asm"
 #include "./Enemies/rodata/emShelly.asm"

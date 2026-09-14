@@ -2175,7 +2175,7 @@ loc_enemyNames:
     .4byte 0x00000000         [R_PPC_ADDR32(1000, 5, "loc_F458")] # 0x12 - emTautau
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_105D8")] # 0x13 - enHammerBros
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_12FC0")] # 0x14 - emBitan
-    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F188")] # 0x15 - emFlows
+    .4byte 0x00000000         [R_PPC_ADDR32(1005, 5, "loc_F188")] # 0x15 - emFlows
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_11320")] # 0x16 - emKokkon
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_C228")] # 0x17 - emPrim
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F728")] # 0x18 - emShelly
@@ -47672,7 +47672,7 @@ wnemSimple_Data____ct1:
 .include "./Enemies/asm/emPrim.asm"
 .include "./Enemies/asm/emCataguard.asm"
 #include "./Enemies/asm/emKuribo.asm"
-.include "./Enemies/asm/emFlows.asm"
+#include "./Enemies/asm/emFlows.asm"
 #include "./Enemies/asm/emTautau.asm"
 #include "./Enemies/asm/emRedead.asm"
 #include "./Enemies/asm/emShelly.asm"
