@@ -1141,7 +1141,7 @@ loc_enemyOverrideSettings:
 #include "./Enemies/rodata/emTeckin.asm"
 #include "./Enemies/rodata/emSpar.asm"
 #include "./Enemies/rodata/emHammerbros.asm"
-.include "./Enemies/rodata/emKokkon.asm"
+#include "./Enemies/rodata/emKokkon.asm"
 #include "./Enemies/rodata/emBombhead.asm"
 #include "./Enemies/rodata/emNgagog.asm"
 #include "./Enemies/rodata/emFaulong.asm"
