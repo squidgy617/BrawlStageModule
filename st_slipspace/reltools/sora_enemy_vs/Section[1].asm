@@ -2165,7 +2165,7 @@ loc_enemyNames:
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_A718")] # 0x8 - emDekakuribo
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_ACA8")] # 0x9 - emBotron
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_A9D8")] # 0xA - emBucyulus
-    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_B688")] # 0xB - emGyraan
+    .4byte 0x00000000         [R_PPC_ADDR32(1007, 5, "loc_B688")] # 0xB - emGyraan
     .4byte 0x00000000         [R_PPC_ADDR32(1002, 5, "loc_7370")] # 0xC - emSirAlamos
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_8408")] # 0xD - emKiller
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_8138")] # 0xE - emRoada
@@ -44614,21 +44614,21 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CF40: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPrimProc__BoomerangErase")]
     /* 0002CF44: */    li r5,0x3D
     /* 0002CF48: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CF4C: */    bl emWeaponManager__getInstance
-    /* 0002CF50: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGyraanProc__AxeIdol")]
-    /* 0002CF54: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGyraanProc__AxeIdol")]
-    /* 0002CF58: */    li r5,0x3E
-    /* 0002CF5C: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CF60: */    bl emWeaponManager__getInstance
-    /* 0002CF64: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGyraanProc__AxeSwing")]
-    /* 0002CF68: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGyraanProc__AxeSwing")]
-    /* 0002CF6C: */    li r5,0x3F
-    /* 0002CF70: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CF74: */    bl emWeaponManager__getInstance
-    /* 0002CF78: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGyraanProc__AxeStick")]
-    /* 0002CF7C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGyraanProc__AxeStick")]
-    /* 0002CF80: */    li r5,0x40
-    /* 0002CF84: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CF4C: */    nop #bl emWeaponManager__getInstance
+    /* 0002CF50: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGyraanProc__AxeIdol")]
+    /* 0002CF54: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGyraanProc__AxeIdol")]
+    /* 0002CF58: */    nop #li r5,0x3E
+    /* 0002CF5C: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CF60: */    nop #bl emWeaponManager__getInstance
+    /* 0002CF64: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGyraanProc__AxeSwing")]
+    /* 0002CF68: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGyraanProc__AxeSwing")]
+    /* 0002CF6C: */    nop #li r5,0x3F
+    /* 0002CF70: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CF74: */    nop #bl emWeaponManager__getInstance
+    /* 0002CF78: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGyraanProc__AxeStick")]
+    /* 0002CF7C: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGyraanProc__AxeStick")]
+    /* 0002CF80: */    nop #li r5,0x40
+    /* 0002CF84: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CF88: */    lwz r0,0x14(r1)
     /* 0002CF8C: */    mtlr r0
     /* 0002CF90: */    addi r1,r1,0x10
@@ -47667,7 +47667,7 @@ wnemSimple_Data____ct1:
 #include "./Enemies/asm/emDekakuribo.asm"
 .include "./Enemies/asm/emBucyulus.asm"
 #include "./Enemies/asm/emBotron.asm"
-.include "./Enemies/asm/emGyraan.asm"
+#include "./Enemies/asm/emGyraan.asm"
 #include "./Enemies/asm/emMite.asm"
 .include "./Enemies/asm/emPrim.asm"
 .include "./Enemies/asm/emCataguard.asm"
