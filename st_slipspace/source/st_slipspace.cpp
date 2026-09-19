@@ -2125,7 +2125,7 @@ void stSlipspace::notifyEventOnDamage(int entryId, u32 hp, soDamage* damage)
                 }
             }
             Vec2f magnitude = Vec2f(damage->m_reaction * 0.01, 0);
-            directionalVelocity.rot(&magnitude, damageAngle);
+            magnitude.rot(&directionalVelocity, damageAngle);
             // Vec2f::rot(damageAngle, &magnitude, &directionalVelocity);
             Vec3f position = Vec3f(damage->m_collisionLog.m_pos.m_x, damage->m_collisionLog.m_pos.m_y, 0.0);
             itemManager->createMoney((char*)fighter->m_taskId, &position, &directionalVelocity, coins, 1, 0);
