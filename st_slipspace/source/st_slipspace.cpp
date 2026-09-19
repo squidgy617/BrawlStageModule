@@ -2125,7 +2125,8 @@ void stSlipspace::notifyEventOnDamage(int entryId, u32 hp, soDamage* damage)
                 }
             }
             Vec2f magnitude = Vec2f(damage->m_reaction * 0.01, 0);
-            Vec2f::rot(damageAngle, &magnitude, &directionalVelocity);
+            directionalVelocity.rot(&magnitude, damageAngle);
+            // Vec2f::rot(damageAngle, &magnitude, &directionalVelocity);
             Vec3f position = Vec3f(damage->m_collisionLog.m_pos.m_x, damage->m_collisionLog.m_pos.m_y, 0.0);
             itemManager->createMoney((char*)fighter->m_taskId, &position, &directionalVelocity, coins, 1, 0);
         }
@@ -2871,7 +2872,7 @@ gfModule* stSlipspace::loadEnemyModule(char* moduleName, HeapType heapType)
     gfHeapManager::free(buffer);
 
     // Run module prolog
-    reinterpret_cast<void (*)(void)>(module->header->prologOffset)();
+    reinterpret_cast<void (*)(void)>(module->m_header->prologOffset)();
 
     return module;
 }
@@ -2884,10 +2885,10 @@ bool stSlipspace::unloadEnemyModule(gfModule* module)
     }
 
     // Run module epilog
-    reinterpret_cast<void (*)(void)>(module->header->epilogOffset)();
+    reinterpret_cast<void (*)(void)>(module->m_header->epilogOffset)();
 
     // Unlink the module before deleting it
-    OSUnlink(reinterpret_cast<OSModuleHeader*>(module->header));
+    OSUnlink(reinterpret_cast<OSModuleHeader*>(module->m_header));
 
     // Delete module
     delete module;
