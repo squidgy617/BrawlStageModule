@@ -2155,7 +2155,7 @@ loc_1FBC:
     /* 00002128: */    blr
 loc_enemyNames:
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_EED8")] # 0x0 - emKuribo
-    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_86DC")] # 0x1 - emPopperam
+    .4byte 0x00000000         [R_PPC_ADDR32(1008, 5, "loc_86DC")] # 0x1 - emPopperam
     .4byte 0x00000000         [R_PPC_ADDR32(1004, 5, "loc_9158")] # 0x2 - emPacci
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_9408")] # 0x3 - emJyakeel
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_96B8")] # 0x4 - emAroaros
@@ -47658,7 +47658,7 @@ wnemSimple_Data____ct1:
 #include "./Enemies/asm/emSiralamos.asm"
 #include "./Enemies/asm/emRoada.asm"
 #include "./Enemies/asm/emKiller.asm"
-.include "./Enemies/asm/emPopperam.asm"
+#include "./Enemies/asm/emPopperam.asm"
 #include "./Enemies/asm/emPacci.asm"
 #include "./Enemies/asm/emJyakeel.asm"
 #include "./Enemies/asm/emAroaros.asm"

@@ -1120,7 +1120,7 @@ loc_enemyOverrideSettings:
 #include "./Enemies/rodata/emSiralamos.asm"
 #include "./Enemies/rodata/emRoada.asm"
 #include "./Enemies/rodata/emKiller.asm"
-.include "./Enemies/rodata/emPopperam.asm"
+#include "./Enemies/rodata/emPopperam.asm"
 #include "./Enemies/rodata/emPacci.asm"
 #include "./Enemies/rodata/emJyakeel.asm"
 #include "./Enemies/rodata/emAroaros.asm"

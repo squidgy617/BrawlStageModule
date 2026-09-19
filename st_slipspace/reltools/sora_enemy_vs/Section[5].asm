@@ -1344,7 +1344,7 @@ loc_1650:
         .4byte 0x00000000
 loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emKuribo_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_10emPopperam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1008, 1, "Enemy__createInstance_10emPopperam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1004, 1, "Enemy__createInstance_7emPacci_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_9emJyakeel_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_9emAroaros_")]
@@ -1406,7 +1406,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_11emCrazyhand_")]
 loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emKuriboParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_15emPopperamParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1008, 1, "emResourceModuleImpl__ModifyExParam_15emPopperamParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1004, 1, "emResourceModuleImpl__ModifyExParam_12emPacciParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_14emJyakeelParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_14emAroarosParam_")]
@@ -1468,7 +1468,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_16emCrazyhandParam_")]
 loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emKuriboParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_15emPopperamParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Popperam
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Pacci
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_14emJyakeelParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_14emAroarosParam_")]
@@ -6994,7 +6994,7 @@ loc_6EE8:
 #include "./Enemies/data/emSiralamos.asm"
 #include "./Enemies/data/emRoada.asm"
 #include "./Enemies/data/emKiller.asm"
-.include "./Enemies/data/emPopperam.asm"
+#include "./Enemies/data/emPopperam.asm"
 #include "./Enemies/data/emPacci.asm"
 #include "./Enemies/data/emJyakeel.asm"
 #include "./Enemies/data/emAroaros.asm"
