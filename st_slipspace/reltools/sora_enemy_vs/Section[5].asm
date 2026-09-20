@@ -7006,7 +7006,7 @@ loc_6EE8:
 #include "./Enemies/data/emGyraan.asm"
 #include "./Enemies/data/emMite.asm"
 #include "./Enemies/data/emPrim.asm"
-.include "./Enemies/data/emCataguard.asm"
+#include "./Enemies/data/emCataguard.asm"
 #include "./Enemies/data/emKuribo.asm"
 #include "./Enemies/data/emFlows.asm"
 #include "./Enemies/data/emTautau.asm"
@@ -7041,6 +7041,13 @@ loc_6EE8:
 #include "./Enemies/data/emTaboo.asm"
 #include "./Enemies/data/emMasterhand.asm"
 #include "./Enemies/data/emCrazyhand.asm"
+
+loc_7D98:
+        .asciz "soInstancePoolRoot"
+        .balign 4
+loc_7DAC:
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_7D98")]
+        .4byte 0x00000000
 
 loc_1FE78:
         .4byte 0x6D6F5F65

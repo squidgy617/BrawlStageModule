@@ -197,7 +197,7 @@ loc_8918:
         .asciz "soLineHierarchy<>"
         .balign 4
 loc_89D8:
-        .4byte 0x00000000         [R_PPC_ADDR32(1008, 5, "loc_7DAC")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_7DAC")]
         .4byte 0x00000000
         .4byte 0x00000000         [R_PPC_ADDR32(1008, 5, "loc_8A98")]
         .4byte 0x00000000
@@ -213,7 +213,7 @@ loc_8A00:
         .asciz "soInstancePool<>"
         .balign 4
 loc_8A8C:
-        .4byte 0x00000000         [R_PPC_ADDR32(1008, 5, "loc_7DAC")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_7DAC")]
         .4byte 0x00000000
         .4byte 0x00000000
 loc_8A98:
@@ -410,10 +410,3 @@ loc_8F94:
 loc_8FB0:
         .4byte 0x00000000         [R_PPC_ADDR32(1008, 5, "loc_8F7C")]
         .4byte 0x00000000         [R_PPC_ADDR32(1008, 5, "loc_8F94")]
-
-loc_7D98:
-        .asciz "soInstancePoolRoot"
-        .balign 4
-loc_7DAC:
-        .4byte 0x00000000         [R_PPC_ADDR32(1008, 5, "loc_7D98")]
-        .4byte 0x00000000
