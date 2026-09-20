@@ -2177,7 +2177,7 @@ loc_enemyNames:
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_12FC0")] # 0x14 - emBitan
     .4byte 0x00000000         [R_PPC_ADDR32(1005, 5, "loc_F188")] # 0x15 - emFlows
     .4byte 0x00000000         [R_PPC_ADDR32(1006, 5, "loc_11320")] # 0x16 - emKokkon
-    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_C228")] # 0x17 - emPrim
+    .4byte 0x00000000         [R_PPC_ADDR32(1009, 5, "loc_C228")] # 0x17 - emPrim
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F728")] # 0x18 - emShelly
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_132A0")] # 0x19 - emPatapata
     .4byte 0x00000000         [R_PPC_ADDR32(1003, 5, "loc_13570")] # 0x1A - emJdus
@@ -44314,21 +44314,21 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CA90: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemProc__Dummy")]
     /* 0002CA94: */    li r5,0x0
     /* 0002CA98: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CA9C: */    bl emWeaponManager__getInstance
-    /* 0002CAA0: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemPrimProc__BoomerangHave")]
-    /* 0002CAA4: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPrimProc__BoomerangHave")]
-    /* 0002CAA8: */    li r5,0x1
-    /* 0002CAAC: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CAB0: */    bl emWeaponManager__getInstance
-    /* 0002CAB4: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemPrimProc__BoomerangTurn")]
-    /* 0002CAB8: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPrimProc__BoomerangTurn")]
-    /* 0002CABC: */    li r5,0x3
-    /* 0002CAC0: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CAC4: */    bl emWeaponManager__getInstance
-    /* 0002CAC8: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemPrimProc__BoomerangFly")]
-    /* 0002CACC: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPrimProc__BoomerangFly")]
-    /* 0002CAD0: */    li r5,0x2
-    /* 0002CAD4: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CA9C: */    nop #bl emWeaponManager__getInstance
+    /* 0002CAA0: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemPrimProc__BoomerangHave")]
+    /* 0002CAA4: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPrimProc__BoomerangHave")]
+    /* 0002CAA8: */    nop #li r5,0x1
+    /* 0002CAAC: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CAB0: */    nop #bl emWeaponManager__getInstance
+    /* 0002CAB4: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemPrimProc__BoomerangTurn")]
+    /* 0002CAB8: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPrimProc__BoomerangTurn")]
+    /* 0002CABC: */    nop #li r5,0x3
+    /* 0002CAC0: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CAC4: */    nop #bl emWeaponManager__getInstance
+    /* 0002CAC8: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemPrimProc__BoomerangFly")]
+    /* 0002CACC: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPrimProc__BoomerangFly")]
+    /* 0002CAD0: */    nop #li r5,0x2
+    /* 0002CAD4: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CAD8: */    bl emWeaponManager__getInstance
     /* 0002CADC: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCataguardProc__LanceFly")]
     /* 0002CAE0: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__LanceFly")]
@@ -44609,11 +44609,11 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CF2C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGalleomProc__ShotExplosion")]
     /* 0002CF30: */    li r5,0x3C
     /* 0002CF34: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CF38: */    bl emWeaponManager__getInstance
-    /* 0002CF3C: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemPrimProc__BoomerangErase")]
-    /* 0002CF40: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPrimProc__BoomerangErase")]
-    /* 0002CF44: */    li r5,0x3D
-    /* 0002CF48: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CF38: */    nop #bl emWeaponManager__getInstance
+    /* 0002CF3C: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemPrimProc__BoomerangErase")]
+    /* 0002CF40: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPrimProc__BoomerangErase")]
+    /* 0002CF44: */    nop #li r5,0x3D
+    /* 0002CF48: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CF4C: */    nop #bl emWeaponManager__getInstance
     /* 0002CF50: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGyraanProc__AxeIdol")]
     /* 0002CF54: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGyraanProc__AxeIdol")]
@@ -47665,11 +47665,11 @@ wnemSimple_Data____ct1:
 #include "./Enemies/asm/emCymal.asm"
 #include "./Enemies/asm/emDeathpod.asm"
 #include "./Enemies/asm/emDekakuribo.asm"
-.include "./Enemies/asm/emBucyulus.asm"
+#include "./Enemies/asm/emBucyulus.asm"
 #include "./Enemies/asm/emBotron.asm"
 #include "./Enemies/asm/emGyraan.asm"
 #include "./Enemies/asm/emMite.asm"
-.include "./Enemies/asm/emPrim.asm"
+#include "./Enemies/asm/emPrim.asm"
 .include "./Enemies/asm/emCataguard.asm"
 #include "./Enemies/asm/emKuribo.asm"
 #include "./Enemies/asm/emFlows.asm"

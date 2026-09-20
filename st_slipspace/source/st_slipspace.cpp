@@ -931,6 +931,7 @@ void stSlipspace::createObj()
     _loadedEnemyModules.push(loadEnemyModule("Enemy/Kokkon/em_kokkon.rel", Heaps::OverlayStage));
     _loadedEnemyModules.push(loadEnemyModule("Enemy/Gyraan/em_gyraan.rel", Heaps::OverlayStage));
     _loadedEnemyModules.push(loadEnemyModule("Enemy/Popperam/em_popperam.rel", Heaps::OverlayStage));
+    _loadedEnemyModules.push(loadEnemyModule("Enemy/Prim/em_prim.rel", Heaps::OverlayStage));
 
 
     this->createObjAshiba(0, 2);
