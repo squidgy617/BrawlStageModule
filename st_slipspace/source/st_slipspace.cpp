@@ -64,7 +64,7 @@ Vector<grTourObject*> _tourObjects(Heaps::StageInstance); // List of tour object
 Vector<TourState*> _tourStates(Heaps::StageInstance); // list of tour states
 Vector<EnemyPac*> _enemyPacs(Heaps::StageInstance);
 Tour _tour; // Tour
-Vector<gfModule*> _loadedEnemyModules(Heaps::StageInstance); // List of loaded enemy modules
+Vector<EnemyModule*> _loadedEnemyModules(Heaps::StageInstance); // List of loaded enemy modules
 
 stSlipspace* stSlipspace::create()
 {
@@ -245,6 +245,40 @@ void stSlipspace::update(float deltaFrame)
                     newEnemyType->persistentSize = resNodeData->m_rotation.m_y;
                     newEnemyType->loading = false;
                     newEnemyType->loaded = false;
+                    // Load module
+                    emInfo* emInfo = emInfo::getInstance();
+                    const char* name = NULL;
+                    if (emInfo->isPrimKind((EnemyKind)newEnemyType->enemyId))
+                    {
+                        name = "Prim"; // Always load prim module even for variants
+                    }
+                    else 
+                    {
+                        name = emInfo->getNamePtr((EnemyKind)newEnemyType->enemyId) + 2; // Skip "em" prefix
+                    }
+                    if (name != NULL)
+                    {
+                        bool matchFound = false;
+                        for (int i = 0; i < _loadedEnemyModules.size(); i++)
+                        {
+                            // Skip already loaded modules
+                            if (strcmp(_loadedEnemyModules[i]->enemyName, name) == 0)
+                            {
+                                matchFound = true;
+                                break;
+                            }
+                        }
+                        if (!matchFound)
+                        {
+                            // Load enemy module
+                            char modulePath[64];
+                            sprintf(modulePath, "Enemy/%s/em_%s.rel", name, name);
+                            EnemyModule* newEnemyModule = new (Heaps::StageInstance) EnemyModule();
+                            newEnemyModule->enemyName = name;
+                            newEnemyModule->enemyModule = loadEnemyModule(modulePath, Heaps::OverlayStage);
+                            _loadedEnemyModules.push(newEnemyModule);
+                        }
+                    }
                     // Update max frequency so it matches highest in stage
                     if (newEnemyType->frequency > _maxFrequency)
                     {
@@ -922,18 +956,6 @@ void stSlipspace::createObj()
 
     }
 
-    _loadedEnemyModules.push(loadEnemyModule("Enemy/Tautau/em_redead.rel", Heaps::OverlayStage));
-    _loadedEnemyModules.push(loadEnemyModule("Enemy/Bombhead/em_bombhead.rel", Heaps::OverlayStage));
-    _loadedEnemyModules.push(loadEnemyModule("Enemy/Siralamos/em_siralamos.rel", Heaps::OverlayStage));
-    _loadedEnemyModules.push(loadEnemyModule("Enemy/Jdus/em_jdus.rel", Heaps::OverlayStage));
-    _loadedEnemyModules.push(loadEnemyModule("Enemy/Pacci/em_pacci.rel", Heaps::OverlayStage));
-    _loadedEnemyModules.push(loadEnemyModule("Enemy/Flows/em_flows.rel", Heaps::OverlayStage));
-    _loadedEnemyModules.push(loadEnemyModule("Enemy/Kokkon/em_kokkon.rel", Heaps::OverlayStage));
-    _loadedEnemyModules.push(loadEnemyModule("Enemy/Gyraan/em_gyraan.rel", Heaps::OverlayStage));
-    _loadedEnemyModules.push(loadEnemyModule("Enemy/Popperam/em_popperam.rel", Heaps::OverlayStage));
-    _loadedEnemyModules.push(loadEnemyModule("Enemy/Prim/em_prim.rel", Heaps::OverlayStage));
-
-
     this->createObjAshiba(0, 2);
 
     initCameraParam();
@@ -1271,9 +1293,11 @@ void stSlipspace::clearHeap() {
 
     for (int i = 0; i < _loadedEnemyModules.size(); i++)
     {
-        unloadEnemyModule(_loadedEnemyModules[i]);
+        unloadEnemyModule(_loadedEnemyModules[i]->enemyModule);
+        delete _loadedEnemyModules[i];
+        _loadedEnemyModules[i] = NULL;
     }
-    _loadedEnemyModules.~Vector<gfModule*>();
+    _loadedEnemyModules.~Vector<EnemyModule*>();
 
     gfModuleManager::getInstance()->destroy("sora_enemy.rel");
 

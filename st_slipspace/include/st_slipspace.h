@@ -146,6 +146,12 @@ struct EnemyPac
     gfArchive* enemyPac;
 };
 
+struct EnemyModule
+{
+    const char* enemyName;
+    gfModule* enemyModule;
+};
+
 class stSlipspace : public stMelee, public ftOutsideEventObserver {
 protected:
     gfArchive* itemPacs[NUM_ITEM_PACS];

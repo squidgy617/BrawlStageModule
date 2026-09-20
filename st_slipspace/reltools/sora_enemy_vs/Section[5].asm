@@ -7055,4 +7055,143 @@ loc_1FE78:
         .4byte 0x2E637070
         .4byte 0x00000000
 
+loc_EED8:
+        .asciz "emKuribo"
+        .balign 4
+loc_86DC:
+        .asciz "emPopperam"
+        .balign 4
+loc_9158:
+        .asciz "emPacci"
+loc_9408:
+        .asciz "emJyakeel"
+        .balign 4
+loc_96B8:
+        .asciz "emAroaros"
+        .balign 4
+loc_9968:
+        .asciz "emCymal"
+loc_9C18:
+        .asciz "emDeathpod"
+        .balign 4
+loc_70C0:
+        .asciz "emBoobas"
+        .balign 4
+loc_A718:
+        .asciz "emDekakuribo"
+        .balign 4
+loc_ACA8:
+        .asciz "emBotron"
+        .balign 4
+loc_A9D8:
+        .asciz "emBucyulus"
+        .balign 4
+loc_B688:
+        .asciz "emGyraan"
+        .balign 4
+loc_7370:
+        .asciz "emSiralamos"
+loc_8408:
+        .asciz "emKiller"
+        .balign 4
+loc_8138:
+        .asciz "emRoada"
+loc_FC88:
+        .asciz "emSpar"
+        .balign 4
+loc_BF40:
+        .asciz "emMite"
+        .balign 4
+loc_F9D8:
+        .asciz "emTeckin"
+        .balign 4
+loc_F458:
+        .asciz "emTautau"
+        .balign 4
+loc_105D8:
+        .asciz "emHammerbros"
+        .balign 4
+loc_12FC0:
+        .asciz "emBitan"
+loc_F188:
+        .asciz "emFlows"
+loc_11320:
+        .asciz "emKokkon"
+        .balign 4
+loc_C228:
+        .asciz "emPrim"
+        .balign 4
+loc_F728:
+        .asciz "emShelly"
+        .balign 4
+loc_132A0:
+        .asciz "emPatapata"
+        .balign 4
+loc_13570:
+        .asciz "emJdus"
+        .balign 4
+loc_11D98:
+        .asciz "emBombhead"
+        .balign 4
+loc_12A18:
+        .asciz "emNgagog"
+        .balign 4
+loc_12D10:
+        .asciz "emFaulong"
+        .balign 4
+loc_13848:
+        .asciz "emGhamgha"
+        .balign 4
+loc_142B8:
+        .asciz "emRobobeam"
+        .balign 4
+loc_14D28:
+        .asciz "emRobodistance"
+        .balign 4
+loc_15548:
+        .asciz "emRobohoming"
+        .balign 4
+loc_15FA8:
+        .asciz "emRobopunch"
+loc_D388:
+        .asciz "emCataguard"
+loc_16278:
+        .asciz "emArman"
+loc_17258:
+        .asciz "emGalfire"
+        .balign 4
+loc_17508:
+        .asciz "emBosspackun"
+        .balign 4
+loc_17DE8:
+        .asciz "emGhamghabase"
+        .balign 4
+loc_180A8:
+        .asciz "emGalleom"
+        .balign 4
+loc_18C08:
+        .asciz "emRidley"
+        .balign 4
+loc_18EF0:
+        .asciz "emRayquaza"
+        .balign 4
+loc_19A30:
+        .asciz "emDuon"
+        .balign 4
+loc_1A9D8:
+        .asciz "emPorky"
+loc_1B5D0:
+        .asciz "emMetaridley"
+        .balign 4
+loc_1C9C0:
+        .asciz "emFalconflyer"
+        .balign 4
+loc_1CC80:
+        .asciz "emTaboo"
+loc_1E128:
+        .asciz "emMasterhand"
+        .balign 4
+loc_1ECA0:
+        .asciz "emCrazyhand"
+
 ## TODO: investigate p3/p4 targeting (emAreaModuleImpl__checkArea)

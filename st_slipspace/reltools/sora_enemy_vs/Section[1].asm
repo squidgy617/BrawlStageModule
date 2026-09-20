@@ -2155,8 +2155,8 @@ loc_1FBC:
     /* 00002128: */    blr
 loc_enemyNames:
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_EED8")] # 0x0 - emKuribo
-    .4byte 0x00000000         [R_PPC_ADDR32(1008, 5, "loc_86DC")] # 0x1 - emPopperam
-    .4byte 0x00000000         [R_PPC_ADDR32(1004, 5, "loc_9158")] # 0x2 - emPacci
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_86DC")] # 0x1 - emPopperam
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_9158")] # 0x2 - emPacci
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_9408")] # 0x3 - emJyakeel
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_96B8")] # 0x4 - emAroaros
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_9968")] # 0x5 - emCymal
@@ -2165,23 +2165,23 @@ loc_enemyNames:
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_A718")] # 0x8 - emDekakuribo
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_ACA8")] # 0x9 - emBotron
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_A9D8")] # 0xA - emBucyulus
-    .4byte 0x00000000         [R_PPC_ADDR32(1007, 5, "loc_B688")] # 0xB - emGyraan
-    .4byte 0x00000000         [R_PPC_ADDR32(1002, 5, "loc_7370")] # 0xC - emSirAlamos
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_B688")] # 0xB - emGyraan
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_7370")] # 0xC - emSirAlamos
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_8408")] # 0xD - emKiller
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_8138")] # 0xE - emRoada
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_FC88")] # 0xF - emSpar
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_BF40")] # 0x10 - emMite
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F9D8")] # 0x11 - emTeckin
-    .4byte 0x00000000         [R_PPC_ADDR32(1000, 5, "loc_F458")] # 0x12 - emTautau
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F458")] # 0x12 - emTautau
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_105D8")] # 0x13 - enHammerBros
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_12FC0")] # 0x14 - emBitan
-    .4byte 0x00000000         [R_PPC_ADDR32(1005, 5, "loc_F188")] # 0x15 - emFlows
-    .4byte 0x00000000         [R_PPC_ADDR32(1006, 5, "loc_11320")] # 0x16 - emKokkon
-    .4byte 0x00000000         [R_PPC_ADDR32(1009, 5, "loc_C228")] # 0x17 - emPrim
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F188")] # 0x15 - emFlows
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_11320")] # 0x16 - emKokkon
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_C228")] # 0x17 - emPrim
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_F728")] # 0x18 - emShelly
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_132A0")] # 0x19 - emPatapata
-    .4byte 0x00000000         [R_PPC_ADDR32(1003, 5, "loc_13570")] # 0x1A - emJdus
-    .4byte 0x00000000         [R_PPC_ADDR32(1001, 5, "loc_11D98")] # 0x1B - emBombhead
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_13570")] # 0x1A - emJdus
+    .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_11D98")] # 0x1B - emBombhead
     .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_emPrimMetal")] # 0x1C - emPrimMetal
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_12A18")] # 0x1D - emNgagog
     .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_12D10")] # 0x1E - emFaulong
@@ -13312,11 +13312,13 @@ loc__D990:
     /* 0000D9A8: */    blr
     # 0x51
 emInfo__getNamePtr:
+    rlwinm r11,r4,24,16,31  # \ 0x00XXXXYY (XXXX = variant id, YY = enemy id)
+    andi. r4, r4, 0xff      # /
     lis r10,0x0                               [R_PPC_ADDR16_HA(41, 1, "loc_enemyNames")]
     addi r10,r10,0x0                          [R_PPC_ADDR16_LO(41, 1, "loc_enemyNames")]    
     mulli r9, r4, 4     # \
     add r9, r10, r9     # | enemyNames[id] + 2 (skip the em)
-    addi r3, r9, 0x2    # /
+    lwz r3, 0x0 (r9) # Slipspace - changed to not skip the first 2 characters # addi r3, r9, 0x2    # /
     blr
     # 0x6
 
@@ -13633,8 +13635,8 @@ emInfo__getNamePtr:
 #     /* 0000C1E0: */    blr
 # soGeneralWorkSimple__subFloatWork:
 #     /* 0000C1E4: */    lwz r3,0x14(r3)
-nop #     /* 0000C1E8: */    rlwinm r0,r4,2,0,29
-nop #     /* 0000C1EC: */    lfsx f0,r3,r0
+#     /* 0000C1E8: */    rlwinm r0,r4,2,0,29
+#     /* 0000C1EC: */    lfsx f0,r3,r0
 nop #     /* 0000C1F0: */    fsubs f0,f0,f1
 nop #     /* 0000C1F4: */    stfsx f0,r3,r0
 nop #     /* 0000C1F8: */    blr
