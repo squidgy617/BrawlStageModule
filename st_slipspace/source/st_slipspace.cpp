@@ -49,6 +49,7 @@ int _difficulty = 5; // Difficulty
 int _checkpointCount = 0; // Number of checkpoints in the stage tour
 TourState* _lastCheckpoint = NULL; // The last checkpoint tour state that was hit
 grTourObject* _stagePositionTourObject = NULL; // Stage position tour object
+EnemyOverride* _enemyOverride = NULL;
 
 // TODO: Possibly change these vectors to use a different heap. ItemExtraResource might work? Only used for trophies spawned by Celebi(?), and we don't allow Pokemon
 Vector<SpawnerGroup*> _spawnerGroups(Heaps::StageInstance); // List of spawner groups in stage
@@ -272,7 +273,16 @@ void stSlipspace::update(float deltaFrame)
                         {
                             // Load enemy module
                             char modulePath[64];
-                            sprintf(modulePath, "Enemy/%s/em_%s.rel", name, name);
+                            // Load from override folder if applicable
+                            char* folder = "Enemy";
+                            if (isEnemyModuleOverrideEnabled((EnemyKind)newEnemyType->enemyId))
+                            {
+                                sprintf(modulePath, "Enemy/%s/%s/em_%s.rel", _enemyOverride->m_enmOverrideFolder, name, name);
+                            }
+                            else
+                            {
+                                sprintf(modulePath, "Enemy/%s/em_%s.rel", name, name);
+                            }
                             EnemyModule* newEnemyModule = new (Heaps::StageInstance) EnemyModule();
                             newEnemyModule->enemyName = name;
                             newEnemyModule->enemyModule = loadEnemyModule(modulePath, Heaps::OverlayStage);
@@ -909,18 +919,19 @@ void stSlipspace::createObj()
         moduleManager->loadModuleRequestOnImage("sora_enemy.rel", Heaps::OverlayStage, moduleHeader, &size);
         // Set up overrides
         int nodeSize;
-        EnemyOverride* enemyOverride = static_cast<EnemyOverride*>(this->m_fileData->getData(Data_Type_Misc, 30000, &nodeSize, 0xfffe));
-        if (enemyOverride != NULL)
+        _enemyOverride = static_cast<EnemyOverride*>(this->m_fileData->getData(Data_Type_Misc, 30000, &nodeSize, 0xfffe));
+        if (_enemyOverride != NULL)
         {
-            g_EnemyOverride = *enemyOverride;
-            // TODO: primid face index seems to get decremented by 1, so we are doing this since it's 0 in the file. Should remove after either changing it to -1 in the file or if sora_enemy behavior is changed
-            g_EnemyOverride.m_faceIndexPrimid = 1;
-            g_EnemyOverride.m_faceIndexPrimidSword = 1;
-            g_EnemyOverride.m_faceIndexPrimidBoom = 1;
-            g_EnemyOverride.m_faceIndexPrimidBig = 1;
-            g_EnemyOverride.m_faceIndexPrimidFire = 1;
-            g_EnemyOverride.m_faceIndexPrimidMetal = 1;
-            g_EnemyOverride.m_faceIndexPrimidScope = 1;
+            // TODO: Fix issues with Bombed bombs breaking when override is set up, then we can actually restore this code
+            // g_EnemyOverride = *enemyOverride;
+            // // TODO: primid face index seems to get decremented by 1, so we are doing this since it's 0 in the file. Should remove after either changing it to -1 in the file or if sora_enemy behavior is changed
+            // g_EnemyOverride.m_faceIndexPrimid = 1;
+            // g_EnemyOverride.m_faceIndexPrimidSword = 1;
+            // g_EnemyOverride.m_faceIndexPrimidBoom = 1;
+            // g_EnemyOverride.m_faceIndexPrimidBig = 1;
+            // g_EnemyOverride.m_faceIndexPrimidFire = 1;
+            // g_EnemyOverride.m_faceIndexPrimidMetal = 1;
+            // g_EnemyOverride.m_faceIndexPrimidScope = 1;
         }
 
         emManager::create(0x1e,0x14,0);
@@ -2922,6 +2933,16 @@ bool stSlipspace::unloadEnemyModule(gfModule* module)
     module = NULL;
 
     return true;
+}
+
+bool stSlipspace::isEnemyModuleOverrideEnabled(EnemyKind enemyKind)
+{
+    const int enemyId = (int)enemyKind & 0xFF;
+
+    const u8* settings =
+        reinterpret_cast<const u8*>(_enemyOverride) + 0x1D;
+
+    return (settings[enemyId] & 0x04) != 0;
 }
 
 ST_CLASS_INFO;

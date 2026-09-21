@@ -285,6 +285,7 @@ public:
     gfArchive* getEnemyArchive(int index);
     gfModule* loadEnemyModule(char* moduleName, HeapType heapType);
     bool unloadEnemyModule(gfModule* module); 
+    bool isEnemyModuleOverrideEnabled(EnemyKind enemyKind);
 
     //STATIC_CHECK(sizeof(stSlipspace) == 916 + NUM_PLAYERS*4 + sizeof(enemyPacs))
 };
