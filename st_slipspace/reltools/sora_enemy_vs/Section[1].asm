@@ -44331,31 +44331,31 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CACC: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPrimProc__BoomerangFly")]
     /* 0002CAD0: */    nop #li r5,0x2
     /* 0002CAD4: */    nop #bl emWeaponManager__RegisterProcFnc
-    /* 0002CAD8: */    bl emWeaponManager__getInstance
-    /* 0002CADC: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCataguardProc__LanceFly")]
-    /* 0002CAE0: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__LanceFly")]
-    /* 0002CAE4: */    li r5,0x4
-    /* 0002CAE8: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CAEC: */    bl emWeaponManager__getInstance
-    /* 0002CAF0: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCataguardProc__LanceFall")]
-    /* 0002CAF4: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__LanceFall")]
-    /* 0002CAF8: */    li r5,0x5
-    /* 0002CAFC: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CB00: */    bl emWeaponManager__getInstance
-    /* 0002CB04: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCataguardProc__LanceStick")]
-    /* 0002CB08: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__LanceStick")]
-    /* 0002CB0C: */    li r5,0x6
-    /* 0002CB10: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CB14: */    bl emWeaponManager__getInstance
-    /* 0002CB18: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCataguardProc__HelmIdol")]
-    /* 0002CB1C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__HelmIdol")]
-    /* 0002CB20: */    li r5,0x7
-    /* 0002CB24: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CB28: */    bl emWeaponManager__getInstance
-    /* 0002CB2C: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCataguardProc__HelmBullet")]
-    /* 0002CB30: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__HelmBullet")]
-    /* 0002CB34: */    li r5,0x8
-    /* 0002CB38: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CAD8: */    nop #bl emWeaponManager__getInstance
+    /* 0002CADC: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCataguardProc__LanceFly")]
+    /* 0002CAE0: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__LanceFly")]
+    /* 0002CAE4: */    nop #li r5,0x4
+    /* 0002CAE8: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CAEC: */    nop #bl emWeaponManager__getInstance
+    /* 0002CAF0: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCataguardProc__LanceFall")]
+    /* 0002CAF4: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__LanceFall")]
+    /* 0002CAF8: */    nop #li r5,0x5
+    /* 0002CAFC: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CB00: */    nop #bl emWeaponManager__getInstance
+    /* 0002CB04: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCataguardProc__LanceStick")]
+    /* 0002CB08: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__LanceStick")]
+    /* 0002CB0C: */    nop #li r5,0x6
+    /* 0002CB10: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CB14: */    nop #bl emWeaponManager__getInstance
+    /* 0002CB18: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCataguardProc__HelmIdol")]
+    /* 0002CB1C: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__HelmIdol")]
+    /* 0002CB20: */    nop #li r5,0x7
+    /* 0002CB24: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CB28: */    nop #bl emWeaponManager__getInstance
+    /* 0002CB2C: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCataguardProc__HelmBullet")]
+    /* 0002CB30: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__HelmBullet")]
+    /* 0002CB34: */    nop #li r5,0x8
+    /* 0002CB38: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CB3C: */    bl emWeaponManager__getInstance
     /* 0002CB40: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBotronProc__IronIdol")]
     /* 0002CB44: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBotronProc__IronIdol")]
