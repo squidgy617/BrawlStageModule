@@ -2937,6 +2937,11 @@ bool stSlipspace::unloadEnemyModule(gfModule* module)
 
 bool stSlipspace::isEnemyModuleOverrideEnabled(EnemyKind enemyKind)
 {
+    if (_enemyOverride == NULL)
+    {
+        return false;
+    }
+    
     const int enemyId = (int)enemyKind & 0xFF;
 
     const u8* settings =

@@ -695,7 +695,7 @@ Link map of _prolog
   00007628 000048 00007628 00007668  4 _prolog 	rel.o 
   00007670 000048 00007670 000076b0  4 _epilog 	rel.o 
   000076b8 000004 000076b8 000076f8  4 _unresolved 	rel.o 
-  000076bc 00a740 000076bc 000076fc  1 .text 	st_slipspace.o 
+  000076bc 00a750 000076bc 000076fc  1 .text 	st_slipspace.o 
   000076bc 000018 000076bc 000076fc  4 GXFastCallDisplayList 	st_slipspace.o 
   000076d4 000344 000076d4 00007714  4 create__11stSlipspaceFv 	st_slipspace.o 
   00007a18 0000bc 00007a18 00007a58  4 __dt__22ftOutsideEventObserverFv 	st_slipspace.o 
@@ -771,705 +771,705 @@ Link map of _prolog
   00010974 0000b8 00010974 000109b4  4 getKirifudaPos__11stSlipspaceFP5Vec3fi 	st_slipspace.o 
   00010a2c 0000c8 00010a2c 00010a6c  4 loadEnemyModule__11stSlipspaceFPcQ25Heaps8HeapType 	st_slipspace.o 
   00010af4 00005c 00010af4 00010b34  4 unloadEnemyModule__11stSlipspaceFP8gfModule 	st_slipspace.o 
-  00010b50 00001c 00010b50 00010b90  4 isEnemyModuleOverrideEnabled__11stSlipspaceF6emKind 	st_slipspace.o 
-  00010b6c 000004 00010b6c 00010bac  4 addObserver__41soEventObserver<22ftOutsideEventObserver>FsSc 	st_slipspace.o 
-  00010b70 000194 00010b70 00010bb0  4 getArrayIndex__18soArrayList<Ul,32>CFl 	st_slipspace.o 
-  00010d04 000118 00010d04 00010d44  4 insertSub__18soArrayList<Ul,32>Fll 	st_slipspace.o 
-  00010e1c 0001b4 00010e1c 00010e5c  4 eraseSub__18soArrayList<Ul,32>Fl 	st_slipspace.o 
-  00010fd0 000104 00010fd0 00011010  4 __dt__11stSlipspaceFv 	st_slipspace.o 
-  000110d4 000008 000110d4 00011114  4 getWind2ndOnlyData__7stMeleeFv 	st_slipspace.o 
-  000110dc 000008 000110dc 0001111c  4 isReStartSamePoint__7stMeleeFv 	st_slipspace.o 
-  000110e4 000008 000110e4 00011124  4 getPokeTrainerPointNum__5StageFv 	st_slipspace.o 
-  000110ec 000004 000110ec 0001112c  4 getPokeTrainerPointData__5StageFPii 	st_slipspace.o 
-  000110f0 00000c 000110f0 00011130  4 getPokeTrainerPositionZ__5StageFv 	st_slipspace.o 
-  000110fc 000008 000110fc 0001113c  4 getPokeTrainerDrawLayer__5StageFv 	st_slipspace.o 
-  00011104 000008 00011104 00011144  4 isAdventureStage__5StageFv 	st_slipspace.o 
-  0001110c 000008 0001110c 0001114c  4 getAIRange__5StageFv 	st_slipspace.o 
-  00011114 000008 00011114 00011154  4 getDefaultLightSetIndex__5StageFv 	st_slipspace.o 
-  0001111c 00001c 0001111c 0001115c  4 getScrollDir__5StageFP5Vec3f 	st_slipspace.o 
-  00011138 000004 00011138 00011178  4 appearanceFighterLocal__5StageFv 	st_slipspace.o 
-  0001113c 000008 0001113c 0001117c  4 getBgmID__5StageCFv 	st_slipspace.o 
-  00011144 000008 00011144 00011184  4 getBgmID__5StageFv 	st_slipspace.o 
-  0001114c 000008 0001114c 0001118c  4 getNowStepBgmID__5StageFv 	st_slipspace.o 
-  00011154 000008 00011154 00011194  4 getBgmOptionID__5StageFv 	st_slipspace.o 
-  0001115c 000008 0001115c 0001119c  4 isBgmChange__5StageFv 	st_slipspace.o 
-  00011164 000014 00011164 000111a4  4 getBgmChangeID__5StageFPUlPf 	st_slipspace.o 
-  00011178 000010 00011178 000111b8  4 setBgmChange__5StageFfbUl 	st_slipspace.o 
-  00011188 00000c 00011188 000111c8  4 getBgmVolume__5StageFv 	st_slipspace.o 
-  00011194 00000c 00011194 000111d4  4 getBgmPlayOffsetFrame__5StageFv 	st_slipspace.o 
-  000111a0 000008 000111a0 000111e0  4 isNextStepBgmEqualNowStepBgmFromFlag__5StageFv 	st_slipspace.o 
-  000111a8 000008 000111a8 000111e8  4 setFrameRuleTime__5StageFf 	st_slipspace.o 
-  000111b0 000008 000111b0 000111f0  4 getFrameRuleTime__5StageFv 	st_slipspace.o 
-  000111b8 000004 000111b8 000111f8  4 notifyTimmingGameStart__5StageFv 	st_slipspace.o 
-  000111bc 000008 000111bc 000111fc  4 isCameraLocked__5StageFv 	st_slipspace.o 
-  000111c4 000008 000111c4 00011204  4 isBossBattleMode__5StageFv 	st_slipspace.o 
-  000111cc 000008 000111cc 0001120c  4 isSimpleBossBattleMode__5StageFv 	st_slipspace.o 
-  000111d4 000008 000111d4 00011214  4 helperStarWarp__5StageFv 	st_slipspace.o 
-  000111dc 000008 000111dc 0001121c  4 initializeFighterAttackRatio__5StageFv 	st_slipspace.o 
-  000111e4 000004 000111e4 00011224  4 startFighterEvent__5StageFv 	st_slipspace.o 
-  000111e8 0001ac 000111e8 00011228  4 shiftFreeArrayIndex__18soArrayList<Ul,32>Fl 	st_slipspace.o 
-  00011394 000010 00011394 000113d4  4 isFull__18soArrayList<Ul,32>CFv 	st_slipspace.o 
-  000113a4 0002b4 000113a4 000113e4  4 __sinit_\st_slipspace_cpp 	st_slipspace.o 
-  00011658 000058 00011658 00011698  4 __dt__22Vector<P11EnemyModule>Fv 	st_slipspace.o 
-  000116b0 000058 000116b0 000116f0  4 __dt__18Vector<P8EnemyPac>Fv 	st_slipspace.o 
-  00011708 000058 00011708 00011748  4 __dt__19Vector<P9TourState>Fv 	st_slipspace.o 
-  00011760 000058 00011760 000117a0  4 __dt__23Vector<P12grTourObject>Fv 	st_slipspace.o 
-  000117b8 000058 000117b8 000117f8  4 __dt__23Vector<P12RespawnPoint>Fv 	st_slipspace.o 
-  00011810 000058 00011810 00011850  4 __dt__25Vector<P14SlipspaceEnemy>Fv 	st_slipspace.o 
-  00011868 000058 00011868 000118a8  4 __dt__21Vector<P10EnemyGroup>Fv 	st_slipspace.o 
-  000118c0 000058 000118c0 00011900  4 __dt__19Vector<P9EnemyType>Fv 	st_slipspace.o 
-  00011918 000058 00011918 00011958  4 __dt__10Vector<Ul>Fv 	st_slipspace.o 
-  00011970 000058 00011970 000119b0  4 __dt__23Vector<P12EnemySpawner>Fv 	st_slipspace.o 
-  000119c8 000058 000119c8 00011a08  4 __dt__23Vector<P12SpawnerGroup>Fv 	st_slipspace.o 
-  00011a20 000074 00011a20 00011a60  4 __dt__33stClassInfoImpl<56,11stSlipspace>Fv 	st_slipspace.o 
-  00011a94 000344 00011a94 00011ad4  4 create__33stClassInfoImpl<56,11stSlipspace>Fv 	st_slipspace.o 
-  00011dd8 000004 00011dd8 00011e18  4 preload__33stClassInfoImpl<56,11stSlipspace>Fv 	st_slipspace.o 
-  00011ddc 000008 00011ddc 00011e1c  4 @472@notifyEventSuicide__11stSlipspaceFi 	st_slipspace.o 
-  00011de4 000008 00011de4 00011e24  4 @472@notifyEventBeat__11stSlipspaceFii 	st_slipspace.o 
-  00011dec 000008 00011dec 00011e2c  4 @472@notifyEventDead__11stSlipspaceFiiQ37Fighter4Dead6Reasoni 	st_slipspace.o 
-  00011df4 000008 00011df4 00011e34  4 @472@notifyEventOnDamage__11stSlipspaceFiUlP8soDamage 	st_slipspace.o 
-  00011dfc 000070 00011dfc 00011e3c  1 .text 	global_destructor_chain.o 
-  00011dfc 00001c 00011dfc 00011e3c  4 __register_global_object 	global_destructor_chain.o 
-  00011e18 000054 00011e18 00011e58  4 __destroy_global_chain 	global_destructor_chain.o 
+  00010b50 00002c 00010b50 00010b90  4 isEnemyModuleOverrideEnabled__11stSlipspaceF6emKind 	st_slipspace.o 
+  00010b7c 000004 00010b7c 00010bbc  4 addObserver__41soEventObserver<22ftOutsideEventObserver>FsSc 	st_slipspace.o 
+  00010b80 000194 00010b80 00010bc0  4 getArrayIndex__18soArrayList<Ul,32>CFl 	st_slipspace.o 
+  00010d14 000118 00010d14 00010d54  4 insertSub__18soArrayList<Ul,32>Fll 	st_slipspace.o 
+  00010e2c 0001b4 00010e2c 00010e6c  4 eraseSub__18soArrayList<Ul,32>Fl 	st_slipspace.o 
+  00010fe0 000104 00010fe0 00011020  4 __dt__11stSlipspaceFv 	st_slipspace.o 
+  000110e4 000008 000110e4 00011124  4 getWind2ndOnlyData__7stMeleeFv 	st_slipspace.o 
+  000110ec 000008 000110ec 0001112c  4 isReStartSamePoint__7stMeleeFv 	st_slipspace.o 
+  000110f4 000008 000110f4 00011134  4 getPokeTrainerPointNum__5StageFv 	st_slipspace.o 
+  000110fc 000004 000110fc 0001113c  4 getPokeTrainerPointData__5StageFPii 	st_slipspace.o 
+  00011100 00000c 00011100 00011140  4 getPokeTrainerPositionZ__5StageFv 	st_slipspace.o 
+  0001110c 000008 0001110c 0001114c  4 getPokeTrainerDrawLayer__5StageFv 	st_slipspace.o 
+  00011114 000008 00011114 00011154  4 isAdventureStage__5StageFv 	st_slipspace.o 
+  0001111c 000008 0001111c 0001115c  4 getAIRange__5StageFv 	st_slipspace.o 
+  00011124 000008 00011124 00011164  4 getDefaultLightSetIndex__5StageFv 	st_slipspace.o 
+  0001112c 00001c 0001112c 0001116c  4 getScrollDir__5StageFP5Vec3f 	st_slipspace.o 
+  00011148 000004 00011148 00011188  4 appearanceFighterLocal__5StageFv 	st_slipspace.o 
+  0001114c 000008 0001114c 0001118c  4 getBgmID__5StageCFv 	st_slipspace.o 
+  00011154 000008 00011154 00011194  4 getBgmID__5StageFv 	st_slipspace.o 
+  0001115c 000008 0001115c 0001119c  4 getNowStepBgmID__5StageFv 	st_slipspace.o 
+  00011164 000008 00011164 000111a4  4 getBgmOptionID__5StageFv 	st_slipspace.o 
+  0001116c 000008 0001116c 000111ac  4 isBgmChange__5StageFv 	st_slipspace.o 
+  00011174 000014 00011174 000111b4  4 getBgmChangeID__5StageFPUlPf 	st_slipspace.o 
+  00011188 000010 00011188 000111c8  4 setBgmChange__5StageFfbUl 	st_slipspace.o 
+  00011198 00000c 00011198 000111d8  4 getBgmVolume__5StageFv 	st_slipspace.o 
+  000111a4 00000c 000111a4 000111e4  4 getBgmPlayOffsetFrame__5StageFv 	st_slipspace.o 
+  000111b0 000008 000111b0 000111f0  4 isNextStepBgmEqualNowStepBgmFromFlag__5StageFv 	st_slipspace.o 
+  000111b8 000008 000111b8 000111f8  4 setFrameRuleTime__5StageFf 	st_slipspace.o 
+  000111c0 000008 000111c0 00011200  4 getFrameRuleTime__5StageFv 	st_slipspace.o 
+  000111c8 000004 000111c8 00011208  4 notifyTimmingGameStart__5StageFv 	st_slipspace.o 
+  000111cc 000008 000111cc 0001120c  4 isCameraLocked__5StageFv 	st_slipspace.o 
+  000111d4 000008 000111d4 00011214  4 isBossBattleMode__5StageFv 	st_slipspace.o 
+  000111dc 000008 000111dc 0001121c  4 isSimpleBossBattleMode__5StageFv 	st_slipspace.o 
+  000111e4 000008 000111e4 00011224  4 helperStarWarp__5StageFv 	st_slipspace.o 
+  000111ec 000008 000111ec 0001122c  4 initializeFighterAttackRatio__5StageFv 	st_slipspace.o 
+  000111f4 000004 000111f4 00011234  4 startFighterEvent__5StageFv 	st_slipspace.o 
+  000111f8 0001ac 000111f8 00011238  4 shiftFreeArrayIndex__18soArrayList<Ul,32>Fl 	st_slipspace.o 
+  000113a4 000010 000113a4 000113e4  4 isFull__18soArrayList<Ul,32>CFv 	st_slipspace.o 
+  000113b4 0002b4 000113b4 000113f4  4 __sinit_\st_slipspace_cpp 	st_slipspace.o 
+  00011668 000058 00011668 000116a8  4 __dt__22Vector<P11EnemyModule>Fv 	st_slipspace.o 
+  000116c0 000058 000116c0 00011700  4 __dt__18Vector<P8EnemyPac>Fv 	st_slipspace.o 
+  00011718 000058 00011718 00011758  4 __dt__19Vector<P9TourState>Fv 	st_slipspace.o 
+  00011770 000058 00011770 000117b0  4 __dt__23Vector<P12grTourObject>Fv 	st_slipspace.o 
+  000117c8 000058 000117c8 00011808  4 __dt__23Vector<P12RespawnPoint>Fv 	st_slipspace.o 
+  00011820 000058 00011820 00011860  4 __dt__25Vector<P14SlipspaceEnemy>Fv 	st_slipspace.o 
+  00011878 000058 00011878 000118b8  4 __dt__21Vector<P10EnemyGroup>Fv 	st_slipspace.o 
+  000118d0 000058 000118d0 00011910  4 __dt__19Vector<P9EnemyType>Fv 	st_slipspace.o 
+  00011928 000058 00011928 00011968  4 __dt__10Vector<Ul>Fv 	st_slipspace.o 
+  00011980 000058 00011980 000119c0  4 __dt__23Vector<P12EnemySpawner>Fv 	st_slipspace.o 
+  000119d8 000058 000119d8 00011a18  4 __dt__23Vector<P12SpawnerGroup>Fv 	st_slipspace.o 
+  00011a30 000074 00011a30 00011a70  4 __dt__33stClassInfoImpl<56,11stSlipspace>Fv 	st_slipspace.o 
+  00011aa4 000344 00011aa4 00011ae4  4 create__33stClassInfoImpl<56,11stSlipspace>Fv 	st_slipspace.o 
+  00011de8 000004 00011de8 00011e28  4 preload__33stClassInfoImpl<56,11stSlipspace>Fv 	st_slipspace.o 
+  00011dec 000008 00011dec 00011e2c  4 @472@notifyEventSuicide__11stSlipspaceFi 	st_slipspace.o 
+  00011df4 000008 00011df4 00011e34  4 @472@notifyEventBeat__11stSlipspaceFii 	st_slipspace.o 
+  00011dfc 000008 00011dfc 00011e3c  4 @472@notifyEventDead__11stSlipspaceFiiQ37Fighter4Dead6Reasoni 	st_slipspace.o 
+  00011e04 000008 00011e04 00011e44  4 @472@notifyEventOnDamage__11stSlipspaceFiUlP8soDamage 	st_slipspace.o 
+  00011e0c 000070 00011e0c 00011e4c  1 .text 	global_destructor_chain.o 
+  00011e0c 00001c 00011e0c 00011e4c  4 __register_global_object 	global_destructor_chain.o 
+  00011e28 000054 00011e28 00011e68  4 __destroy_global_chain 	global_destructor_chain.o 
 
 
 .ctors section layout
   Starting        Virtual  File
   address  Size   address  offset
   ---------------------------------
-  00000000 000000 00000000 00011eac  1 .ctors$00 	Linker Generated Symbol File 
-  00000000 000000 00000000 00011eac  4 _ctors 	Linker Generated Symbol File 
-  00000000 000004 00000000 00011eac  1 .ctors 	st_slipspace.o 
-  00000004 000004 00000004 00011eb0  1 .ctors$99 	Linker Generated Symbol File 
-  00000004 000004 00000004 00011eb0  4 _ctors$99 	Linker Generated Symbol File 
+  00000000 000000 00000000 00011ebc  1 .ctors$00 	Linker Generated Symbol File 
+  00000000 000000 00000000 00011ebc  4 _ctors 	Linker Generated Symbol File 
+  00000000 000004 00000000 00011ebc  1 .ctors 	st_slipspace.o 
+  00000004 000004 00000004 00011ec0  1 .ctors$99 	Linker Generated Symbol File 
+  00000004 000004 00000004 00011ec0  4 _ctors$99 	Linker Generated Symbol File 
 
 
 .dtors section layout
   Starting        Virtual  File
   address  Size   address  offset
   ---------------------------------
-  00000000 000000 00000000 00011eb4  1 .dtors$00 	Linker Generated Symbol File 
-  00000000 000000 00000000 00011eb4  4 _dtors 	Linker Generated Symbol File 
-  00000000 000004 00000000 00011eb4  1 .dtors$10 	global_destructor_chain.o 
-  00000000 000004 00000000 00011eb4  4 __destroy_global_chain_reference 	global_destructor_chain.o 
-  00000004 000004 00000004 00011eb8  1 .dtors$10 	Linker Generated Symbol File 
-  00000004 000004 00000004 00011eb8  4 __destroy_global_chain_reference 	Linker Generated Symbol File 
-  00000008 000004 00000008 00011ebc  1 .dtors$99 	Linker Generated Symbol File 
-  00000008 000004 00000008 00011ebc  4 _dtors$99 	Linker Generated Symbol File 
+  00000000 000000 00000000 00011ec4  1 .dtors$00 	Linker Generated Symbol File 
+  00000000 000000 00000000 00011ec4  4 _dtors 	Linker Generated Symbol File 
+  00000000 000004 00000000 00011ec4  1 .dtors$10 	global_destructor_chain.o 
+  00000000 000004 00000000 00011ec4  4 __destroy_global_chain_reference 	global_destructor_chain.o 
+  00000004 000004 00000004 00011ec8  1 .dtors$10 	Linker Generated Symbol File 
+  00000004 000004 00000004 00011ec8  4 __destroy_global_chain_reference 	Linker Generated Symbol File 
+  00000008 000004 00000008 00011ecc  1 .dtors$99 	Linker Generated Symbol File 
+  00000008 000004 00000008 00011ecc  4 _dtors$99 	Linker Generated Symbol File 
 
 
 .rodata section layout
   Starting        Virtual  File
   address  Size   address  offset
   ---------------------------------
-  00000000 000008 00000000 00011ec0  1 .rodata 	gr_adventure_background.o 
-  00000000 000001 00000000 00011ec0  4 nullptr 	gr_adventure_background.o 
-  00000004 000004 00000004 00011ec4  4 @2264 	gr_adventure_background.o 
-  00000008 00000c 00000008 00011ec8  1 .rodata 	gr_adventure2.o 
-  00000008 000001 00000008 00011ec8  4 nullptr 	gr_adventure2.o 
-  0000000c 000004 0000000c 00011ecc  4 @10110 	gr_adventure2.o 
-  00000010 000004 00000010 00011ed0  4 @10236 	gr_adventure2.o 
-  00000014 000004 00000018 00011ed8  8 *fill*
-  00000018 000010 00000018 00011ed8  1 .rodata 	gr_area.o 
-  00000018 000001 00000018 00011ed8  4 nullptr 	gr_area.o 
-  0000001c 000004 0000001c 00011edc  4 @15136 	gr_area.o 
-  00000020 000004 00000020 00011ee0  4 @15137 	gr_area.o 
-  00000024 000004 00000024 00011ee4  4 @15211 	gr_area.o 
-  00000028 000070 00000028 00011ee8  1 .rodata 	gr_barrel_cannon.o 
-  00000028 000000 00000028 00011ee8    ...rodata.0 (entry of .rodata) 	gr_barrel_cannon.o 
-  00000028 000001 00000028 00011ee8  4 nullptr 	gr_barrel_cannon.o 
-  0000002c 000004 0000002c 00011eec  4 @14791 	gr_barrel_cannon.o 
-  00000030 000004 00000030 00011ef0  4 @14817 	gr_barrel_cannon.o 
-  00000038 000008 00000038 00011ef8  8 @14954 	gr_barrel_cannon.o 
-  00000040 000004 00000040 00011f00  4 @14955 	gr_barrel_cannon.o 
-  00000044 000004 00000044 00011f04  4 @14957 	gr_barrel_cannon.o 
-  00000048 000004 00000048 00011f08  4 @14958 	gr_barrel_cannon.o 
-  00000050 000008 00000050 00011f10  8 @14961 	gr_barrel_cannon.o 
-  00000058 000008 00000058 00011f18  8 @14962 	gr_barrel_cannon.o 
-  00000060 000004 00000060 00011f20  4 @14963 	gr_barrel_cannon.o 
-  00000068 000008 00000068 00011f28  8 @15109 	gr_barrel_cannon.o 
-  00000070 000004 00000070 00011f30  4 @15110 	gr_barrel_cannon.o 
-  00000078 000008 00000078 00011f38  8 @15113 	gr_barrel_cannon.o 
-  00000080 000008 00000080 00011f40  8 @15213 	gr_barrel_cannon.o 
-  00000088 00000c 00000088 00011f48  4 @15239 	gr_barrel_cannon.o 
-  00000094 000004 00000094 00011f54  4 @15351 	gr_barrel_cannon.o 
-  00000098 00001c 00000098 00011f58  1 .rodata 	gr_catapult.o 
-  00000098 000000 00000098 00011f58    ...rodata.0 (entry of .rodata) 	gr_catapult.o 
-  00000098 000001 00000098 00011f58  4 nullptr 	gr_catapult.o 
-  0000009c 000004 0000009c 00011f5c  4 @10298 	gr_catapult.o 
-  000000a0 000004 000000a0 00011f60  4 @10335 	gr_catapult.o 
-  000000a4 000004 000000a4 00011f64  4 @10336 	gr_catapult.o 
-  000000a8 000004 000000a8 00011f68  4 @10337 	gr_catapult.o 
-  000000ac 000004 000000ac 00011f6c  4 @10338 	gr_catapult.o 
-  000000b0 000004 000000b0 00011f70  4 @10339 	gr_catapult.o 
-  000000b4 000004 000000b8 00011f78  8 *fill*
-  000000b8 000038 000000b8 00011f78  1 .rodata 	gr_elevator.o 
-  000000b8 000000 000000b8 00011f78    ...rodata.0 (entry of .rodata) 	gr_elevator.o 
-  000000b8 000001 000000b8 00011f78  4 nullptr 	gr_elevator.o 
-  000000bc 000004 000000bc 00011f7c  4 @14230 	gr_elevator.o 
-  000000c0 000008 000000c0 00011f80  8 @14317 	gr_elevator.o 
-  000000c8 000008 000000c8 00011f88  8 @14370 	gr_elevator.o 
-  000000d0 000008 000000d0 00011f90  8 @14371 	gr_elevator.o 
-  000000d8 000008 000000d8 00011f98  8 @14438 	gr_elevator.o 
-  000000e0 000008 000000e0 00011fa0  8 @14466 	gr_elevator.o 
-  000000e8 000008 000000e8 00011fa8  8 @14467 	gr_elevator.o 
-  000000f0 000001 000000f0 00011fb0  1 .rodata 	gr_final.o 
-  000000f0 000001 000000f0 00011fb0  4 nullptr 	gr_final.o 
-  000000f1 000007 000000f8 00011fb8  8 *fill*
-  000000f8 000008 000000f8 00011fb8  1 .rodata 	gr_item.o 
-  000000f8 000001 000000f8 00011fb8  4 nullptr 	gr_item.o 
-  000000fc 000004 000000fc 00011fbc  4 @10978 	gr_item.o 
-  00000100 000010 00000100 00011fc0  1 .rodata 	gr_ladder.o 
-  00000100 000001 00000100 00011fc0  4 nullptr 	gr_ladder.o 
-  00000104 000004 00000104 00011fc4  4 @14146 	gr_ladder.o 
-  00000108 000004 00000108 00011fc8  4 @14147 	gr_ladder.o 
-  0000010c 000004 0000010c 00011fcc  4 @14183 	gr_ladder.o 
-  00000110 000008 00000110 00011fd0  1 .rodata 	gr_motion_path.o 
-  00000110 000001 00000110 00011fd0  4 nullptr 	gr_motion_path.o 
-  00000114 000004 00000114 00011fd4  4 @10177 	gr_motion_path.o 
-  00000118 000020 00000118 00011fd8  1 .rodata 	gr_platform.o 
-  00000118 000000 00000118 00011fd8    ...rodata.0 (entry of .rodata) 	gr_platform.o 
-  00000118 000001 00000118 00011fd8  4 nullptr 	gr_platform.o 
-  0000011c 000004 0000011c 00011fdc  4 @11209 	gr_platform.o 
-  00000120 000004 00000120 00011fe0  4 @11210 	gr_platform.o 
-  00000124 000004 00000124 00011fe4  4 @11321 	gr_platform.o 
-  00000128 000004 00000128 00011fe8  4 @11410 	gr_platform.o 
-  0000012c 000004 0000012c 00011fec  4 @11461 	gr_platform.o 
-  00000130 000004 00000130 00011ff0  4 @11515 	gr_platform.o 
-  00000134 000004 00000134 00011ff4  4 @11575 	gr_platform.o 
-  00000138 000010 00000138 00011ff8  1 .rodata 	gr_punch_slider.o 
-  00000138 000001 00000138 00011ff8  4 nullptr 	gr_punch_slider.o 
-  0000013c 000004 0000013c 00011ffc  4 @10338 	gr_punch_slider.o 
-  00000140 000004 00000140 00012000  4 @10339 	gr_punch_slider.o 
-  00000144 000004 00000144 00012004  4 @10393 	gr_punch_slider.o 
-  00000148 000014 00000148 00012008  1 .rodata 	gr_spring.o 
-  00000148 000001 00000148 00012008  4 nullptr 	gr_spring.o 
-  0000014c 000004 0000014c 0001200c  4 @14142 	gr_spring.o 
-  00000150 000008 00000150 00012010  8 @14193 	gr_spring.o 
-  00000158 000004 00000158 00012018  4 @14223 	gr_spring.o 
-  0000015c 000004 00000160 00012020  8 *fill*
-  00000160 00000c 00000160 00012020  1 .rodata 	gr_targetsmash_disk.o 
-  00000160 000001 00000160 00012020  4 nullptr 	gr_targetsmash_disk.o 
-  00000164 000004 00000164 00012024  4 @10888 	gr_targetsmash_disk.o 
-  00000168 000004 00000168 00012028  4 @10904 	gr_targetsmash_disk.o 
-  0000016c 000004 00000170 00012030  8 *fill*
-  00000170 000018 00000170 00012030  1 .rodata 	gr_targetsmash_target.o 
-  00000170 000001 00000170 00012030  4 nullptr 	gr_targetsmash_target.o 
-  00000174 000004 00000174 00012034  4 @10962 	gr_targetsmash_target.o 
-  00000178 000004 00000178 00012038  4 @10963 	gr_targetsmash_target.o 
-  0000017c 000004 0000017c 0001203c  4 @10986 	gr_targetsmash_target.o 
-  00000180 000004 00000180 00012040  4 @10997 	gr_targetsmash_target.o 
-  00000184 000004 00000184 00012044  4 @11057 	gr_targetsmash_target.o 
-  00000188 000001 00000188 00012048  1 .rodata 	gr_tour_object.o 
-  00000188 000001 00000188 00012048  4 nullptr 	gr_tour_object.o 
-  00000189 000007 00000190 00012050  8 *fill*
-  00000190 00000c 00000190 00012050  1 .rodata 	gr_warpzone.o 
-  00000190 000001 00000190 00012050  4 nullptr 	gr_warpzone.o 
-  00000194 000004 00000194 00012054  4 @10889 	gr_warpzone.o 
-  00000198 000004 00000198 00012058  4 @10974 	gr_warpzone.o 
-  0000019c 000004 000001a0 00012060  8 *fill*
-  000001a0 000001 000001a0 00012060  1 .rodata 	rel.o 
-  000001a0 000001 000001a0 00012060  4 nullptr 	rel.o 
-  000001a1 000007 000001a8 00012068  8 *fill*
-  000001a8 0000a4 000001a8 00012068  1 .rodata 	st_slipspace.o 
-  000001a8 000000 000001a8 00012068    ...rodata.0 (entry of .rodata) 	st_slipspace.o 
-  000001a8 000001 000001a8 00012068  4 nullptr 	st_slipspace.o 
-  000001ac 000004 000001ac 0001206c  4 @17044 	st_slipspace.o 
-  000001b0 000004 000001b0 00012070  4 @18940 	st_slipspace.o 
-  000001b8 000008 000001b8 00012078  8 @18954 	st_slipspace.o 
-  000001c0 000004 000001c0 00012080  4 @20811 	st_slipspace.o 
-  000001c8 000008 000001c8 00012088  8 @21058 	st_slipspace.o 
-  000001d0 000014 000001d0 00012090  4 @21218 	st_slipspace.o 
-  000001e8 000008 000001e8 000120a8  8 @21272 	st_slipspace.o 
-  000001f0 000004 000001f0 000120b0  4 @21385 	st_slipspace.o 
-  000001f4 000004 000001f4 000120b4  4 @21409 	st_slipspace.o 
-  000001f8 000008 000001f8 000120b8  8 @21464 	st_slipspace.o 
-  00000200 000008 00000200 000120c0  8 @21465 	st_slipspace.o 
-  00000208 000008 00000208 000120c8  8 @21466 	st_slipspace.o 
-  00000210 000008 00000210 000120d0  8 @21467 	st_slipspace.o 
-  00000218 000008 00000218 000120d8  8 @21468 	st_slipspace.o 
-  00000220 000008 00000220 000120e0  8 @21473 	st_slipspace.o 
-  00000228 000004 00000228 000120e8  4 @22291 	st_slipspace.o 
-  0000022c 000004 0000022c 000120ec  4 @22292 	st_slipspace.o 
-  00000230 000004 00000230 000120f0  4 @22293 	st_slipspace.o 
-  00000238 000008 00000238 000120f8  8 @22570 	st_slipspace.o 
-  00000240 000008 00000240 00012100  8 @22758 	st_slipspace.o 
-  00000248 000004 00000248 00012108  4 @22805 	st_slipspace.o 
+  00000000 000008 00000000 00011ed0  1 .rodata 	gr_adventure_background.o 
+  00000000 000001 00000000 00011ed0  4 nullptr 	gr_adventure_background.o 
+  00000004 000004 00000004 00011ed4  4 @2264 	gr_adventure_background.o 
+  00000008 00000c 00000008 00011ed8  1 .rodata 	gr_adventure2.o 
+  00000008 000001 00000008 00011ed8  4 nullptr 	gr_adventure2.o 
+  0000000c 000004 0000000c 00011edc  4 @10110 	gr_adventure2.o 
+  00000010 000004 00000010 00011ee0  4 @10236 	gr_adventure2.o 
+  00000014 000004 00000018 00011ee8  8 *fill*
+  00000018 000010 00000018 00011ee8  1 .rodata 	gr_area.o 
+  00000018 000001 00000018 00011ee8  4 nullptr 	gr_area.o 
+  0000001c 000004 0000001c 00011eec  4 @15136 	gr_area.o 
+  00000020 000004 00000020 00011ef0  4 @15137 	gr_area.o 
+  00000024 000004 00000024 00011ef4  4 @15211 	gr_area.o 
+  00000028 000070 00000028 00011ef8  1 .rodata 	gr_barrel_cannon.o 
+  00000028 000000 00000028 00011ef8    ...rodata.0 (entry of .rodata) 	gr_barrel_cannon.o 
+  00000028 000001 00000028 00011ef8  4 nullptr 	gr_barrel_cannon.o 
+  0000002c 000004 0000002c 00011efc  4 @14791 	gr_barrel_cannon.o 
+  00000030 000004 00000030 00011f00  4 @14817 	gr_barrel_cannon.o 
+  00000038 000008 00000038 00011f08  8 @14954 	gr_barrel_cannon.o 
+  00000040 000004 00000040 00011f10  4 @14955 	gr_barrel_cannon.o 
+  00000044 000004 00000044 00011f14  4 @14957 	gr_barrel_cannon.o 
+  00000048 000004 00000048 00011f18  4 @14958 	gr_barrel_cannon.o 
+  00000050 000008 00000050 00011f20  8 @14961 	gr_barrel_cannon.o 
+  00000058 000008 00000058 00011f28  8 @14962 	gr_barrel_cannon.o 
+  00000060 000004 00000060 00011f30  4 @14963 	gr_barrel_cannon.o 
+  00000068 000008 00000068 00011f38  8 @15109 	gr_barrel_cannon.o 
+  00000070 000004 00000070 00011f40  4 @15110 	gr_barrel_cannon.o 
+  00000078 000008 00000078 00011f48  8 @15113 	gr_barrel_cannon.o 
+  00000080 000008 00000080 00011f50  8 @15213 	gr_barrel_cannon.o 
+  00000088 00000c 00000088 00011f58  4 @15239 	gr_barrel_cannon.o 
+  00000094 000004 00000094 00011f64  4 @15351 	gr_barrel_cannon.o 
+  00000098 00001c 00000098 00011f68  1 .rodata 	gr_catapult.o 
+  00000098 000000 00000098 00011f68    ...rodata.0 (entry of .rodata) 	gr_catapult.o 
+  00000098 000001 00000098 00011f68  4 nullptr 	gr_catapult.o 
+  0000009c 000004 0000009c 00011f6c  4 @10298 	gr_catapult.o 
+  000000a0 000004 000000a0 00011f70  4 @10335 	gr_catapult.o 
+  000000a4 000004 000000a4 00011f74  4 @10336 	gr_catapult.o 
+  000000a8 000004 000000a8 00011f78  4 @10337 	gr_catapult.o 
+  000000ac 000004 000000ac 00011f7c  4 @10338 	gr_catapult.o 
+  000000b0 000004 000000b0 00011f80  4 @10339 	gr_catapult.o 
+  000000b4 000004 000000b8 00011f88  8 *fill*
+  000000b8 000038 000000b8 00011f88  1 .rodata 	gr_elevator.o 
+  000000b8 000000 000000b8 00011f88    ...rodata.0 (entry of .rodata) 	gr_elevator.o 
+  000000b8 000001 000000b8 00011f88  4 nullptr 	gr_elevator.o 
+  000000bc 000004 000000bc 00011f8c  4 @14230 	gr_elevator.o 
+  000000c0 000008 000000c0 00011f90  8 @14317 	gr_elevator.o 
+  000000c8 000008 000000c8 00011f98  8 @14370 	gr_elevator.o 
+  000000d0 000008 000000d0 00011fa0  8 @14371 	gr_elevator.o 
+  000000d8 000008 000000d8 00011fa8  8 @14438 	gr_elevator.o 
+  000000e0 000008 000000e0 00011fb0  8 @14466 	gr_elevator.o 
+  000000e8 000008 000000e8 00011fb8  8 @14467 	gr_elevator.o 
+  000000f0 000001 000000f0 00011fc0  1 .rodata 	gr_final.o 
+  000000f0 000001 000000f0 00011fc0  4 nullptr 	gr_final.o 
+  000000f1 000007 000000f8 00011fc8  8 *fill*
+  000000f8 000008 000000f8 00011fc8  1 .rodata 	gr_item.o 
+  000000f8 000001 000000f8 00011fc8  4 nullptr 	gr_item.o 
+  000000fc 000004 000000fc 00011fcc  4 @10978 	gr_item.o 
+  00000100 000010 00000100 00011fd0  1 .rodata 	gr_ladder.o 
+  00000100 000001 00000100 00011fd0  4 nullptr 	gr_ladder.o 
+  00000104 000004 00000104 00011fd4  4 @14146 	gr_ladder.o 
+  00000108 000004 00000108 00011fd8  4 @14147 	gr_ladder.o 
+  0000010c 000004 0000010c 00011fdc  4 @14183 	gr_ladder.o 
+  00000110 000008 00000110 00011fe0  1 .rodata 	gr_motion_path.o 
+  00000110 000001 00000110 00011fe0  4 nullptr 	gr_motion_path.o 
+  00000114 000004 00000114 00011fe4  4 @10177 	gr_motion_path.o 
+  00000118 000020 00000118 00011fe8  1 .rodata 	gr_platform.o 
+  00000118 000000 00000118 00011fe8    ...rodata.0 (entry of .rodata) 	gr_platform.o 
+  00000118 000001 00000118 00011fe8  4 nullptr 	gr_platform.o 
+  0000011c 000004 0000011c 00011fec  4 @11209 	gr_platform.o 
+  00000120 000004 00000120 00011ff0  4 @11210 	gr_platform.o 
+  00000124 000004 00000124 00011ff4  4 @11321 	gr_platform.o 
+  00000128 000004 00000128 00011ff8  4 @11410 	gr_platform.o 
+  0000012c 000004 0000012c 00011ffc  4 @11461 	gr_platform.o 
+  00000130 000004 00000130 00012000  4 @11515 	gr_platform.o 
+  00000134 000004 00000134 00012004  4 @11575 	gr_platform.o 
+  00000138 000010 00000138 00012008  1 .rodata 	gr_punch_slider.o 
+  00000138 000001 00000138 00012008  4 nullptr 	gr_punch_slider.o 
+  0000013c 000004 0000013c 0001200c  4 @10338 	gr_punch_slider.o 
+  00000140 000004 00000140 00012010  4 @10339 	gr_punch_slider.o 
+  00000144 000004 00000144 00012014  4 @10393 	gr_punch_slider.o 
+  00000148 000014 00000148 00012018  1 .rodata 	gr_spring.o 
+  00000148 000001 00000148 00012018  4 nullptr 	gr_spring.o 
+  0000014c 000004 0000014c 0001201c  4 @14142 	gr_spring.o 
+  00000150 000008 00000150 00012020  8 @14193 	gr_spring.o 
+  00000158 000004 00000158 00012028  4 @14223 	gr_spring.o 
+  0000015c 000004 00000160 00012030  8 *fill*
+  00000160 00000c 00000160 00012030  1 .rodata 	gr_targetsmash_disk.o 
+  00000160 000001 00000160 00012030  4 nullptr 	gr_targetsmash_disk.o 
+  00000164 000004 00000164 00012034  4 @10888 	gr_targetsmash_disk.o 
+  00000168 000004 00000168 00012038  4 @10904 	gr_targetsmash_disk.o 
+  0000016c 000004 00000170 00012040  8 *fill*
+  00000170 000018 00000170 00012040  1 .rodata 	gr_targetsmash_target.o 
+  00000170 000001 00000170 00012040  4 nullptr 	gr_targetsmash_target.o 
+  00000174 000004 00000174 00012044  4 @10962 	gr_targetsmash_target.o 
+  00000178 000004 00000178 00012048  4 @10963 	gr_targetsmash_target.o 
+  0000017c 000004 0000017c 0001204c  4 @10986 	gr_targetsmash_target.o 
+  00000180 000004 00000180 00012050  4 @10997 	gr_targetsmash_target.o 
+  00000184 000004 00000184 00012054  4 @11057 	gr_targetsmash_target.o 
+  00000188 000001 00000188 00012058  1 .rodata 	gr_tour_object.o 
+  00000188 000001 00000188 00012058  4 nullptr 	gr_tour_object.o 
+  00000189 000007 00000190 00012060  8 *fill*
+  00000190 00000c 00000190 00012060  1 .rodata 	gr_warpzone.o 
+  00000190 000001 00000190 00012060  4 nullptr 	gr_warpzone.o 
+  00000194 000004 00000194 00012064  4 @10889 	gr_warpzone.o 
+  00000198 000004 00000198 00012068  4 @10974 	gr_warpzone.o 
+  0000019c 000004 000001a0 00012070  8 *fill*
+  000001a0 000001 000001a0 00012070  1 .rodata 	rel.o 
+  000001a0 000001 000001a0 00012070  4 nullptr 	rel.o 
+  000001a1 000007 000001a8 00012078  8 *fill*
+  000001a8 0000a4 000001a8 00012078  1 .rodata 	st_slipspace.o 
+  000001a8 000000 000001a8 00012078    ...rodata.0 (entry of .rodata) 	st_slipspace.o 
+  000001a8 000001 000001a8 00012078  4 nullptr 	st_slipspace.o 
+  000001ac 000004 000001ac 0001207c  4 @17044 	st_slipspace.o 
+  000001b0 000004 000001b0 00012080  4 @18940 	st_slipspace.o 
+  000001b8 000008 000001b8 00012088  8 @18954 	st_slipspace.o 
+  000001c0 000004 000001c0 00012090  4 @20811 	st_slipspace.o 
+  000001c8 000008 000001c8 00012098  8 @21058 	st_slipspace.o 
+  000001d0 000014 000001d0 000120a0  4 @21218 	st_slipspace.o 
+  000001e8 000008 000001e8 000120b8  8 @21272 	st_slipspace.o 
+  000001f0 000004 000001f0 000120c0  4 @21385 	st_slipspace.o 
+  000001f4 000004 000001f4 000120c4  4 @21409 	st_slipspace.o 
+  000001f8 000008 000001f8 000120c8  8 @21464 	st_slipspace.o 
+  00000200 000008 00000200 000120d0  8 @21465 	st_slipspace.o 
+  00000208 000008 00000208 000120d8  8 @21466 	st_slipspace.o 
+  00000210 000008 00000210 000120e0  8 @21467 	st_slipspace.o 
+  00000218 000008 00000218 000120e8  8 @21468 	st_slipspace.o 
+  00000220 000008 00000220 000120f0  8 @21473 	st_slipspace.o 
+  00000228 000004 00000228 000120f8  4 @22291 	st_slipspace.o 
+  0000022c 000004 0000022c 000120fc  4 @22292 	st_slipspace.o 
+  00000230 000004 00000230 00012100  4 @22293 	st_slipspace.o 
+  00000238 000008 00000238 00012108  8 @22570 	st_slipspace.o 
+  00000240 000008 00000240 00012110  8 @22758 	st_slipspace.o 
+  00000248 000004 00000248 00012118  4 @22805 	st_slipspace.o 
 
 
 .data section layout
   Starting        Virtual  File
   address  Size   address  offset
   ---------------------------------
-  00000000 000030 00000000 00012110  1 .data 	gr_adventure_background.o 
-  00000000 000010 00000000 00012110  8 __vt__21grAdventureBackGround 	gr_adventure_background.o 
-  00000010 000016 00000010 00012120  4 @2267 	gr_adventure_background.o 
-  00000028 000008 00000028 00012138  8 __RTTI__21grAdventureBackGround 	gr_adventure_background.o 
-  00000030 000220 00000030 00012140  1 .data 	gr_adventure2.o 
-  00000030 000000 00000030 00012140    ...data.0 (entry of .data) 	gr_adventure2.o 
-  00000030 000007 00000030 00012140  4 @10235 	gr_adventure2.o 
-  00000038 000007 00000038 00012148  4 @10237 	gr_adventure2.o 
-  00000040 000007 00000040 00012150  4 @10238 	gr_adventure2.o 
-  00000048 000007 00000048 00012158  4 @10239 	gr_adventure2.o 
-  00000050 000170 00000050 00012160  8 __vt__12grAdventure2 	gr_adventure2.o 
-  000001c0 00000d 000001c0 000122d0  4 @10246 	gr_adventure2.o 
-  000001d0 00001c 000001d0 000122e0  4 @10247 	gr_adventure2.o 
-  000001f0 000008 000001f0 00012300  8 __RTTI__12grAdventure2 	gr_adventure2.o 
-  000001f8 00000a 000001f8 00012308  4 @10248 	gr_adventure2.o 
-  00000204 000014 00000204 00012314  4 @10249 	gr_adventure2.o 
-  00000218 000008 00000218 00012328  8 __RTTI__9grGimmick 	gr_adventure2.o 
-  00000220 000007 00000220 00012330  4 @10250 	gr_adventure2.o 
-  00000228 00000c 00000228 00012338  4 @10251 	gr_adventure2.o 
-  00000238 000008 00000238 00012348  8 __RTTI__6Ground 	gr_adventure2.o 
-  00000240 000007 00000240 00012350  4 @10252 	gr_adventure2.o 
-  00000248 000008 00000248 00012358  8 __RTTI__6gfTask 	gr_adventure2.o 
-  00000250 000370 00000250 00012360  1 .data 	gr_area.o 
-  00000250 000000 00000250 00012360    ...data.0 (entry of .data) 	gr_area.o 
-  00000250 000009 00000250 00012360  4 @15132 	gr_area.o 
-  00000260 000008 00000260 00012370  8 @15133 	gr_area.o 
-  00000268 00000d 00000268 00012378  4 @15134 	gr_area.o 
-  00000278 000008 00000278 00012388  8 @15135 	gr_area.o 
-  00000280 000009 00000280 00012390  4 @15156 	gr_area.o 
-  0000028c 00000e 0000028c 0001239c  4 @15157 	gr_area.o 
-  0000029c 0001d4 0000029c 000123ac  4 __vt__6grArea 	gr_area.o 
-  00000470 000007 00000470 00012580  4 @15268 	gr_area.o 
-  00000478 000034 00000478 00012588  4 @15269 	gr_area.o 
-  000004b0 000008 000004b0 000125c0  8 __RTTI__6grArea 	gr_area.o 
-  000004b8 000009 000004b8 000125c8  4 @15270 	gr_area.o 
-  000004c4 00002c 000004c4 000125d4  4 @15271 	gr_area.o 
-  000004f0 000008 000004f0 00012600  8 __RTTI__8grMadein 	gr_area.o 
-  000004f8 00000e 000004f8 00012608  4 @15272 	gr_area.o 
-  00000508 000024 00000508 00012618  4 @15273 	gr_area.o 
-  00000530 000008 00000530 00012640  8 __RTTI__13grSeqYakumono 	gr_area.o 
-  00000538 00000b 00000538 00012648  4 @15274 	gr_area.o 
-  00000544 00001c 00000544 00012654  4 @15275 	gr_area.o 
-  00000560 000008 00000560 00012670  8 __RTTI__10grYakumono 	gr_area.o 
-  00000568 00000a 00000568 00012678  4 @15276 	gr_area.o 
-  00000574 000014 00000574 00012684  4 @15277 	gr_area.o 
-  00000590 000007 00000590 000126a0  4 @15278 	gr_area.o 
-  00000598 00000c 00000598 000126a8  4 @15279 	gr_area.o 
-  000005b0 000007 000005b0 000126c0  4 @15280 	gr_area.o 
-  000005c0 0002f0 000005c0 000126d0  1 .data 	gr_barrel_cannon.o 
-  000005c0 000000 000005c0 000126d0    ...data.0 (entry of .data) 	gr_barrel_cannon.o 
-  000005c0 000009 000005c0 000126d0  4 @14956 	gr_barrel_cannon.o 
-  000005cc 00000b 000005cc 000126dc  4 @14959 	gr_barrel_cannon.o 
-  000005d8 00000f 000005d8 000126e8  4 @14960 	gr_barrel_cannon.o 
-  000005e8 00000d 000005e8 000126f8  4 @14990 	gr_barrel_cannon.o 
-  000005f8 000014 000005f8 00012708  4 @14991 	gr_barrel_cannon.o 
-  00000610 0001d0 00000610 00012720  8 __vt__23grAdventureBarrelCannon 	gr_barrel_cannon.o 
-  000007e0 000018 000007e0 000128f0  8 @15378 	gr_barrel_cannon.o 
-  000007f8 000024 000007f8 00012908  4 @15379 	gr_barrel_cannon.o 
-  00000820 000008 00000820 00012930  8 __RTTI__23grAdventureBarrelCannon 	gr_barrel_cannon.o 
-  00000828 00000b 00000828 00012938  4 @15380 	gr_barrel_cannon.o 
-  00000834 00001c 00000834 00012944  4 @15381 	gr_barrel_cannon.o 
-  00000858 00000a 00000858 00012968  4 @15382 	gr_barrel_cannon.o 
-  00000864 000014 00000864 00012974  4 @15383 	gr_barrel_cannon.o 
-  00000880 000007 00000880 00012990  4 @15384 	gr_barrel_cannon.o 
-  00000888 00000c 00000888 00012998  4 @15385 	gr_barrel_cannon.o 
-  000008a0 000007 000008a0 000129b0  4 @15386 	gr_barrel_cannon.o 
-  000008b0 0002bb 000008b0 000129c0  1 .data 	gr_catapult.o 
-  000008b0 000009 000008b0 000129c0  4 @10312 	gr_catapult.o 
-  000008c0 0001c8 000008c0 000129d0  8 __vt__10grCatapult 	gr_catapult.o 
-  00000a88 00000b 00000a88 00012b98  4 @10344 	gr_catapult.o 
-  00000a94 00002c 00000a94 00012ba4  4 @10345 	gr_catapult.o 
-  00000ac0 000008 00000ac0 00012bd0  8 __RTTI__10grCatapult 	gr_catapult.o 
-  00000ac8 000012 00000ac8 00012bd8  4 @10346 	gr_catapult.o 
-  00000adc 000024 00000adc 00012bec  4 @10347 	gr_catapult.o 
-  00000b00 000008 00000b00 00012c10  8 __RTTI__17grGimmickCatapult 	gr_catapult.o 
-  00000b08 00000b 00000b08 00012c18  4 @10348 	gr_catapult.o 
-  00000b14 00001c 00000b14 00012c24  4 @10349 	gr_catapult.o 
-  00000b30 00000a 00000b30 00012c40  4 @10350 	gr_catapult.o 
-  00000b3c 000014 00000b3c 00012c4c  4 @10351 	gr_catapult.o 
-  00000b50 000007 00000b50 00012c60  4 @10352 	gr_catapult.o 
-  00000b58 00000c 00000b58 00012c68  4 @10353 	gr_catapult.o 
-  00000b64 000007 00000b64 00012c74  4 @10354 	gr_catapult.o 
-  00000b6b 000005 00000b70 00012c80  8 *fill*
-  00000b70 0002ff 00000b70 00012c80  1 .data 	gr_elevator.o 
-  00000b70 000001 00000b70 00012c80  4 @14300 	gr_elevator.o 
-  00000b78 0001d8 00000b78 00012c88  8 __vt__19grAdventureElevator 	gr_elevator.o 
-  00000d50 000014 00000d50 00012e60  4 @14469 	gr_elevator.o 
-  00000d64 000034 00000d64 00012e74  4 @14470 	gr_elevator.o 
-  00000d98 000008 00000d98 00012ea8  8 __RTTI__19grAdventureElevator 	gr_elevator.o 
-  00000da0 000009 00000da0 00012eb0  4 @14471 	gr_elevator.o 
-  00000dac 00002c 00000dac 00012ebc  4 @14472 	gr_elevator.o 
-  00000dd8 00000e 00000dd8 00012ee8  4 @14473 	gr_elevator.o 
-  00000de8 000024 00000de8 00012ef8  4 @14474 	gr_elevator.o 
-  00000e0c 00000b 00000e0c 00012f1c  4 @14475 	gr_elevator.o 
-  00000e18 00001c 00000e18 00012f28  4 @14476 	gr_elevator.o 
-  00000e34 00000a 00000e34 00012f44  4 @14477 	gr_elevator.o 
-  00000e40 000014 00000e40 00012f50  4 @14478 	gr_elevator.o 
-  00000e54 000007 00000e54 00012f64  4 @14479 	gr_elevator.o 
-  00000e5c 00000c 00000e5c 00012f6c  4 @14480 	gr_elevator.o 
-  00000e68 000007 00000e68 00012f78  4 @14481 	gr_elevator.o 
-  00000e6f 000001 00000e70 00012f80  8 *fill*
-  00000e70 000263 00000e70 00012f80  1 .data 	gr_final.o 
-  00000e70 0001c8 00000e70 00012f80  8 __vt__7grFinal 	gr_final.o 
-  00001038 000008 00001038 00013148  8 @10168 	gr_final.o 
-  00001040 000024 00001040 00013150  4 @10169 	gr_final.o 
-  00001068 000008 00001068 00013178  8 __RTTI__7grFinal 	gr_final.o 
-  00001070 00000b 00001070 00013180  4 @10170 	gr_final.o 
-  0000107c 00001c 0000107c 0001318c  4 @10171 	gr_final.o 
-  00001098 00000a 00001098 000131a8  4 @10172 	gr_final.o 
-  000010a4 000014 000010a4 000131b4  4 @10173 	gr_final.o 
-  000010b8 000007 000010b8 000131c8  4 @10174 	gr_final.o 
-  000010c0 00000c 000010c0 000131d0  4 @10175 	gr_final.o 
-  000010cc 000007 000010cc 000131dc  4 @10176 	gr_final.o 
-  000010d3 000005 000010d8 000131e8  8 *fill*
-  000010d8 0003f3 000010d8 000131e8  1 .data 	gr_item.o 
-  000010d8 000180 000010d8 000131e8  8 __vt__6grItem 	gr_item.o 
-  00001258 000007 00001258 00013368  4 @11009 	gr_item.o 
-  00001260 00002c 00001260 00013370  4 @11010 	gr_item.o 
-  00001290 000008 00001290 000133a0  8 __RTTI__6grItem 	gr_item.o 
-  00001298 000180 00001298 000133a8  8 __vt__12grMotionPath 	gr_item.o 
-  00001418 00000d 00001418 00013528  4 @11011 	gr_item.o 
-  00001428 000024 00001428 00013538  4 @11012 	gr_item.o 
-  00001450 000008 00001450 00013560  8 __RTTI__12grMotionPath 	gr_item.o 
-  00001458 000014 00001458 00013568  4 @11013 	gr_item.o 
-  0000146c 00001c 0000146c 0001357c  4 @11014 	gr_item.o 
-  00001488 000008 00001488 00013598  8 __RTTI__19grGimmickMotionPath 	gr_item.o 
-  00001490 00000a 00001490 000135a0  4 @11015 	gr_item.o 
-  0000149c 000014 0000149c 000135ac  4 @11016 	gr_item.o 
-  000014b0 000007 000014b0 000135c0  4 @11017 	gr_item.o 
-  000014b8 00000c 000014b8 000135c8  4 @11018 	gr_item.o 
-  000014c4 000007 000014c4 000135d4  4 @11019 	gr_item.o 
-  000014cb 000005 000014d0 000135e0  8 *fill*
-  000014d0 0002d3 000014d0 000135e0  1 .data 	gr_ladder.o 
-  000014d0 000009 000014d0 000135e0  4 @14148 	gr_ladder.o 
-  000014dc 000009 000014dc 000135ec  4 @14162 	gr_ladder.o 
-  000014e8 0001d8 000014e8 000135f8  8 __vt__8grLadder 	gr_ladder.o 
-  000016c0 000009 000016c0 000137d0  4 @14185 	gr_ladder.o 
-  000016cc 00002c 000016cc 000137dc  4 @14186 	gr_ladder.o 
-  000016f8 000008 000016f8 00013808  8 __RTTI__8grLadder 	gr_ladder.o 
-  00001700 000010 00001700 00013810  8 @14187 	gr_ladder.o 
-  00001710 000024 00001710 00013820  4 @14188 	gr_ladder.o 
-  00001738 000008 00001738 00013848  8 __RTTI__15grGimmickLadder 	gr_ladder.o 
-  00001740 00000b 00001740 00013850  4 @14189 	gr_ladder.o 
-  0000174c 00001c 0000174c 0001385c  4 @14190 	gr_ladder.o 
-  00001768 00000a 00001768 00013878  4 @14191 	gr_ladder.o 
-  00001774 000014 00001774 00013884  4 @14192 	gr_ladder.o 
-  00001788 000007 00001788 00013898  4 @14193 	gr_ladder.o 
-  00001790 00000c 00001790 000138a0  4 @14194 	gr_ladder.o 
-  0000179c 000007 0000179c 000138ac  4 @14195 	gr_ladder.o 
-  000017a3 000005 000017a8 000138b8  8 *fill*
-  000017a8 00009f 000017a8 000138b8  1 .data 	gr_motion_path.o 
-  000017a8 00000d 000017a8 000138b8  4 @10185 	gr_motion_path.o 
-  000017b8 000024 000017b8 000138c8  4 @10186 	gr_motion_path.o 
-  000017dc 000014 000017dc 000138ec  4 @10187 	gr_motion_path.o 
-  000017f0 00001c 000017f0 00013900  4 @10188 	gr_motion_path.o 
-  0000180c 00000a 0000180c 0001391c  4 @10189 	gr_motion_path.o 
-  00001818 000014 00001818 00013928  4 @10190 	gr_motion_path.o 
-  0000182c 000007 0000182c 0001393c  4 @10191 	gr_motion_path.o 
-  00001834 00000c 00001834 00013944  4 @10192 	gr_motion_path.o 
-  00001840 000007 00001840 00013950  4 @10193 	gr_motion_path.o 
-  00001847 000001 00001848 00013958  8 *fill*
-  00001848 0003d8 00001848 00013958  1 .data 	gr_platform.o 
-  00001848 000000 00001848 00013958    ...data.0 (entry of .data) 	gr_platform.o 
-  00001848 000011 00001848 00013958  4 @11317 	gr_platform.o 
-  00001860 000008 00001860 00013970  8 @11318 	gr_platform.o 
-  00001868 00000d 00001868 00013978  4 @11319 	gr_platform.o 
-  00001878 000008 00001878 00013988  8 @11320 	gr_platform.o 
-  00001880 000009 00001880 00013990  4 @11322 	gr_platform.o 
-  0000188c 00000e 0000188c 0001399c  4 @11366 	gr_platform.o 
-  0000189c 000009 0000189c 000139ac  4 @11367 	gr_platform.o 
-  000018a8 000009 000018a8 000139b8  4 @11368 	gr_platform.o 
-  000018b8 000010 000018b8 000139c8  8 @11503 	gr_platform.o 
-  000018c8 00000e 000018c8 000139d8  4 @11504 	gr_platform.o 
-  000018d8 000007 000018d8 000139e8  4 @11573 	gr_platform.o 
-  000018e0 000007 000018e0 000139f0  4 @11574 	gr_platform.o 
-  000018e8 0001e8 000018e8 000139f8  8 __vt__10grPlatform 	gr_platform.o 
-  00001ad0 00000b 00001ad0 00013be0  4 @11662 	gr_platform.o 
-  00001adc 000034 00001adc 00013bec  4 @11663 	gr_platform.o 
-  00001b10 000008 00001b10 00013c20  8 __RTTI__10grPlatform 	gr_platform.o 
-  00001b18 000009 00001b18 00013c28  4 @11664 	gr_platform.o 
-  00001b24 00002c 00001b24 00013c34  4 @11665 	gr_platform.o 
-  00001b58 00000e 00001b58 00013c68  4 @11666 	gr_platform.o 
-  00001b68 000024 00001b68 00013c78  4 @11667 	gr_platform.o 
-  00001b98 00000b 00001b98 00013ca8  4 @11668 	gr_platform.o 
-  00001ba4 00001c 00001ba4 00013cb4  4 @11669 	gr_platform.o 
-  00001bc8 00000a 00001bc8 00013cd8  4 @11670 	gr_platform.o 
-  00001bd4 000014 00001bd4 00013ce4  4 @11671 	gr_platform.o 
-  00001bf0 000007 00001bf0 00013d00  4 @11672 	gr_platform.o 
-  00001bf8 00000c 00001bf8 00013d08  4 @11673 	gr_platform.o 
-  00001c10 000007 00001c10 00013d20  4 @11674 	gr_platform.o 
-  00001c20 0002eb 00001c20 00013d30  1 .data 	gr_punch_slider.o 
-  00001c20 000008 00001c20 00013d30  8 @10337 	gr_punch_slider.o 
-  00001c28 00000d 00001c28 00013d38  4 @10362 	gr_punch_slider.o 
-  00001c38 000009 00001c38 00013d48  4 @10363 	gr_punch_slider.o 
-  00001c44 0001d4 00001c44 00013d54  4 __vt__13grPunchSlider 	gr_punch_slider.o 
-  00001e18 00000e 00001e18 00013f28  4 @10395 	gr_punch_slider.o 
-  00001e28 00002c 00001e28 00013f38  4 @10396 	gr_punch_slider.o 
-  00001e58 000008 00001e58 00013f68  8 __RTTI__13grPunchSlider 	gr_punch_slider.o 
-  00001e60 000016 00001e60 00013f70  4 @10397 	gr_punch_slider.o 
-  00001e78 000024 00001e78 00013f88  4 @10398 	gr_punch_slider.o 
-  00001ea0 000008 00001ea0 00013fb0  8 __RTTI__21grYakumonoPunchSlider 	gr_punch_slider.o 
-  00001ea8 00000b 00001ea8 00013fb8  4 @10399 	gr_punch_slider.o 
-  00001eb4 00001c 00001eb4 00013fc4  4 @10400 	gr_punch_slider.o 
-  00001ed0 00000a 00001ed0 00013fe0  4 @10401 	gr_punch_slider.o 
-  00001edc 000014 00001edc 00013fec  4 @10402 	gr_punch_slider.o 
-  00001ef0 000007 00001ef0 00014000  4 @10403 	gr_punch_slider.o 
-  00001ef8 00000c 00001ef8 00014008  4 @10404 	gr_punch_slider.o 
-  00001f04 000007 00001f04 00014014  4 @10405 	gr_punch_slider.o 
-  00001f0b 000005 00001f10 00014020  8 *fill*
-  00001f10 0002e3 00001f10 00014020  1 .data 	gr_spring.o 
-  00001f10 000009 00001f10 00014020  4 @14141 	gr_spring.o 
-  00001f1c 00000e 00001f1c 0001402c  4 @14189 	gr_spring.o 
-  00001f2c 000009 00001f2c 0001403c  4 @14190 	gr_spring.o 
-  00001f38 0001d8 00001f38 00014048  8 __vt__8grSpring 	gr_spring.o 
-  00002110 000009 00002110 00014220  4 @14225 	gr_spring.o 
-  0000211c 00002c 0000211c 0001422c  4 @14226 	gr_spring.o 
-  00002148 000008 00002148 00014258  8 __RTTI__8grSpring 	gr_spring.o 
-  00002150 000010 00002150 00014260  8 @14227 	gr_spring.o 
-  00002160 000024 00002160 00014270  4 @14228 	gr_spring.o 
-  00002188 000008 00002188 00014298  8 __RTTI__15grGimmickSpring 	gr_spring.o 
-  00002190 00000b 00002190 000142a0  4 @14229 	gr_spring.o 
-  0000219c 00001c 0000219c 000142ac  4 @14230 	gr_spring.o 
-  000021b8 00000a 000021b8 000142c8  4 @14231 	gr_spring.o 
-  000021c4 000014 000021c4 000142d4  4 @14232 	gr_spring.o 
-  000021d8 000007 000021d8 000142e8  4 @14233 	gr_spring.o 
-  000021e0 00000c 000021e0 000142f0  4 @14234 	gr_spring.o 
-  000021ec 000007 000021ec 000142fc  4 @14235 	gr_spring.o 
-  000021f3 000005 000021f8 00014308  8 *fill*
-  000021f8 000307 000021f8 00014308  1 .data 	gr_targetsmash_disk.o 
-  000021f8 000009 000021f8 00014308  4 @10889 	gr_targetsmash_disk.o 
-  00002204 00000e 00002204 00014314  4 @10929 	gr_targetsmash_disk.o 
-  00002214 0001cc 00002214 00014324  4 __vt__17grTargetSmashDisk 	gr_targetsmash_disk.o 
-  000023e0 000012 000023e0 000144f0  4 @10953 	gr_targetsmash_disk.o 
-  000023f4 000034 000023f4 00014504  4 @10954 	gr_targetsmash_disk.o 
-  00002428 000008 00002428 00014538  8 __RTTI__17grTargetSmashDisk 	gr_targetsmash_disk.o 
-  00002430 000009 00002430 00014540  4 @10955 	gr_targetsmash_disk.o 
-  0000243c 00002c 0000243c 0001454c  4 @10956 	gr_targetsmash_disk.o 
-  00002468 00000e 00002468 00014578  4 @10957 	gr_targetsmash_disk.o 
-  00002478 000024 00002478 00014588  4 @10958 	gr_targetsmash_disk.o 
-  0000249c 00000b 0000249c 000145ac  4 @10959 	gr_targetsmash_disk.o 
-  000024a8 00001c 000024a8 000145b8  4 @10960 	gr_targetsmash_disk.o 
-  000024c4 00000a 000024c4 000145d4  4 @10961 	gr_targetsmash_disk.o 
-  000024d0 000014 000024d0 000145e0  4 @10962 	gr_targetsmash_disk.o 
-  000024e4 000007 000024e4 000145f4  4 @10963 	gr_targetsmash_disk.o 
-  000024ec 00000c 000024ec 000145fc  4 @10964 	gr_targetsmash_disk.o 
-  000024f8 000007 000024f8 00014608  4 @10965 	gr_targetsmash_disk.o 
-  000024ff 000001 00002500 00014610  8 *fill*
-  00002500 000370 00002500 00014610  1 .data 	gr_targetsmash_target.o 
-  00002500 000000 00002500 00014610    ...data.0 (entry of .data) 	gr_targetsmash_target.o 
-  00002500 000009 00002500 00014610  4 @10958 	gr_targetsmash_target.o 
-  00002510 000008 00002510 00014620  8 @10959 	gr_targetsmash_target.o 
-  00002518 00000d 00002518 00014628  4 @10960 	gr_targetsmash_target.o 
-  00002528 000008 00002528 00014638  8 @10961 	gr_targetsmash_target.o 
-  00002530 00000e 00002530 00014640  4 @10977 	gr_targetsmash_target.o 
-  00002540 0001d8 00002540 00014650  8 __vt__19grTargetSmashTarget 	gr_targetsmash_target.o 
-  00002718 000014 00002718 00014828  4 @11081 	gr_targetsmash_target.o 
-  0000272c 000034 0000272c 0001483c  4 @11082 	gr_targetsmash_target.o 
-  00002760 000008 00002760 00014870  8 __RTTI__19grTargetSmashTarget 	gr_targetsmash_target.o 
-  00002768 000009 00002768 00014878  4 @11083 	gr_targetsmash_target.o 
-  00002774 00002c 00002774 00014884  4 @11084 	gr_targetsmash_target.o 
-  000027a8 00000e 000027a8 000148b8  4 @11085 	gr_targetsmash_target.o 
-  000027b8 000024 000027b8 000148c8  4 @11086 	gr_targetsmash_target.o 
-  000027e8 00000b 000027e8 000148f8  4 @11087 	gr_targetsmash_target.o 
-  000027f4 00001c 000027f4 00014904  4 @11088 	gr_targetsmash_target.o 
-  00002818 00000a 00002818 00014928  4 @11089 	gr_targetsmash_target.o 
-  00002824 000014 00002824 00014934  4 @11090 	gr_targetsmash_target.o 
-  00002840 000007 00002840 00014950  4 @11091 	gr_targetsmash_target.o 
-  00002848 00000c 00002848 00014958  4 @11092 	gr_targetsmash_target.o 
-  00002860 000007 00002860 00014970  4 @11093 	gr_targetsmash_target.o 
-  00002870 0002e7 00002870 00014980  1 .data 	gr_tour_object.o 
-  00002870 0001c8 00002870 00014980  8 __vt__12grTourObject 	gr_tour_object.o 
-  00002a38 00000d 00002a38 00014b48  4 @10990 	gr_tour_object.o 
-  00002a48 000034 00002a48 00014b58  4 @10991 	gr_tour_object.o 
-  00002a80 000008 00002a80 00014b90  8 __RTTI__12grTourObject 	gr_tour_object.o 
-  00002a88 000009 00002a88 00014b98  4 @10992 	gr_tour_object.o 
-  00002a94 00002c 00002a94 00014ba4  4 @10993 	gr_tour_object.o 
-  00002ac0 00000e 00002ac0 00014bd0  4 @10994 	gr_tour_object.o 
-  00002ad0 000024 00002ad0 00014be0  4 @10995 	gr_tour_object.o 
-  00002af4 00000b 00002af4 00014c04  4 @10996 	gr_tour_object.o 
-  00002b00 00001c 00002b00 00014c10  4 @10997 	gr_tour_object.o 
-  00002b1c 00000a 00002b1c 00014c2c  4 @10998 	gr_tour_object.o 
-  00002b28 000014 00002b28 00014c38  4 @10999 	gr_tour_object.o 
-  00002b3c 000007 00002b3c 00014c4c  4 @11000 	gr_tour_object.o 
-  00002b44 00000c 00002b44 00014c54  4 @11001 	gr_tour_object.o 
-  00002b50 000007 00002b50 00014c60  4 @11002 	gr_tour_object.o 
-  00002b57 000001 00002b58 00014c68  8 *fill*
-  00002b58 000303 00002b58 00014c68  1 .data 	gr_warpzone.o 
-  00002b58 000009 00002b58 00014c68  4 @10901 	gr_warpzone.o 
-  00002b64 00003c 00002b64 00014c74  4 @10978 	gr_warpzone.o 
-  00002ba0 0001d8 00002ba0 00014cb0  8 __vt__10grWarpZone 	gr_warpzone.o 
-  00002d78 00000b 00002d78 00014e88  4 @11022 	gr_warpzone.o 
-  00002d84 00002c 00002d84 00014e94  4 @11023 	gr_warpzone.o 
-  00002db0 000008 00002db0 00014ec0  8 __RTTI__10grWarpZone 	gr_warpzone.o 
-  00002db8 000012 00002db8 00014ec8  4 @11024 	gr_warpzone.o 
-  00002dcc 000024 00002dcc 00014edc  4 @11025 	gr_warpzone.o 
-  00002df0 000008 00002df0 00014f00  8 __RTTI__17grGimmickWarpZone 	gr_warpzone.o 
-  00002df8 00000b 00002df8 00014f08  4 @11026 	gr_warpzone.o 
-  00002e04 00001c 00002e04 00014f14  4 @11027 	gr_warpzone.o 
-  00002e20 00000a 00002e20 00014f30  4 @11028 	gr_warpzone.o 
-  00002e2c 000014 00002e2c 00014f3c  4 @11029 	gr_warpzone.o 
-  00002e40 000007 00002e40 00014f50  4 @11030 	gr_warpzone.o 
-  00002e48 00000c 00002e48 00014f58  4 @11031 	gr_warpzone.o 
-  00002e54 000007 00002e54 00014f64  4 @11032 	gr_warpzone.o 
-  00002e5b 000005 00002e60 00014f70  8 *fill*
-  00002e60 000934 00002e60 00014f70  1 .data 	st_slipspace.o 
-  00002e60 000000 00002e60 00014f70    ...data.0 (entry of .data) 	st_slipspace.o 
-  00002e60 000004 00002e60 00014f70  4 KO_PLAYERINDEX 	st_slipspace.o 
-  00002e64 000004 00002e64 00014f74  4 DEATH_COIN_PERCENT 	st_slipspace.o 
-  00002e68 000004 00002e68 00014f78  4 DEATH_KO_PERCENT 	st_slipspace.o 
-  00002e6c 000004 00002e6c 00014f7c  4 _difficulty 	st_slipspace.o 
-  00002e70 000004 00002e70 00014f80  4 _lastUsedSpawnerIndex 	st_slipspace.o 
-  00002e74 000006 00002e74 00014f84  4 @18928 	st_slipspace.o 
-  00002e80 000008 00002e80 00014f90  8 @18929 	st_slipspace.o 
-  00002e88 00000f 00002e88 00014f98  4 @18930 	st_slipspace.o 
-  00002e98 00000d 00002e98 00014fa8  4 @18931 	st_slipspace.o 
-  00002ea8 000010 00002ea8 00014fb8  8 @18932 	st_slipspace.o 
-  00002eb8 00000d 00002eb8 00014fc8  4 @18933 	st_slipspace.o 
-  00002ec8 00000d 00002ec8 00014fd8  4 @18934 	st_slipspace.o 
-  00002ed8 000011 00002ed8 00014fe8  4 @18935 	st_slipspace.o 
-  00002eec 00000a 00002eec 00014ffc  4 @18936 	st_slipspace.o 
-  00002ef8 00000a 00002ef8 00015008  4 @18937 	st_slipspace.o 
-  00002f04 00000e 00002f04 00015014  4 @18938 	st_slipspace.o 
-  00002f14 00000c 00002f14 00015024  4 @18939 	st_slipspace.o 
-  00002f20 000005 00002f20 00015030  4 @18941 	st_slipspace.o 
-  00002f28 000016 00002f28 00015038  4 @18942 	st_slipspace.o 
-  00002f40 000013 00002f40 00015050  4 @18943 	st_slipspace.o 
-  00002f54 00000d 00002f54 00015064  4 @18944 	st_slipspace.o 
-  00002f68 000010 00002f68 00015078  8 @18945 	st_slipspace.o 
-  00002f78 000014 00002f78 00015088  4 @18946 	st_slipspace.o 
-  00002f8c 00003a 00002f8c 0001509c  4 @18947 	st_slipspace.o 
-  00002fc8 000009 00002fc8 000150d8  4 @18948 	st_slipspace.o 
-  00002fd4 00000c 00002fd4 000150e4  4 @18949 	st_slipspace.o 
-  00002fe0 000004 00002fe0 000150f0  4 @18950 	st_slipspace.o 
-  00002fe8 000010 00002fe8 000150f8  8 @19043 	st_slipspace.o 
-  00002ff8 00000e 00002ff8 00015108  4 @19044 	st_slipspace.o 
-  00003008 000001 00003008 00015118  4 @20707 	st_slipspace.o 
-  0000300c 000014 0000300c 0001511c  4 @20708 	st_slipspace.o 
-  00003020 000008 00003020 00015130  8 @20709 	st_slipspace.o 
-  00003028 000006 00003028 00015138  4 @20710 	st_slipspace.o 
-  00003030 00000a 00003030 00015140  4 @20711 	st_slipspace.o 
-  00003040 000008 00003040 00015150  8 @20712 	st_slipspace.o 
-  00003048 000008 00003048 00015158  8 @20713 	st_slipspace.o 
-  00003050 000008 00003050 00015160  8 @20714 	st_slipspace.o 
-  00003058 000008 00003058 00015168  8 @20715 	st_slipspace.o 
-  00003060 00000a 00003060 00015170  4 @20716 	st_slipspace.o 
-  0000306c 000006 0000306c 0001517c  4 @20717 	st_slipspace.o 
-  00003074 000007 00003074 00015184  4 @20718 	st_slipspace.o 
-  0000307c 00000a 0000307c 0001518c  4 @20719 	st_slipspace.o 
-  00003088 000007 00003088 00015198  4 @20720 	st_slipspace.o 
-  00003090 000006 00003090 000151a0  4 @20721 	st_slipspace.o 
-  00003098 00000b 00003098 000151a8  4 @20722 	st_slipspace.o 
-  000030a8 000010 000030a8 000151b8  8 @20723 	st_slipspace.o 
-  000030b8 00000d 000030b8 000151c8  4 @20724 	st_slipspace.o 
-  000030c8 000010 000030c8 000151d8  8 @20725 	st_slipspace.o 
-  000030d8 00000d 000030d8 000151e8  4 @20726 	st_slipspace.o 
-  000030e8 000014 000030e8 000151f8  4 @20764 	st_slipspace.o 
-  000030fc 000012 000030fc 0001520c  4 @20784 	st_slipspace.o 
-  00003110 00000b 00003110 00015220  4 @20810 	st_slipspace.o 
-  0000311c 00000d 0000311c 0001522c  4 @20828 	st_slipspace.o 
-  00003130 000008 00003130 00015240  8 @20850 	st_slipspace.o 
-  00003138 000014 00003138 00015248  4 @20885 	st_slipspace.o 
-  0000314c 00000e 0000314c 0001525c  4 @20906 	st_slipspace.o 
-  0000315c 000009 0000315c 0001526c  4 @20925 	st_slipspace.o 
-  00003168 000018 00003168 00015278  8 @20949 	st_slipspace.o 
-  00003180 000009 00003180 00015290  4 @20969 	st_slipspace.o 
-  0000318c 00000b 0000318c 0001529c  4 @20987 	st_slipspace.o 
-  00003198 00000b 00003198 000152a8  4 @21023 	st_slipspace.o 
-  000031a4 000015 000031a4 000152b4  4 @21059 	st_slipspace.o 
-  000031bc 000013 000031bc 000152cc  4 @21095 	st_slipspace.o 
-  000031d0 00000c 000031d0 000152e0  4 @21130 	st_slipspace.o 
-  000031dc 00000b 000031dc 000152ec  4 @21165 	st_slipspace.o 
-  000031e8 000009 000031e8 000152f8  4 @21199 	st_slipspace.o 
-  000031f4 000007 000031f4 00015304  4 @21200 	st_slipspace.o 
-  000031fc 00000d 000031fc 0001530c  4 @21384 	st_slipspace.o 
-  00003210 000030 00003210 00015320  8 @21386 	st_slipspace.o 
-  00003240 000024 00003240 00015350  4 @22294 	st_slipspace.o 
-  00003264 00002b 00003264 00015374  4 @22843 	st_slipspace.o 
-  00003290 000014 00003290 000153a0  4 @22844 	st_slipspace.o 
-  000032a8 000008 000032a8 000153b8  8 __RTTI__44soEventUnitWrapper<22ftOutsideEventObserver> 	st_slipspace.o 
-  000032b0 0002e4 000032b0 000153c0  4 __vt__11stSlipspace 	st_slipspace.o 
-  00003594 00000c 00003594 000156a4  4 @22845 	st_slipspace.o 
-  000035a0 000034 000035a0 000156b0  4 @22846 	st_slipspace.o 
-  000035d8 000008 000035d8 000156e8  8 __RTTI__11stSlipspace 	st_slipspace.o 
-  000035e0 000017 000035e0 000156f0  4 @22847 	st_slipspace.o 
-  000035f8 00000c 000035f8 00015708  4 @22848 	st_slipspace.o 
-  00003608 000008 00003608 00015718  8 __RTTI__22ftOutsideEventObserver 	st_slipspace.o 
-  00003610 00000c 00003610 00015720  4 __vt__41soEventObserver<22ftOutsideEventObserver> 	st_slipspace.o 
-  00003620 000028 00003620 00015730  8 @22849 	st_slipspace.o 
-  00003648 000008 00003648 00015758  8 __RTTI__41soEventObserver<22ftOutsideEventObserver> 	st_slipspace.o 
-  00003650 000008 00003650 00015760  8 @22850 	st_slipspace.o 
-  00003658 00001c 00003658 00015768  4 @22851 	st_slipspace.o 
-  00003678 000008 00003678 00015788  8 __RTTI__7stMelee 	st_slipspace.o 
-  00003680 000010 00003680 00015790  8 @22852 	st_slipspace.o 
-  00003690 000014 00003690 000157a0  4 @22853 	st_slipspace.o 
-  000036a8 000008 000036a8 000157b8  8 __RTTI__15stCommonGimmick 	st_slipspace.o 
-  000036b0 000006 000036b0 000157c0  4 @22854 	st_slipspace.o 
-  000036b8 00000c 000036b8 000157c8  4 @22855 	st_slipspace.o 
-  000036c8 000008 000036c8 000157d8  8 __RTTI__5Stage 	st_slipspace.o 
-  000036d0 00000c 000036d0 000157e0  4 @22856 	st_slipspace.o 
-  000036dc 00000c 000036dc 000157ec  4 @22857 	st_slipspace.o 
-  000036e8 000008 000036e8 000157f8  8 __RTTI__11soEventUnit 	st_slipspace.o 
-  000036f0 000014 000036f0 00015800  4 @22858 	st_slipspace.o 
-  00003708 000008 00003708 00015818  8 __RTTI__19soNullableInterface 	st_slipspace.o 
-  00003710 000007 00003710 00015820  4 @22859 	st_slipspace.o 
-  00003720 000014 00003720 00015830  4 __vt__33stClassInfoImpl<56,11stSlipspace> 	st_slipspace.o 
-  00003734 000021 00003734 00015844  4 @23211 	st_slipspace.o 
-  00003758 00000c 00003758 00015868  4 @23212 	st_slipspace.o 
-  00003768 000008 00003768 00015878  8 __RTTI__33stClassInfoImpl<56,11stSlipspace> 	st_slipspace.o 
-  00003770 00000c 00003770 00015880  4 @23213 	st_slipspace.o 
-  00003780 000008 00003780 00015890  8 __RTTI__11stClassInfo 	st_slipspace.o 
-  00003788 00000c 00003788 00015898  4 @STRING@__ct__11stSlipspaceFv 	st_slipspace.o 
+  00000000 000030 00000000 00012120  1 .data 	gr_adventure_background.o 
+  00000000 000010 00000000 00012120  8 __vt__21grAdventureBackGround 	gr_adventure_background.o 
+  00000010 000016 00000010 00012130  4 @2267 	gr_adventure_background.o 
+  00000028 000008 00000028 00012148  8 __RTTI__21grAdventureBackGround 	gr_adventure_background.o 
+  00000030 000220 00000030 00012150  1 .data 	gr_adventure2.o 
+  00000030 000000 00000030 00012150    ...data.0 (entry of .data) 	gr_adventure2.o 
+  00000030 000007 00000030 00012150  4 @10235 	gr_adventure2.o 
+  00000038 000007 00000038 00012158  4 @10237 	gr_adventure2.o 
+  00000040 000007 00000040 00012160  4 @10238 	gr_adventure2.o 
+  00000048 000007 00000048 00012168  4 @10239 	gr_adventure2.o 
+  00000050 000170 00000050 00012170  8 __vt__12grAdventure2 	gr_adventure2.o 
+  000001c0 00000d 000001c0 000122e0  4 @10246 	gr_adventure2.o 
+  000001d0 00001c 000001d0 000122f0  4 @10247 	gr_adventure2.o 
+  000001f0 000008 000001f0 00012310  8 __RTTI__12grAdventure2 	gr_adventure2.o 
+  000001f8 00000a 000001f8 00012318  4 @10248 	gr_adventure2.o 
+  00000204 000014 00000204 00012324  4 @10249 	gr_adventure2.o 
+  00000218 000008 00000218 00012338  8 __RTTI__9grGimmick 	gr_adventure2.o 
+  00000220 000007 00000220 00012340  4 @10250 	gr_adventure2.o 
+  00000228 00000c 00000228 00012348  4 @10251 	gr_adventure2.o 
+  00000238 000008 00000238 00012358  8 __RTTI__6Ground 	gr_adventure2.o 
+  00000240 000007 00000240 00012360  4 @10252 	gr_adventure2.o 
+  00000248 000008 00000248 00012368  8 __RTTI__6gfTask 	gr_adventure2.o 
+  00000250 000370 00000250 00012370  1 .data 	gr_area.o 
+  00000250 000000 00000250 00012370    ...data.0 (entry of .data) 	gr_area.o 
+  00000250 000009 00000250 00012370  4 @15132 	gr_area.o 
+  00000260 000008 00000260 00012380  8 @15133 	gr_area.o 
+  00000268 00000d 00000268 00012388  4 @15134 	gr_area.o 
+  00000278 000008 00000278 00012398  8 @15135 	gr_area.o 
+  00000280 000009 00000280 000123a0  4 @15156 	gr_area.o 
+  0000028c 00000e 0000028c 000123ac  4 @15157 	gr_area.o 
+  0000029c 0001d4 0000029c 000123bc  4 __vt__6grArea 	gr_area.o 
+  00000470 000007 00000470 00012590  4 @15268 	gr_area.o 
+  00000478 000034 00000478 00012598  4 @15269 	gr_area.o 
+  000004b0 000008 000004b0 000125d0  8 __RTTI__6grArea 	gr_area.o 
+  000004b8 000009 000004b8 000125d8  4 @15270 	gr_area.o 
+  000004c4 00002c 000004c4 000125e4  4 @15271 	gr_area.o 
+  000004f0 000008 000004f0 00012610  8 __RTTI__8grMadein 	gr_area.o 
+  000004f8 00000e 000004f8 00012618  4 @15272 	gr_area.o 
+  00000508 000024 00000508 00012628  4 @15273 	gr_area.o 
+  00000530 000008 00000530 00012650  8 __RTTI__13grSeqYakumono 	gr_area.o 
+  00000538 00000b 00000538 00012658  4 @15274 	gr_area.o 
+  00000544 00001c 00000544 00012664  4 @15275 	gr_area.o 
+  00000560 000008 00000560 00012680  8 __RTTI__10grYakumono 	gr_area.o 
+  00000568 00000a 00000568 00012688  4 @15276 	gr_area.o 
+  00000574 000014 00000574 00012694  4 @15277 	gr_area.o 
+  00000590 000007 00000590 000126b0  4 @15278 	gr_area.o 
+  00000598 00000c 00000598 000126b8  4 @15279 	gr_area.o 
+  000005b0 000007 000005b0 000126d0  4 @15280 	gr_area.o 
+  000005c0 0002f0 000005c0 000126e0  1 .data 	gr_barrel_cannon.o 
+  000005c0 000000 000005c0 000126e0    ...data.0 (entry of .data) 	gr_barrel_cannon.o 
+  000005c0 000009 000005c0 000126e0  4 @14956 	gr_barrel_cannon.o 
+  000005cc 00000b 000005cc 000126ec  4 @14959 	gr_barrel_cannon.o 
+  000005d8 00000f 000005d8 000126f8  4 @14960 	gr_barrel_cannon.o 
+  000005e8 00000d 000005e8 00012708  4 @14990 	gr_barrel_cannon.o 
+  000005f8 000014 000005f8 00012718  4 @14991 	gr_barrel_cannon.o 
+  00000610 0001d0 00000610 00012730  8 __vt__23grAdventureBarrelCannon 	gr_barrel_cannon.o 
+  000007e0 000018 000007e0 00012900  8 @15378 	gr_barrel_cannon.o 
+  000007f8 000024 000007f8 00012918  4 @15379 	gr_barrel_cannon.o 
+  00000820 000008 00000820 00012940  8 __RTTI__23grAdventureBarrelCannon 	gr_barrel_cannon.o 
+  00000828 00000b 00000828 00012948  4 @15380 	gr_barrel_cannon.o 
+  00000834 00001c 00000834 00012954  4 @15381 	gr_barrel_cannon.o 
+  00000858 00000a 00000858 00012978  4 @15382 	gr_barrel_cannon.o 
+  00000864 000014 00000864 00012984  4 @15383 	gr_barrel_cannon.o 
+  00000880 000007 00000880 000129a0  4 @15384 	gr_barrel_cannon.o 
+  00000888 00000c 00000888 000129a8  4 @15385 	gr_barrel_cannon.o 
+  000008a0 000007 000008a0 000129c0  4 @15386 	gr_barrel_cannon.o 
+  000008b0 0002bb 000008b0 000129d0  1 .data 	gr_catapult.o 
+  000008b0 000009 000008b0 000129d0  4 @10312 	gr_catapult.o 
+  000008c0 0001c8 000008c0 000129e0  8 __vt__10grCatapult 	gr_catapult.o 
+  00000a88 00000b 00000a88 00012ba8  4 @10344 	gr_catapult.o 
+  00000a94 00002c 00000a94 00012bb4  4 @10345 	gr_catapult.o 
+  00000ac0 000008 00000ac0 00012be0  8 __RTTI__10grCatapult 	gr_catapult.o 
+  00000ac8 000012 00000ac8 00012be8  4 @10346 	gr_catapult.o 
+  00000adc 000024 00000adc 00012bfc  4 @10347 	gr_catapult.o 
+  00000b00 000008 00000b00 00012c20  8 __RTTI__17grGimmickCatapult 	gr_catapult.o 
+  00000b08 00000b 00000b08 00012c28  4 @10348 	gr_catapult.o 
+  00000b14 00001c 00000b14 00012c34  4 @10349 	gr_catapult.o 
+  00000b30 00000a 00000b30 00012c50  4 @10350 	gr_catapult.o 
+  00000b3c 000014 00000b3c 00012c5c  4 @10351 	gr_catapult.o 
+  00000b50 000007 00000b50 00012c70  4 @10352 	gr_catapult.o 
+  00000b58 00000c 00000b58 00012c78  4 @10353 	gr_catapult.o 
+  00000b64 000007 00000b64 00012c84  4 @10354 	gr_catapult.o 
+  00000b6b 000005 00000b70 00012c90  8 *fill*
+  00000b70 0002ff 00000b70 00012c90  1 .data 	gr_elevator.o 
+  00000b70 000001 00000b70 00012c90  4 @14300 	gr_elevator.o 
+  00000b78 0001d8 00000b78 00012c98  8 __vt__19grAdventureElevator 	gr_elevator.o 
+  00000d50 000014 00000d50 00012e70  4 @14469 	gr_elevator.o 
+  00000d64 000034 00000d64 00012e84  4 @14470 	gr_elevator.o 
+  00000d98 000008 00000d98 00012eb8  8 __RTTI__19grAdventureElevator 	gr_elevator.o 
+  00000da0 000009 00000da0 00012ec0  4 @14471 	gr_elevator.o 
+  00000dac 00002c 00000dac 00012ecc  4 @14472 	gr_elevator.o 
+  00000dd8 00000e 00000dd8 00012ef8  4 @14473 	gr_elevator.o 
+  00000de8 000024 00000de8 00012f08  4 @14474 	gr_elevator.o 
+  00000e0c 00000b 00000e0c 00012f2c  4 @14475 	gr_elevator.o 
+  00000e18 00001c 00000e18 00012f38  4 @14476 	gr_elevator.o 
+  00000e34 00000a 00000e34 00012f54  4 @14477 	gr_elevator.o 
+  00000e40 000014 00000e40 00012f60  4 @14478 	gr_elevator.o 
+  00000e54 000007 00000e54 00012f74  4 @14479 	gr_elevator.o 
+  00000e5c 00000c 00000e5c 00012f7c  4 @14480 	gr_elevator.o 
+  00000e68 000007 00000e68 00012f88  4 @14481 	gr_elevator.o 
+  00000e6f 000001 00000e70 00012f90  8 *fill*
+  00000e70 000263 00000e70 00012f90  1 .data 	gr_final.o 
+  00000e70 0001c8 00000e70 00012f90  8 __vt__7grFinal 	gr_final.o 
+  00001038 000008 00001038 00013158  8 @10168 	gr_final.o 
+  00001040 000024 00001040 00013160  4 @10169 	gr_final.o 
+  00001068 000008 00001068 00013188  8 __RTTI__7grFinal 	gr_final.o 
+  00001070 00000b 00001070 00013190  4 @10170 	gr_final.o 
+  0000107c 00001c 0000107c 0001319c  4 @10171 	gr_final.o 
+  00001098 00000a 00001098 000131b8  4 @10172 	gr_final.o 
+  000010a4 000014 000010a4 000131c4  4 @10173 	gr_final.o 
+  000010b8 000007 000010b8 000131d8  4 @10174 	gr_final.o 
+  000010c0 00000c 000010c0 000131e0  4 @10175 	gr_final.o 
+  000010cc 000007 000010cc 000131ec  4 @10176 	gr_final.o 
+  000010d3 000005 000010d8 000131f8  8 *fill*
+  000010d8 0003f3 000010d8 000131f8  1 .data 	gr_item.o 
+  000010d8 000180 000010d8 000131f8  8 __vt__6grItem 	gr_item.o 
+  00001258 000007 00001258 00013378  4 @11009 	gr_item.o 
+  00001260 00002c 00001260 00013380  4 @11010 	gr_item.o 
+  00001290 000008 00001290 000133b0  8 __RTTI__6grItem 	gr_item.o 
+  00001298 000180 00001298 000133b8  8 __vt__12grMotionPath 	gr_item.o 
+  00001418 00000d 00001418 00013538  4 @11011 	gr_item.o 
+  00001428 000024 00001428 00013548  4 @11012 	gr_item.o 
+  00001450 000008 00001450 00013570  8 __RTTI__12grMotionPath 	gr_item.o 
+  00001458 000014 00001458 00013578  4 @11013 	gr_item.o 
+  0000146c 00001c 0000146c 0001358c  4 @11014 	gr_item.o 
+  00001488 000008 00001488 000135a8  8 __RTTI__19grGimmickMotionPath 	gr_item.o 
+  00001490 00000a 00001490 000135b0  4 @11015 	gr_item.o 
+  0000149c 000014 0000149c 000135bc  4 @11016 	gr_item.o 
+  000014b0 000007 000014b0 000135d0  4 @11017 	gr_item.o 
+  000014b8 00000c 000014b8 000135d8  4 @11018 	gr_item.o 
+  000014c4 000007 000014c4 000135e4  4 @11019 	gr_item.o 
+  000014cb 000005 000014d0 000135f0  8 *fill*
+  000014d0 0002d3 000014d0 000135f0  1 .data 	gr_ladder.o 
+  000014d0 000009 000014d0 000135f0  4 @14148 	gr_ladder.o 
+  000014dc 000009 000014dc 000135fc  4 @14162 	gr_ladder.o 
+  000014e8 0001d8 000014e8 00013608  8 __vt__8grLadder 	gr_ladder.o 
+  000016c0 000009 000016c0 000137e0  4 @14185 	gr_ladder.o 
+  000016cc 00002c 000016cc 000137ec  4 @14186 	gr_ladder.o 
+  000016f8 000008 000016f8 00013818  8 __RTTI__8grLadder 	gr_ladder.o 
+  00001700 000010 00001700 00013820  8 @14187 	gr_ladder.o 
+  00001710 000024 00001710 00013830  4 @14188 	gr_ladder.o 
+  00001738 000008 00001738 00013858  8 __RTTI__15grGimmickLadder 	gr_ladder.o 
+  00001740 00000b 00001740 00013860  4 @14189 	gr_ladder.o 
+  0000174c 00001c 0000174c 0001386c  4 @14190 	gr_ladder.o 
+  00001768 00000a 00001768 00013888  4 @14191 	gr_ladder.o 
+  00001774 000014 00001774 00013894  4 @14192 	gr_ladder.o 
+  00001788 000007 00001788 000138a8  4 @14193 	gr_ladder.o 
+  00001790 00000c 00001790 000138b0  4 @14194 	gr_ladder.o 
+  0000179c 000007 0000179c 000138bc  4 @14195 	gr_ladder.o 
+  000017a3 000005 000017a8 000138c8  8 *fill*
+  000017a8 00009f 000017a8 000138c8  1 .data 	gr_motion_path.o 
+  000017a8 00000d 000017a8 000138c8  4 @10185 	gr_motion_path.o 
+  000017b8 000024 000017b8 000138d8  4 @10186 	gr_motion_path.o 
+  000017dc 000014 000017dc 000138fc  4 @10187 	gr_motion_path.o 
+  000017f0 00001c 000017f0 00013910  4 @10188 	gr_motion_path.o 
+  0000180c 00000a 0000180c 0001392c  4 @10189 	gr_motion_path.o 
+  00001818 000014 00001818 00013938  4 @10190 	gr_motion_path.o 
+  0000182c 000007 0000182c 0001394c  4 @10191 	gr_motion_path.o 
+  00001834 00000c 00001834 00013954  4 @10192 	gr_motion_path.o 
+  00001840 000007 00001840 00013960  4 @10193 	gr_motion_path.o 
+  00001847 000001 00001848 00013968  8 *fill*
+  00001848 0003d8 00001848 00013968  1 .data 	gr_platform.o 
+  00001848 000000 00001848 00013968    ...data.0 (entry of .data) 	gr_platform.o 
+  00001848 000011 00001848 00013968  4 @11317 	gr_platform.o 
+  00001860 000008 00001860 00013980  8 @11318 	gr_platform.o 
+  00001868 00000d 00001868 00013988  4 @11319 	gr_platform.o 
+  00001878 000008 00001878 00013998  8 @11320 	gr_platform.o 
+  00001880 000009 00001880 000139a0  4 @11322 	gr_platform.o 
+  0000188c 00000e 0000188c 000139ac  4 @11366 	gr_platform.o 
+  0000189c 000009 0000189c 000139bc  4 @11367 	gr_platform.o 
+  000018a8 000009 000018a8 000139c8  4 @11368 	gr_platform.o 
+  000018b8 000010 000018b8 000139d8  8 @11503 	gr_platform.o 
+  000018c8 00000e 000018c8 000139e8  4 @11504 	gr_platform.o 
+  000018d8 000007 000018d8 000139f8  4 @11573 	gr_platform.o 
+  000018e0 000007 000018e0 00013a00  4 @11574 	gr_platform.o 
+  000018e8 0001e8 000018e8 00013a08  8 __vt__10grPlatform 	gr_platform.o 
+  00001ad0 00000b 00001ad0 00013bf0  4 @11662 	gr_platform.o 
+  00001adc 000034 00001adc 00013bfc  4 @11663 	gr_platform.o 
+  00001b10 000008 00001b10 00013c30  8 __RTTI__10grPlatform 	gr_platform.o 
+  00001b18 000009 00001b18 00013c38  4 @11664 	gr_platform.o 
+  00001b24 00002c 00001b24 00013c44  4 @11665 	gr_platform.o 
+  00001b58 00000e 00001b58 00013c78  4 @11666 	gr_platform.o 
+  00001b68 000024 00001b68 00013c88  4 @11667 	gr_platform.o 
+  00001b98 00000b 00001b98 00013cb8  4 @11668 	gr_platform.o 
+  00001ba4 00001c 00001ba4 00013cc4  4 @11669 	gr_platform.o 
+  00001bc8 00000a 00001bc8 00013ce8  4 @11670 	gr_platform.o 
+  00001bd4 000014 00001bd4 00013cf4  4 @11671 	gr_platform.o 
+  00001bf0 000007 00001bf0 00013d10  4 @11672 	gr_platform.o 
+  00001bf8 00000c 00001bf8 00013d18  4 @11673 	gr_platform.o 
+  00001c10 000007 00001c10 00013d30  4 @11674 	gr_platform.o 
+  00001c20 0002eb 00001c20 00013d40  1 .data 	gr_punch_slider.o 
+  00001c20 000008 00001c20 00013d40  8 @10337 	gr_punch_slider.o 
+  00001c28 00000d 00001c28 00013d48  4 @10362 	gr_punch_slider.o 
+  00001c38 000009 00001c38 00013d58  4 @10363 	gr_punch_slider.o 
+  00001c44 0001d4 00001c44 00013d64  4 __vt__13grPunchSlider 	gr_punch_slider.o 
+  00001e18 00000e 00001e18 00013f38  4 @10395 	gr_punch_slider.o 
+  00001e28 00002c 00001e28 00013f48  4 @10396 	gr_punch_slider.o 
+  00001e58 000008 00001e58 00013f78  8 __RTTI__13grPunchSlider 	gr_punch_slider.o 
+  00001e60 000016 00001e60 00013f80  4 @10397 	gr_punch_slider.o 
+  00001e78 000024 00001e78 00013f98  4 @10398 	gr_punch_slider.o 
+  00001ea0 000008 00001ea0 00013fc0  8 __RTTI__21grYakumonoPunchSlider 	gr_punch_slider.o 
+  00001ea8 00000b 00001ea8 00013fc8  4 @10399 	gr_punch_slider.o 
+  00001eb4 00001c 00001eb4 00013fd4  4 @10400 	gr_punch_slider.o 
+  00001ed0 00000a 00001ed0 00013ff0  4 @10401 	gr_punch_slider.o 
+  00001edc 000014 00001edc 00013ffc  4 @10402 	gr_punch_slider.o 
+  00001ef0 000007 00001ef0 00014010  4 @10403 	gr_punch_slider.o 
+  00001ef8 00000c 00001ef8 00014018  4 @10404 	gr_punch_slider.o 
+  00001f04 000007 00001f04 00014024  4 @10405 	gr_punch_slider.o 
+  00001f0b 000005 00001f10 00014030  8 *fill*
+  00001f10 0002e3 00001f10 00014030  1 .data 	gr_spring.o 
+  00001f10 000009 00001f10 00014030  4 @14141 	gr_spring.o 
+  00001f1c 00000e 00001f1c 0001403c  4 @14189 	gr_spring.o 
+  00001f2c 000009 00001f2c 0001404c  4 @14190 	gr_spring.o 
+  00001f38 0001d8 00001f38 00014058  8 __vt__8grSpring 	gr_spring.o 
+  00002110 000009 00002110 00014230  4 @14225 	gr_spring.o 
+  0000211c 00002c 0000211c 0001423c  4 @14226 	gr_spring.o 
+  00002148 000008 00002148 00014268  8 __RTTI__8grSpring 	gr_spring.o 
+  00002150 000010 00002150 00014270  8 @14227 	gr_spring.o 
+  00002160 000024 00002160 00014280  4 @14228 	gr_spring.o 
+  00002188 000008 00002188 000142a8  8 __RTTI__15grGimmickSpring 	gr_spring.o 
+  00002190 00000b 00002190 000142b0  4 @14229 	gr_spring.o 
+  0000219c 00001c 0000219c 000142bc  4 @14230 	gr_spring.o 
+  000021b8 00000a 000021b8 000142d8  4 @14231 	gr_spring.o 
+  000021c4 000014 000021c4 000142e4  4 @14232 	gr_spring.o 
+  000021d8 000007 000021d8 000142f8  4 @14233 	gr_spring.o 
+  000021e0 00000c 000021e0 00014300  4 @14234 	gr_spring.o 
+  000021ec 000007 000021ec 0001430c  4 @14235 	gr_spring.o 
+  000021f3 000005 000021f8 00014318  8 *fill*
+  000021f8 000307 000021f8 00014318  1 .data 	gr_targetsmash_disk.o 
+  000021f8 000009 000021f8 00014318  4 @10889 	gr_targetsmash_disk.o 
+  00002204 00000e 00002204 00014324  4 @10929 	gr_targetsmash_disk.o 
+  00002214 0001cc 00002214 00014334  4 __vt__17grTargetSmashDisk 	gr_targetsmash_disk.o 
+  000023e0 000012 000023e0 00014500  4 @10953 	gr_targetsmash_disk.o 
+  000023f4 000034 000023f4 00014514  4 @10954 	gr_targetsmash_disk.o 
+  00002428 000008 00002428 00014548  8 __RTTI__17grTargetSmashDisk 	gr_targetsmash_disk.o 
+  00002430 000009 00002430 00014550  4 @10955 	gr_targetsmash_disk.o 
+  0000243c 00002c 0000243c 0001455c  4 @10956 	gr_targetsmash_disk.o 
+  00002468 00000e 00002468 00014588  4 @10957 	gr_targetsmash_disk.o 
+  00002478 000024 00002478 00014598  4 @10958 	gr_targetsmash_disk.o 
+  0000249c 00000b 0000249c 000145bc  4 @10959 	gr_targetsmash_disk.o 
+  000024a8 00001c 000024a8 000145c8  4 @10960 	gr_targetsmash_disk.o 
+  000024c4 00000a 000024c4 000145e4  4 @10961 	gr_targetsmash_disk.o 
+  000024d0 000014 000024d0 000145f0  4 @10962 	gr_targetsmash_disk.o 
+  000024e4 000007 000024e4 00014604  4 @10963 	gr_targetsmash_disk.o 
+  000024ec 00000c 000024ec 0001460c  4 @10964 	gr_targetsmash_disk.o 
+  000024f8 000007 000024f8 00014618  4 @10965 	gr_targetsmash_disk.o 
+  000024ff 000001 00002500 00014620  8 *fill*
+  00002500 000370 00002500 00014620  1 .data 	gr_targetsmash_target.o 
+  00002500 000000 00002500 00014620    ...data.0 (entry of .data) 	gr_targetsmash_target.o 
+  00002500 000009 00002500 00014620  4 @10958 	gr_targetsmash_target.o 
+  00002510 000008 00002510 00014630  8 @10959 	gr_targetsmash_target.o 
+  00002518 00000d 00002518 00014638  4 @10960 	gr_targetsmash_target.o 
+  00002528 000008 00002528 00014648  8 @10961 	gr_targetsmash_target.o 
+  00002530 00000e 00002530 00014650  4 @10977 	gr_targetsmash_target.o 
+  00002540 0001d8 00002540 00014660  8 __vt__19grTargetSmashTarget 	gr_targetsmash_target.o 
+  00002718 000014 00002718 00014838  4 @11081 	gr_targetsmash_target.o 
+  0000272c 000034 0000272c 0001484c  4 @11082 	gr_targetsmash_target.o 
+  00002760 000008 00002760 00014880  8 __RTTI__19grTargetSmashTarget 	gr_targetsmash_target.o 
+  00002768 000009 00002768 00014888  4 @11083 	gr_targetsmash_target.o 
+  00002774 00002c 00002774 00014894  4 @11084 	gr_targetsmash_target.o 
+  000027a8 00000e 000027a8 000148c8  4 @11085 	gr_targetsmash_target.o 
+  000027b8 000024 000027b8 000148d8  4 @11086 	gr_targetsmash_target.o 
+  000027e8 00000b 000027e8 00014908  4 @11087 	gr_targetsmash_target.o 
+  000027f4 00001c 000027f4 00014914  4 @11088 	gr_targetsmash_target.o 
+  00002818 00000a 00002818 00014938  4 @11089 	gr_targetsmash_target.o 
+  00002824 000014 00002824 00014944  4 @11090 	gr_targetsmash_target.o 
+  00002840 000007 00002840 00014960  4 @11091 	gr_targetsmash_target.o 
+  00002848 00000c 00002848 00014968  4 @11092 	gr_targetsmash_target.o 
+  00002860 000007 00002860 00014980  4 @11093 	gr_targetsmash_target.o 
+  00002870 0002e7 00002870 00014990  1 .data 	gr_tour_object.o 
+  00002870 0001c8 00002870 00014990  8 __vt__12grTourObject 	gr_tour_object.o 
+  00002a38 00000d 00002a38 00014b58  4 @10990 	gr_tour_object.o 
+  00002a48 000034 00002a48 00014b68  4 @10991 	gr_tour_object.o 
+  00002a80 000008 00002a80 00014ba0  8 __RTTI__12grTourObject 	gr_tour_object.o 
+  00002a88 000009 00002a88 00014ba8  4 @10992 	gr_tour_object.o 
+  00002a94 00002c 00002a94 00014bb4  4 @10993 	gr_tour_object.o 
+  00002ac0 00000e 00002ac0 00014be0  4 @10994 	gr_tour_object.o 
+  00002ad0 000024 00002ad0 00014bf0  4 @10995 	gr_tour_object.o 
+  00002af4 00000b 00002af4 00014c14  4 @10996 	gr_tour_object.o 
+  00002b00 00001c 00002b00 00014c20  4 @10997 	gr_tour_object.o 
+  00002b1c 00000a 00002b1c 00014c3c  4 @10998 	gr_tour_object.o 
+  00002b28 000014 00002b28 00014c48  4 @10999 	gr_tour_object.o 
+  00002b3c 000007 00002b3c 00014c5c  4 @11000 	gr_tour_object.o 
+  00002b44 00000c 00002b44 00014c64  4 @11001 	gr_tour_object.o 
+  00002b50 000007 00002b50 00014c70  4 @11002 	gr_tour_object.o 
+  00002b57 000001 00002b58 00014c78  8 *fill*
+  00002b58 000303 00002b58 00014c78  1 .data 	gr_warpzone.o 
+  00002b58 000009 00002b58 00014c78  4 @10901 	gr_warpzone.o 
+  00002b64 00003c 00002b64 00014c84  4 @10978 	gr_warpzone.o 
+  00002ba0 0001d8 00002ba0 00014cc0  8 __vt__10grWarpZone 	gr_warpzone.o 
+  00002d78 00000b 00002d78 00014e98  4 @11022 	gr_warpzone.o 
+  00002d84 00002c 00002d84 00014ea4  4 @11023 	gr_warpzone.o 
+  00002db0 000008 00002db0 00014ed0  8 __RTTI__10grWarpZone 	gr_warpzone.o 
+  00002db8 000012 00002db8 00014ed8  4 @11024 	gr_warpzone.o 
+  00002dcc 000024 00002dcc 00014eec  4 @11025 	gr_warpzone.o 
+  00002df0 000008 00002df0 00014f10  8 __RTTI__17grGimmickWarpZone 	gr_warpzone.o 
+  00002df8 00000b 00002df8 00014f18  4 @11026 	gr_warpzone.o 
+  00002e04 00001c 00002e04 00014f24  4 @11027 	gr_warpzone.o 
+  00002e20 00000a 00002e20 00014f40  4 @11028 	gr_warpzone.o 
+  00002e2c 000014 00002e2c 00014f4c  4 @11029 	gr_warpzone.o 
+  00002e40 000007 00002e40 00014f60  4 @11030 	gr_warpzone.o 
+  00002e48 00000c 00002e48 00014f68  4 @11031 	gr_warpzone.o 
+  00002e54 000007 00002e54 00014f74  4 @11032 	gr_warpzone.o 
+  00002e5b 000005 00002e60 00014f80  8 *fill*
+  00002e60 000934 00002e60 00014f80  1 .data 	st_slipspace.o 
+  00002e60 000000 00002e60 00014f80    ...data.0 (entry of .data) 	st_slipspace.o 
+  00002e60 000004 00002e60 00014f80  4 KO_PLAYERINDEX 	st_slipspace.o 
+  00002e64 000004 00002e64 00014f84  4 DEATH_COIN_PERCENT 	st_slipspace.o 
+  00002e68 000004 00002e68 00014f88  4 DEATH_KO_PERCENT 	st_slipspace.o 
+  00002e6c 000004 00002e6c 00014f8c  4 _difficulty 	st_slipspace.o 
+  00002e70 000004 00002e70 00014f90  4 _lastUsedSpawnerIndex 	st_slipspace.o 
+  00002e74 000006 00002e74 00014f94  4 @18928 	st_slipspace.o 
+  00002e80 000008 00002e80 00014fa0  8 @18929 	st_slipspace.o 
+  00002e88 00000f 00002e88 00014fa8  4 @18930 	st_slipspace.o 
+  00002e98 00000d 00002e98 00014fb8  4 @18931 	st_slipspace.o 
+  00002ea8 000010 00002ea8 00014fc8  8 @18932 	st_slipspace.o 
+  00002eb8 00000d 00002eb8 00014fd8  4 @18933 	st_slipspace.o 
+  00002ec8 00000d 00002ec8 00014fe8  4 @18934 	st_slipspace.o 
+  00002ed8 000011 00002ed8 00014ff8  4 @18935 	st_slipspace.o 
+  00002eec 00000a 00002eec 0001500c  4 @18936 	st_slipspace.o 
+  00002ef8 00000a 00002ef8 00015018  4 @18937 	st_slipspace.o 
+  00002f04 00000e 00002f04 00015024  4 @18938 	st_slipspace.o 
+  00002f14 00000c 00002f14 00015034  4 @18939 	st_slipspace.o 
+  00002f20 000005 00002f20 00015040  4 @18941 	st_slipspace.o 
+  00002f28 000016 00002f28 00015048  4 @18942 	st_slipspace.o 
+  00002f40 000013 00002f40 00015060  4 @18943 	st_slipspace.o 
+  00002f54 00000d 00002f54 00015074  4 @18944 	st_slipspace.o 
+  00002f68 000010 00002f68 00015088  8 @18945 	st_slipspace.o 
+  00002f78 000014 00002f78 00015098  4 @18946 	st_slipspace.o 
+  00002f8c 00003a 00002f8c 000150ac  4 @18947 	st_slipspace.o 
+  00002fc8 000009 00002fc8 000150e8  4 @18948 	st_slipspace.o 
+  00002fd4 00000c 00002fd4 000150f4  4 @18949 	st_slipspace.o 
+  00002fe0 000004 00002fe0 00015100  4 @18950 	st_slipspace.o 
+  00002fe8 000010 00002fe8 00015108  8 @19043 	st_slipspace.o 
+  00002ff8 00000e 00002ff8 00015118  4 @19044 	st_slipspace.o 
+  00003008 000001 00003008 00015128  4 @20707 	st_slipspace.o 
+  0000300c 000014 0000300c 0001512c  4 @20708 	st_slipspace.o 
+  00003020 000008 00003020 00015140  8 @20709 	st_slipspace.o 
+  00003028 000006 00003028 00015148  4 @20710 	st_slipspace.o 
+  00003030 00000a 00003030 00015150  4 @20711 	st_slipspace.o 
+  00003040 000008 00003040 00015160  8 @20712 	st_slipspace.o 
+  00003048 000008 00003048 00015168  8 @20713 	st_slipspace.o 
+  00003050 000008 00003050 00015170  8 @20714 	st_slipspace.o 
+  00003058 000008 00003058 00015178  8 @20715 	st_slipspace.o 
+  00003060 00000a 00003060 00015180  4 @20716 	st_slipspace.o 
+  0000306c 000006 0000306c 0001518c  4 @20717 	st_slipspace.o 
+  00003074 000007 00003074 00015194  4 @20718 	st_slipspace.o 
+  0000307c 00000a 0000307c 0001519c  4 @20719 	st_slipspace.o 
+  00003088 000007 00003088 000151a8  4 @20720 	st_slipspace.o 
+  00003090 000006 00003090 000151b0  4 @20721 	st_slipspace.o 
+  00003098 00000b 00003098 000151b8  4 @20722 	st_slipspace.o 
+  000030a8 000010 000030a8 000151c8  8 @20723 	st_slipspace.o 
+  000030b8 00000d 000030b8 000151d8  4 @20724 	st_slipspace.o 
+  000030c8 000010 000030c8 000151e8  8 @20725 	st_slipspace.o 
+  000030d8 00000d 000030d8 000151f8  4 @20726 	st_slipspace.o 
+  000030e8 000014 000030e8 00015208  4 @20764 	st_slipspace.o 
+  000030fc 000012 000030fc 0001521c  4 @20784 	st_slipspace.o 
+  00003110 00000b 00003110 00015230  4 @20810 	st_slipspace.o 
+  0000311c 00000d 0000311c 0001523c  4 @20828 	st_slipspace.o 
+  00003130 000008 00003130 00015250  8 @20850 	st_slipspace.o 
+  00003138 000014 00003138 00015258  4 @20885 	st_slipspace.o 
+  0000314c 00000e 0000314c 0001526c  4 @20906 	st_slipspace.o 
+  0000315c 000009 0000315c 0001527c  4 @20925 	st_slipspace.o 
+  00003168 000018 00003168 00015288  8 @20949 	st_slipspace.o 
+  00003180 000009 00003180 000152a0  4 @20969 	st_slipspace.o 
+  0000318c 00000b 0000318c 000152ac  4 @20987 	st_slipspace.o 
+  00003198 00000b 00003198 000152b8  4 @21023 	st_slipspace.o 
+  000031a4 000015 000031a4 000152c4  4 @21059 	st_slipspace.o 
+  000031bc 000013 000031bc 000152dc  4 @21095 	st_slipspace.o 
+  000031d0 00000c 000031d0 000152f0  4 @21130 	st_slipspace.o 
+  000031dc 00000b 000031dc 000152fc  4 @21165 	st_slipspace.o 
+  000031e8 000009 000031e8 00015308  4 @21199 	st_slipspace.o 
+  000031f4 000007 000031f4 00015314  4 @21200 	st_slipspace.o 
+  000031fc 00000d 000031fc 0001531c  4 @21384 	st_slipspace.o 
+  00003210 000030 00003210 00015330  8 @21386 	st_slipspace.o 
+  00003240 000024 00003240 00015360  4 @22294 	st_slipspace.o 
+  00003264 00002b 00003264 00015384  4 @22849 	st_slipspace.o 
+  00003290 000014 00003290 000153b0  4 @22850 	st_slipspace.o 
+  000032a8 000008 000032a8 000153c8  8 __RTTI__44soEventUnitWrapper<22ftOutsideEventObserver> 	st_slipspace.o 
+  000032b0 0002e4 000032b0 000153d0  4 __vt__11stSlipspace 	st_slipspace.o 
+  00003594 00000c 00003594 000156b4  4 @22851 	st_slipspace.o 
+  000035a0 000034 000035a0 000156c0  4 @22852 	st_slipspace.o 
+  000035d8 000008 000035d8 000156f8  8 __RTTI__11stSlipspace 	st_slipspace.o 
+  000035e0 000017 000035e0 00015700  4 @22853 	st_slipspace.o 
+  000035f8 00000c 000035f8 00015718  4 @22854 	st_slipspace.o 
+  00003608 000008 00003608 00015728  8 __RTTI__22ftOutsideEventObserver 	st_slipspace.o 
+  00003610 00000c 00003610 00015730  4 __vt__41soEventObserver<22ftOutsideEventObserver> 	st_slipspace.o 
+  00003620 000028 00003620 00015740  8 @22855 	st_slipspace.o 
+  00003648 000008 00003648 00015768  8 __RTTI__41soEventObserver<22ftOutsideEventObserver> 	st_slipspace.o 
+  00003650 000008 00003650 00015770  8 @22856 	st_slipspace.o 
+  00003658 00001c 00003658 00015778  4 @22857 	st_slipspace.o 
+  00003678 000008 00003678 00015798  8 __RTTI__7stMelee 	st_slipspace.o 
+  00003680 000010 00003680 000157a0  8 @22858 	st_slipspace.o 
+  00003690 000014 00003690 000157b0  4 @22859 	st_slipspace.o 
+  000036a8 000008 000036a8 000157c8  8 __RTTI__15stCommonGimmick 	st_slipspace.o 
+  000036b0 000006 000036b0 000157d0  4 @22860 	st_slipspace.o 
+  000036b8 00000c 000036b8 000157d8  4 @22861 	st_slipspace.o 
+  000036c8 000008 000036c8 000157e8  8 __RTTI__5Stage 	st_slipspace.o 
+  000036d0 00000c 000036d0 000157f0  4 @22862 	st_slipspace.o 
+  000036dc 00000c 000036dc 000157fc  4 @22863 	st_slipspace.o 
+  000036e8 000008 000036e8 00015808  8 __RTTI__11soEventUnit 	st_slipspace.o 
+  000036f0 000014 000036f0 00015810  4 @22864 	st_slipspace.o 
+  00003708 000008 00003708 00015828  8 __RTTI__19soNullableInterface 	st_slipspace.o 
+  00003710 000007 00003710 00015830  4 @22865 	st_slipspace.o 
+  00003720 000014 00003720 00015840  4 __vt__33stClassInfoImpl<56,11stSlipspace> 	st_slipspace.o 
+  00003734 000021 00003734 00015854  4 @23217 	st_slipspace.o 
+  00003758 00000c 00003758 00015878  4 @23218 	st_slipspace.o 
+  00003768 000008 00003768 00015888  8 __RTTI__33stClassInfoImpl<56,11stSlipspace> 	st_slipspace.o 
+  00003770 00000c 00003770 00015890  4 @23219 	st_slipspace.o 
+  00003780 000008 00003780 000158a0  8 __RTTI__11stClassInfo 	st_slipspace.o 
+  00003788 00000c 00003788 000158a8  4 @STRING@__ct__11stSlipspaceFv 	st_slipspace.o 
 
 
 .bss section layout
   Starting        Virtual  File
   address  Size   address  offset
   ---------------------------------
-  00000000 0001e0 00000000 000158a8  1 .bss 	st_slipspace.o 
-  00000000 000000 00000000 000158a8    ...bss.0 (entry of .bss) 	st_slipspace.o 
-  00000000 00000c 00000000 000158a8  4 @16983 	st_slipspace.o 
-  0000000c 000004 0000000c 000158b4  4 classInfo 	st_slipspace.o 
-  00000010 000004 00000010 000158b8  4 _enemyCount 	st_slipspace.o 
-  00000014 000004 00000014 000158bc  4 _spawnerCount 	st_slipspace.o 
-  00000018 000004 00000018 000158c0  4 _spawnGroupCount 	st_slipspace.o 
-  0000001c 000004 0000001c 000158c4  4 _enemyTypeCount 	st_slipspace.o 
-  00000020 000004 00000020 000158c8  4 _maxFrequency 	st_slipspace.o 
-  00000024 000004 00000024 000158cc  4 _respawnPointCount 	st_slipspace.o 
-  00000028 000004 00000028 000158d0  4 _checkpointCount 	st_slipspace.o 
-  0000002c 000004 0000002c 000158d4  4 _lastCheckpoint 	st_slipspace.o 
-  00000030 000004 00000030 000158d8  4 _stagePositionTourObject 	st_slipspace.o 
-  00000034 000004 00000034 000158dc  4 _enemyOverride 	st_slipspace.o 
-  00000038 00000c 00000038 000158e0  4 @16984 	st_slipspace.o 
-  00000048 000010 00000048 000158f0  8 _spawnerGroups 	st_slipspace.o 
-  00000058 00000c 00000058 00015900  4 @16985 	st_slipspace.o 
-  00000068 000010 00000068 00015910  8 _spawners 	st_slipspace.o 
-  00000078 00000c 00000078 00015920  4 @16986 	st_slipspace.o 
-  00000088 000010 00000088 00015930  8 _spawnQueue 	st_slipspace.o 
-  00000098 00000c 00000098 00015940  4 @16987 	st_slipspace.o 
-  000000a8 000010 000000a8 00015950  8 _enemyTypes 	st_slipspace.o 
-  000000b8 00000c 000000b8 00015960  4 @16988 	st_slipspace.o 
-  000000c8 000010 000000c8 00015970  8 _enemyGroups 	st_slipspace.o 
-  000000d8 00000c 000000d8 00015980  4 @16989 	st_slipspace.o 
-  000000e8 000010 000000e8 00015990  8 _spawnedEnemyTypes 	st_slipspace.o 
-  000000f8 000004 000000f8 000159a0  4 _gameMode 	st_slipspace.o 
-  000000fc 00000c 000000fc 000159a4  4 @16990 	st_slipspace.o 
-  00000108 000010 00000108 000159b0  8 _respawnPoints 	st_slipspace.o 
-  00000118 00000c 00000118 000159c0  4 @16991 	st_slipspace.o 
-  00000128 000010 00000128 000159d0  8 _tourObjects 	st_slipspace.o 
-  00000138 00000c 00000138 000159e0  4 @16992 	st_slipspace.o 
-  00000148 000010 00000148 000159f0  8 _tourStates 	st_slipspace.o 
-  00000158 00000c 00000158 00015a00  4 @16993 	st_slipspace.o 
-  00000168 000010 00000168 00015a10  8 _enemyPacs 	st_slipspace.o 
-  00000178 000008 00000178 00015a20  8 _tour 	st_slipspace.o 
-  00000180 00000c 00000180 00015a28  4 @16994 	st_slipspace.o 
-  00000190 000010 00000190 00015a38  8 _loadedEnemyModules 	st_slipspace.o 
-  000001a0 000040 000001a0 00015a48  8 status$18969 	st_slipspace.o 
-  000001e0 000004 000001e0 00015a88  1 .bss 	global_destructor_chain.o 
-  000001e0 000004 000001e0 00015a88  4 __global_destructor_chain 	global_destructor_chain.o 
+  00000000 0001e0 00000000 000158b8  1 .bss 	st_slipspace.o 
+  00000000 000000 00000000 000158b8    ...bss.0 (entry of .bss) 	st_slipspace.o 
+  00000000 00000c 00000000 000158b8  4 @16983 	st_slipspace.o 
+  0000000c 000004 0000000c 000158c4  4 classInfo 	st_slipspace.o 
+  00000010 000004 00000010 000158c8  4 _enemyCount 	st_slipspace.o 
+  00000014 000004 00000014 000158cc  4 _spawnerCount 	st_slipspace.o 
+  00000018 000004 00000018 000158d0  4 _spawnGroupCount 	st_slipspace.o 
+  0000001c 000004 0000001c 000158d4  4 _enemyTypeCount 	st_slipspace.o 
+  00000020 000004 00000020 000158d8  4 _maxFrequency 	st_slipspace.o 
+  00000024 000004 00000024 000158dc  4 _respawnPointCount 	st_slipspace.o 
+  00000028 000004 00000028 000158e0  4 _checkpointCount 	st_slipspace.o 
+  0000002c 000004 0000002c 000158e4  4 _lastCheckpoint 	st_slipspace.o 
+  00000030 000004 00000030 000158e8  4 _stagePositionTourObject 	st_slipspace.o 
+  00000034 000004 00000034 000158ec  4 _enemyOverride 	st_slipspace.o 
+  00000038 00000c 00000038 000158f0  4 @16984 	st_slipspace.o 
+  00000048 000010 00000048 00015900  8 _spawnerGroups 	st_slipspace.o 
+  00000058 00000c 00000058 00015910  4 @16985 	st_slipspace.o 
+  00000068 000010 00000068 00015920  8 _spawners 	st_slipspace.o 
+  00000078 00000c 00000078 00015930  4 @16986 	st_slipspace.o 
+  00000088 000010 00000088 00015940  8 _spawnQueue 	st_slipspace.o 
+  00000098 00000c 00000098 00015950  4 @16987 	st_slipspace.o 
+  000000a8 000010 000000a8 00015960  8 _enemyTypes 	st_slipspace.o 
+  000000b8 00000c 000000b8 00015970  4 @16988 	st_slipspace.o 
+  000000c8 000010 000000c8 00015980  8 _enemyGroups 	st_slipspace.o 
+  000000d8 00000c 000000d8 00015990  4 @16989 	st_slipspace.o 
+  000000e8 000010 000000e8 000159a0  8 _spawnedEnemyTypes 	st_slipspace.o 
+  000000f8 000004 000000f8 000159b0  4 _gameMode 	st_slipspace.o 
+  000000fc 00000c 000000fc 000159b4  4 @16990 	st_slipspace.o 
+  00000108 000010 00000108 000159c0  8 _respawnPoints 	st_slipspace.o 
+  00000118 00000c 00000118 000159d0  4 @16991 	st_slipspace.o 
+  00000128 000010 00000128 000159e0  8 _tourObjects 	st_slipspace.o 
+  00000138 00000c 00000138 000159f0  4 @16992 	st_slipspace.o 
+  00000148 000010 00000148 00015a00  8 _tourStates 	st_slipspace.o 
+  00000158 00000c 00000158 00015a10  4 @16993 	st_slipspace.o 
+  00000168 000010 00000168 00015a20  8 _enemyPacs 	st_slipspace.o 
+  00000178 000008 00000178 00015a30  8 _tour 	st_slipspace.o 
+  00000180 00000c 00000180 00015a38  4 @16994 	st_slipspace.o 
+  00000190 000010 00000190 00015a48  8 _loadedEnemyModules 	st_slipspace.o 
+  000001a0 000040 000001a0 00015a58  8 status$18969 	st_slipspace.o 
+  000001e0 000004 000001e0 00015a98  1 .bss 	global_destructor_chain.o 
+  000001e0 000004 000001e0 00015a98  4 __global_destructor_chain 	global_destructor_chain.o 
 
 
 Memory map:
                        Starting Size     File
                        address           Offset
                  .init 00000000 00000000 00000040
-                 .text 00000000 00011e6c 00000040
-                .ctors 00000000 00000008 00011eac
-                .dtors 00000000 0000000c 00011eb4
-               .rodata 00000000 0000024c 00011ec0
-                 .data 00000000 00003794 00012110
-                  .bss 00000000 000001e4 000158a8
-      .PPC.EMB.apuinfo 00000000 00000000 000346c0
-                 .line          00000000 000158a8
+                 .text 00000000 00011e7c 00000040
+                .ctors 00000000 00000008 00011ebc
+                .dtors 00000000 0000000c 00011ec4
+               .rodata 00000000 0000024c 00011ed0
+                 .data 00000000 00003794 00012120
+                  .bss 00000000 000001e4 000158b8
+      .PPC.EMB.apuinfo 00000000 00000000 000346d0
+                 .line          00000000 000158b8
