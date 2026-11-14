@@ -1358,7 +1358,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(1002, 1, "Enemy__createInstance_11emSiralamos_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emKiller_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1017, 1, "Enemy__createInstance_7emRoada_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_6emSpar_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1018, 1, "Enemy__createInstance_6emSpar_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1012, 1, "Enemy__createInstance_6emMite_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1014, 1, "Enemy__createInstance_8emTeckin_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1000, 1, "Enemy__createInstance_8emTautau_")]
@@ -1420,7 +1420,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(1002, 1, "emResourceModuleImpl__ModifyExParam_16emSiralamosParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emKillerParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1017, 1, "emResourceModuleImpl__ModifyExParam_12emRoadaParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_11emSparParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1018, 1, "emResourceModuleImpl__ModifyExParam_11emSparParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1012, 1, "emResourceModuleImpl__ModifyExParam_11emMiteParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1014, 1, "emResourceModuleImpl__ModifyExParam_13emTeckinParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1000, 1, "emResourceModuleImpl__ModifyExParam_13emTautauParam_")]
@@ -1482,7 +1482,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Siralamos
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emKillerParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Roada
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_11emSparParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Spar
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Mite
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Teckin
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Tautau
