@@ -1352,7 +1352,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(1011, 1, "Enemy__createInstance_10emDeathpod_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emBoobas_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_12emDekakuribo_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emBotron_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1015, 1, "Enemy__createInstance_8emBotron_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_10emBucyulus_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1007, 1, "Enemy__createInstance_8emGyraan_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1002, 1, "Enemy__createInstance_11emSiralamos_")]
@@ -1414,7 +1414,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(1011, 1, "emResourceModuleImpl__ModifyExParam_15emDeathpodParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emBoobasParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_17emDekakuriboParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emBotronParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1015, 1, "emResourceModuleImpl__ModifyExParam_13emBotronParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_15emBucyulusParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1007, 1, "emResourceModuleImpl__ModifyExParam_13emGyraanParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1002, 1, "emResourceModuleImpl__ModifyExParam_16emSiralamosParam_")]
@@ -1476,7 +1476,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Deathpod
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emBoobasParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_17emDekakuriboParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emBotronParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Botron
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_15emBucyulusParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Gyraan
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Siralamos

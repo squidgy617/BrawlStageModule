@@ -44356,16 +44356,16 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CB30: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCataguardProc__HelmBullet")]
     /* 0002CB34: */    nop #li r5,0x8
     /* 0002CB38: */    nop #bl emWeaponManager__RegisterProcFnc
-    /* 0002CB3C: */    bl emWeaponManager__getInstance
-    /* 0002CB40: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBotronProc__IronIdol")]
-    /* 0002CB44: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBotronProc__IronIdol")]
-    /* 0002CB48: */    li r5,0x9
-    /* 0002CB4C: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CB50: */    bl emWeaponManager__getInstance
-    /* 0002CB54: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBotronProc__IronTouchGround")]
-    /* 0002CB58: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBotronProc__IronTouchGround")]
-    /* 0002CB5C: */    li r5,0xA
-    /* 0002CB60: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CB3C: */    nop #bl emWeaponManager__getInstance
+    /* 0002CB40: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBotronProc__IronIdol")]
+    /* 0002CB44: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBotronProc__IronIdol")]
+    /* 0002CB48: */    nop #li r5,0x9
+    /* 0002CB4C: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CB50: */    nop #bl emWeaponManager__getInstance
+    /* 0002CB54: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBotronProc__IronTouchGround")]
+    /* 0002CB58: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBotronProc__IronTouchGround")]
+    /* 0002CB5C: */    nop #li r5,0xA
+    /* 0002CB60: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CB64: */    bl emWeaponManager__getInstance
     /* 0002CB68: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemArmanProc__ArmEnter")]
     /* 0002CB6C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemArmanProc__ArmEnter")]
