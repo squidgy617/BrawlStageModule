@@ -1372,7 +1372,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(1003, 1, "Enemy__createInstance_6emJdus_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1001, 1, "Enemy__createInstance_10emBombhead_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "Enemy__createInstance_6emPrim_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emNgagog_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1013, 1, "Enemy__createInstance_8emNgagog_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_9emFaulong_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "Enemy__createInstance_6emPrim_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "Enemy__createInstance_6emPrim_")]
@@ -1434,7 +1434,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(1003, 1, "emResourceModuleImpl__ModifyExParam_11emJdusParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1001, 1, "emResourceModuleImpl__ModifyExParam_15emBombheadParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "emResourceModuleImpl__ModifyExParam_11emPrimParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emNgagogParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1013, 1, "emResourceModuleImpl__ModifyExParam_13emNgagogParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_14emFaulongParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "emResourceModuleImpl__ModifyExParam_11emPrimParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "emResourceModuleImpl__ModifyExParam_11emPrimParam_")]
@@ -1496,7 +1496,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Jdus
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Bombhead
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Prim
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emNgagogParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Ngagog
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_14emFaulongParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Prim
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Prim
