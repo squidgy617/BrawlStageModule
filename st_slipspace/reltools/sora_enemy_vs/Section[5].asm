@@ -1367,7 +1367,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(1005, 1, "Enemy__createInstance_7emFlows_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1006, 1, "Enemy__createInstance_8emKokkon_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "Enemy__createInstance_6emPrim_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emShelly_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1025, 1, "Enemy__createInstance_8emShelly_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_10emPatapata_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1003, 1, "Enemy__createInstance_6emJdus_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1001, 1, "Enemy__createInstance_10emBombhead_")]
@@ -1429,7 +1429,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(1005, 1, "emResourceModuleImpl__ModifyExParam_12emFlowsParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1006, 1, "emResourceModuleImpl__ModifyExParam_13emKokkonParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "emResourceModuleImpl__ModifyExParam_11emPrimParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emShellyParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1025, 1, "emResourceModuleImpl__ModifyExParam_13emShellyParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_15emPatapataParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1003, 1, "emResourceModuleImpl__ModifyExParam_11emJdusParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1001, 1, "emResourceModuleImpl__ModifyExParam_15emBombheadParam_")]
@@ -1491,7 +1491,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Flows
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Kokkon
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Prim
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emShellyParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Shelly
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_15emPatapataParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Jdus
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Bombhead
