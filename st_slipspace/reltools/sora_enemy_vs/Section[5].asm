@@ -1382,7 +1382,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_9emGhamgha_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1022, 1, "Enemy__createInstance_10emRobobeam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1023, 1, "Enemy__createInstance_14emRobodistance_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_12emRobohoming_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1024, 1, "Enemy__createInstance_12emRobohoming_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_11emRobopunch_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1010, 1, "Enemy__createInstance_11emCataguard_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_7emArman_")]
@@ -1444,7 +1444,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_14emGhamghaParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1022, 1, "emResourceModuleImpl__ModifyExParam_15emRobobeamParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1023, 1, "emResourceModuleImpl__ModifyExParam_19emRobodistanceParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_17emRobohomingParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1024, 1, "emResourceModuleImpl__ModifyExParam_17emRobohomingParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_16emRobopunchParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1010, 1, "emResourceModuleImpl__ModifyExParam_16emCataguardParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_12emArmanParam_")]
@@ -1506,7 +1506,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_14emGhamghaParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Robobeam
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Robodistance
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_17emRobohomingParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Robohoming
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_16emRobopunchParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Cataguard
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_12emArmanParam_")]

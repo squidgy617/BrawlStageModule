@@ -44386,21 +44386,21 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CBA8: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemArmanProc__ArmDead")]
     /* 0002CBAC: */    li r5,0xE
     /* 0002CBB0: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CBB4: */    bl emWeaponManager__getInstance
-    /* 0002CBB8: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRoboProc__MissileFly")]
-    /* 0002CBBC: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRoboProc__MissileFly")]
-    /* 0002CBC0: */    li r5,0x19
-    /* 0002CBC4: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CBC8: */    bl emWeaponManager__getInstance
-    /* 0002CBCC: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRoboProc__MissileBomb")]
-    /* 0002CBD0: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRoboProc__MissileBomb")]
-    /* 0002CBD4: */    li r5,0x1A
-    /* 0002CBD8: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CBDC: */    bl emWeaponManager__getInstance
-    /* 0002CBE0: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRoboProc__MissileErase")]
-    /* 0002CBE4: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRoboProc__MissileErase")]
-    /* 0002CBE8: */    li r5,0x1B
-    /* 0002CBEC: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CBB4: */    nop #bl emWeaponManager__getInstance
+    /* 0002CBB8: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRoboProc__MissileFly")]
+    /* 0002CBBC: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRoboProc__MissileFly")]
+    /* 0002CBC0: */    nop #li r5,0x19
+    /* 0002CBC4: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CBC8: */    nop #bl emWeaponManager__getInstance
+    /* 0002CBCC: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRoboProc__MissileBomb")]
+    /* 0002CBD0: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRoboProc__MissileBomb")]
+    /* 0002CBD4: */    nop #li r5,0x1A
+    /* 0002CBD8: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CBDC: */    nop #bl emWeaponManager__getInstance
+    /* 0002CBE0: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRoboProc__MissileErase")]
+    /* 0002CBE4: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRoboProc__MissileErase")]
+    /* 0002CBE8: */    nop #li r5,0x1B
+    /* 0002CBEC: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CBF0: */    bl emWeaponManager__getInstance
     /* 0002CBF4: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBosspackunProc__ArmEnter")]
     /* 0002CBF8: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBosspackunProc__ArmEnter")]
