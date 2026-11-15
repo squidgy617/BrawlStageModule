@@ -44366,26 +44366,26 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CB58: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBotronProc__IronTouchGround")]
     /* 0002CB5C: */    nop #li r5,0xA
     /* 0002CB60: */    nop #bl emWeaponManager__RegisterProcFnc
-    /* 0002CB64: */    bl emWeaponManager__getInstance
-    /* 0002CB68: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemArmanProc__ArmEnter")]
-    /* 0002CB6C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemArmanProc__ArmEnter")]
-    /* 0002CB70: */    li r5,0xB
-    /* 0002CB74: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CB78: */    bl emWeaponManager__getInstance
-    /* 0002CB7C: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemArmanProc__ArmExit")]
-    /* 0002CB80: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemArmanProc__ArmExit")]
-    /* 0002CB84: */    li r5,0xC
-    /* 0002CB88: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CB8C: */    bl emWeaponManager__getInstance
-    /* 0002CB90: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemArmanProc__ArmIdol")]
-    /* 0002CB94: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemArmanProc__ArmIdol")]
-    /* 0002CB98: */    li r5,0xD
-    /* 0002CB9C: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CBA0: */    bl emWeaponManager__getInstance
-    /* 0002CBA4: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemArmanProc__ArmDead")]
-    /* 0002CBA8: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemArmanProc__ArmDead")]
-    /* 0002CBAC: */    li r5,0xE
-    /* 0002CBB0: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CB64: */    nop #bl emWeaponManager__getInstance
+    /* 0002CB68: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemArmanProc__ArmEnter")]
+    /* 0002CB6C: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemArmanProc__ArmEnter")]
+    /* 0002CB70: */    nop #li r5,0xB
+    /* 0002CB74: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CB78: */    nop #bl emWeaponManager__getInstance
+    /* 0002CB7C: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemArmanProc__ArmExit")]
+    /* 0002CB80: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemArmanProc__ArmExit")]
+    /* 0002CB84: */    nop #li r5,0xC
+    /* 0002CB88: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CB8C: */    nop #bl emWeaponManager__getInstance
+    /* 0002CB90: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemArmanProc__ArmIdol")]
+    /* 0002CB94: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemArmanProc__ArmIdol")]
+    /* 0002CB98: */    nop #li r5,0xD
+    /* 0002CB9C: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CBA0: */    nop #bl emWeaponManager__getInstance
+    /* 0002CBA4: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemArmanProc__ArmDead")]
+    /* 0002CBA8: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemArmanProc__ArmDead")]
+    /* 0002CBAC: */    nop #li r5,0xE
+    /* 0002CBB0: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CBB4: */    nop #bl emWeaponManager__getInstance
     /* 0002CBB8: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRoboProc__MissileFly")]
     /* 0002CBBC: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRoboProc__MissileFly")]
