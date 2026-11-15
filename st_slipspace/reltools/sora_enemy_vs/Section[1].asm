@@ -4983,7 +4983,7 @@ loc_496C:
     /* 000049E8: */    lwz r4,0x4(r3)
     /* 000049EC: */    mr r3,r26
     /* 000049F0: */    li r5,0x0
-    /* 000049F4: */    li r6,0x25
+    /* 000049F4: */    lwz r6,0x90C(r28)    # li r6,0x25 - originally hardcoded to EnemyInstance, this is what's used for collisions for enemies like Trowlon. Changed to get the enemy's (r28) instance heap (which is set from their connectedTriggerId) by going to the enemy heap module (offset 0x904), offset 0x8 to get the actual heap (hence 0x90C).
     /* 000049F8: */    mr r7,r5
     /* 000049FC: */    li r8,0x1
     /* 00004A00: */    mr r9,r5
@@ -4997,7 +4997,7 @@ loc_4A18:
     /* 00004A1C: */    lwz r4,0x4(r3)
     /* 00004A20: */    mr r3,r26
     /* 00004A24: */    li r5,0x0
-    /* 00004A28: */    li r6,0x25
+    /* 00004A28: */    lwz r6,0x90C(r28)    # li r6,0x25 - originally hardcoded to EnemyInstance, this is what's used for collisions for enemies like Trowlon. Changed to get the enemy's (r28) instance heap (which is set from their connectedTriggerId) by going to the enemy heap module (offset 0x904), offset 0x8 to get the actual heap (hence 0x90C).
     /* 00004A2C: */    mr r7,r27
     /* 00004A30: */    mr r8,r27
     /* 00004A34: */    mr r9,r5

@@ -1353,7 +1353,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(1021, 1, "Enemy__createInstance_8emBoobas_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_12emDekakuribo_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1015, 1, "Enemy__createInstance_8emBotron_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_10emBucyulus_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1027, 1, "Enemy__createInstance_10emBucyulus_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1007, 1, "Enemy__createInstance_8emGyraan_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1002, 1, "Enemy__createInstance_11emSiralamos_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_8emKiller_")]
@@ -1373,7 +1373,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(1001, 1, "Enemy__createInstance_10emBombhead_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "Enemy__createInstance_6emPrim_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1013, 1, "Enemy__createInstance_8emNgagog_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_9emFaulong_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1028, 1, "Enemy__createInstance_9emFaulong_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "Enemy__createInstance_6emPrim_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "Enemy__createInstance_6emPrim_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "Enemy__createInstance_6emPrim_")]
@@ -1415,7 +1415,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(1021, 1, "emResourceModuleImpl__ModifyExParam_13emBoobasParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_17emDekakuriboParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1015, 1, "emResourceModuleImpl__ModifyExParam_13emBotronParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_15emBucyulusParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1027, 1, "emResourceModuleImpl__ModifyExParam_15emBucyulusParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1007, 1, "emResourceModuleImpl__ModifyExParam_13emGyraanParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1002, 1, "emResourceModuleImpl__ModifyExParam_16emSiralamosParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_13emKillerParam_")]
@@ -1435,7 +1435,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(1001, 1, "emResourceModuleImpl__ModifyExParam_15emBombheadParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "emResourceModuleImpl__ModifyExParam_11emPrimParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1013, 1, "emResourceModuleImpl__ModifyExParam_13emNgagogParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_14emFaulongParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1028, 1, "emResourceModuleImpl__ModifyExParam_14emFaulongParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "emResourceModuleImpl__ModifyExParam_11emPrimParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "emResourceModuleImpl__ModifyExParam_11emPrimParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1009, 1, "emResourceModuleImpl__ModifyExParam_11emPrimParam_")]
@@ -1477,7 +1477,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Boobas
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_17emDekakuriboParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Botron
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_15emBucyulusParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Bucyulus
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Gyraan
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Siralamos
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_13emKillerParam_")]
@@ -1497,7 +1497,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Bombhead
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Prim
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Ngagog
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_14emFaulongParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Faulong
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Prim
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Prim
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Prim
