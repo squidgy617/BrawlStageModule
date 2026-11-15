@@ -1386,9 +1386,9 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_11emRobopunch_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1010, 1, "Enemy__createInstance_11emCataguard_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_7emArman_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_9emGalfire_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_9emGalfire_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_9emGalfire_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "Enemy__createInstance_9emGalfire_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "Enemy__createInstance_9emGalfire_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "Enemy__createInstance_9emGalfire_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_12emBosspackun_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_13emGhamghabase_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_13emGhamghabase_")]
@@ -1448,9 +1448,9 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_16emRobopunchParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1010, 1, "emResourceModuleImpl__ModifyExParam_16emCataguardParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_12emArmanParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_14emGalfireParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_14emGalfireParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_14emGalfireParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "emResourceModuleImpl__ModifyExParam_14emGalfireParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "emResourceModuleImpl__ModifyExParam_14emGalfireParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "emResourceModuleImpl__ModifyExParam_14emGalfireParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_17emBosspackunParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_18emGhamghabaseParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_18emGhamghabaseParam_")]
@@ -1510,9 +1510,9 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_16emRobopunchParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Cataguard
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_12emArmanParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_14emGalfireParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_14emGalfireParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_14emGalfireParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Galfire
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Galfire
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Galfire
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_17emBosspackunParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_18emGhamghabaseParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_18emGhamghabaseParam_")]
