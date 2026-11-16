@@ -44516,11 +44516,11 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CDB0: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCommonProc__ShellHitGround")]
     /* 0002CDB4: */    li r5,0x34
     /* 0002CDB8: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CDBC: */    bl emWeaponManager__getInstance
-    /* 0002CDC0: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemHammerbrosProc__HammerFly")]
-    /* 0002CDC4: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemHammerbrosProc__HammerFly")]
-    /* 0002CDC8: */    li r5,0x1C
-    /* 0002CDCC: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CDBC: */    nop #bl emWeaponManager__getInstance
+    /* 0002CDC0: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemHammerbrosProc__HammerFly")]
+    /* 0002CDC4: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemHammerbrosProc__HammerFly")]
+    /* 0002CDC8: */    nop #li r5,0x1C
+    /* 0002CDCC: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CDD0: */    bl emWeaponManager__getInstance
     /* 0002CDD4: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRayquazaProc__LightBallFly")]
     /* 0002CDD8: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRayquazaProc__LightBallFly")]

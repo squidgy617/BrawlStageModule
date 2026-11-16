@@ -1362,7 +1362,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(1012, 1, "Enemy__createInstance_6emMite_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1014, 1, "Enemy__createInstance_8emTeckin_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1000, 1, "Enemy__createInstance_8emTautau_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_12emHammerbros_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1033, 1, "Enemy__createInstance_12emHammerbros_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1016, 1, "Enemy__createInstance_7emBitan_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1005, 1, "Enemy__createInstance_7emFlows_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1006, 1, "Enemy__createInstance_8emKokkon_")]
@@ -1424,7 +1424,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(1012, 1, "emResourceModuleImpl__ModifyExParam_11emMiteParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1014, 1, "emResourceModuleImpl__ModifyExParam_13emTeckinParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1000, 1, "emResourceModuleImpl__ModifyExParam_13emTautauParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_17emHammerbrosParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1033, 1, "emResourceModuleImpl__ModifyExParam_17emHammerbrosParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1016, 1, "emResourceModuleImpl__ModifyExParam_12emBitanParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1005, 1, "emResourceModuleImpl__ModifyExParam_12emFlowsParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1006, 1, "emResourceModuleImpl__ModifyExParam_13emKokkonParam_")]
@@ -1486,7 +1486,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Mite
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Teckin
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Tautau
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_17emHammerbrosParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Hammerbros
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Bitan
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Flows
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Kokkon
