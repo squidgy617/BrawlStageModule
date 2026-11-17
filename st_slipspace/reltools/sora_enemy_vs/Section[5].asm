@@ -1346,7 +1346,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(1030, 1, "Enemy__createInstance_8emKuribo_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1008, 1, "Enemy__createInstance_10emPopperam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1004, 1, "Enemy__createInstance_7emPacci_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_9emJyakeel_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1038, 1, "Enemy__createInstance_9emJyakeel_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1034, 1, "Enemy__createInstance_9emAroaros_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1019, 1, "Enemy__createInstance_7emCymal_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1011, 1, "Enemy__createInstance_10emDeathpod_")]
@@ -1408,7 +1408,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(1030, 1, "emResourceModuleImpl__ModifyExParam_13emKuriboParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1008, 1, "emResourceModuleImpl__ModifyExParam_15emPopperamParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1004, 1, "emResourceModuleImpl__ModifyExParam_12emPacciParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_14emJyakeelParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(1038, 1, "emResourceModuleImpl__ModifyExParam_14emJyakeelParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1034, 1, "emResourceModuleImpl__ModifyExParam_14emAroarosParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1019, 1, "emResourceModuleImpl__ModifyExParam_12emCymalParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1011, 1, "emResourceModuleImpl__ModifyExParam_15emDeathpodParam_")]
@@ -1470,7 +1470,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Kuribo
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Popperam
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Pacci
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_14emJyakeelParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Jyakeel
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Aroaros
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Cymal
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Deathpod
