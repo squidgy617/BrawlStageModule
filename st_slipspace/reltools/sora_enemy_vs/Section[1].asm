@@ -44521,21 +44521,21 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CDC4: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemHammerbrosProc__HammerFly")]
     /* 0002CDC8: */    nop #li r5,0x1C
     /* 0002CDCC: */    nop #bl emWeaponManager__RegisterProcFnc
-    /* 0002CDD0: */    bl emWeaponManager__getInstance
-    /* 0002CDD4: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRayquazaProc__LightBallFly")]
-    /* 0002CDD8: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRayquazaProc__LightBallFly")]
-    /* 0002CDDC: */    li r5,0x1D
-    /* 0002CDE0: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CDE4: */    bl emWeaponManager__getInstance
-    /* 0002CDE8: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRayquazaProc__LightBallLanding")]
-    /* 0002CDEC: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRayquazaProc__LightBallLanding")]
-    /* 0002CDF0: */    li r5,0x1E
-    /* 0002CDF4: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CDF8: */    bl emWeaponManager__getInstance
-    /* 0002CDFC: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRayquazaProc__LightBallDisappear")]
-    /* 0002CE00: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRayquazaProc__LightBallDisappear")]
-    /* 0002CE04: */    li r5,0x1F
-    /* 0002CE08: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CDD0: */    nop #bl emWeaponManager__getInstance
+    /* 0002CDD4: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRayquazaProc__LightBallFly")]
+    /* 0002CDD8: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRayquazaProc__LightBallFly")]
+    /* 0002CDDC: */    nop #li r5,0x1D
+    /* 0002CDE0: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CDE4: */    nop #bl emWeaponManager__getInstance
+    /* 0002CDE8: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRayquazaProc__LightBallLanding")]
+    /* 0002CDEC: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRayquazaProc__LightBallLanding")]
+    /* 0002CDF0: */    nop #li r5,0x1E
+    /* 0002CDF4: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CDF8: */    nop #bl emWeaponManager__getInstance
+    /* 0002CDFC: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemRayquazaProc__LightBallDisappear")]
+    /* 0002CE00: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRayquazaProc__LightBallDisappear")]
+    /* 0002CE04: */    nop #li r5,0x1F
+    /* 0002CE08: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CE0C: */    bl emWeaponManager__getInstance
     /* 0002CE10: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemTabooProc__BodySplitBulletFly")]
     /* 0002CE14: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemTabooProc__BodySplitBulletFly")]
