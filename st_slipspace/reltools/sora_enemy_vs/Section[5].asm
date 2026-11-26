@@ -1389,7 +1389,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "Enemy__createInstance_9emGalfire_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "Enemy__createInstance_9emGalfire_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "Enemy__createInstance_9emGalfire_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_12emBosspackun_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(2005, 1, "Enemy__createInstance_12emBosspackun_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1037, 1, "Enemy__createInstance_13emGhamghabase_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1037, 1, "Enemy__createInstance_13emGhamghabase_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1037, 1, "Enemy__createInstance_13emGhamghabase_")]
@@ -1451,7 +1451,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "emResourceModuleImpl__ModifyExParam_14emGalfireParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "emResourceModuleImpl__ModifyExParam_14emGalfireParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1020, 1, "emResourceModuleImpl__ModifyExParam_14emGalfireParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_17emBosspackunParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(2005, 1, "emResourceModuleImpl__ModifyExParam_17emBosspackunParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1037, 1, "emResourceModuleImpl__ModifyExParam_18emGhamghabaseParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1037, 1, "emResourceModuleImpl__ModifyExParam_18emGhamghabaseParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1037, 1, "emResourceModuleImpl__ModifyExParam_18emGhamghabaseParam_")]
@@ -1513,7 +1513,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Galfire
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Galfire
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Galfire
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_17emBosspackunParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Bosspackun
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Ghamghabase
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Ghamghabase
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Ghamghabase

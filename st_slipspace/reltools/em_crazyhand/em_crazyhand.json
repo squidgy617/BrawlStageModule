@@ -4,7 +4,7 @@
   "ModuleID": 2004,
   "ModuleAlign": 32,
   "BSSAlign": 8,
-  "FixSize": 15092,
+  "FixSize": 15076,
   "Sections": [
     null,
     {

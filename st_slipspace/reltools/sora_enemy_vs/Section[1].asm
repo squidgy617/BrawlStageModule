@@ -44401,21 +44401,21 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CBE4: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRoboProc__MissileErase")]
     /* 0002CBE8: */    nop #li r5,0x1B
     /* 0002CBEC: */    nop #bl emWeaponManager__RegisterProcFnc
-    /* 0002CBF0: */    bl emWeaponManager__getInstance
-    /* 0002CBF4: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBosspackunProc__ArmEnter")]
-    /* 0002CBF8: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBosspackunProc__ArmEnter")]
-    /* 0002CBFC: */    li r5,0xF
-    /* 0002CC00: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CC04: */    bl emWeaponManager__getInstance
-    /* 0002CC08: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBosspackunProc__ArmIdol")]
-    /* 0002CC0C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBosspackunProc__ArmIdol")]
-    /* 0002CC10: */    li r5,0x10
-    /* 0002CC14: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CC18: */    bl emWeaponManager__getInstance
-    /* 0002CC1C: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBosspackunProc__ArmDead")]
-    /* 0002CC20: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBosspackunProc__ArmDead")]
-    /* 0002CC24: */    li r5,0x11
-    /* 0002CC28: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CBF0: */    nop #bl emWeaponManager__getInstance
+    /* 0002CBF4: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBosspackunProc__ArmEnter")]
+    /* 0002CBF8: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBosspackunProc__ArmEnter")]
+    /* 0002CBFC: */    nop #li r5,0xF
+    /* 0002CC00: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CC04: */    nop #bl emWeaponManager__getInstance
+    /* 0002CC08: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBosspackunProc__ArmIdol")]
+    /* 0002CC0C: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBosspackunProc__ArmIdol")]
+    /* 0002CC10: */    nop #li r5,0x10
+    /* 0002CC14: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CC18: */    nop #bl emWeaponManager__getInstance
+    /* 0002CC1C: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemBosspackunProc__ArmDead")]
+    /* 0002CC20: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBosspackunProc__ArmDead")]
+    /* 0002CC24: */    nop #li r5,0x11
+    /* 0002CC28: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CC2C: */    bl emWeaponManager__getInstance
     /* 0002CC30: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__BombFly")]
     /* 0002CC34: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__BombFly")]

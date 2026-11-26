@@ -376,13 +376,13 @@ void stSlipspace::update(float deltaFrame)
                 Enemy* enemy = enemyManager->getEnemyPtrFromId(_spawnedEnemyTypes[i]->enemyCreateId);
 
                 // Debug code to render enemy targeting areas
-                emInfo* emInfo = emInfo::getInstance();
-                int areaCount = emInfo->getAreaNum((EnemyKind)_spawnedEnemyTypes[i]->enemyType->enemyId);
-                for(int i = 0; i < areaCount; i++)
-                {
-                    gfArea* area = enemy->m_moduleAccesser->getAreaModule().getAreaInstance(i);
-                    area->debugDrawImp();
-                }
+                // emInfo* emInfo = emInfo::getInstance();
+                // int areaCount = emInfo->getAreaNum((EnemyKind)_spawnedEnemyTypes[i]->enemyType->enemyId);
+                // for(int i = 0; i < areaCount; i++)
+                // {
+                //     gfArea* area = enemy->m_moduleAccesser->getAreaModule().getAreaInstance(i);
+                //     area->debugDrawImp();
+                // }
 
                 Vec3f pos = soExternalValueAccesser::getPos(enemy);
                 Vec2f pos2;
@@ -1263,16 +1263,18 @@ void stSlipspace::clearHeap() {
     }
 
    if (gfModuleManager::getInstance()->isLoaded("sora_enemy.rel")) {
+       
+       emManager* enemyManager = emManager::getInstance();
+       if (enemyManager != NULL) {
+           enemyManager->removeEnemyAll();
+       }
        emWeaponManager* weaponManager = emWeaponManager::getInstance();
        if (weaponManager != NULL) {
            weaponManager->reset();
            weaponManager->m_32 = true;
            emWeaponManager::remove();
        }
-       emManager* enemyManager = emManager::getInstance();
        if (enemyManager != NULL) {
-           emManager* enemyManager = emManager::getInstance();
-           enemyManager->removeEnemyAll();
            enemyManager->removeArchiveAll();
            emManager::remove();
        }
