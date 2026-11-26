@@ -44581,16 +44581,16 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CEB4: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__NormalBulletDisappear")]
     /* 0002CEB8: */    li r5,0x27
     /* 0002CEBC: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CEC0: */    bl emWeaponManager__getInstance
-    /* 0002CEC4: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCrazyhandProc__BombFly")]
-    /* 0002CEC8: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCrazyhandProc__BombFly")]
-    /* 0002CECC: */    li r5,0x37
-    /* 0002CED0: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CED4: */    bl emWeaponManager__getInstance
-    /* 0002CED8: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCrazyhandProc__BombExplosion")]
-    /* 0002CEDC: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCrazyhandProc__BombExplosion")]
-    /* 0002CEE0: */    li r5,0x38
-    /* 0002CEE4: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CEC0: */    nop #bl emWeaponManager__getInstance
+    /* 0002CEC4: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCrazyhandProc__BombFly")]
+    /* 0002CEC8: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCrazyhandProc__BombFly")]
+    /* 0002CECC: */    nop #li r5,0x37
+    /* 0002CED0: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CED4: */    nop #bl emWeaponManager__getInstance
+    /* 0002CED8: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCrazyhandProc__BombExplosion")]
+    /* 0002CEDC: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCrazyhandProc__BombExplosion")]
+    /* 0002CEE0: */    nop #li r5,0x38
+    /* 0002CEE4: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CEE8: */    bl emWeaponManager__getInstance
     /* 0002CEEC: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGalleomProc__GrenadeFly")]
     /* 0002CEF0: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGalleomProc__GrenadeFly")]

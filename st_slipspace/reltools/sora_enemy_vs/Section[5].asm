@@ -1403,7 +1403,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_13emFalconflyer_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_7emTaboo_")]
         .4byte 0x00000000         [R_PPC_ADDR32(2003, 1, "Enemy__createInstance_12emMasterhand_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_11emCrazyhand_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(2004, 1, "Enemy__createInstance_11emCrazyhand_")]
 loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(1030, 1, "emResourceModuleImpl__ModifyExParam_13emKuriboParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(1008, 1, "emResourceModuleImpl__ModifyExParam_15emPopperamParam_")]
@@ -1465,7 +1465,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_18emFalconflyerParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_12emTabooParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(2003, 1, "emResourceModuleImpl__ModifyExParam_17emMasterhandParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_16emCrazyhandParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(2004, 1, "emResourceModuleImpl__ModifyExParam_16emCrazyhandParam_")]
 loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Kuribo
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Popperam
@@ -1527,7 +1527,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_18emFalconflyerParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_12emTabooParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Masterhand
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_16emCrazyhandParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Crazyhand
 loc_1934:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 5, "loc_1968")]
         .4byte 0x00000000
