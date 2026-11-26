@@ -44416,41 +44416,41 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CC20: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemBosspackunProc__ArmDead")]
     /* 0002CC24: */    nop #li r5,0x11
     /* 0002CC28: */    nop #bl emWeaponManager__RegisterProcFnc
-    /* 0002CC2C: */    bl emWeaponManager__getInstance
-    /* 0002CC30: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__BombFly")]
-    /* 0002CC34: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__BombFly")]
-    /* 0002CC38: */    li r5,0x12
-    /* 0002CC3C: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CC40: */    bl emWeaponManager__getInstance
-    /* 0002CC44: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__BombExplosion")]
-    /* 0002CC48: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__BombExplosion")]
-    /* 0002CC4C: */    li r5,0x13
-    /* 0002CC50: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CC54: */    bl emWeaponManager__getInstance
-    /* 0002CC58: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__MissileFly")]
-    /* 0002CC5C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__MissileFly")]
-    /* 0002CC60: */    li r5,0x14
-    /* 0002CC64: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CC68: */    bl emWeaponManager__getInstance
-    /* 0002CC6C: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__MissileExplosion")]
-    /* 0002CC70: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__MissileExplosion")]
-    /* 0002CC74: */    li r5,0x15
-    /* 0002CC78: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CC7C: */    bl emWeaponManager__getInstance
-    /* 0002CC80: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__LaserEnter")]
-    /* 0002CC84: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__LaserEnter")]
-    /* 0002CC88: */    li r5,0x16
-    /* 0002CC8C: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CC90: */    bl emWeaponManager__getInstance
-    /* 0002CC94: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__LaserFly")]
-    /* 0002CC98: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__LaserFly")]
-    /* 0002CC9C: */    li r5,0x17
-    /* 0002CCA0: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CCA4: */    bl emWeaponManager__getInstance
-    /* 0002CCA8: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__LaserDead")]
-    /* 0002CCAC: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__LaserDead")]
-    /* 0002CCB0: */    li r5,0x18
-    /* 0002CCB4: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CC2C: */    nop #bl emWeaponManager__getInstance
+    /* 0002CC30: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__BombFly")]
+    /* 0002CC34: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__BombFly")]
+    /* 0002CC38: */    nop #li r5,0x12
+    /* 0002CC3C: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CC40: */    nop #bl emWeaponManager__getInstance
+    /* 0002CC44: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__BombExplosion")]
+    /* 0002CC48: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__BombExplosion")]
+    /* 0002CC4C: */    nop #li r5,0x13
+    /* 0002CC50: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CC54: */    nop #bl emWeaponManager__getInstance
+    /* 0002CC58: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__MissileFly")]
+    /* 0002CC5C: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__MissileFly")]
+    /* 0002CC60: */    nop #li r5,0x14
+    /* 0002CC64: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CC68: */    nop #bl emWeaponManager__getInstance
+    /* 0002CC6C: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__MissileExplosion")]
+    /* 0002CC70: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__MissileExplosion")]
+    /* 0002CC74: */    nop #li r5,0x15
+    /* 0002CC78: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CC7C: */    nop #bl emWeaponManager__getInstance
+    /* 0002CC80: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__LaserEnter")]
+    /* 0002CC84: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__LaserEnter")]
+    /* 0002CC88: */    nop #li r5,0x16
+    /* 0002CC8C: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CC90: */    nop #bl emWeaponManager__getInstance
+    /* 0002CC94: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__LaserFly")]
+    /* 0002CC98: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__LaserFly")]
+    /* 0002CC9C: */    nop #li r5,0x17
+    /* 0002CCA0: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CCA4: */    nop #bl emWeaponManager__getInstance
+    /* 0002CCA8: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemDuonProc__LaserDead")]
+    /* 0002CCAC: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemDuonProc__LaserDead")]
+    /* 0002CCB0: */    nop #li r5,0x18
+    /* 0002CCB4: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CCB8: */    nop #bl emWeaponManager__getInstance
     /* 0002CCBC: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemPorkyProc__RoboFall")]
     /* 0002CCC0: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPorkyProc__RoboFall")]
