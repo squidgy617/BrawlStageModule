@@ -44536,26 +44536,26 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CE00: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemRayquazaProc__LightBallDisappear")]
     /* 0002CE04: */    nop #li r5,0x1F
     /* 0002CE08: */    nop #bl emWeaponManager__RegisterProcFnc
-    /* 0002CE0C: */    bl emWeaponManager__getInstance
-    /* 0002CE10: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemTabooProc__BodySplitBulletFly")]
-    /* 0002CE14: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemTabooProc__BodySplitBulletFly")]
-    /* 0002CE18: */    li r5,0x20
-    /* 0002CE1C: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CE20: */    bl emWeaponManager__getInstance
-    /* 0002CE24: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemTabooProc__BodySplitBulletExplosion")]
-    /* 0002CE28: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemTabooProc__BodySplitBulletExplosion")]
-    /* 0002CE2C: */    li r5,0x21
-    /* 0002CE30: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CE34: */    bl emWeaponManager__getInstance
-    /* 0002CE38: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemTabooProc__CometBulletFly")]
-    /* 0002CE3C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemTabooProc__CometBulletFly")]
-    /* 0002CE40: */    li r5,0x22
-    /* 0002CE44: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CE48: */    bl emWeaponManager__getInstance
-    /* 0002CE4C: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemTabooProc__CometBulletExplosion")]
-    /* 0002CE50: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemTabooProc__CometBulletExplosion")]
-    /* 0002CE54: */    li r5,0x23
-    /* 0002CE58: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CE0C: */    nop #bl emWeaponManager__getInstance
+    /* 0002CE10: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemTabooProc__BodySplitBulletFly")]
+    /* 0002CE14: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemTabooProc__BodySplitBulletFly")]
+    /* 0002CE18: */    nop #li r5,0x20
+    /* 0002CE1C: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CE20: */    nop #bl emWeaponManager__getInstance
+    /* 0002CE24: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemTabooProc__BodySplitBulletExplosion")]
+    /* 0002CE28: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemTabooProc__BodySplitBulletExplosion")]
+    /* 0002CE2C: */    nop #li r5,0x21
+    /* 0002CE30: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CE34: */    nop #bl emWeaponManager__getInstance
+    /* 0002CE38: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemTabooProc__CometBulletFly")]
+    /* 0002CE3C: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemTabooProc__CometBulletFly")]
+    /* 0002CE40: */    nop #li r5,0x22
+    /* 0002CE44: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CE48: */    nop #bl emWeaponManager__getInstance
+    /* 0002CE4C: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemTabooProc__CometBulletExplosion")]
+    /* 0002CE50: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemTabooProc__CometBulletExplosion")]
+    /* 0002CE54: */    nop #li r5,0x23
+    /* 0002CE58: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CE5C: */    nop #bl emWeaponManager__getInstance
     /* 0002CE60: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemMetaridleyProc__FireballFly")]
     /* 0002CE64: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__FireballFly")]

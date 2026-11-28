@@ -1401,7 +1401,7 @@ loc_1658:
         .4byte 0x00000000         [R_PPC_ADDR32(2001, 1, "Enemy__createInstance_7emPorky_")]
         .4byte 0x00000000         [R_PPC_ADDR32(2008, 1, "Enemy__createInstance_12emMetaridley_")]
         .4byte 0x00000000         [R_PPC_ADDR32(2009, 1, "Enemy__createInstance_13emFalconflyer_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "Enemy__createInstance_7emTaboo_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(2010, 1, "Enemy__createInstance_7emTaboo_")]
         .4byte 0x00000000         [R_PPC_ADDR32(2003, 1, "Enemy__createInstance_12emMasterhand_")]
         .4byte 0x00000000         [R_PPC_ADDR32(2004, 1, "Enemy__createInstance_11emCrazyhand_")]
 loc_174C:
@@ -1463,7 +1463,7 @@ loc_174C:
         .4byte 0x00000000         [R_PPC_ADDR32(2001, 1, "emResourceModuleImpl__ModifyExParam_12emPorkyParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(2008, 1, "emResourceModuleImpl__ModifyExParam_17emMetaridleyParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(2009, 1, "emResourceModuleImpl__ModifyExParam_18emFalconflyerParam_")]
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__ModifyExParam_12emTabooParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(2010, 1, "emResourceModuleImpl__ModifyExParam_12emTabooParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(2003, 1, "emResourceModuleImpl__ModifyExParam_17emMasterhandParam_")]
         .4byte 0x00000000         [R_PPC_ADDR32(2004, 1, "emResourceModuleImpl__ModifyExParam_16emCrazyhandParam_")]
 loc_1840:
@@ -1525,7 +1525,7 @@ loc_1840:
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Porky
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Metaridley
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Falconflyer
-        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "emResourceModuleImpl__DeleteExParam_12emTabooParam_")]
+        .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Taboo
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Masterhand
         .4byte 0x00000000         [R_PPC_ADDR32(41, 1, "loc_return")] # Crazyhand
 loc_1934:
