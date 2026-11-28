@@ -44591,26 +44591,26 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CEDC: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCrazyhandProc__BombExplosion")]
     /* 0002CEE0: */    nop #li r5,0x38
     /* 0002CEE4: */    nop #bl emWeaponManager__RegisterProcFnc
-    /* 0002CEE8: */    bl emWeaponManager__getInstance
-    /* 0002CEEC: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGalleomProc__GrenadeFly")]
-    /* 0002CEF0: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGalleomProc__GrenadeFly")]
-    /* 0002CEF4: */    li r5,0x39
-    /* 0002CEF8: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CEFC: */    bl emWeaponManager__getInstance
-    /* 0002CF00: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGalleomProc__GrenadeExplosion")]
-    /* 0002CF04: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGalleomProc__GrenadeExplosion")]
-    /* 0002CF08: */    li r5,0x3A
-    /* 0002CF0C: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CF10: */    bl emWeaponManager__getInstance
-    /* 0002CF14: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGalleomProc__ShotFly")]
-    /* 0002CF18: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGalleomProc__ShotFly")]
-    /* 0002CF1C: */    li r5,0x3B
-    /* 0002CF20: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CF24: */    bl emWeaponManager__getInstance
-    /* 0002CF28: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGalleomProc__ShotExplosion")]
-    /* 0002CF2C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGalleomProc__ShotExplosion")]
-    /* 0002CF30: */    li r5,0x3C
-    /* 0002CF34: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CEE8: */    nop #bl emWeaponManager__getInstance
+    /* 0002CEEC: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGalleomProc__GrenadeFly")]
+    /* 0002CEF0: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGalleomProc__GrenadeFly")]
+    /* 0002CEF4: */    nop #li r5,0x39
+    /* 0002CEF8: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CEFC: */    nop #bl emWeaponManager__getInstance
+    /* 0002CF00: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGalleomProc__GrenadeExplosion")]
+    /* 0002CF04: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGalleomProc__GrenadeExplosion")]
+    /* 0002CF08: */    nop #li r5,0x3A
+    /* 0002CF0C: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CF10: */    nop #bl emWeaponManager__getInstance
+    /* 0002CF14: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGalleomProc__ShotFly")]
+    /* 0002CF18: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGalleomProc__ShotFly")]
+    /* 0002CF1C: */    nop #li r5,0x3B
+    /* 0002CF20: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CF24: */    nop #bl emWeaponManager__getInstance
+    /* 0002CF28: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemGalleomProc__ShotExplosion")]
+    /* 0002CF2C: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemGalleomProc__ShotExplosion")]
+    /* 0002CF30: */    nop #li r5,0x3C
+    /* 0002CF34: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CF38: */    nop #bl emWeaponManager__getInstance
     /* 0002CF3C: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemPrimProc__BoomerangErase")]
     /* 0002CF40: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemPrimProc__BoomerangErase")]
