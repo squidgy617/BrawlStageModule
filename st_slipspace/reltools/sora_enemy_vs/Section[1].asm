@@ -44556,31 +44556,31 @@ emweaponregister__EnemyWeaponRegister:
     /* 0002CE50: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemTabooProc__CometBulletExplosion")]
     /* 0002CE54: */    li r5,0x23
     /* 0002CE58: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CE5C: */    bl emWeaponManager__getInstance
-    /* 0002CE60: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemMetaridleyProc__FireballFly")]
-    /* 0002CE64: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__FireballFly")]
-    /* 0002CE68: */    li r5,0x24
-    /* 0002CE6C: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CE70: */    bl emWeaponManager__getInstance
-    /* 0002CE74: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemMetaridleyProc__FireballExplosion")]
-    /* 0002CE78: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__FireballExplosion")]
-    /* 0002CE7C: */    li r5,0x25
-    /* 0002CE80: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CE84: */    bl emWeaponManager__getInstance
-    /* 0002CE88: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemMetaridleyProc__FireballTouchGround")]
-    /* 0002CE8C: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__FireballTouchGround")]
-    /* 0002CE90: */    li r5,0x43
-    /* 0002CE94: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CE98: */    bl emWeaponManager__getInstance
-    /* 0002CE9C: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemMetaridleyProc__NormalBulletFly")]
-    /* 0002CEA0: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__NormalBulletFly")]
-    /* 0002CEA4: */    li r5,0x26
-    /* 0002CEA8: */    bl emWeaponManager__RegisterProcFnc
-    /* 0002CEAC: */    bl emWeaponManager__getInstance
-    /* 0002CEB0: */    lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemMetaridleyProc__NormalBulletDisappear")]
-    /* 0002CEB4: */    addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__NormalBulletDisappear")]
-    /* 0002CEB8: */    li r5,0x27
-    /* 0002CEBC: */    bl emWeaponManager__RegisterProcFnc
+    /* 0002CE5C: */    nop #bl emWeaponManager__getInstance
+    /* 0002CE60: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemMetaridleyProc__FireballFly")]
+    /* 0002CE64: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__FireballFly")]
+    /* 0002CE68: */    nop #li r5,0x24
+    /* 0002CE6C: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CE70: */    nop #bl emWeaponManager__getInstance
+    /* 0002CE74: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemMetaridleyProc__FireballExplosion")]
+    /* 0002CE78: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__FireballExplosion")]
+    /* 0002CE7C: */    nop #li r5,0x25
+    /* 0002CE80: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CE84: */    nop #bl emWeaponManager__getInstance
+    /* 0002CE88: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemMetaridleyProc__FireballTouchGround")]
+    /* 0002CE8C: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__FireballTouchGround")]
+    /* 0002CE90: */    nop #li r5,0x43
+    /* 0002CE94: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CE98: */    nop #bl emWeaponManager__getInstance
+    /* 0002CE9C: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemMetaridleyProc__NormalBulletFly")]
+    /* 0002CEA0: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__NormalBulletFly")]
+    /* 0002CEA4: */    nop #li r5,0x26
+    /* 0002CEA8: */    nop #bl emWeaponManager__RegisterProcFnc
+    /* 0002CEAC: */    nop #bl emWeaponManager__getInstance
+    /* 0002CEB0: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemMetaridleyProc__NormalBulletDisappear")]
+    /* 0002CEB4: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemMetaridleyProc__NormalBulletDisappear")]
+    /* 0002CEB8: */    nop #li r5,0x27
+    /* 0002CEBC: */    nop #bl emWeaponManager__RegisterProcFnc
     /* 0002CEC0: */    nop #bl emWeaponManager__getInstance
     /* 0002CEC4: */    nop #lis r4,0x0                               [R_PPC_ADDR16_HA(41, 1, "wnemCrazyhandProc__BombFly")]
     /* 0002CEC8: */    nop #addi r4,r4,0x0                           [R_PPC_ADDR16_LO(41, 1, "wnemCrazyhandProc__BombFly")]
